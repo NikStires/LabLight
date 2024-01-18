@@ -1,0 +1,149 @@
+{
+  "version": 6,
+  "title": "Sig Sauer P320 M18 dissassembly with 3D model overlay and animations",
+  "globalArElements": [],
+  "steps": [
+    {
+      "arElements": [
+        {
+          "url": "sigsauerm18.prefab",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "animation": null,
+          "highlightAsSubsteps": true,
+          "select": null,
+          "arDefinitionType": "Model",
+          "target": "test"
+        }
+      ],
+      "subSteps": null
+    },
+    {
+      "arElements": [
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Header",
+                "text": "Object Recognition",
+                "fontsize": 14,
+                "contentType": "Text"
+              },
+              {
+                "textType": "Block",
+                "text": "Uses the test QR code",
+                "fontsize": 7,
+                "contentType": "Text"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": null,
+          "Count": 2,
+          "IsReadOnly": false
+        }
+      ],
+      "subSteps": null
+    },
+    {
+      "arElements": [
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Block",
+                "text": "Sig Sauer P320 M18",
+                "fontsize": 7,
+                "contentType": "Text"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "test",
+          "Count": 1,
+          "IsReadOnly": false
+        },
+        {
+          "color": {
+            "r": 0.09411765,
+            "g": 0.7921569,
+            "b": 0.831372559,
+            "a": 0.2
+          },
+          "borderColor": {
+            "r": 1.0,
+            "g": 1.0,
+            "b": 1.0,
+            "a": 1.0
+          },
+          "borderWidth": 0.15,
+          "arDefinitionType": "Outline",
+          "target": "test"
+        }
+      ],
+      "subSteps": null
+    },
+    {
+      "arElements": [
+        {
+          "url": "SigSauerM18",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "animation": null,
+          "highlightAsSubsteps": false,
+          "select": "outside",
+          "arDefinitionType": "Model",
+          "target": "test"
+        }
+      ],
+      "subSteps": null
+    },
+    {
+      "arElements": [
+        {
+          "url": "SigSauerM18",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "animation": null,
+          "highlightAsSubsteps": false,
+          "select": "inside",
+          "arDefinitionType": "Model",
+          "target": "test"
+        }
+      ],
+      "subSteps": null
+    },
+    {
+      "arElements": [
+        {
+          "url": "SigSauerM18",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "animation": "SlideLock",
+          "highlightAsSubsteps": false,
+          "select": "slidelock",
+          "arDefinitionType": "Model",
+          "target": "test"
+        }
+      ],
+      "subSteps": null
+    }
+  ],
+  "basePath": "Procedure/gun disassembly 3D"
+}

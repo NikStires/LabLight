@@ -1,0 +1,537 @@
+{
+  "$id": "1",
+  "version": 8,
+  "globalArElements": [],
+  "steps": [
+    {
+      "$id": "2",
+      "arElements": [
+        {
+          "$id": "3",
+          "url": "whitelegalmove.prefab",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "condition": {
+            "$id": "4",
+            "filter": "WhiteLegalMove",
+            "conditionType": "Every"
+          },
+          "target": ""
+        },
+        {
+          "$id": "5",
+          "url": "chessboardinlab.prefab",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "condition": {
+            "$id": "6",
+            "target": "Chessboard",
+            "conditionType": "Target"
+          },
+          "target": ""
+        },
+        {
+          "$id": "7",
+          "url": "blackpawn.prefab",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "condition": {
+            "$id": "8",
+            "filter": "b_pawn",
+            "conditionType": "Every"
+          },
+          "target": ""
+        },
+        {
+          "$id": "9",
+          "url": "blackrook.prefab",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "condition": {
+            "$id": "10",
+            "filter": "b_rook",
+            "conditionType": "Every"
+          },
+          "target": ""
+        },
+        {
+          "$id": "11",
+          "url": "blackknight.prefab",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "condition": {
+            "$id": "12",
+            "filter": "b_knight",
+            "conditionType": "Every"
+          },
+          "target": ""
+        },
+        {
+          "$id": "13",
+          "url": "blackbishop.prefab",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "condition": {
+            "$id": "14",
+            "filter": "b_bishop",
+            "conditionType": "Every"
+          },
+          "target": ""
+        },
+        {
+          "$id": "15",
+          "url": "blackqueen.prefab",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "condition": {
+            "$id": "16",
+            "filter": "b_queen",
+            "conditionType": "Every"
+          },
+          "target": ""
+        },
+        {
+          "$id": "17",
+          "url": "blackking.prefab",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "condition": {
+            "$id": "18",
+            "filter": "b_king",
+            "conditionType": "Every"
+          },
+          "target": ""
+        },
+        {
+          "$id": "19",
+          "url": "whitepawn.prefab",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "condition": {
+            "$id": "20",
+            "filter": "w_pawn",
+            "conditionType": "Every"
+          },
+          "target": ""
+        },
+        {
+          "$id": "21",
+          "url": "whiterook.prefab",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "condition": {
+            "$id": "22",
+            "filter": "w_rook",
+            "conditionType": "Every"
+          },
+          "target": ""
+        },
+        {
+          "$id": "23",
+          "url": "whiteknight.prefab",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "condition": {
+            "$id": "24",
+            "filter": "w_knight",
+            "conditionType": "Every"
+          },
+          "target": ""
+        },
+        {
+          "$id": "25",
+          "url": "whitebishop.prefab",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "condition": {
+            "$id": "26",
+            "filter": "w_bishop",
+            "conditionType": "Every"
+          },
+          "target": ""
+        },
+        {
+          "$id": "27",
+          "url": "whitequeen.prefab",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "condition": {
+            "$id": "28",
+            "filter": "w_queen",
+            "conditionType": "Every"
+          },
+          "target": ""
+        },
+        {
+          "$id": "29",
+          "url": "whiteking.prefab",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "condition": {
+            "$id": "30",
+            "filter": "w_king",
+            "conditionType": "Every"
+          },
+          "target": ""
+        },
+        {
+          "$id": "31",
+          "url": "blacklegalmove.prefab",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "condition": {
+            "$id": "32",
+            "filter": "BlackLegalMove",
+            "conditionType": "Every"
+          },
+          "target": ""
+        },
+        {
+          "$id": "33",
+          "url": "suggestedmove.prefab",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "condition": {
+            "$id": "34",
+            "filter": "SuggestedMoveFrom",
+            "conditionType": "Every"
+          },
+          "target": ""
+        },
+        {
+          "$id": "35",
+          "url": "suggestedmove.prefab",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "condition": {
+            "$id": "36",
+            "filter": "SuggestedMoveTo",
+            "conditionType": "Every"
+          },
+          "target": ""
+        },
+        {
+          "$id": "37",
+          "url": "illegalmove.prefab",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "condition": {
+            "$id": "38",
+            "filter": "IllegalMoveFrom",
+            "conditionType": "Every"
+          },
+          "target": ""
+        },
+        {
+          "$id": "39",
+          "url": "illegalmove.prefab",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "condition": {
+            "$id": "40",
+            "filter": "IllegalMoveTo",
+            "conditionType": "Every"
+          },
+          "target": ""
+        },
+        {
+          "$id": "41",
+          "url": "chessclock.prefab",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "target": ""
+        },
+        {
+          "$id": "42",
+          "url": "incheck.prefab",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "condition": {
+            "$id": "43",
+            "filter": "InCheckAttacker",
+            "conditionType": "Every"
+          },
+          "target": ""
+        },
+        {
+          "$id": "44",
+          "url": "incheck.prefab",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "condition": {
+            "$id": "45",
+            "filter": "InCheckDefender",
+            "conditionType": "Every"
+          },
+          "target": ""
+        },
+        {
+          "$id": "46",
+          "url": "incheckmate.prefab",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "condition": {
+            "$id": "47",
+            "filter": "InCheckmateAttacker",
+            "conditionType": "Every"
+          },
+          "target": ""
+        },
+        {
+          "$id": "48",
+          "url": "incheckmate.prefab",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "condition": {
+            "$id": "49",
+            "filter": "InCheckmateDefender",
+            "conditionType": "Every"
+          },
+          "target": ""
+        }
+      ],
+      "SignedOff": false
+    }
+  ],
+  "basePath": "Procedure/Chess"
+}

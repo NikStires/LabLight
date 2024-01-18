@@ -1,0 +1,1998 @@
+{
+  "$id": "1",
+  "version": 8,
+  "title": "Quantifying Double Stranded DNA in Samples with Picogreen",
+  "globalArElements": [
+    {
+      "$id": "2",
+      "projectToDeskPlane": false,
+      "overrideColor": false,
+      "color": {
+        "r": 1.0,
+        "g": 1.0,
+        "b": 1.0,
+        "a": 1.0
+      },
+      "lineWidthInMillimeters": 4.0,
+      "arDefinitionType": "Mask",
+      "condition": {
+        "$id": "3",
+        "filter": "",
+        "conditionType": "Every"
+      },
+      "target": ""
+    }
+  ],
+  "steps": [
+    {
+      "$id": "4",
+      "ShowCheckList": false,
+      "arElements": [
+        {
+          "$id": "5",
+          "layout": {
+            "$id": "6",
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "$id": "7",
+                "url": "sp_1 title fluorometric quantification-01.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "",
+          "Count": 1,
+          "IsReadOnly": false
+        },
+        {
+          "$id": "8",
+          "url": "foiltray.prefab",
+          "position": {
+            "x": 0.2,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "target": ""
+        }
+      ],
+      "checklist": [
+        {
+          "$id": "9",
+          "Text": "TEST checklist item should show tube rack",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "10",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "IsActive": {
+            "$id": "11",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [
+            {
+              "$id": "12",
+              "url": "tuberack2x50ml.prefab",
+              "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": -0.1
+              },
+              "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 0.0
+              },
+              "arDefinitionType": "Model",
+              "target": ""
+            }
+          ],
+          "operations": []
+        },
+        {
+          "$id": "13",
+          "Text": "TEST checklist item should remove tube rack",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "14",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "IsActive": {
+            "$id": "15",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [
+            {
+              "$id": "16",
+              "url": "draggabletuberack2x50ml.prefab",
+              "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 0.0
+              },
+              "arDefinitionType": "Model",
+              "target": ""
+            }
+          ],
+          "operations": []
+        }
+      ]
+    },
+    {
+      "$id": "17",
+      "ShowCheckList": false,
+      "arElements": [
+        {
+          "$id": "18",
+          "layout": {
+            "$id": "19",
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "$id": "20",
+                "url": "sp_1 title launch procedures-01.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "",
+          "Count": 1,
+          "IsReadOnly": false
+        }
+      ],
+      "checklist": [
+        {
+          "$id": "21",
+          "Text": "TEST2 shows nothing",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "22",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "IsActive": {
+            "$id": "23",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [],
+          "operations": []
+        },
+        {
+          "$id": "24",
+          "Text": "TEST2 shows well plate",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "25",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "IsActive": {
+            "$id": "26",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [
+            {
+              "$id": "27",
+              "url": "draggablewellplate12x8multi.prefab",
+              "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+              },
+              "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 0.0
+              },
+              "arDefinitionType": "Model",
+              "target": ""
+            }
+          ],
+          "operations": []
+        }
+      ]
+    },
+    {
+      "$id": "28",
+      "ShowCheckList": false,
+      "arElements": [
+        {
+          "$id": "29",
+          "layout": {
+            "$id": "30",
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "$id": "31",
+                "url": "sp_1-01.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "",
+          "Count": 1,
+          "IsReadOnly": false
+        }
+      ]
+    },
+    {
+      "$id": "32",
+      "ShowCheckList": false,
+      "arElements": [
+        {
+          "$id": "33",
+          "layout": {
+            "$id": "34",
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "$id": "35",
+                "url": "sp_2 clean-01.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "",
+          "Count": 1,
+          "IsReadOnly": false
+        }
+      ]
+    },
+    {
+      "$id": "36",
+      "ShowCheckList": false,
+      "arElements": [
+        {
+          "$id": "37",
+          "layout": {
+            "$id": "38",
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "$id": "39",
+                "url": "sp_3a view through ar-01.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "",
+          "Count": 1,
+          "IsReadOnly": false
+        },
+        {
+          "$id": "40",
+          "url": "tuberack2x50ml.prefab",
+          "position": {
+            "x": -0.1,
+            "y": 0.0,
+            "z": -0.1
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "target": ""
+        },
+        {
+          "$id": "41",
+          "url": "foiltray.prefab",
+          "position": {
+            "x": 0.2,
+            "y": 0.0,
+            "z": 0.05
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "target": ""
+        },
+        {
+          "$id": "42",
+          "url": "draggablewellplate12x8single.prefab",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.05
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          },
+          "arDefinitionType": "Model",
+          "target": ""
+        },
+        {
+          "$id": "43",
+          "url": "testtubes.prefab",
+          "position": {
+            "x": 0.1,
+            "y": 0.0,
+            "z": -0.05
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 1.0,
+            "z": 0.0,
+            "w": -4.371139E-08
+          },
+          "highlight": "All",
+          "arDefinitionType": "Model",
+          "target": ""
+        },
+        {
+          "$id": "44",
+          "url": "bottle.prefab",
+          "position": {
+            "x": 0.15,
+            "y": 0.0,
+            "z": -0.02
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "target": ""
+        },
+        {
+          "$id": "45",
+          "url": "tuberack5x10.prefab",
+          "position": {
+            "x": 0.15,
+            "y": 0.0,
+            "z": -0.15
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "$id": "46",
+      "ShowCheckList": false,
+      "arElements": [
+        {
+          "$id": "47",
+          "layout": {
+            "$id": "48",
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "$id": "49",
+                "url": "sp_4 prep picogreen.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "",
+          "Count": 1,
+          "IsReadOnly": false
+        },
+        {
+          "$id": "50",
+          "url": "tuberack2x50ml.prefab",
+          "position": {
+            "x": -0.1,
+            "y": 0.0,
+            "z": -0.1
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "target": ""
+        }
+      ],
+      "subSteps": [
+        {
+          "$id": "51",
+          "arElements": [
+            {
+              "$id": "52",
+              "url": "bottle.prefab",
+              "position": {
+                "x": 0.15,
+                "y": 0.0,
+                "z": -0.02
+              },
+              "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 0.0
+              },
+              "arDefinitionType": "Model",
+              "target": ""
+            }
+          ],
+          "operations": []
+        }
+      ]
+    },
+    {
+      "$id": "53",
+      "ShowCheckList": false,
+      "arElements": [
+        {
+          "$id": "54",
+          "layout": {
+            "$id": "55",
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "$id": "56",
+                "url": "sp_5 prep picogreen mix.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "",
+          "Count": 1,
+          "IsReadOnly": false
+        },
+        {
+          "$id": "57",
+          "url": "tuberack2x50ml.prefab",
+          "position": {
+            "x": -0.1,
+            "y": 0.0,
+            "z": -0.1
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "target": ""
+        },
+        {
+          "$id": "58",
+          "url": "foiltray.prefab",
+          "position": {
+            "x": 0.2,
+            "y": 0.0,
+            "z": 0.05
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "target": ""
+        }
+      ],
+      "subSteps": [
+        {
+          "$id": "59",
+          "arElements": [],
+          "operations": []
+        },
+        {
+          "$id": "60",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "61",
+              "HighlightName": "Foil",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "58"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "$id": "62",
+      "ShowCheckList": false,
+      "arElements": [
+        {
+          "$id": "63",
+          "layout": {
+            "$id": "64",
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "$id": "65",
+                "url": "sp_6 plate layout-01.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "",
+          "Count": 1,
+          "IsReadOnly": false
+        },
+        {
+          "$id": "66",
+          "url": "draggablewellplate12x8single.prefab",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.05
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          },
+          "arDefinitionType": "Model",
+          "target": ""
+        }
+      ]
+    },
+    {
+      "$id": "67",
+      "ShowCheckList": false,
+      "arElements": [
+        {
+          "$id": "68",
+          "layout": {
+            "$id": "69",
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "$id": "70",
+                "url": "sp_7 record-01.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "",
+          "Count": 1,
+          "IsReadOnly": false
+        }
+      ]
+    },
+    {
+      "$id": "71",
+      "ShowCheckList": true,
+      "arElements": [
+        {
+          "$id": "72",
+          "layout": {
+            "$id": "73",
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "$id": "74",
+                "url": "sp_8 load pico 185-01.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "",
+          "Count": 1,
+          "IsReadOnly": false
+        },
+        {
+          "$id": "75",
+          "url": "draggablewellplate12x8multi.prefab",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.05
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": -0.707106769,
+            "z": 0.0,
+            "w": 0.707106769
+          },
+          "arDefinitionType": "Model",
+          "target": ""
+        },
+        {
+          "$id": "76",
+          "url": "foiltray.prefab",
+          "position": {
+            "x": 0.2,
+            "y": 0.0,
+            "z": 0.05
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "target": ""
+        }
+      ],
+      "subSteps": [
+        {
+          "$id": "77",
+          "arElements": [
+            {
+              "$id": "78",
+              "position": {
+                "x": 0.0,
+                "y": 0.02,
+                "z": 0.06
+              },
+              "rotation": {
+                "x": 0.0,
+                "y": 1.0,
+                "z": 0.0,
+                "w": -4.371139E-08
+              },
+              "radius": 0.02,
+              "angleInDegrees": 90.0,
+              "arDefinitionType": "Arrow",
+              "target": ""
+            }
+          ],
+          "operations": []
+        },
+        {
+          "$id": "79",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "80",
+              "HighlightName": "Column0",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "75"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "81",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "82",
+              "HighlightName": "Column1",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "75"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "$id": "83",
+      "ShowCheckList": true,
+      "arElements": [
+        {
+          "$id": "84",
+          "layout": {
+            "$id": "85",
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "$id": "86",
+                "url": "sp_9 load pico 195-01.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "",
+          "Count": 1,
+          "IsReadOnly": false
+        },
+        {
+          "$id": "87",
+          "url": "draggablewellplate12x8multi.prefab",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.05
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": -0.707106769,
+            "z": 0.0,
+            "w": 0.707106769
+          },
+          "arDefinitionType": "Model",
+          "target": ""
+        },
+        {
+          "$id": "88",
+          "url": "foiltray.prefab",
+          "position": {
+            "x": 0.2,
+            "y": 0.0,
+            "z": 0.05
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "target": ""
+        }
+      ],
+      "subSteps": [
+        {
+          "$id": "89",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "90",
+              "HighlightName": "Column2",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "87"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "91",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "92",
+              "HighlightName": "Column3",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "87"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "$id": "93",
+      "ShowCheckList": true,
+      "arElements": [
+        {
+          "$id": "94",
+          "layout": {
+            "$id": "95",
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "$id": "96",
+                "url": "sp_10 load dna standards-01.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "",
+          "Count": 1,
+          "IsReadOnly": false
+        },
+        {
+          "$id": "97",
+          "url": "draggablewellplate12x8single.prefab",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.05
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          },
+          "arDefinitionType": "Model",
+          "target": ""
+        },
+        {
+          "$id": "98",
+          "url": "testtubes.prefab",
+          "position": {
+            "x": 0.1,
+            "y": 0.0,
+            "z": -0.05
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 1.0,
+            "z": 0.0,
+            "w": -4.371139E-08
+          },
+          "arDefinitionType": "Model",
+          "target": ""
+        }
+      ],
+      "subSteps": [
+        {
+          "$id": "99",
+          "arElements": [
+            {
+              "$id": "100",
+              "position": {
+                "x": 0.0,
+                "y": 0.02,
+                "z": 0.06
+              },
+              "rotation": {
+                "x": 1.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": -4.371139E-08
+              },
+              "radius": 0.02,
+              "angleInDegrees": 90.0,
+              "arDefinitionType": "Arrow",
+              "target": ""
+            }
+          ],
+          "operations": []
+        },
+        {
+          "$id": "101",
+          "arElements": [
+            {
+              "$id": "102",
+              "url": "bottle.prefab",
+              "position": {
+                "x": 0.15,
+                "y": 0.0,
+                "z": -0.02
+              },
+              "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 0.0
+              },
+              "arDefinitionType": "Model",
+              "target": ""
+            }
+          ],
+          "operations": [
+            {
+              "$id": "103",
+              "HighlightName": "WellA1",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "97"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "104",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "105",
+              "HighlightName": "Tube0X0",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "98"
+              }
+            },
+            {
+              "$id": "106",
+              "HighlightName": "WellA2",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "97"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "107",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "108",
+              "HighlightName": "Tube1X0",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "98"
+              }
+            },
+            {
+              "$id": "109",
+              "HighlightName": "WellB1",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "97"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "110",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "111",
+              "HighlightName": "Tube1X0",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "98"
+              }
+            },
+            {
+              "$id": "112",
+              "HighlightName": "WellB2",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "97"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "113",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "114",
+              "HighlightName": "Tube2X0",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "98"
+              }
+            },
+            {
+              "$id": "115",
+              "HighlightName": "WellC1",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "97"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "116",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "117",
+              "HighlightName": "Tube2X0",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "98"
+              }
+            },
+            {
+              "$id": "118",
+              "HighlightName": "WellC2",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "97"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "119",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "120",
+              "HighlightName": "Tube3X0",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "98"
+              }
+            },
+            {
+              "$id": "121",
+              "HighlightName": "WellD1",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "97"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "122",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "123",
+              "HighlightName": "Tube3X0",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "98"
+              }
+            },
+            {
+              "$id": "124",
+              "HighlightName": "WellD2",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "97"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "125",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "126",
+              "HighlightName": "Tube4X0",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "98"
+              }
+            },
+            {
+              "$id": "127",
+              "HighlightName": "WellE1",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "97"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "128",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "129",
+              "HighlightName": "Tube4X0",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "98"
+              }
+            },
+            {
+              "$id": "130",
+              "HighlightName": "WellE2",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "97"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "131",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "132",
+              "HighlightName": "Tube5X0",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "98"
+              }
+            },
+            {
+              "$id": "133",
+              "HighlightName": "WellF1",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "97"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "134",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "135",
+              "HighlightName": "Tube5X0",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "98"
+              }
+            },
+            {
+              "$id": "136",
+              "HighlightName": "WellF2",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "97"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "137",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "138",
+              "HighlightName": "Tube6X0",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "98"
+              }
+            },
+            {
+              "$id": "139",
+              "HighlightName": "WellG1",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "97"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "140",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "141",
+              "HighlightName": "Tube6X0",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "98"
+              }
+            },
+            {
+              "$id": "142",
+              "HighlightName": "WellG2",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "97"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "143",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "144",
+              "HighlightName": "Tube7X0",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "98"
+              }
+            },
+            {
+              "$id": "145",
+              "HighlightName": "WellH1",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "97"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "146",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "147",
+              "HighlightName": "Tube7X0",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "98"
+              }
+            },
+            {
+              "$id": "148",
+              "HighlightName": "WellH2",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "97"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "$id": "149",
+      "ShowCheckList": true,
+      "arElements": [
+        {
+          "$id": "150",
+          "layout": {
+            "$id": "151",
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "$id": "152",
+                "url": "sp_11 load samples-01.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "",
+          "Count": 1,
+          "IsReadOnly": false
+        },
+        {
+          "$id": "153",
+          "url": "draggablewellplate12x8single.prefab",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.05
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          },
+          "arDefinitionType": "Model",
+          "target": ""
+        },
+        {
+          "$id": "154",
+          "url": "tuberack5x10.prefab",
+          "position": {
+            "x": 0.15,
+            "y": 0.0,
+            "z": -0.15
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "arDefinitionType": "Model",
+          "target": ""
+        }
+      ],
+      "subSteps": [
+        {
+          "$id": "155",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "156",
+              "HighlightName": "Tube0X0",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "154"
+              }
+            },
+            {
+              "$id": "157",
+              "HighlightName": "WellA3",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "153"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "158",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "159",
+              "HighlightName": "Tube0X1",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "154"
+              }
+            },
+            {
+              "$id": "160",
+              "HighlightName": "WellB3",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "153"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "161",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "162",
+              "HighlightName": "Tube0X2",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "154"
+              }
+            },
+            {
+              "$id": "163",
+              "HighlightName": "WellC3",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "153"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "164",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "165",
+              "HighlightName": "Tube0X3",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "154"
+              }
+            },
+            {
+              "$id": "166",
+              "HighlightName": "WellD3",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "153"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "167",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "168",
+              "HighlightName": "Tube0X4",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "154"
+              }
+            },
+            {
+              "$id": "169",
+              "HighlightName": "WellE3",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "153"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "170",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "171",
+              "HighlightName": "Tube0X5",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "154"
+              }
+            },
+            {
+              "$id": "172",
+              "HighlightName": "WellF3",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "153"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "173",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "174",
+              "HighlightName": "Tube0X6",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "154"
+              }
+            },
+            {
+              "$id": "175",
+              "HighlightName": "WellG3",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "153"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "176",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "177",
+              "HighlightName": "Tube0X7",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "154"
+              }
+            },
+            {
+              "$id": "178",
+              "HighlightName": "WellH3",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "153"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "179",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "180",
+              "HighlightName": "Tube1X0",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "154"
+              }
+            },
+            {
+              "$id": "181",
+              "HighlightName": "WellA4",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "153"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "182",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "183",
+              "HighlightName": "Tube1X1",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "154"
+              }
+            },
+            {
+              "$id": "184",
+              "HighlightName": "WellB4",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "153"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "185",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "186",
+              "HighlightName": "Tube1X2",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "154"
+              }
+            },
+            {
+              "$id": "187",
+              "HighlightName": "WellC4",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "153"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "188",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "189",
+              "HighlightName": "Tube1X3",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "154"
+              }
+            },
+            {
+              "$id": "190",
+              "HighlightName": "WellD4",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "153"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "191",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "192",
+              "HighlightName": "Tube1X4",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "154"
+              }
+            },
+            {
+              "$id": "193",
+              "HighlightName": "WellE4",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "153"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "194",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "195",
+              "HighlightName": "Tube1X5",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "154"
+              }
+            },
+            {
+              "$id": "196",
+              "HighlightName": "WellF4",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "153"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "197",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "198",
+              "HighlightName": "Tube1X6",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "154"
+              }
+            },
+            {
+              "$id": "199",
+              "HighlightName": "WellG4",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "153"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "200",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "201",
+              "HighlightName": "Tube1X7",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "154"
+              }
+            },
+            {
+              "$id": "202",
+              "HighlightName": "WellH4",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "153"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "203",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "204",
+              "HighlightName": "Foil",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "153"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "$id": "205",
+      "ShowCheckList": false,
+      "arElements": [
+        {
+          "$id": "206",
+          "layout": {
+            "$id": "207",
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "$id": "208",
+                "url": "sp_12 drawer button-01.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "",
+          "Count": 1,
+          "IsReadOnly": false
+        }
+      ]
+    },
+    {
+      "$id": "209",
+      "ShowCheckList": false,
+      "arElements": [
+        {
+          "$id": "210",
+          "layout": {
+            "$id": "211",
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "$id": "212",
+                "url": "sp_13 plate with foil-01.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "",
+          "Count": 1,
+          "IsReadOnly": false
+        }
+      ]
+    },
+    {
+      "$id": "213",
+      "ShowCheckList": false,
+      "arElements": [
+        {
+          "$id": "214",
+          "layout": {
+            "$id": "215",
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "$id": "216",
+                "url": "sp_14 remove foil-01.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "",
+          "Count": 1,
+          "IsReadOnly": false
+        }
+      ]
+    },
+    {
+      "$id": "217",
+      "ShowCheckList": false,
+      "arElements": [
+        {
+          "$id": "218",
+          "layout": {
+            "$id": "219",
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "$id": "220",
+                "url": "sp_15 drawer close-01.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "",
+          "Count": 1,
+          "IsReadOnly": false
+        }
+      ]
+    },
+    {
+      "$id": "221",
+      "ShowCheckList": false,
+      "arElements": [
+        {
+          "$id": "222",
+          "layout": {
+            "$id": "223",
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "$id": "224",
+                "url": "sp_16 shake button-01.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "",
+          "Count": 1,
+          "IsReadOnly": false
+        }
+      ]
+    },
+    {
+      "$id": "225",
+      "ShowCheckList": false,
+      "arElements": [
+        {
+          "$id": "226",
+          "layout": {
+            "$id": "227",
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "$id": "228",
+                "url": "sp_17 read plate-01.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "",
+          "Count": 1,
+          "IsReadOnly": false
+        }
+      ]
+    },
+    {
+      "$id": "229",
+      "ShowCheckList": false,
+      "arElements": [
+        {
+          "$id": "230",
+          "layout": {
+            "$id": "231",
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "$id": "232",
+                "url": "sp_18 drawer open-01.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "",
+          "Count": 1,
+          "IsReadOnly": false
+        }
+      ]
+    },
+    {
+      "$id": "233",
+      "ShowCheckList": false,
+      "arElements": [
+        {
+          "$id": "234",
+          "layout": {
+            "$id": "235",
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "$id": "236",
+                "url": "sp_19 cover w foil-01.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "",
+          "Count": 1,
+          "IsReadOnly": false
+        }
+      ]
+    },
+    {
+      "$id": "237",
+      "ShowCheckList": false,
+      "arElements": [
+        {
+          "$id": "238",
+          "layout": {
+            "$id": "239",
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "$id": "240",
+                "url": "sp_20 repeat steps-01.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "",
+          "Count": 1,
+          "IsReadOnly": false
+        }
+      ]
+    },
+    {
+      "$id": "241",
+      "ShowCheckList": false,
+      "arElements": [
+        {
+          "$id": "242",
+          "layout": {
+            "$id": "243",
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "$id": "244",
+                "url": "sp_21 review results-01.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "",
+          "Count": 1,
+          "IsReadOnly": false
+        }
+      ]
+    },
+    {
+      "$id": "245",
+      "ShowCheckList": false,
+      "arElements": [
+        {
+          "$id": "246",
+          "layout": {
+            "$id": "247",
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "$id": "248",
+                "url": "sp_22 stop recording-01.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "",
+          "Count": 1,
+          "IsReadOnly": false
+        }
+      ]
+    },
+    {
+      "$id": "249",
+      "ShowCheckList": false,
+      "arElements": [
+        {
+          "$id": "250",
+          "layout": {
+            "$id": "251",
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "$id": "252",
+                "url": "sp_23 permanent record-01.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "",
+          "Count": 1,
+          "IsReadOnly": false
+        }
+      ]
+    }
+  ],
+  "basePath": "Procedure/specimenprep_labels"
+}

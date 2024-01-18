@@ -1,0 +1,1074 @@
+{
+  "version": 5,
+  "title": "Genedrive Procedure",
+  "globalArElements": [],
+  "steps": [
+    {
+      "arElements": [
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Header",
+                "text": "Gather Required Materials",
+                "fontsize": 14,
+                "contentType": "Text"
+              },
+              {
+                "textType": "Block",
+                "text": "You will need:\r\n- Genedrive\r\n- Genedrive cartridge pouch\r\n- Pipetman\r\n- two test tube racks",
+                "fontsize": 7,
+                "contentType": "Text"
+              },
+              {
+                "url": "gather.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": null,
+          "Count": 3,
+          "IsReadOnly": false
+        },
+        {
+          "from": "rack",
+          "to": "genedrive",
+          "color": {
+            "r": 1.0,
+            "g": 1.0,
+            "b": 1.0,
+            "a": 1.0
+          },
+          "arDefinitionType": "Line",
+          "target": null
+        },
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Block",
+                "text": "Pipetman",
+                "fontsize": 7,
+                "contentType": "Text"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "pipetman",
+          "Count": 1,
+          "IsReadOnly": false
+        },
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Block",
+                "text": "Genedrive",
+                "fontsize": 7,
+                "contentType": "Text"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "genedrive",
+          "Count": 1,
+          "IsReadOnly": false
+        },
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Block",
+                "text": "Rack",
+                "fontsize": 7,
+                "contentType": "Text"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "rack",
+          "Count": 1,
+          "IsReadOnly": false
+        },
+        {
+          "color": {
+            "r": 0.09411765,
+            "g": 0.7921569,
+            "b": 0.831372559,
+            "a": 0.2
+          },
+          "borderColor": {
+            "r": 1.0,
+            "g": 1.0,
+            "b": 1.0,
+            "a": 1.0
+          },
+          "borderWidth": 0.15,
+          "arDefinitionType": "Outline",
+          "target": "flashlight"
+        },
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Block",
+                "text": "Flashlight",
+                "fontsize": 7,
+                "contentType": "Text"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "flashlight",
+          "Count": 1,
+          "IsReadOnly": false
+        },
+        {
+          "color": {
+            "r": 0.09411765,
+            "g": 0.7921569,
+            "b": 0.831372559,
+            "a": 0.2
+          },
+          "borderColor": {
+            "r": 1.0,
+            "g": 1.0,
+            "b": 1.0,
+            "a": 1.0
+          },
+          "borderWidth": 0.15,
+          "arDefinitionType": "Outline",
+          "target": "cartridge holder"
+        },
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Block",
+                "text": "Cartridge",
+                "fontsize": 7,
+                "contentType": "Text"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "cartridge holder",
+          "Count": 1,
+          "IsReadOnly": false
+        }
+      ],
+      "steps": null
+    },
+    {
+      "arElements": [
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Header",
+                "text": "1. Open External Pouch",
+                "fontsize": 14,
+                "contentType": "Text"
+              },
+              {
+                "textType": "Block",
+                "text": "Cut open the pouch and check that it contains 1) black cartridge holder with plunger, and 2) sealed inner pouch.\r\nLay cartridge holder down on clean surface inside working area, and opened pouch just inside working area as trash bag.",
+                "fontsize": 7,
+                "contentType": "Text"
+              },
+              {
+                "url": "01.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": null,
+          "Count": 3,
+          "IsReadOnly": false
+        },
+        {
+          "color": {
+            "r": 0.7921569,
+            "g": 0.0,
+            "b": 0.0,
+            "a": 0.4
+          },
+          "borderColor": {
+            "r": 1.0,
+            "g": 1.0,
+            "b": 1.0,
+            "a": 1.0
+          },
+          "borderWidth": 0.15,
+          "arDefinitionType": "Outline",
+          "target": "flashlight"
+        },
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Block",
+                "text": "Remove from workspace",
+                "fontsize": 7,
+                "contentType": "Text"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "flashlight",
+          "Count": 1,
+          "IsReadOnly": false
+        }
+      ],
+      "steps": null
+    },
+    {
+      "arElements": [
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Header",
+                "text": "2. Open Inner Pouch",
+                "fontsize": 14,
+                "contentType": "Text"
+              },
+              {
+                "textType": "Block",
+                "text": "Cut open long side of inner pouch. Check that it includes a sealed, clear plastic cartridge.\r\nDiscard desiccant bag and inner pouch into trash bag.",
+                "fontsize": 7,
+                "contentType": "Text"
+              },
+              {
+                "url": "02.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": null,
+          "Count": 3,
+          "IsReadOnly": false
+        },
+        {
+          "color": {
+            "r": 0.09411765,
+            "g": 0.7921569,
+            "b": 0.831372559,
+            "a": 0.1254902
+          },
+          "borderColor": {
+            "r": 1.0,
+            "g": 1.0,
+            "b": 1.0,
+            "a": 1.0
+          },
+          "borderWidth": 0.15,
+          "arDefinitionType": "Outline",
+          "target": "cartridge"
+        },
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Block",
+                "text": "Genedrive cartridge",
+                "fontsize": 7,
+                "contentType": "Text"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "cartridge",
+          "Count": 1,
+          "IsReadOnly": false
+        }
+      ],
+      "steps": null
+    },
+    {
+      "arElements": [
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Header",
+                "text": "3. Inspect Clear Cartridge",
+                "fontsize": 14,
+                "contentType": "Text"
+              },
+              {
+                "textType": "Block",
+                "text": "Check that the clear cartridge has white pellets at the bottom of its three wells.\r\nIf pellets aren't at the bottom, tap the cartridge against hard surface to move them to the bottom, or try flicking the cartridge first, then tapping it against surface. Then lay down cartridge inside work area.",
+                "fontsize": 7,
+                "contentType": "Text"
+              },
+              {
+                "url": "03.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": null,
+          "Count": 3,
+          "IsReadOnly": false
+        },
+        {
+          "name": "tripleVial",
+          "position": {
+            "x": 0.2615,
+            "y": -0.1739,
+            "z": -0.224
+          },
+          "animation": null,
+          "select": null,
+          "arDefinitionType": "Model",
+          "target": null
+        },
+        {
+          "color": {
+            "r": 0.09411765,
+            "g": 0.7921569,
+            "b": 0.831372559,
+            "a": 1.0
+          },
+          "borderColor": {
+            "r": 1.0,
+            "g": 1.0,
+            "b": 1.0,
+            "a": 1.0
+          },
+          "borderWidth": 0.15,
+          "arDefinitionType": "Outline",
+          "target": "cartridge"
+        },
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Block",
+                "text": "verify white pellets are at bottom of cartridge",
+                "fontsize": 7,
+                "contentType": "Text"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "cartridge",
+          "Count": 1,
+          "IsReadOnly": false
+        }
+      ],
+      "steps": null
+    },
+    {
+      "arElements": [
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Header",
+                "text": "4. Prepare the Cartridge",
+                "fontsize": 14,
+                "contentType": "Text"
+              },
+              {
+                "textType": "Block",
+                "text": "Pick up clear cartridge. Remove silicone rubber seal, being careful not to touch the wells' openings.\r\nNote that the top of the clear cartridge is bullet-shaped, to ensure correct orientation on insertion into the black cartridge holder.",
+                "fontsize": 7,
+                "contentType": "Text"
+              },
+              {
+                "url": "04.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": null,
+          "Count": 3,
+          "IsReadOnly": false
+        },
+        {
+          "color": {
+            "r": 0.09411765,
+            "g": 0.7921569,
+            "b": 0.831372559,
+            "a": 0.2
+          },
+          "borderColor": {
+            "r": 1.0,
+            "g": 1.0,
+            "b": 1.0,
+            "a": 1.0
+          },
+          "borderWidth": 0.15,
+          "arDefinitionType": "Outline",
+          "target": "cartridge"
+        },
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Block",
+                "text": "remove silicone rubber seal",
+                "fontsize": 7,
+                "contentType": "Text"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "cartridge",
+          "Count": 1,
+          "IsReadOnly": false
+        }
+      ],
+      "steps": null
+    },
+    {
+      "arElements": [
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Header",
+                "text": "5. Inspect Black Cartridge Holder",
+                "fontsize": 14,
+                "contentType": "Text"
+              },
+              {
+                "textType": "Block",
+                "text": "Hold the black cartridge holder in one hand, with the plunger handle pointing upward.\r\nNote that front of the cartridge holder (the side with label) has a center latch, while the back of the cartridge holder has two hinges.",
+                "fontsize": 7,
+                "contentType": "Text"
+              },
+              {
+                "url": "05.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": null,
+          "Count": 3,
+          "IsReadOnly": false
+        },
+        {
+          "name": "cartridge",
+          "position": {
+            "x": 0.2615,
+            "y": -0.1739,
+            "z": -0.224
+          },
+          "animation": null,
+          "select": null,
+          "arDefinitionType": "Model",
+          "target": null
+        },
+        {
+          "color": {
+            "r": 0.09411765,
+            "g": 0.7921569,
+            "b": 0.831372559,
+            "a": 1.0
+          },
+          "borderColor": {
+            "r": 1.0,
+            "g": 1.0,
+            "b": 1.0,
+            "a": 1.0
+          },
+          "borderWidth": 0.15,
+          "arDefinitionType": "Outline",
+          "target": "cartridge holder"
+        }
+      ],
+      "steps": null
+    },
+    {
+      "arElements": [
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Header",
+                "text": "6. Insert Cartridge into Holder",
+                "fontsize": 14,
+                "contentType": "Text"
+              },
+              {
+                "textType": "Block",
+                "text": "Placing the other hand on the plunger handle, open the cartridge holder by bending the plunger handle towards the back. The plungers will pivot at the hinge, exposing the bullet shaped opening for insertion of the cartridge.\r\nInsert the cartridge into the cartridge holder, oriented to fit into the bullet shaped opening.",
+                "fontsize": 7,
+                "contentType": "Text"
+              },
+              {
+                "url": "06.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": null,
+          "Count": 3,
+          "IsReadOnly": false
+        },
+        {
+          "from": null,
+          "to": "cartridge holder",
+          "color": {
+            "r": 1.0,
+            "g": 1.0,
+            "b": 1.0,
+            "a": 1.0
+          },
+          "arDefinitionType": "Line",
+          "target": null
+        },
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Block",
+                "text": "insert cartridge",
+                "fontsize": 7,
+                "contentType": "Text"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "cartridge holder",
+          "Count": 1,
+          "IsReadOnly": false
+        }
+      ],
+      "steps": null
+    },
+    {
+      "arElements": [
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Header",
+                "text": "7. Draw Sample into Pipet Tip",
+                "fontsize": 14,
+                "contentType": "Text"
+              },
+              {
+                "textType": "Block",
+                "text": "Set pipetting device to 20 μL. Load new tip from fresh rack onto pipetting device. Insert new tip onto pipetting device. Push down on button to expel air, then insert pipet tip into sample vial. Gently allow button to rise to draw 20 μL of the sample into pipetting device.",
+                "fontsize": 7,
+                "contentType": "Text"
+              },
+              {
+                "url": "07.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": null,
+          "Count": 3,
+          "IsReadOnly": false
+        }
+      ],
+      "steps": null
+    },
+    {
+      "arElements": [
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Header",
+                "text": "8. Squirt Sample into Well",
+                "fontsize": 14,
+                "contentType": "Text"
+              },
+              {
+                "textType": "Block",
+                "text": "Insert pipet tip deep into Well 1, press down on pipet button to the first stop.\r\nPress further past the first stop, to expel all liquid.\r\nWithdraw pipet tip from Well 1.\r\nEject used tip into trash pouch.",
+                "fontsize": 7,
+                "contentType": "Text"
+              },
+              {
+                "url": "08.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": null,
+          "Count": 3,
+          "IsReadOnly": false
+        }
+      ],
+      "steps": null
+    },
+    {
+      "arElements": [
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Header",
+                "text": "9. Repeat for Well 2 and 3",
+                "fontsize": 14,
+                "contentType": "Text"
+              },
+              {
+                "textType": "Block",
+                "text": "Using a new tip each time, load Well 2 and Well 3 with 20 μL sample each.\r\nEject and discard used tips.",
+                "fontsize": 7,
+                "contentType": "Text"
+              },
+              {
+                "url": "09.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": null,
+          "Count": 3,
+          "IsReadOnly": false
+        }
+      ],
+      "steps": null
+    },
+    {
+      "arElements": [
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Header",
+                "text": "10. Close Cartridge Holder",
+                "fontsize": 14,
+                "contentType": "Text"
+              },
+              {
+                "textType": "Block",
+                "text": "Close cartridge holder by pivoting the plunger handle upward until you hear the front latch click shut.\r\nNote liquid level in cartridge wells will be hidden by body of cartridge holder.",
+                "fontsize": 7,
+                "contentType": "Text"
+              },
+              {
+                "url": "10.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": null,
+          "Count": 3,
+          "IsReadOnly": false
+        }
+      ],
+      "steps": null
+    },
+    {
+      "arElements": [
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Header",
+                "text": "11. Push Down Plunger",
+                "fontsize": 14,
+                "contentType": "Text"
+              },
+              {
+                "textType": "Block",
+                "text": "With both hands holding the assembly, use both thumbs to firmly push down on the plunger all the way, until the wells push through the bottom of the assembly.\r\nThe cartridge wells now stick out of the bottom of the cartridge holder.",
+                "fontsize": 7,
+                "contentType": "Text"
+              },
+              {
+                "url": "11.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": null,
+          "Count": 3,
+          "IsReadOnly": false
+        }
+      ],
+      "steps": null
+    },
+    {
+      "arElements": [
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Header",
+                "text": "12. Check Liquid Level and for Bubbles",
+                "fontsize": 14,
+                "contentType": "Text"
+              },
+              {
+                "textType": "Block",
+                "text": "Verify that the clear wells have been pushed out through the bottom of the cartridge holder.\r\nInspect each well to see if its liquid level is close to the fill line.\r\nNote whether there are air bubbles trapped in the wells, interrupting the liquid columns.",
+                "fontsize": 7,
+                "contentType": "Text"
+              },
+              {
+                "url": "12.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": null,
+          "Count": 3,
+          "IsReadOnly": false
+        }
+      ],
+      "steps": null
+    },
+    {
+      "arElements": [
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Header",
+                "text": "13. Flick to Get Rid of any Bubbles",
+                "fontsize": 14,
+                "contentType": "Text"
+              },
+              {
+                "textType": "Block",
+                "text": "If there are bubbles in the liquid columns, hold the cartridge assembly in hand with wells away from body. Swing arm down fast while at the same time flick wrist down hard.",
+                "fontsize": 7,
+                "contentType": "Text"
+              },
+              {
+                "url": "13.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": null,
+          "Count": 3,
+          "IsReadOnly": false
+        }
+      ],
+      "steps": null
+    },
+    {
+      "arElements": [
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Header",
+                "text": "14. Tap to Dislodge Bubbles",
+                "fontsize": 14,
+                "contentType": "Text"
+              },
+              {
+                "textType": "Block",
+                "text": "Check whether any bubbles remain trapped in the liquid columns of the wells. If any remain, tap wells smartly against surface 20 times and check again. Repeat Step 13 and 14 until no bubbles remain.\r\nLiquid column in each well should be at or near fill line.",
+                "fontsize": 7,
+                "contentType": "Text"
+              },
+              {
+                "url": "14.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": null,
+          "Count": 3,
+          "IsReadOnly": false
+        }
+      ],
+      "steps": null
+    },
+    {
+      "arElements": [
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Header",
+                "text": "15. Let Reaction Pellets Dissolve",
+                "fontsize": 14,
+                "contentType": "Text"
+              },
+              {
+                "textType": "Block",
+                "text": "Wait five minutes to let the reaction pellets self-dissolve in fizz.\r\nAfter five minutes, inspect wells to see if any new tiny bubbles have formed. If so, tap cartridge gently on surface to dislodge these. ",
+                "fontsize": 7,
+                "contentType": "Text"
+              },
+              {
+                "url": "15.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": null,
+          "Count": 3,
+          "IsReadOnly": false
+        }
+      ],
+      "steps": null
+    },
+    {
+      "arElements": [
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Header",
+                "text": "16. Insert Cartridge Holder into Genedrive",
+                "fontsize": 14,
+                "contentType": "Text"
+              },
+              {
+                "textType": "Block",
+                "text": "Holding the cartridge assembly with the label facing up, insert cartridge assembly into the Genedrive.\r\nEnsure that bullet-shaped cartridge assembly is aligned with the Genedrive’s insertion port.",
+                "fontsize": 7,
+                "contentType": "Text"
+              },
+              {
+                "url": "16.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": null,
+          "Count": 3,
+          "IsReadOnly": false
+        },
+        {
+          "from": null,
+          "to": "genedrive",
+          "color": {
+            "r": 1.0,
+            "g": 1.0,
+            "b": 1.0,
+            "a": 1.0
+          },
+          "arDefinitionType": "Line",
+          "target": null
+        },
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Block",
+                "text": "insert",
+                "fontsize": 7,
+                "contentType": "Text"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "genedrive",
+          "Count": 1,
+          "IsReadOnly": false
+        }
+      ],
+      "steps": null
+    },
+    {
+      "arElements": [
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Header",
+                "text": "17. Start Up Genedrive",
+                "fontsize": 14,
+                "contentType": "Text"
+              },
+              {
+                "textType": "Block",
+                "text": "Hold down the single button.  Genedrive should count down 3...2...1.  Release button.",
+                "fontsize": 7,
+                "contentType": "Text"
+              },
+              {
+                "url": "17.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": null,
+          "Count": 3,
+          "IsReadOnly": false
+        },
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Block",
+                "text": "Hold down the single button",
+                "fontsize": 7,
+                "contentType": "Text"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "genedrive",
+          "Count": 1,
+          "IsReadOnly": false
+        }
+      ],
+      "steps": null
+    },
+    {
+      "arElements": [
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Header",
+                "text": "18. Let Test Run",
+                "fontsize": 14,
+                "contentType": "Text"
+              },
+              {
+                "textType": "Block",
+                "text": "The test will take 55 minutes. Do not touch the Genedrive during this time. You may take off the HoloLens while waiting.\r\nWhen the test is complete, put the HoloLens back on and proceed to the next step.",
+                "fontsize": 7,
+                "contentType": "Text"
+              },
+              {
+                "url": "18.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": null,
+          "Count": 3,
+          "IsReadOnly": false
+        },
+        {
+          "image": "xslice",
+          "color": {
+            "r": 1.0,
+            "g": 0.0,
+            "b": 0.0,
+            "a": 0.2
+          },
+          "arDefinitionType": "Overlay",
+          "target": "genedrive"
+        }
+      ],
+      "steps": null
+    },
+    {
+      "arElements": [
+        {
+          "layout": {
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "textType": "Header",
+                "text": "19. Record results.",
+                "fontsize": 14,
+                "contentType": "Text"
+              },
+              {
+                "textType": "Block",
+                "text": "Capture screen showing test results by saying \"record\" to start a recording. Capture any notes you would like to have on record by speaking them aloud. When finished, say \"record\" again to end the recording.",
+                "fontsize": 7,
+                "contentType": "Text"
+              },
+              {
+                "url": "rec.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": null,
+          "Count": 3,
+          "IsReadOnly": false
+        }
+      ],
+      "steps": null
+    }
+  ],
+  "basePath": "Procedure/genedrive"
+}

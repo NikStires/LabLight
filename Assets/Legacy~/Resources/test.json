@@ -1,0 +1,46 @@
+{
+  "$id": "1",
+  "version": 7,
+  "title": "TestProcedure",
+  "globalArElements": [],
+  "steps": [
+    {
+      "$id": "2",
+      "arElements": [
+        {
+          "$id": "3",
+          "url": "somprefab.prefab",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "animation": null,
+          "select": null,
+          "arDefinitionType": "Model",
+          "target": ""
+        }
+      ],
+      "subSteps": [
+        {
+          "$id": "4",
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "5",
+              "HighlightName": null,
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$id": "6",
+                "Value": {
+                  "$ref": "3"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "basePath": null
+}
