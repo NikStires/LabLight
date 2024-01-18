@@ -166,7 +166,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_MeshRenderer: {fileID: 1255634543651614463}
-  m_DefaultMat: {fileID: 8929321268311213795, guid: 075486cbfeb2d864496c508652b82e35, type: 3}
+  m_DefaultMat: {fileID: 2100000, guid: 3be426ffe5d6c9b4098332cd0c8f0bc7, type: 2}
   m_SelectedMat: {fileID: 2100000, guid: 377a24320b3adeb438edc10508f4ced8, type: 2}
   parentPanel: {fileID: 0}
 --- !u!65 &6724931412924823857

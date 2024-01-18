@@ -32,12 +32,12 @@ public class PanelTransformBehavior : MonoBehaviour
 
     public void Drag(Vector3 interactionPosition, Vector3 hmdPos)
     {
-        m_TempParent.transform.position = interactionPosition;
-        Vector3 targetPanelPosition = new Vector3(interactionPosition.x, interactionPosition.y + 0.2f, interactionPosition.z);
-        parentPanel.position = targetPanelPosition;
-
         m_TempParent.transform.LookAt(hmdPos);
         parentPanel.LookAt(hmdPos);
+
+        m_TempParent.transform.position = interactionPosition;
+        Vector3 targetPanelPosition = new Vector3(interactionPosition.x, interactionPosition.y, interactionPosition.z) + parentPanel.up * 0.2f;
+        parentPanel.position = targetPanelPosition;
     }
 
     public void Deselect()
