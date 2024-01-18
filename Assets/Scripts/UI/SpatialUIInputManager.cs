@@ -39,7 +39,6 @@ public class SpatialUIInputManager : MonoBehaviour
 
             if (primaryTouchPhase == TouchPhase.Began)
             {
-                Debug.Log("Touch Begin");
                 if (target != null)
                 {
                     if (target.TryGetComponent(out SpatialUI button))
@@ -70,7 +69,6 @@ public class SpatialUIInputManager : MonoBehaviour
             }
             if(primaryTouchPhase == TouchPhase.Ended || primaryTouchPhase == TouchPhase.Canceled)
             {
-                Debug.Log("Touch End"); 
                 if (m_CurrentSelection != null)
                 {
                     m_CurrentSelection.Deselect();
