@@ -42,7 +42,7 @@ public class SpatialUIInputManager : MonoBehaviour
                 Debug.Log("Touch Begin");
                 if (target != null)
                 {
-                    if (target.TryGetComponent(out SpatialUIButton button))
+                    if (target.TryGetComponent(out SpatialUI button))
                     {
                         button.Press(touchData.interactionPosition);
                     }

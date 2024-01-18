@@ -10,25 +10,24 @@ public class SpatialUICheckItem : SpatialUI
     protected Transform m_CheckMark;
 
     [SerializeField]
-    MeshRenderer m_ToggleBackground;
+    MeshRenderer m_ToggleMesh;
 
     bool m_Active = false;
-    protected Vector3 m_BubbleTargetPosition;
-    protected Vector3 m_BubbleOnTargetPosition;
-    protected Vector3 m_BubbleOffTargetPosition;
+    protected Vector3 m_ToggleOnTargetPosition;
+    protected Vector3 m_ToggleOffTargetPosition;
 
     float m_StartLerpTime;
 
-    protected const float k_BubbleOnPosition = 0.0025f;
-    protected const float k_BubbleOffPosition = 0f;    
+    protected const float k_ToggleOnPosition = 0.015f;
+    protected const float k_ToggleOffPosition = 0.06f;    
     protected const float k_LerpSpeed = 3.0f;
 
     void Start()
     {
-        m_ToggleBackground.material.color = UnselectedColor;    
-        var bubblePosition = m_CheckMark.localPosition;
-        m_BubbleOnTargetPosition = new Vector3(bubblePosition.x, k_BubbleOnPosition, bubblePosition.z);
-        m_BubbleOffTargetPosition = new Vector3(bubblePosition.x, k_BubbleOffPosition, bubblePosition.z);
+        m_ToggleMesh.material.color = UnselectedColor;
+        var meshPosition = m_ToggleMesh.transform.position;
+        m_ToggleOnTargetPosition = new Vector3(1.5f, 0, k_ToggleOnPosition);
+        m_ToggleOffTargetPosition = new Vector3(1.5f, 0, k_ToggleOffPosition);
     }
 
     public override void Press(Vector3 position)
@@ -36,15 +35,15 @@ public class SpatialUICheckItem : SpatialUI
         base.Press(position);
         m_Active = !m_Active;   
         m_StartLerpTime = Time.time;
-        m_ToggleBackground.material.color = m_Active ? SelectedColor : UnselectedColor;
+        m_ToggleMesh.material.color = m_Active ? SelectedColor : UnselectedColor;
     }
 
     public void Update()
     {
         var coveredAmount = (Time.time - m_StartLerpTime) * k_LerpSpeed;
-        var lerpPercentage = coveredAmount / (k_BubbleOffPosition * 2);
-        m_CheckMark.localPosition = Vector3.Lerp(m_Active ? m_BubbleOffTargetPosition : m_BubbleOnTargetPosition, m_Active ? m_BubbleOnTargetPosition : m_BubbleOffTargetPosition, lerpPercentage);
-        if(m_CheckMark.localPosition == m_BubbleOffTargetPosition)
+        var lerpPercentage = coveredAmount / (k_ToggleOffPosition * 2);
+        m_ToggleMesh.transform.localPosition = Vector3.Lerp(m_Active ? m_ToggleOffTargetPosition : m_ToggleOnTargetPosition, m_Active ? m_ToggleOnTargetPosition : m_ToggleOffTargetPosition, lerpPercentage);
+        if(!m_Active)
         {
             m_CheckMark.gameObject.SetActive(false);
         }
