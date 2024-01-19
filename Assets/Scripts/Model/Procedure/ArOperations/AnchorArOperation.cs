@@ -9,10 +9,10 @@ public class AnchorArOperation : ArOperation
         arOperationType = ArOperationType.Anchor;
     }
 
-    //public override void Apply(ArElementViewController arView)
-    //{
-    //    return;
-    //}
+    public override void Apply(ArElementViewController arView)
+    {
+       return;
+    }
 
     public override string ListElementLabelName()
     {

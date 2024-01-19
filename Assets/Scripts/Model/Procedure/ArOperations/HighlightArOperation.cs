@@ -13,17 +13,17 @@ public class HighlightArOperation : ArOperation
     /// </summary>
     public string HighlightName;
 
-    //public List<HighlightAction> highlightActions;
+    public List<HighlightAction> highlightActions;
 
-    //public HighlightArOperation()
-    //{
-    //    arOperationType = ArOperationType.Highlight;
-    //}
+    public HighlightArOperation()
+    {
+       arOperationType = ArOperationType.Highlight;
+    }
 
-    //public override void Apply(ArElementViewController arView)
-    //{
-    //    ((ModelElementViewController)arView).HighlightGroup(highlightActions);
-    //}
+    public override void Apply(ArElementViewController arView)
+    {
+       ((ModelElementViewController)arView).HighlightGroup(highlightActions);
+    }
 
     public override string ListElementLabelName()
     {

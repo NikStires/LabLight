@@ -25,8 +25,8 @@ public class ArOperationConverter : CustomCreationConverter<ArOperation>
         {
             case ArOperationType.Highlight:
                 return new HighlightArOperation();
-            case ArOperationType.Animation:
-                return new AnimationArOperation();
+            //case ArOperationType.Animation:
+            //    return new AnimationArOperation();
             case ArOperationType.Anchor:
                 return new AnchorArOperation();
             default:

@@ -4,9 +4,8 @@ using UnityEngine;
 public enum ArOperationType
 {
     Highlight = 0,
-    Animation = 1,
-    Show = 2,
-    Anchor = 3
+    Anchor = 1
+    //Animation = 2
 }
 
 /// <summary>
@@ -26,6 +25,6 @@ public abstract class ArOperation
         return "Operation";
     }
 
-    //public abstract void Apply(ArElementViewController arView);
+    public abstract void Apply(ArElementViewController arView);
 }
 
