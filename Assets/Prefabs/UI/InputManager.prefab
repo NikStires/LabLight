@@ -44,5 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07d243379f35140e4b9bc6b8f24004ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Touch: {fileID: -7956929315595962687, guid: 0313857922d004e31ac4106ba7ad8a34, type: 3}
-  m_HMDpos: {fileID: 0}
+  m_Touch: {fileID: -7956929315595962687, guid: 660d0bc49ad5feb4e83f78a97d15b9fc, type: 3}
+  m_HMDpos: {fileID: -2618010558903135597, guid: 660d0bc49ad5feb4e83f78a97d15b9fc, type: 3}
