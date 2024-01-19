@@ -45,3 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Touch: {fileID: -7956929315595962687, guid: 0313857922d004e31ac4106ba7ad8a34, type: 3}
+  m_HMDpos: {fileID: 0}
