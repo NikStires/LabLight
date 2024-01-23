@@ -167,7 +167,7 @@ public class LocalFileDataProvider : IProcedureDataProvider, ITextDataProvider
         {
             Debug.Log("DeleteProcedureDefinition " + procedureName);
             // Create procedure file in the given storaeFolder
-            string pathForDeletion = Path.Combine(ApplicationData.Current.LocalFolder.Path, procedureName + ".json")
+            string pathForDeletion = Path.Combine(ApplicationData.Current.LocalFolder.Path, procedureName + ".json");
             if(pathForDeletion != null)
             {
                 File.Delete(pathForDeletion);

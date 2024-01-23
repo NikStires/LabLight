@@ -16,7 +16,7 @@ public class TextItem : ContentItem
     [Multiline(5)]
     public string text;
 
-    public int fontsize = 7;
+    public float fontsize = 0.15f;
 
     public TextItem()
     {

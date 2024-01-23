@@ -22,6 +22,6 @@ public class TextController : ContentController<TextItem>
         Text.text = ContentItem.text.Replace("\r", "");
 
         // Can be updated with more types and type specific styling
-        Text.fontSize = (ContentItem.textType == TextType.Header) ? 8 : 6;
+        Text.fontSize = (ContentItem.textType == TextType.Header) ? 0.4f : 0.2f;
     }
 }

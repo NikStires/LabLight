@@ -1,34 +1,32 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(AudioSource))]
 public class SpatialUIButton : SpatialUI
 {
-    public Action<string, MeshRenderer> WasPressed;
+    public delegate void ClickEventHandler();
+    public event ClickEventHandler OnClick;
 
     public string ButtonText => m_ButtonText;
     public MeshRenderer MeshRenderer => m_MeshRenderer;
 
+    public bool IsEnabled = true;
+
     [SerializeField] string m_ButtonText;
-    [SerializeField] AudioSource m_AudioSource;
 
     MeshRenderer m_MeshRenderer;
 
     private void Awake()
-    {
+    {   
         m_MeshRenderer = GetComponent<MeshRenderer>();
-        m_AudioSource = GetComponent<AudioSource>();
-
     }
 
     public override void Press(Vector3 position)
     {
+        if(IsEnabled)
         base.Press(position);
-        m_AudioSource.Play();
-        if (WasPressed != null)
-        {
-            WasPressed.Invoke(m_ButtonText, m_MeshRenderer);
-        }
+        OnClick();
     }
 }

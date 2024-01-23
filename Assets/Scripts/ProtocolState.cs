@@ -42,7 +42,7 @@ public class ProtocolState
                     Steps[i].Checklist = new List<CheckItemState>();
                     foreach(var check in procedureDefinition.steps[i].checklist)
                     {
-                        Steps[i].Checklist.Add(new CheckItemState() {Text = check.Text});
+                        Steps[i].Checklist.Add(new CheckItemState() { Text = check.Text});
                     }
                 }
             }

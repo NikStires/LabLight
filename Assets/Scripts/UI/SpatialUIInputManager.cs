@@ -63,7 +63,7 @@ public class SpatialUIInputManager : MonoBehaviour
                     }
                     else if (m_CurrentSelection != null)
                     {
-                        m_CurrentSelection.Drag(primaryTouchData.interactionPosition, hmdPositionData);
+                        //m_CurrentSelection.Drag(primaryTouchData.interactionPosition, hmdPositionData);
                     }
                 }
             }

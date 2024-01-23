@@ -5,15 +5,6 @@ using UnityEngine;
 public class PanelTransformBehavior : MonoBehaviour
 {
     [SerializeField]
-    MeshRenderer m_MeshRenderer;
-
-    [SerializeField]
-    Material m_DefaultMat;
-
-    [SerializeField]
-    Material m_SelectedMat;
-
-    [SerializeField]
     private Transform parentPanel;
 
     GameObject m_TempParent;
@@ -26,23 +17,26 @@ public class PanelTransformBehavior : MonoBehaviour
 
     public void Select()
     {
-        m_MeshRenderer.material = m_SelectedMat;
         transform.SetParent(m_TempParent.transform);
+        Debug.Log("Selected");
     }
 
-    public void Drag(Vector3 interactionPosition, Vector3 hmdPos)
+    public void Drag()
     {
-        m_TempParent.transform.LookAt(hmdPos);
-        parentPanel.LookAt(hmdPos);
+        Debug.Log("Dragging");
+        //m_TempParent.transform.LookAt(hmdPos);
+        //parentPanel.LookAt(hmdPos);
 
-        m_TempParent.transform.position = interactionPosition;
-        Vector3 targetPanelPosition = new Vector3(interactionPosition.x, interactionPosition.y, interactionPosition.z) + parentPanel.up * 0.2f;
+        //m_TempParent.transform.position = interactionPosition;
+        //Vector3 targetPanelPosition = new Vector3(interactionPosition.x, interactionPosition.y, interactionPosition.z) + parentPanel.up * 0.2f;
+
+        Vector3 targetPanelPosition = new Vector3(m_TempParent.transform.position.x, m_TempParent.transform.position.y, m_TempParent.transform.position.z) + parentPanel.up * 0.2f;
         parentPanel.position = targetPanelPosition;
     }
 
     public void Deselect()
     {
-        m_MeshRenderer.material = m_DefaultMat;
         transform.SetParent(parentPanel);
+        Debug.Log("Deselected");
     }
 }
