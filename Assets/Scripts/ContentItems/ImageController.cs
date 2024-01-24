@@ -49,6 +49,7 @@ public class ImageController : ContentController<ImageItem>
             }
 
             Image.sprite = sprite;
+            Image.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, transform.parent.GetComponent<RectTransform>().rect.width);
             Image.enabled = true;
             LoadingIndicator.SetActive(false);
 

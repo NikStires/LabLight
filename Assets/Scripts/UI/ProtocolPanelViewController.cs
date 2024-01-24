@@ -68,6 +68,7 @@ public class ProtocolPanelViewController : MonoBehaviour
             //create content items for current check item, iif no content items for check item show step content items
             if (currentStep.checklist != null && currentStep.checklist[ProtocolState.CheckItem].contentItems.Count > 0)
             {
+                CreateContentItem(currentStep.contentItems, contentFrame.GetComponent<LayoutGroup>(), null);
                 CreateContentItem(currentStep.checklist[ProtocolState.CheckItem].contentItems, contentFrame.GetComponent<LayoutGroup>(), null);
             }
             else
@@ -94,6 +95,7 @@ public class ProtocolPanelViewController : MonoBehaviour
                     }
                     break;
                 case ContentType.Text:
+                    Debug.Log("Creating text item");
                     var textController = Instantiate(TextItem, container.transform);
                     textController.ContentItem = contentItem as TextItem;
 
@@ -103,6 +105,7 @@ public class ProtocolPanelViewController : MonoBehaviour
                     }
                     break;
                 case ContentType.Image:
+                    Debug.Log("Creating image item");
                     var imageController = Instantiate(ImageItem, container.transform);
                     imageController.ContentItem = contentItem as ImageItem;
 

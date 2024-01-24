@@ -16,7 +16,8 @@ public class Parsers
         ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
         NullValueHandling = NullValueHandling.Ignore,
         Converters = { new ArDefinitionConverter(),
-                       new ArOperationConverter() }
+                       new ArOperationConverter(),
+                       new ContentItemConverter(),}
     };
 
     public static List<ProcedureDescriptor> ParseProcedures(string json)
