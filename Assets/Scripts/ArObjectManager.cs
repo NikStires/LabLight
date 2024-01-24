@@ -101,10 +101,10 @@ public class ArObjectManager : MonoBehaviour
 
     private void InitializeArObjects()
     {
-        workspaceTransform = SessionManager.Instance.WorkspaceTransform;
-        if(ProtocolState.procedureDef.Value != null)
+        workspaceTransform = SessionManager.instance.WorkspaceTransform;
+        if(ProtocolState.procedureDef != null)
         {
-            var currentProcedure = ProtocolState.procedureDef.Value;
+            var currentProcedure = ProtocolState.procedureDef;
             if(currentProcedure.globalArElements != null)
             {
                 specificArDefinitions.AddRange(currentProcedure.globalArElements.Where(ar => ar.IsSpecific()));
@@ -149,7 +149,7 @@ public class ArObjectManager : MonoBehaviour
 
     private void processAddedGenericObject(TrackedObject trackedObject)
     {
-        Transform parent = SessionManager.Instance.WorkspaceTransform;
+        Transform parent = SessionManager.instance.WorkspaceTransform;
 
         // Apply generic definitions
         foreach (var arDefinition in genericArDefinitions)
@@ -273,9 +273,9 @@ public class ArObjectManager : MonoBehaviour
 
     //     List<ArDefinition> rebuiltGenericArDefinitions = new List<ArDefinition>();
 
-    //     if (ProtocolState.procedureDef.Value != null)
+    //     if (ProtocolState.procedureDef != null)
     //     {
-    //         var currentProcedure = ProtocolState.procedureDef.Value;
+    //         var currentProcedure = ProtocolState.procedureDef;
     //         if (currentProcedure.globalArElements != null) //should only be called once at beginning of procedure AM
     //         {
     //             rebuiltGenericArDefinitions.AddRange(currentProcedure.globalArElements.Where(ar => ar.IsGeneric()));
@@ -343,7 +343,7 @@ public class ArObjectManager : MonoBehaviour
 
     // private void GenericArDefinitionAdded(ArDefinition arDefinition)
     // {
-    //     Transform parent = SessionManager.Instance.workspaceTransform;
+    //     Transform parent = SessionManager.instance.workspaceTransform;
 
     //     switch (arDefinition.arDefinitionType)
     //     {
@@ -383,9 +383,9 @@ public class ArObjectManager : MonoBehaviour
 
     private void ApplyOperations(ArDefinition arDefinition, ArElementViewController arViewController) //todo NS
     {
-        if (ProtocolState.procedureDef.Value != null)
+        if (ProtocolState.procedureDef != null)
         {
-            var currentProcedure = ProtocolState.procedureDef.Value;
+            var currentProcedure = ProtocolState.procedureDef;
 
             if (currentProcedure.steps != null && currentProcedure.steps[ProtocolState.Step] != null)
             {
@@ -418,7 +418,7 @@ public class ArObjectManager : MonoBehaviour
 
     private void createModel(ModelArDefinition modelArDefinition, TrackedObject trackedObject = null)
     {
-        //var prefabPath = ProtocolState.procedureDef.Value.mediaBasePath + "/" + modelArDefinition.url;
+        //var prefabPath = ProtocolState.procedureDef.mediaBasePath + "/" + modelArDefinition.url;
         var prefabPath = "Models/" + modelArDefinition.url;
         ServiceRegistry.GetService<IMediaProvider>().GetPrefab(prefabPath).Subscribe(prefab =>
         {
@@ -546,7 +546,7 @@ public class ArObjectManager : MonoBehaviour
 
     private void createGenericModel(ModelArDefinition modelArDefinition, Transform parent, TrackedObject trackedObject = null)
     {
-        //var prefabPath = ProtocolState.procedureDef.Value.mediaBasePath + "/" + modelArDefinition.url;
+        //var prefabPath = ProtocolState.procedureDef.mediaBasePath + "/" + modelArDefinition.url;
         var prefabPath = "Models/" + modelArDefinition.url;
         ServiceRegistry.GetService<IMediaProvider>().GetPrefab(prefabPath).Subscribe(prefab =>
         {

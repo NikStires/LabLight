@@ -4,8 +4,10 @@ using System.Linq;
 using UniRx;
 using UnityEngine;
 
-public class SessionManager : Singleton<SessionManager>
+public class SessionManager : MonoBehaviour
 {
+    public static SessionManager instance;
+
     public bool UseLocalFileSystem = true;
 
     //audio manager
@@ -29,6 +31,17 @@ public class SessionManager : Singleton<SessionManager>
 
     public void Awake()
     {
+        if(instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Debug.LogWarning("Multiple SessionManager instances detected. Destroying duplicate (newest).");
+            DestroyImmediate(gameObject);
+        }
+
         if (UseLocalFileSystem)
         {
             var resourceFileDataProvider = new ResourceFileDataProvider();
@@ -56,9 +69,6 @@ public class SessionManager : Singleton<SessionManager>
         //Set up default state
         SessionState.deviceId = SystemInfo.deviceName;
         SessionState.Connected = false;
-        ProtocolState.SetProcedureDefinition(null);
-        ProtocolState.ProcedureTitle = "";
-        ProtocolState.Step = 0;
 
         //add grid?
 
@@ -66,13 +76,6 @@ public class SessionManager : Singleton<SessionManager>
         //{
         //    Axes.SetValue(val);
         //}).AddTo(this);
-    }
-
-    public void Update()
-    {
-        Debug.Log(ProtocolState.ProcedureTitle);
-        Debug.Log(ProtocolState.Steps.Count);
-
     }
 
     public void OnEnable()
@@ -95,7 +98,6 @@ public class SessionManager : Singleton<SessionManager>
             {
                 Debug.Log("Error fetching procedure");
             });
-            ProtocolState.SetProcedureTitle("piplight_H551");
         }
         else
         {

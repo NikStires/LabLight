@@ -86,7 +86,7 @@ public class WellPlateViewController : ModelElementViewController
                 marker.gameObject.SetActive(false);
             }
             //activate markers for wells to be highlighted
-            foreach(var checkItem in ProtocolState.procedureDef.Value.steps[ProtocolState.Step].checklist)
+            foreach(var checkItem in ProtocolState.procedureDef.steps[ProtocolState.Step].checklist)
             {
                 foreach(HighlightArOperation highlight in checkItem.operations.Where(op => op.arOperationType == ArOperationType.Highlight))
                 {

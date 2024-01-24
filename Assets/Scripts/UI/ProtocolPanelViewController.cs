@@ -30,24 +30,16 @@ public class ProtocolPanelViewController : MonoBehaviour
 
     private void Awake()
     {
-        ProtocolState.procedureDef.Subscribe(_ => UpdateStepDisplay()).AddTo(this);
-
         ProtocolState.procedureStream.Subscribe(procedureName => procedureTitle.text = procedureName).AddTo(this);
 
-        ProtocolState.stepStream.Subscribe(_ => { UpdateContentItems(); UpdateStepDisplay(); }).AddTo(this);
+        ProtocolState.stepStream.Subscribe(_ => { UpdateStepDisplay(); }).AddTo(this);
 
         ProtocolState.checklistStream.Subscribe(_ => UpdateContentItems()).AddTo(this);
     }
 
-    void OnEnable()
-    {
-        UpdateContentItems();
-        UpdateStepDisplay();
-    }
-
     private void UpdateContentItems()
     {
-        Debug.Log("Updating proctol panel content items");
+        Debug.Log("Updating protocol panel content items");
         //remove all content item views
         foreach (Transform child in contentFrame)
         {
@@ -68,10 +60,10 @@ public class ProtocolPanelViewController : MonoBehaviour
             }
         }
 
-        if (ProtocolState.procedureDef.Value != null)
+        if (ProtocolState.procedureDef != null)
         {
             //create content items for this step
-            var currentStep = ProtocolState.procedureDef.Value.steps[ProtocolState.Step];
+            var currentStep = ProtocolState.procedureDef.steps[ProtocolState.Step];
 
             //create content items for current check item, iif no content items for check item show step content items
             if (currentStep.checklist != null && currentStep.checklist[ProtocolState.CheckItem].contentItems.Count > 0)
@@ -164,7 +156,6 @@ public class ProtocolPanelViewController : MonoBehaviour
 
     public void PreviousStep()
     {
-        Debug.Log("Previous button pressed");
         if (ProtocolState.LockingTriggered.Value)
         {
             //audioPlayer?.Play(AudioEventEnum.Error);
@@ -185,7 +176,6 @@ public class ProtocolPanelViewController : MonoBehaviour
 
     public void NextStep()
     {
-        Debug.Log("next button pressed");
         //if there is a checklist that has not been signed off verify that the operator wants to progress
         if (ProtocolState.Steps[ProtocolState.Step].Checklist != null)
         {
@@ -223,25 +213,23 @@ public class ProtocolPanelViewController : MonoBehaviour
     void UpdateStepDisplay()
     {
         Debug.Log("Updating proctol panel step display ");
-        if (ProtocolState.procedureDef.Value == null)
+        if (ProtocolState.procedureDef == null)
         {
             stepText.text = "0/0";
             return;
         }
 
-        procedureTitle.text = ProtocolState.procedureDef.Value.title;
-
-        int stepCount = (ProtocolState.procedureDef.Value.steps != null) ? ProtocolState.procedureDef.Value.steps.Count : 0;
+        int stepCount = (ProtocolState.procedureDef.steps != null) ? ProtocolState.procedureDef.steps.Count : 0;
 
         stepText.text = string.Format("{0}/{1}", Math.Min(stepCount, ProtocolState.Step + 1), stepCount);
 
-        if (ProtocolState.procedureDef.Value.steps[ProtocolState.Step].isCritical || (ProtocolState.Step > 0 && ProtocolState.procedureDef.Value.steps[ProtocolState.Step - 1].isCritical))
+        if (ProtocolState.procedureDef.steps[ProtocolState.Step].isCritical || (ProtocolState.Step > 0 && ProtocolState.procedureDef.steps[ProtocolState.Step - 1].isCritical))
         {
             //if (SessionState.Recording.Value)
             //{
             //    ServiceRegistry.GetService<ILighthouseControl>()?.StopRecordingVideo();
             //}
-            //if (ProtocolState.procedureDef.Value.steps[ProtocolState.Step].isCritical & confirmationPanelVC != null)
+            //if (ProtocolState.procedureDef.steps[ProtocolState.Step].isCritical & confirmationPanelVC != null)
             //{
             //    confirmationPanelVC.CriticalStepMessage();
             //}

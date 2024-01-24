@@ -5,10 +5,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 
-public class ProtocolState
+public class ProtocolState : MonoBehaviour
 {
+    public static ProtocolState instance;
+
     //state data
-    public static ReactiveProperty<ProcedureDefinition> procedureDef = new ReactiveProperty<ProcedureDefinition>();
+    public static ProcedureDefinition procedureDef;
     private static string procedureTitle;
     private static DateTime startTime; 
     public static List<StepState> Steps = new List<StepState>();
@@ -25,12 +27,23 @@ public class ProtocolState
     public static ReactiveProperty<bool> LockingTriggered = new ReactiveProperty<bool>();
     public static ReactiveProperty<bool> AlignmentTriggered = new ReactiveProperty<bool>();
 
+    void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Debug.LogWarning("Multiple ProtocolState instances detected. Destroying duplicate (newest).");
+            DestroyImmediate(gameObject);
+        }
+    }
+
     // Setters
     public static void SetProcedureDefinition(ProcedureDefinition procedureDefinition)
     {
-        procedureDef.Value = procedureDefinition;
         Steps = new List<StepState>();
-
         //create a fresh state for the selected protocol
         if (procedureDefinition != null && procedureDefinition.steps.Count > 0)
         {
@@ -46,9 +59,9 @@ public class ProtocolState
                     }
                 }
             }
+            procedureDef = procedureDefinition;
+            ProcedureTitle = procedureDefinition.title;
             Step = 0;
-            stepStream.OnNext(Steps[0]);
-            CheckItem = 0;
             ServiceRegistry.GetService<ILighthouseControl>()?.SetProtocolStatus();
         }
     }
@@ -57,34 +70,31 @@ public class ProtocolState
     {
         set
         {
-            if (step != value)
+            step = value;
+            stepStream.OnNext(Steps[Step]);
+
+            //if the step has a checklist get the active item
+            if (procedureDef != null && Steps != null && Steps[Step].Checklist != null)
             {
-                step = value;
-                stepStream.OnNext(Steps[Step]);
+                var firstUncheckedItem = (from item in Steps[Step].Checklist
+                                    where !item.IsChecked.Value
+                                    select item).FirstOrDefault();
 
-                //if the step has a checklist get the active item
-                if (procedureDef.Value != null && Steps != null && Steps[Step].Checklist != null)
+                if (firstUncheckedItem == null)
                 {
-                    var firstUncheckedItem = (from item in Steps[Step].Checklist
-                                      where !item.IsChecked.Value
-                                      select item).FirstOrDefault();
-
-                    if (firstUncheckedItem == null)
-                    {
-                        //if there is a checklist but the there is no unchecked item set the current checkItem to the last item;
-                        CheckItem = Steps[Step].Checklist.Count - 1;
-                    }
-                    else
-                    {
-                        CheckItem = Steps[Step].Checklist.IndexOf(firstUncheckedItem);
-                    }
+                    //if there is a checklist but the there is no unchecked item set the current checkItem to the last item;
+                    CheckItem = Steps[Step].Checklist.Count - 1;
                 }
-                else if (Steps[Step].Checklist == null)
+                else
                 {
-                    CheckItem = 0;
+                    CheckItem = Steps[Step].Checklist.IndexOf(firstUncheckedItem);
                 }
-                ServiceRegistry.GetService<ILighthouseControl>()?.SetProtocolStatus();
             }
+            else if (Steps[Step].Checklist == null)
+            {
+                CheckItem = 0;
+            }
+            ServiceRegistry.GetService<ILighthouseControl>()?.SetProtocolStatus();
         }
         get
         {
@@ -96,7 +106,7 @@ public class ProtocolState
     {
         set
         {
-            if (procedureDef.Value != null && Steps != null && Step < Steps.Count && Steps[Step].Checklist != null && value <= Steps[Step].Checklist.Count() - 1)
+            if (procedureDef != null && Steps != null && Step < Steps.Count && Steps[Step].Checklist != null && value <= Steps[Step].Checklist.Count() - 1)
             {
                 Steps[Step].CheckNum = value; 
                 checklistStream.OnNext(value);
@@ -168,7 +178,7 @@ public class ProtocolState
     public static void SetStep(int step)
     {
         if (step < 0 ||
-            procedureDef.Value == null ||
+            procedureDef == null ||
             Steps == null ||
             step >= Steps.Count)
         {
@@ -176,14 +186,12 @@ public class ProtocolState
         }
 
         Step = step;
-
-        ServiceRegistry.GetService<ISharedStateController>().SetStep(SessionState.deviceId, step);
     }
 
     public static void SetCheckItem(int index)
     {
         if (index < 0 ||
-            procedureDef.Value == null ||
+            procedureDef == null ||
             Steps == null ||
             Steps[Step] == null ||
             Steps[Step].Checklist == null || 
@@ -193,12 +201,11 @@ public class ProtocolState
         }
 
         CheckItem = index;
-        ServiceRegistry.GetService<ISharedStateController>().SetCheckItem(SessionState.deviceId, index);
     }
 
     public static void SignOff()
     {
-        if (procedureDef.Value == null ||
+        if (procedureDef == null ||
             Steps == null ||
             Steps[Step] == null ||
             Steps[Step].Checklist == null ||

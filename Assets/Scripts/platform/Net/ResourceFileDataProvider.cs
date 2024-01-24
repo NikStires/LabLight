@@ -177,6 +177,7 @@ public class ResourceFileDataProvider : IProcedureDataProvider, IMediaProvider
 
     public IObservable<Texture2D> GetImage(string url)
     {
+        Debug.Log("GetImage " + url);
         return Observable.FromCoroutine<Texture2D>((observer, cancellation) => CoGetImage(url, observer, cancellation));
     }
 

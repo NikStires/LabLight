@@ -8,7 +8,7 @@ public class TestUi : MonoBehaviour
     {
 
         ProtocolState.SetProcedureDefinition(CreateTestProtocol());
-        ProtocolState.ProcedureTitle = ProtocolState.procedureDef.Value.title;
+        ProtocolState.ProcedureTitle = ProtocolState.procedureDef.title;
         Debug.Log("Test protocol set");
     }
 

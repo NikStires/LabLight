@@ -17,10 +17,6 @@ public class ChecklistPanelViewController : MonoBehaviour
 
     private void Awake()
     {
-        ProtocolState.procedureDef.Subscribe(_ => UpdateVisualState()).AddTo(this);
-
-        ProtocolState.stepStream.Subscribe(_ => UpdateVisualState()).AddTo(this);
-            
         ProtocolState.checklistStream.Subscribe(_ => UpdateVisualState()).AddTo(this);
     }
 
@@ -29,7 +25,6 @@ public class ChecklistPanelViewController : MonoBehaviour
     /// </summary>
     public void CheckItem()
     {
-        Debug.Log("check");
         if (!ProtocolState.Steps[ProtocolState.Step].SignedOff)
         {
 
@@ -69,7 +64,6 @@ public class ChecklistPanelViewController : MonoBehaviour
     /// </summary>
     public void UnCheckItem()
     {
-        Debug.Log("uncheck");
         if (!ProtocolState.Steps[ProtocolState.Step].SignedOff)
         {
 
@@ -99,7 +93,6 @@ public class ChecklistPanelViewController : MonoBehaviour
     /// </summary>
     public void SignOff()
     {
-        Debug.Log("SignOff");
         if (!ProtocolState.Steps[ProtocolState.Step].SignedOff)
         {
 
@@ -134,9 +127,9 @@ public class ChecklistPanelViewController : MonoBehaviour
     /// </summary>
     private void UpdateVisualState()
     {
-        Debug.Log("Updating checklist visual state");
+        Debug.Log("Updating checklist panel visual state");
         // if the procedure, step or checklist is null exit
-        if (ProtocolState.procedureDef.Value == null || ProtocolState.Steps[ProtocolState.Step] == null || ProtocolState.Steps[ProtocolState.Step].Checklist == null)
+        if (ProtocolState.procedureDef == null || ProtocolState.Steps[ProtocolState.Step] == null || ProtocolState.Steps[ProtocolState.Step].Checklist == null)
         {
             prevChecklist = null;
 

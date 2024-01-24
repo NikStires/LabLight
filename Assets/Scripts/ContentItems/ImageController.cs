@@ -31,7 +31,7 @@ public class ImageController : ContentController<ImageItem>
 
     private void UpdateView()
     {
-        var imagePath = ProtocolState.procedureDef.Value.mediaBasePath + "/" + ContentItem.url;
+        var imagePath = ProtocolState.procedureDef.mediaBasePath + "/" + ContentItem.url;
 
         // Cancel previous download
         downloadSubscription?.Dispose();

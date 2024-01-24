@@ -9,8 +9,10 @@ public enum Mode { Master, Isolated, Observer }
 /// <summary>
 /// Central state containing navigation stack, observable values, ProcedureDefinition
 /// </summary>
-public class SessionState
+public class SessionState : MonoBehaviour
 {
+    public static SessionState instance;
+
     public static string deviceId;
     public static WorkspaceFrame workspace;
     public static float lastFrameTime;
@@ -47,6 +49,20 @@ public class SessionState
     //reactive properties for tFTubes
     public static ReactiveProperty<bool> ShowSourceContents = new ReactiveProperty<bool>();
     public static ReactiveProperty<bool> ShowSourceTransform = new ReactiveProperty<bool>();
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Debug.LogWarning("Multiple SessionState instances detected. Destroying duplicate (newest).");
+            DestroyImmediate(gameObject);
+        }
+    }
 
     //setters
     public static bool Connected
