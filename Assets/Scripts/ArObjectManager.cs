@@ -57,48 +57,6 @@ public class ArObjectManager : MonoBehaviour
         ProtocolState.AlignmentTriggered.Value = false;
     }
 
-    //private void SetupVoiceCommands()
-    //{
-    //    disposeVoice?.Invoke();
-    //    disposeVoice = null;
-
-    //    disposeVoice = ServiceRegistry.GetService<IVoiceController>()?.Listen(new Dictionary<string, Action>()
-    //    {
-    //        { "align", () =>
-    //            {
-    //                if(ProtocolState.LockingTriggered.Value && lockingDisplayController.GetCurrentAction() == LockingAction.Aligning)
-    //                {
-    //                    lockingDisplayController.NextAction();
-    //                }
-    //            }
-    //        },
-    //        { "anchor", () =>
-    //            {
-    //                if(ProtocolState.LockingTriggered.Value && lockingDisplayController.GetCurrentAction() == LockingAction.Anchoring)
-    //                {
-    //                    lockingDisplayController.NextAction();
-    //                }
-    //            }
-    //        },
-    //        { "set anchor", () =>
-    //            {
-    //                if(ProtocolState.LockingTriggered.Value && lockingDisplayController.GetCurrentAction() == LockingAction.Anchoring)
-    //                {
-    //                    lockingDisplayController.NextAction();
-    //                }
-    //            }
-    //        },
-    //        { "unlock anchors", () =>
-    //            {
-    //                if(!ProtocolState.LockingTriggered.Value)
-    //                {
-    //                    lockingDisplayController.TriggerLocking(anchorDefs, specificArViews);
-    //                }
-    //            }
-    //        }
-    //    });
-    //}
-
     private void InitializeArObjects()
     {
         workspaceTransform = SessionManager.instance.WorkspaceTransform;
@@ -156,15 +114,6 @@ public class ArObjectManager : MonoBehaviour
         {
             switch (arDefinition.arDefinitionType)
             {
-                //case ArDefinitionType.Outline:
-                //    createGenericArView(OutlinePrefab, arDefinition, parent, trackedObject);
-                //    break;
-                //case ArDefinitionType.Overlay:
-                //    createGenericArView(OverlayPrefab, arDefinition, parent, trackedObject);
-                //    break;
-                //case ArDefinitionType.Mask:
-                //    createGenericArView(MaskAndTitlePrefab, arDefinition, parent, trackedObject);
-                //    break;
                 case ArDefinitionType.Container:
                     createGenericArContainerView((ContainerArDefinition)arDefinition, parent, trackedObject);
                     break;

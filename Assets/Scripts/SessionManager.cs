@@ -8,15 +8,10 @@ public class SessionManager : MonoBehaviour
 {
     public static SessionManager instance;
 
-    public bool UseLocalFileSystem = true;
-
     //audio manager
 
-    //email ?
-    /*
-     * private string mailUserName;
-     * private string mailPassword;
-     */
+    public bool loadProcedure = true;
+
     private Transform workspaceTransform;
 
     public Transform WorkspaceTransform
@@ -26,8 +21,6 @@ public class SessionManager : MonoBehaviour
             return workspaceTransform;
         }
     }
-
-    public bool loadProcedure = true;
 
     public void Awake()
     {
@@ -42,20 +35,16 @@ public class SessionManager : MonoBehaviour
             DestroyImmediate(gameObject);
         }
 
-        if (UseLocalFileSystem)
-        {
-            var resourceFileDataProvider = new ResourceFileDataProvider();
+        var resourceFileDataProvider = new ResourceFileDataProvider();
 
-            //var aggregateFileDataProvider = new AggregateFileDataProvider(new List<IProcedureDataProvider> { resourceFileDataProvider, new LocalFileDataProvider() });
-            ServiceRegistry.RegisterService<IProcedureDataProvider>(resourceFileDataProvider);
+        ServiceRegistry.RegisterService<IProcedureDataProvider>(resourceFileDataProvider);
 
-            ServiceRegistry.RegisterService<IMediaProvider>(resourceFileDataProvider);
-            //ServiceRegistry.RegisterService<IWorkspaceProvider>(new StubbedWorkspaceProvider());
+        ServiceRegistry.RegisterService<IMediaProvider>(resourceFileDataProvider);
 
-            var producer = new StubbedNetworkFrameProducer();
-            //ServiceRegistry.RegisterService<ISharedStateController>(producer);
-            //ServiceRegistry.RegisterService<INetworkFrameProducer>(producer);
-        }//http file provider ?
+        //var producer = new StubbedNetworkFrameProducer();
+        //ServiceRegistry.RegisterService<ISharedStateController>(producer);
+        //ServiceRegistry.RegisterService<INetworkFrameProducer>(producer);
+        //http file provider ?
 
         //Setup logger
         /* Add service 
@@ -71,11 +60,6 @@ public class SessionManager : MonoBehaviour
         SessionState.Connected = false;
 
         //add grid?
-
-        //SessionState.ShowWorkspaceOrigin(val =>
-        //{
-        //    Axes.SetValue(val);
-        //}).AddTo(this);
     }
 
     public void OnEnable()
@@ -91,7 +75,7 @@ public class SessionManager : MonoBehaviour
         var procedureDataProvider = ServiceRegistry.GetService<IProcedureDataProvider>();
         if(procedureDataProvider != null)
         {
-            procedureDataProvider.GetOrCreateProcedureDefinition("piplight_H551").Subscribe(procedure => 
+            procedureDataProvider.GetOrCreateProcedureDefinition("Viral RNA Target Capture Kit ML5000").Subscribe(procedure => 
             {
                 ProtocolState.SetProcedureDefinition(procedure);
             }, (e) =>
