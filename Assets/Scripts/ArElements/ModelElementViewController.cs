@@ -93,23 +93,23 @@ public class ModelElementViewController : WorldPositionController
 
     void OnTriggerEnter(Collider other)
     {
-        if (GetCondition() != null && GetCondition().conditionType == ConditionType.Anchor && other.gameObject.GetComponent<ModelElementViewController>() != null)
-        {
-            if(((AnchorCondition)GetCondition()).IsTargeted())
-            {
-                    var otherView = other.gameObject.GetComponent<ModelElementViewController>();
-                    if (otherView.positionLocked && !positionLocked)
-                    {
-                        if(sphere != null)
-                        {
-                            sphere.SetActive(true);
-                        }
-                        otherView.sphere.SetActive(true);
-                        positionValid = false;
-                    }
-            }
+        //if (GetCondition() != null && GetCondition().conditionType == ConditionType.Anchor && other.gameObject.GetComponent<ModelElementViewController>() != null)
+        //{
+        //    if(((AnchorCondition)GetCondition()).IsTargeted())
+        //    {
+        //            var otherView = other.gameObject.GetComponent<ModelElementViewController>();
+        //            if (otherView.positionLocked && !positionLocked)
+        //            {
+        //                if(sphere != null)
+        //                {
+        //                    sphere.SetActive(true);
+        //                }
+        //                otherView.sphere.SetActive(true);
+        //                positionValid = false;
+        //            }
+        //    }
 
-        }
+        //}
     }
 
     void OnTriggerExit(Collider other)

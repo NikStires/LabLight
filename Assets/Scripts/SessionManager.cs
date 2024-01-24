@@ -75,7 +75,7 @@ public class SessionManager : MonoBehaviour
         var procedureDataProvider = ServiceRegistry.GetService<IProcedureDataProvider>();
         if(procedureDataProvider != null)
         {
-            procedureDataProvider.GetOrCreateProcedureDefinition("Viral RNA Target Capture Kit ML5000").Subscribe(procedure => 
+            procedureDataProvider.GetOrCreateProcedureDefinition("piplight_H551").Subscribe(procedure => 
             {
                 ProtocolState.SetProcedureDefinition(procedure);
             }, (e) =>
