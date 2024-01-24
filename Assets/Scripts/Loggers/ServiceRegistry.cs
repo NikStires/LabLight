@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 /// <summary>
 /// Static class for accessing swappable services
 /// -logger (or chain of loggers)
@@ -14,6 +15,7 @@ public class ServiceRegistry
     {
         Type interfaceType = typeof(T);
         registry[interfaceType] = service;
+        Debug.Log("ServiceRegistered" + service + " " + interfaceType);
     }
 
     public static void UnRegisterService<T>()

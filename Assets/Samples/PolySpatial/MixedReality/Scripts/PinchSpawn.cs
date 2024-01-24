@@ -88,7 +88,9 @@ namespace PolySpatial.Samples
         {
             if (m_HandSubsystem == null)
             {
+#if !UNITY_EDITOR
                 Debug.LogError("Could not find Hand Subsystem");
+#endif
                 enabled = false;
                 return false;
             }

@@ -213,7 +213,7 @@ public class ProtocolState
 
     public static void SetProcedureTitle(string procedureTitle)
     {
-        ServiceRegistry.GetService<ISharedStateController>().SetProcedure(SessionState.deviceId, procedureTitle);
+        //ServiceRegistry.GetService<ISharedStateController>().SetProcedure(SessionState.deviceId, procedureTitle);
         ProcedureTitle = procedureTitle;
     }
 

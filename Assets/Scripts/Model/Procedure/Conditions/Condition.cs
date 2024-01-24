@@ -12,7 +12,7 @@ public enum ConditionType
 /// <summary>
 /// Conditions determine when a certain ar visualization will be shown
 /// </summary>
-public abstract class Condition
+public class Condition
 {
     [HideInInspector]
     public ConditionType conditionType;

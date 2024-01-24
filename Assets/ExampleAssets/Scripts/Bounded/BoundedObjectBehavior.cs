@@ -96,7 +96,7 @@ namespace PolySpatial.Template
 
         public void MoveDirectly(SpatialPointerState worldTouch)
         {
-            m_Transform.SetPositionAndRotation(worldTouch.interactionPosition, worldTouch.deviceRotation);
+            m_Transform.SetPositionAndRotation(worldTouch.interactionPosition, worldTouch.inputDeviceRotation);
         }
     }
 }

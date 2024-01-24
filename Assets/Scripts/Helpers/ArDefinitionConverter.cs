@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using System;
+using UnityEngine;
 
 /// <summary>
 /// Json conversion helper to create concrete ArDefinition classes

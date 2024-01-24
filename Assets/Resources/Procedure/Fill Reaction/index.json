@@ -1,0 +1,2204 @@
+{
+  "$id": "1",
+  "version": 8,
+  "title": "Fill Reaction",
+  "globalArElements": [],
+  "steps": [
+    {
+      "$id": "2",
+      "isCritical": false,
+      "arElements": [
+        {
+          "$id": "3",
+          "url": "horizontalwellplate96",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          },
+          "name": "ML Prep plate",
+          "contentsToColors": {
+            "$id": "4"
+          },
+          "arDefinitionType": "Model",
+          "target": ""
+        },
+        {
+          "$id": "5",
+          "url": "horizontalwellplate96",
+          "position": {
+            "x": -0.18,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          },
+          "name": "Broadcast plate",
+          "contentsToColors": {
+            "$id": "6"
+          },
+          "arDefinitionType": "Model",
+          "target": ""
+        },
+        {
+          "$id": "7",
+          "url": "tuberack2ml.prefab",
+          "position": {
+            "x": 0.3,
+            "y": 0.0,
+            "z": 0.04
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          },
+          "name": "5",
+          "contentsToColors": {
+            "$id": "8",
+            "RT/Probe Mix:RTP": "#FF0000",
+            "RSVA:RSVA": "#00FF00",
+            "H1N1:H1N1": "#0000FF",
+            "RSVB:RSVB": "#FFFF00",
+            "H3N2:H3N2": "#FF8000",
+            "FluB:FluB": "#FF66B2",
+            "SARS-COV-2:SARS": "#8000FF",
+            "H2O:H2O": "#00FFFF",
+            "Fill-in Mix:Fill": "#A6FE00",
+            "Cleanup/PCR Mix:PCR": "#008080"
+          },
+          "arDefinitionType": "Model",
+          "target": ""
+        },
+        {
+          "$id": "9",
+          "layout": {
+            "$id": "10",
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "$id": "11",
+                "url": "fillin1.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "",
+          "Count": 1,
+          "IsReadOnly": false
+        }
+      ],
+      "checklist": [
+        {
+          "$id": "12",
+          "Text": "Bring Fill-in mixture to room temperature and place in tube rack",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "13",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "14",
+              "highlightActions": [
+                {
+                  "$id": "15",
+                  "actionName": "pipette",
+                  "isSource": true,
+                  "chainIDs": [
+                    "8"
+                  ],
+                  "colorInfo": {
+                    "$id": "16",
+                    "Item1": "#A6FE00",
+                    "Item2": "Lime"
+                  },
+                  "contents": {
+                    "$id": "17",
+                    "Item1": "Fill-in Mix",
+                    "Item2": "Fill"
+                  },
+                  "volume": {
+                    "$id": "18",
+                    "Item1": 25.5,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "7"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "19",
+          "Text": "Remove ML Prep Plate from thermocycler but continue to run ML_RT_Hybridize program",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "20",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [],
+          "operations": []
+        },
+        {
+          "$id": "21",
+          "Text": "Close thermocycler lid",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "22",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [],
+          "operations": []
+        },
+        {
+          "$id": "23",
+          "Text": "Place ML Plate in the highlighted area",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "24",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "25",
+              "highlightActions": [
+                {
+                  "$id": "26",
+                  "highlightName": "modelname",
+                  "actionName": "f",
+                  "isSource": false,
+                  "chainIDs": [],
+                  "colorInfo": {
+                    "$id": "27"
+                  },
+                  "contents": {
+                    "$id": "28"
+                  },
+                  "volume": {
+                    "$id": "29",
+                    "Item1": 0.0
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "3"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "30",
+          "Text": "Place Broadcast Plate in highlighted area",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "31",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "32",
+              "highlightActions": [
+                {
+                  "$id": "33",
+                  "highlightName": "modelname",
+                  "actionName": "f",
+                  "isSource": false,
+                  "chainIDs": [],
+                  "colorInfo": {
+                    "$id": "34"
+                  },
+                  "contents": {
+                    "$id": "35"
+                  },
+                  "volume": {
+                    "$id": "36",
+                    "Item1": 0.0
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "5"
+              }
+            }
+          ]
+        }
+      ],
+      "SignedOff": false
+    },
+    {
+      "$id": "37",
+      "isCritical": false,
+      "arElements": [
+        {
+          "$id": "38",
+          "url": "horizontalwellplate96",
+          "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          },
+          "name": "ML Prep plate",
+          "contentsToColors": {
+            "$id": "39"
+          },
+          "arDefinitionType": "Model",
+          "target": ""
+        },
+        {
+          "$id": "40",
+          "url": "horizontalwellplate96",
+          "position": {
+            "x": -0.18,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          },
+          "name": "Broadcast plate",
+          "contentsToColors": {
+            "$id": "41"
+          },
+          "arDefinitionType": "Model",
+          "target": ""
+        },
+        {
+          "$id": "42",
+          "url": "tuberack2ml.prefab",
+          "position": {
+            "x": 0.3,
+            "y": 0.0,
+            "z": 0.04
+          },
+          "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0,
+            "w": 1.0
+          },
+          "name": "5",
+          "contentsToColors": {
+            "$id": "43",
+            "RT/Probe Mix:RTP": "#FF0000",
+            "RSVA:RSVA": "#00FF00",
+            "H1N1:H1N1": "#0000FF",
+            "RSVB:RSVB": "#FFFF00",
+            "H3N2:H3N2": "#FF8000",
+            "FluB:FluB": "#FF66B2",
+            "SARS-COV-2:SARS": "#8000FF",
+            "H2O:H2O": "#00FFFF",
+            "Fill-in Mix:Fill": "#A6FE00",
+            "Cleanup/PCR Mix:PCR": "#008080"
+          },
+          "arDefinitionType": "Model",
+          "target": ""
+        },
+        {
+          "$id": "44",
+          "layout": {
+            "$id": "45",
+            "layoutType": "Vertical",
+            "contentItems": [
+              {
+                "$id": "46",
+                "url": "fillin2.png",
+                "contentType": "Image"
+              }
+            ],
+            "contentType": "Layout"
+          },
+          "arDefinitionType": "Container",
+          "target": "",
+          "Count": 1,
+          "IsReadOnly": false
+        }
+      ],
+      "checklist": [
+        {
+          "$id": "47",
+          "Text": "Set pipette to 25.5 ul",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "48",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "49",
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "38"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "50",
+          "Text": "Pipette Fill-in Mix into A2",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "51",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "52",
+              "highlightActions": [
+                {
+                  "$id": "53",
+                  "actionName": "pipette",
+                  "isSource": true,
+                  "chainIDs": [
+                    "8"
+                  ],
+                  "colorInfo": {
+                    "$id": "54",
+                    "Item1": "#A6FE00",
+                    "Item2": "Lime"
+                  },
+                  "contents": {
+                    "$id": "55",
+                    "Item1": "Fill-in Mix",
+                    "Item2": "Fill"
+                  },
+                  "volume": {
+                    "$id": "56",
+                    "Item1": 25.5,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "42"
+              }
+            },
+            {
+              "$id": "57",
+              "highlightActions": [
+                {
+                  "$id": "58",
+                  "actionName": "pipette",
+                  "isSource": false,
+                  "chainIDs": [
+                    "A2"
+                  ],
+                  "colorInfo": {
+                    "$id": "59",
+                    "Item1": "#A6FE00",
+                    "Item2": "Lime\r"
+                  },
+                  "contents": {
+                    "$id": "60",
+                    "Item1": "Fill-in Mix",
+                    "Item2": "Fill"
+                  },
+                  "volume": {
+                    "$id": "61",
+                    "Item1": 25.5,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "40"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "62",
+          "Text": "Pipette Fill-in Mix into B2",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "63",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "64",
+              "highlightActions": [
+                {
+                  "$id": "65",
+                  "actionName": "pipette",
+                  "isSource": true,
+                  "chainIDs": [
+                    "8"
+                  ],
+                  "colorInfo": {
+                    "$id": "66",
+                    "Item1": "#A6FE00",
+                    "Item2": "Lime"
+                  },
+                  "contents": {
+                    "$id": "67",
+                    "Item1": "Fill-in Mix",
+                    "Item2": "Fill"
+                  },
+                  "volume": {
+                    "$id": "68",
+                    "Item1": 25.5,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "42"
+              }
+            },
+            {
+              "$id": "69",
+              "highlightActions": [
+                {
+                  "$id": "70",
+                  "actionName": "pipette",
+                  "isSource": false,
+                  "chainIDs": [
+                    "B2"
+                  ],
+                  "colorInfo": {
+                    "$id": "71",
+                    "Item1": "#A6FE00",
+                    "Item2": "Lime\r"
+                  },
+                  "contents": {
+                    "$id": "72",
+                    "Item1": "Fill-in Mix",
+                    "Item2": "Fill"
+                  },
+                  "volume": {
+                    "$id": "73",
+                    "Item1": 25.5,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "40"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "74",
+          "Text": "Pipette Fill-in Mix into C2",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "75",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "76",
+              "highlightActions": [
+                {
+                  "$id": "77",
+                  "actionName": "pipette",
+                  "isSource": true,
+                  "chainIDs": [
+                    "8"
+                  ],
+                  "colorInfo": {
+                    "$id": "78",
+                    "Item1": "#A6FE00",
+                    "Item2": "Lime"
+                  },
+                  "contents": {
+                    "$id": "79",
+                    "Item1": "Fill-in Mix",
+                    "Item2": "Fill"
+                  },
+                  "volume": {
+                    "$id": "80",
+                    "Item1": 25.5,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "42"
+              }
+            },
+            {
+              "$id": "81",
+              "highlightActions": [
+                {
+                  "$id": "82",
+                  "actionName": "pipette",
+                  "isSource": false,
+                  "chainIDs": [
+                    "C2"
+                  ],
+                  "colorInfo": {
+                    "$id": "83",
+                    "Item1": "#A6FE00",
+                    "Item2": "Lime\r"
+                  },
+                  "contents": {
+                    "$id": "84",
+                    "Item1": "Fill-in Mix",
+                    "Item2": "Fill"
+                  },
+                  "volume": {
+                    "$id": "85",
+                    "Item1": 25.5,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "40"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "86",
+          "Text": "Pipette Fill-in Mix into D2",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "87",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "88",
+              "highlightActions": [
+                {
+                  "$id": "89",
+                  "actionName": "pipette",
+                  "isSource": true,
+                  "chainIDs": [
+                    "8"
+                  ],
+                  "colorInfo": {
+                    "$id": "90",
+                    "Item1": "#A6FE00",
+                    "Item2": "Lime"
+                  },
+                  "contents": {
+                    "$id": "91",
+                    "Item1": "Fill-in Mix",
+                    "Item2": "Fill"
+                  },
+                  "volume": {
+                    "$id": "92",
+                    "Item1": 25.5,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "42"
+              }
+            },
+            {
+              "$id": "93",
+              "highlightActions": [
+                {
+                  "$id": "94",
+                  "actionName": "pipette",
+                  "isSource": false,
+                  "chainIDs": [
+                    "D2"
+                  ],
+                  "colorInfo": {
+                    "$id": "95",
+                    "Item1": "#A6FE00",
+                    "Item2": "Lime\r"
+                  },
+                  "contents": {
+                    "$id": "96",
+                    "Item1": "Fill-in Mix",
+                    "Item2": "Fill"
+                  },
+                  "volume": {
+                    "$id": "97",
+                    "Item1": 25.5,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "40"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "98",
+          "Text": "Pipette Fill-in Mix into E2",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "99",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "100",
+              "highlightActions": [
+                {
+                  "$id": "101",
+                  "actionName": "pipette",
+                  "isSource": true,
+                  "chainIDs": [
+                    "8"
+                  ],
+                  "colorInfo": {
+                    "$id": "102",
+                    "Item1": "#A6FE00",
+                    "Item2": "Lime"
+                  },
+                  "contents": {
+                    "$id": "103",
+                    "Item1": "Fill-in Mix",
+                    "Item2": "Fill"
+                  },
+                  "volume": {
+                    "$id": "104",
+                    "Item1": 25.5,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "42"
+              }
+            },
+            {
+              "$id": "105",
+              "highlightActions": [
+                {
+                  "$id": "106",
+                  "actionName": "pipette",
+                  "isSource": false,
+                  "chainIDs": [
+                    "E2"
+                  ],
+                  "colorInfo": {
+                    "$id": "107",
+                    "Item1": "#A6FE00",
+                    "Item2": "Lime\r"
+                  },
+                  "contents": {
+                    "$id": "108",
+                    "Item1": "Fill-in Mix",
+                    "Item2": "Fill"
+                  },
+                  "volume": {
+                    "$id": "109",
+                    "Item1": 25.5,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "40"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "110",
+          "Text": "Pipette Fill-in Mix into F2",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "111",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "112",
+              "highlightActions": [
+                {
+                  "$id": "113",
+                  "actionName": "pipette",
+                  "isSource": true,
+                  "chainIDs": [
+                    "8"
+                  ],
+                  "colorInfo": {
+                    "$id": "114",
+                    "Item1": "#A6FE00",
+                    "Item2": "Lime"
+                  },
+                  "contents": {
+                    "$id": "115",
+                    "Item1": "Fill-in Mix",
+                    "Item2": "Fill"
+                  },
+                  "volume": {
+                    "$id": "116",
+                    "Item1": 25.5,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "42"
+              }
+            },
+            {
+              "$id": "117",
+              "highlightActions": [
+                {
+                  "$id": "118",
+                  "actionName": "pipette",
+                  "isSource": false,
+                  "chainIDs": [
+                    "F2"
+                  ],
+                  "colorInfo": {
+                    "$id": "119",
+                    "Item1": "#A6FE00",
+                    "Item2": "Lime\r"
+                  },
+                  "contents": {
+                    "$id": "120",
+                    "Item1": "Fill-in Mix",
+                    "Item2": "Fill"
+                  },
+                  "volume": {
+                    "$id": "121",
+                    "Item1": 25.5,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "40"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "122",
+          "Text": "Pipette Fill-in Mix into G2",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "123",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "124",
+              "highlightActions": [
+                {
+                  "$id": "125",
+                  "actionName": "pipette",
+                  "isSource": true,
+                  "chainIDs": [
+                    "8"
+                  ],
+                  "colorInfo": {
+                    "$id": "126",
+                    "Item1": "#A6FE00",
+                    "Item2": "Lime"
+                  },
+                  "contents": {
+                    "$id": "127",
+                    "Item1": "Fill-in Mix",
+                    "Item2": "Fill"
+                  },
+                  "volume": {
+                    "$id": "128",
+                    "Item1": 25.5,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "42"
+              }
+            },
+            {
+              "$id": "129",
+              "highlightActions": [
+                {
+                  "$id": "130",
+                  "actionName": "pipette",
+                  "isSource": false,
+                  "chainIDs": [
+                    "G2"
+                  ],
+                  "colorInfo": {
+                    "$id": "131",
+                    "Item1": "#A6FE00",
+                    "Item2": "Lime\r"
+                  },
+                  "contents": {
+                    "$id": "132",
+                    "Item1": "Fill-in Mix",
+                    "Item2": "Fill"
+                  },
+                  "volume": {
+                    "$id": "133",
+                    "Item1": 25.5,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "40"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "134",
+          "Text": "Pipette Fill-in Mix into H2",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "135",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "136",
+              "highlightActions": [
+                {
+                  "$id": "137",
+                  "actionName": "pipette",
+                  "isSource": true,
+                  "chainIDs": [
+                    "8"
+                  ],
+                  "colorInfo": {
+                    "$id": "138",
+                    "Item1": "#A6FE00",
+                    "Item2": "Lime"
+                  },
+                  "contents": {
+                    "$id": "139",
+                    "Item1": "Fill-in Mix",
+                    "Item2": "Fill"
+                  },
+                  "volume": {
+                    "$id": "140",
+                    "Item1": 25.5,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "42"
+              }
+            },
+            {
+              "$id": "141",
+              "highlightActions": [
+                {
+                  "$id": "142",
+                  "actionName": "pipette",
+                  "isSource": false,
+                  "chainIDs": [
+                    "H2"
+                  ],
+                  "colorInfo": {
+                    "$id": "143",
+                    "Item1": "#A6FE00",
+                    "Item2": "Lime\r"
+                  },
+                  "contents": {
+                    "$id": "144",
+                    "Item1": "Fill-in Mix",
+                    "Item2": "Fill"
+                  },
+                  "volume": {
+                    "$id": "145",
+                    "Item1": 25.5,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "40"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "146",
+          "Text": "Set multi-channel pipette to 2 ul",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "147",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [],
+          "operations": []
+        },
+        {
+          "$id": "148",
+          "Text": "Broadcast from A2-H2 into A1-H1",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "149",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "150",
+              "highlightActions": [
+                {
+                  "$id": "151",
+                  "actionName": "transfer",
+                  "isSource": true,
+                  "chainIDs": [
+                    "A2",
+                    "B2",
+                    "C2",
+                    "D2",
+                    "E2",
+                    "F2",
+                    "G2",
+                    "H2"
+                  ],
+                  "colorInfo": {
+                    "$id": "152",
+                    "Item1": "#FF0000",
+                    "Item2": "Red"
+                  },
+                  "contents": {
+                    "$id": "153",
+                    "Item1": "",
+                    "Item2": ""
+                  },
+                  "volume": {
+                    "$id": "154",
+                    "Item1": 2.0,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "40"
+              }
+            },
+            {
+              "$id": "155",
+              "highlightActions": [
+                {
+                  "$id": "156",
+                  "actionName": "transfer",
+                  "isSource": false,
+                  "chainIDs": [
+                    "A1",
+                    "B1",
+                    "C1",
+                    "D1",
+                    "E1",
+                    "F1",
+                    "G1",
+                    "H1"
+                  ],
+                  "colorInfo": {
+                    "$id": "157",
+                    "Item1": "#00FF00",
+                    "Item2": "Green\r"
+                  },
+                  "contents": {
+                    "$id": "158",
+                    "Item1": "",
+                    "Item2": ""
+                  },
+                  "volume": {
+                    "$id": "159",
+                    "Item1": 2.0,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "38"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "160",
+          "Text": "Broadcast from A2-H2 into A2-H2",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "161",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "162",
+              "highlightActions": [
+                {
+                  "$id": "163",
+                  "actionName": "transfer",
+                  "isSource": true,
+                  "chainIDs": [
+                    "A2",
+                    "B2",
+                    "C2",
+                    "D2",
+                    "E2",
+                    "F2",
+                    "G2",
+                    "H2"
+                  ],
+                  "colorInfo": {
+                    "$id": "164",
+                    "Item1": "#FF0000",
+                    "Item2": "Red"
+                  },
+                  "contents": {
+                    "$id": "165",
+                    "Item1": "",
+                    "Item2": ""
+                  },
+                  "volume": {
+                    "$id": "166",
+                    "Item1": 2.0,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "40"
+              }
+            },
+            {
+              "$id": "167",
+              "highlightActions": [
+                {
+                  "$id": "168",
+                  "actionName": "transfer",
+                  "isSource": false,
+                  "chainIDs": [
+                    "A2",
+                    "B2",
+                    "C2",
+                    "D2",
+                    "E2",
+                    "F2",
+                    "G2",
+                    "H2"
+                  ],
+                  "colorInfo": {
+                    "$id": "169",
+                    "Item1": "#00FF00",
+                    "Item2": "Green\r"
+                  },
+                  "contents": {
+                    "$id": "170",
+                    "Item1": "",
+                    "Item2": ""
+                  },
+                  "volume": {
+                    "$id": "171",
+                    "Item1": 2.0,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "38"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "172",
+          "Text": "Broadcast from A2-H2 into A3-H3",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "173",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "174",
+              "highlightActions": [
+                {
+                  "$id": "175",
+                  "actionName": "transfer",
+                  "isSource": true,
+                  "chainIDs": [
+                    "A2",
+                    "B2",
+                    "C2",
+                    "D2",
+                    "E2",
+                    "F2",
+                    "G2",
+                    "H2"
+                  ],
+                  "colorInfo": {
+                    "$id": "176",
+                    "Item1": "#FF0000",
+                    "Item2": "Red"
+                  },
+                  "contents": {
+                    "$id": "177",
+                    "Item1": "",
+                    "Item2": ""
+                  },
+                  "volume": {
+                    "$id": "178",
+                    "Item1": 2.0,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "40"
+              }
+            },
+            {
+              "$id": "179",
+              "highlightActions": [
+                {
+                  "$id": "180",
+                  "actionName": "transfer",
+                  "isSource": false,
+                  "chainIDs": [
+                    "A3",
+                    "B3",
+                    "C3",
+                    "D3",
+                    "E3",
+                    "F3",
+                    "G3",
+                    "H3"
+                  ],
+                  "colorInfo": {
+                    "$id": "181",
+                    "Item1": "#00FF00",
+                    "Item2": "Green\r"
+                  },
+                  "contents": {
+                    "$id": "182",
+                    "Item1": "",
+                    "Item2": ""
+                  },
+                  "volume": {
+                    "$id": "183",
+                    "Item1": 2.0,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "38"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "184",
+          "Text": "Broadcast from A2-H2 into A4-H4",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "185",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "186",
+              "highlightActions": [
+                {
+                  "$id": "187",
+                  "actionName": "transfer",
+                  "isSource": true,
+                  "chainIDs": [
+                    "A2",
+                    "B2",
+                    "C2",
+                    "D2",
+                    "E2",
+                    "F2",
+                    "G2",
+                    "H2"
+                  ],
+                  "colorInfo": {
+                    "$id": "188",
+                    "Item1": "#FF0000",
+                    "Item2": "Red"
+                  },
+                  "contents": {
+                    "$id": "189",
+                    "Item1": "",
+                    "Item2": ""
+                  },
+                  "volume": {
+                    "$id": "190",
+                    "Item1": 2.0,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "40"
+              }
+            },
+            {
+              "$id": "191",
+              "highlightActions": [
+                {
+                  "$id": "192",
+                  "actionName": "transfer",
+                  "isSource": false,
+                  "chainIDs": [
+                    "A4",
+                    "B4",
+                    "C4",
+                    "D4",
+                    "E4",
+                    "F4",
+                    "G4",
+                    "H4"
+                  ],
+                  "colorInfo": {
+                    "$id": "193",
+                    "Item1": "#00FF00",
+                    "Item2": "Green\r"
+                  },
+                  "contents": {
+                    "$id": "194",
+                    "Item1": "",
+                    "Item2": ""
+                  },
+                  "volume": {
+                    "$id": "195",
+                    "Item1": 2.0,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "38"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "196",
+          "Text": "Broadcast from A2-H2 into A5-H5",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "197",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "198",
+              "highlightActions": [
+                {
+                  "$id": "199",
+                  "actionName": "transfer",
+                  "isSource": true,
+                  "chainIDs": [
+                    "A2",
+                    "B2",
+                    "C2",
+                    "D2",
+                    "E2",
+                    "F2",
+                    "G2",
+                    "H2"
+                  ],
+                  "colorInfo": {
+                    "$id": "200",
+                    "Item1": "#FF0000",
+                    "Item2": "Red"
+                  },
+                  "contents": {
+                    "$id": "201",
+                    "Item1": "",
+                    "Item2": ""
+                  },
+                  "volume": {
+                    "$id": "202",
+                    "Item1": 2.0,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "40"
+              }
+            },
+            {
+              "$id": "203",
+              "highlightActions": [
+                {
+                  "$id": "204",
+                  "actionName": "transfer",
+                  "isSource": false,
+                  "chainIDs": [
+                    "A5",
+                    "B5",
+                    "C5",
+                    "D5",
+                    "E5",
+                    "F5",
+                    "G5",
+                    "H5"
+                  ],
+                  "colorInfo": {
+                    "$id": "205",
+                    "Item1": "#00FF00",
+                    "Item2": "Green\r"
+                  },
+                  "contents": {
+                    "$id": "206",
+                    "Item1": "",
+                    "Item2": ""
+                  },
+                  "volume": {
+                    "$id": "207",
+                    "Item1": 2.0,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "38"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "208",
+          "Text": "Broadcast from A2-H2 into A6-H6",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "209",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "210",
+              "highlightActions": [
+                {
+                  "$id": "211",
+                  "actionName": "transfer",
+                  "isSource": true,
+                  "chainIDs": [
+                    "A2",
+                    "B2",
+                    "C2",
+                    "D2",
+                    "E2",
+                    "F2",
+                    "G2",
+                    "H2"
+                  ],
+                  "colorInfo": {
+                    "$id": "212",
+                    "Item1": "#FF0000",
+                    "Item2": "Red"
+                  },
+                  "contents": {
+                    "$id": "213",
+                    "Item1": "",
+                    "Item2": ""
+                  },
+                  "volume": {
+                    "$id": "214",
+                    "Item1": 2.0,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "40"
+              }
+            },
+            {
+              "$id": "215",
+              "highlightActions": [
+                {
+                  "$id": "216",
+                  "actionName": "transfer",
+                  "isSource": false,
+                  "chainIDs": [
+                    "A6",
+                    "B6",
+                    "C6",
+                    "D6",
+                    "E6",
+                    "F6",
+                    "G6",
+                    "H6"
+                  ],
+                  "colorInfo": {
+                    "$id": "217",
+                    "Item1": "#00FF00",
+                    "Item2": "Green\r"
+                  },
+                  "contents": {
+                    "$id": "218",
+                    "Item1": "",
+                    "Item2": ""
+                  },
+                  "volume": {
+                    "$id": "219",
+                    "Item1": 2.0,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "38"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "220",
+          "Text": "Broadcast from A2-H2 into A7-H7",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "221",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "222",
+              "highlightActions": [
+                {
+                  "$id": "223",
+                  "actionName": "transfer",
+                  "isSource": true,
+                  "chainIDs": [
+                    "A2",
+                    "B2",
+                    "C2",
+                    "D2",
+                    "E2",
+                    "F2",
+                    "G2",
+                    "H2"
+                  ],
+                  "colorInfo": {
+                    "$id": "224",
+                    "Item1": "#FF0000",
+                    "Item2": "Red"
+                  },
+                  "contents": {
+                    "$id": "225",
+                    "Item1": "",
+                    "Item2": ""
+                  },
+                  "volume": {
+                    "$id": "226",
+                    "Item1": 2.0,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "40"
+              }
+            },
+            {
+              "$id": "227",
+              "highlightActions": [
+                {
+                  "$id": "228",
+                  "actionName": "transfer",
+                  "isSource": false,
+                  "chainIDs": [
+                    "A7",
+                    "B7",
+                    "C7",
+                    "D7",
+                    "E7",
+                    "F7",
+                    "G7",
+                    "H7"
+                  ],
+                  "colorInfo": {
+                    "$id": "229",
+                    "Item1": "#00FF00",
+                    "Item2": "Green\r"
+                  },
+                  "contents": {
+                    "$id": "230",
+                    "Item1": "",
+                    "Item2": ""
+                  },
+                  "volume": {
+                    "$id": "231",
+                    "Item1": 2.0,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "38"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "232",
+          "Text": "Broadcast from A2-H2 into A8-H8",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "233",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "234",
+              "highlightActions": [
+                {
+                  "$id": "235",
+                  "actionName": "transfer",
+                  "isSource": true,
+                  "chainIDs": [
+                    "A2",
+                    "B2",
+                    "C2",
+                    "D2",
+                    "E2",
+                    "F2",
+                    "G2",
+                    "H2"
+                  ],
+                  "colorInfo": {
+                    "$id": "236",
+                    "Item1": "#FF0000",
+                    "Item2": "Red"
+                  },
+                  "contents": {
+                    "$id": "237",
+                    "Item1": "",
+                    "Item2": ""
+                  },
+                  "volume": {
+                    "$id": "238",
+                    "Item1": 2.0,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "40"
+              }
+            },
+            {
+              "$id": "239",
+              "highlightActions": [
+                {
+                  "$id": "240",
+                  "actionName": "transfer",
+                  "isSource": false,
+                  "chainIDs": [
+                    "A8",
+                    "B8",
+                    "C8",
+                    "D8",
+                    "E8",
+                    "F8",
+                    "G8",
+                    "H8"
+                  ],
+                  "colorInfo": {
+                    "$id": "241",
+                    "Item1": "#00FF00",
+                    "Item2": "Green\r"
+                  },
+                  "contents": {
+                    "$id": "242",
+                    "Item1": "",
+                    "Item2": ""
+                  },
+                  "volume": {
+                    "$id": "243",
+                    "Item1": 2.0,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "38"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "244",
+          "Text": "Broadcast from A2-H2 into A9-H9",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "245",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "246",
+              "highlightActions": [
+                {
+                  "$id": "247",
+                  "actionName": "transfer",
+                  "isSource": true,
+                  "chainIDs": [
+                    "A2",
+                    "B2",
+                    "C2",
+                    "D2",
+                    "E2",
+                    "F2",
+                    "G2",
+                    "H2"
+                  ],
+                  "colorInfo": {
+                    "$id": "248",
+                    "Item1": "#FF0000",
+                    "Item2": "Red"
+                  },
+                  "contents": {
+                    "$id": "249",
+                    "Item1": "",
+                    "Item2": ""
+                  },
+                  "volume": {
+                    "$id": "250",
+                    "Item1": 2.0,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "40"
+              }
+            },
+            {
+              "$id": "251",
+              "highlightActions": [
+                {
+                  "$id": "252",
+                  "actionName": "transfer",
+                  "isSource": false,
+                  "chainIDs": [
+                    "A9",
+                    "B9",
+                    "C9",
+                    "D9",
+                    "E9",
+                    "F9",
+                    "G9",
+                    "H9"
+                  ],
+                  "colorInfo": {
+                    "$id": "253",
+                    "Item1": "#00FF00",
+                    "Item2": "Green\r"
+                  },
+                  "contents": {
+                    "$id": "254",
+                    "Item1": "",
+                    "Item2": ""
+                  },
+                  "volume": {
+                    "$id": "255",
+                    "Item1": 2.0,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "38"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "256",
+          "Text": "Broadcast from A2-H2 into A10-H10",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "257",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "258",
+              "highlightActions": [
+                {
+                  "$id": "259",
+                  "actionName": "transfer",
+                  "isSource": true,
+                  "chainIDs": [
+                    "A2",
+                    "B2",
+                    "C2",
+                    "D2",
+                    "E2",
+                    "F2",
+                    "G2",
+                    "H2"
+                  ],
+                  "colorInfo": {
+                    "$id": "260",
+                    "Item1": "#FF0000",
+                    "Item2": "Red"
+                  },
+                  "contents": {
+                    "$id": "261",
+                    "Item1": "",
+                    "Item2": ""
+                  },
+                  "volume": {
+                    "$id": "262",
+                    "Item1": 2.0,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "40"
+              }
+            },
+            {
+              "$id": "263",
+              "highlightActions": [
+                {
+                  "$id": "264",
+                  "actionName": "transfer",
+                  "isSource": false,
+                  "chainIDs": [
+                    "A10",
+                    "B10",
+                    "C10",
+                    "D10",
+                    "E10",
+                    "F10",
+                    "G10",
+                    "H10"
+                  ],
+                  "colorInfo": {
+                    "$id": "265",
+                    "Item1": "#00FF00",
+                    "Item2": "Green\r"
+                  },
+                  "contents": {
+                    "$id": "266",
+                    "Item1": "",
+                    "Item2": ""
+                  },
+                  "volume": {
+                    "$id": "267",
+                    "Item1": 2.0,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "38"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "268",
+          "Text": "Broadcast from A2-H2 into A11-H11",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "269",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "270",
+              "highlightActions": [
+                {
+                  "$id": "271",
+                  "actionName": "transfer",
+                  "isSource": true,
+                  "chainIDs": [
+                    "A2",
+                    "B2",
+                    "C2",
+                    "D2",
+                    "E2",
+                    "F2",
+                    "G2",
+                    "H2"
+                  ],
+                  "colorInfo": {
+                    "$id": "272",
+                    "Item1": "#FF0000",
+                    "Item2": "Red"
+                  },
+                  "contents": {
+                    "$id": "273",
+                    "Item1": "",
+                    "Item2": ""
+                  },
+                  "volume": {
+                    "$id": "274",
+                    "Item1": 2.0,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "40"
+              }
+            },
+            {
+              "$id": "275",
+              "highlightActions": [
+                {
+                  "$id": "276",
+                  "actionName": "transfer",
+                  "isSource": false,
+                  "chainIDs": [
+                    "A11",
+                    "B11",
+                    "C11",
+                    "D11",
+                    "E11",
+                    "F11",
+                    "G11",
+                    "H11"
+                  ],
+                  "colorInfo": {
+                    "$id": "277",
+                    "Item1": "#00FF00",
+                    "Item2": "Green\r"
+                  },
+                  "contents": {
+                    "$id": "278",
+                    "Item1": "",
+                    "Item2": ""
+                  },
+                  "volume": {
+                    "$id": "279",
+                    "Item1": 2.0,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "38"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "280",
+          "Text": "Broadcast from A2-H2 into A12-H12",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "281",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "282",
+              "highlightActions": [
+                {
+                  "$id": "283",
+                  "actionName": "transfer",
+                  "isSource": true,
+                  "chainIDs": [
+                    "A2",
+                    "B2",
+                    "C2",
+                    "D2",
+                    "E2",
+                    "F2",
+                    "G2",
+                    "H2"
+                  ],
+                  "colorInfo": {
+                    "$id": "284",
+                    "Item1": "#FF0000",
+                    "Item2": "Red"
+                  },
+                  "contents": {
+                    "$id": "285",
+                    "Item1": "",
+                    "Item2": ""
+                  },
+                  "volume": {
+                    "$id": "286",
+                    "Item1": 2.0,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "40"
+              }
+            },
+            {
+              "$id": "287",
+              "highlightActions": [
+                {
+                  "$id": "288",
+                  "actionName": "transfer",
+                  "isSource": false,
+                  "chainIDs": [
+                    "A12",
+                    "B12",
+                    "C12",
+                    "D12",
+                    "E12",
+                    "F12",
+                    "G12",
+                    "H12"
+                  ],
+                  "colorInfo": {
+                    "$id": "289",
+                    "Item1": "#00FF00",
+                    "Item2": "Green\r"
+                  },
+                  "contents": {
+                    "$id": "290",
+                    "Item1": "",
+                    "Item2": ""
+                  },
+                  "volume": {
+                    "$id": "291",
+                    "Item1": 2.0,
+                    "Item2": "μL"
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "38"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "292",
+          "Text": "Seal ML Prep plate with clear PCR seal",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "293",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [],
+          "operations": [
+            {
+              "$id": "294",
+              "highlightActions": [
+                {
+                  "$id": "295",
+                  "highlightName": "modelname",
+                  "actionName": "f",
+                  "isSource": false,
+                  "chainIDs": [],
+                  "colorInfo": {
+                    "$id": "296"
+                  },
+                  "contents": {
+                    "$id": "297"
+                  },
+                  "volume": {
+                    "$id": "298",
+                    "Item1": 0.0
+                  }
+                }
+              ],
+              "arOperationType": "Highlight",
+              "arDefinition": {
+                "$ref": "38"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "299",
+          "Text": "Spin down in centifuge",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "300",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [],
+          "operations": []
+        },
+        {
+          "$id": "301",
+          "Text": "Put ML Prep plate back on thermocycler and continue ML_RT_Hybridize program for exactly 60 minutes",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "302",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [],
+          "operations": []
+        },
+        {
+          "$id": "303",
+          "Text": "Make note of start time",
+          "CompletionTime": "0001-01-01T00:00:00",
+          "IsChecked": {
+            "$id": "304",
+            "Value": false,
+            "HasValue": true,
+            "value": false
+          },
+          "arElements": [],
+          "operations": []
+        }
+      ],
+      "SignedOff": false
+    }
+  ],
+  "mediaBasePath": "Procedure/Fill Reaction"
+}

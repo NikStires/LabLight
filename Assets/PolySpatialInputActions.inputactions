@@ -126,17 +126,6 @@
                 },
                 {
                     "name": "",
-                    "id": "cfa75806-da03-488b-98c8-86d3702a2e2e",
-                    "path": "<HandheldARInputDevice>/devicePosition",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "DevicePosition",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "e830475f-8161-40b2-90ab-1dc682b02018",
                     "path": "<PolySpatialXRHMD>/deviceRotation",
                     "interactions": "",

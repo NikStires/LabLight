@@ -14,7 +14,9 @@ public class Parsers
     {
         PreserveReferencesHandling = PreserveReferencesHandling.Objects,
         ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
-        NullValueHandling = NullValueHandling.Ignore
+        NullValueHandling = NullValueHandling.Ignore,
+        Converters = { new ArDefinitionConverter(),
+                       new ArOperationConverter() }
     };
 
     public static List<ProcedureDescriptor> ParseProcedures(string json)
@@ -124,14 +126,17 @@ public class Parsers
 
             Debug.Log("Procedure '" + procedure.title + "' file version " + procedure.version);
 
+            Debug.Log(json);
+
             if (procedure.version >= 1)
             {
                 procedure = JsonConvert.DeserializeObject<ProcedureDefinition>(json, serializerSettings);
             }
             else
-            {
+            { 
                 Debug.LogError("Version 0 procedure is no longer supported");
             }
+
 
             return procedure;
         }

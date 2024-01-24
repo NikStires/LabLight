@@ -20,25 +20,6 @@ public class LocalFileDataProvider : IProcedureDataProvider, ITextDataProvider
     public async Task<List<ProcedureDescriptor>> GetProcedureList()
     {
         var list = new List<ProcedureDescriptor>();
-
-#if UNITY_WSA && !UNITY_EDITOR
-        StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
-        Debug.Log("GetProcedureListAsync " + storageFolder.Name);
-        IReadOnlyList<StorageFile> fileList = await storageFolder.GetFilesAsync();
-
-        foreach (StorageFile file in fileList)
-        {
-            if (file.Name.EndsWith(".json"))
-            {
-                list.Add(new ProcedureDescriptor()
-                {
-                    name = Path.GetFileNameWithoutExtension(file.Name),
-                    title = file.Name,
-                    description = file.Name
-                });
-            }
-        }
-#else
         if (Directory.Exists(Application.persistentDataPath))
         {
             DirectoryInfo directoryInfo = new DirectoryInfo(Application.persistentDataPath);
@@ -52,7 +33,6 @@ public class LocalFileDataProvider : IProcedureDataProvider, ITextDataProvider
                 });
             }
         }
-#endif
         return list;
     }
 
@@ -60,6 +40,7 @@ public class LocalFileDataProvider : IProcedureDataProvider, ITextDataProvider
     {
         return LoadProcedureDefinitionAsync(procedureName + ".json").ToObservable<ProcedureDefinition>();
     }
+
 
     /// <summary>
     /// load procedure from local folder
@@ -69,34 +50,11 @@ public class LocalFileDataProvider : IProcedureDataProvider, ITextDataProvider
     public async Task<ProcedureDefinition> LoadProcedureDefinitionAsync(string procedureFile)
     {
         ProcedureDefinition procedure = null;
-#if !UNITY_WSA && !UNITY_EDITOR
-        try
-        {
-            StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
-            Debug.Log("LoadProcedureDefinitionAsync " + storageFolder.Name);
-            StorageFile file = await storageFolder.GetFileAsync(procedureFile);
-            if (file != null)
-            {
-                string text = await Windows.Storage.FileIO.ReadTextAsync(file);
-                procedure = Parsers.ParseProcedure(text);
-            }
-            else
-            {
-                Debug.LogError("Could not find file");
-            }
-        }
-        catch (Exception ex)
-        {
-            //            Debug.LogErrorFormat("Could not load data from '{0}'", ex.Message);
-            return null;
-        }
-#else
         using (StreamReader streamReader = new StreamReader(Path.Combine(Application.persistentDataPath, procedureFile)))
         {
             procedure = Parsers.ParseProcedure(streamReader.ReadToEnd());
             Debug.LogFormat("Data loaded from file '{0}'", procedureFile);
         }
-#endif
 
         if (procedure == null)
         {
@@ -120,48 +78,17 @@ public class LocalFileDataProvider : IProcedureDataProvider, ITextDataProvider
     /// <param name="procedure"></param>
     public async void SaveProcedureDefinition(string procedureName, ProcedureDefinition procedure)
     {
-#if !UNITY_WSA && !UNITY_EDITOR
-        try
-        {
-            // No special access rights, Typically something like C:\Users\...\AppData\Local\Packages\<app GUID>\LocalState 
-            StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
-            Debug.Log("SaveProcedureDefinition " + storageFolder.Name);
-            // Create procedure file in the given storaeFolder
-            StorageFile sampleFile = await storageFolder.CreateFileAsync(procedureName + ".json", Windows.Storage.CreationCollisionOption.ReplaceExisting);
-
-            using (var stream = await sampleFile.OpenAsync(FileAccessMode.ReadWrite))
-            {
-                using (var outputStream = stream.GetOutputStreamAt(0))
-                {
-                    using (var dataWriter = new Windows.Storage.Streams.DataWriter(outputStream))
-                    {
-                        // Serialize procedure to JSON
-                        var output = JsonConvert.SerializeObject(procedure, Formatting.Indented);
-
-                        // Write to file
-                        dataWriter.WriteString(output);
-                        await dataWriter.StoreAsync();
-                        await outputStream.FlushAsync();
-                    }
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.LogError(ex.Message);
-        }
-#else
         using (StreamWriter streamWriter = new StreamWriter(Path.Combine(Application.persistentDataPath, procedureName), append: false))
         {
             var output = JsonConvert.SerializeObject(procedure, Formatting.Indented, Parsers.serializerSettings);
             streamWriter.WriteLine(output);
             Debug.LogFormat("Data saved to file '{0}'", procedureName);
         }
-#endif
     }
 
     public void DeleteProcedureDefinition(string procedureName)
     {
+<<<<<<< Updated upstream
 #if !UNITY_WSA && !UNITY_EDITOR
         try
         {
@@ -182,9 +109,11 @@ public class LocalFileDataProvider : IProcedureDataProvider, ITextDataProvider
             Debug.LogError(ex.Message);
         }
 #else
+=======
+>>>>>>> Stashed changes
         Debug.Log("DeleteProcedureDefinition " + procedureName);
         string pathForDeletion = Path.Combine(Application.persistentDataPath, procedureName + ".json");
-        if(pathForDeletion != null)
+        if (pathForDeletion != null)
         {
             File.Delete(pathForDeletion);
         }
@@ -192,7 +121,6 @@ public class LocalFileDataProvider : IProcedureDataProvider, ITextDataProvider
         {
             Debug.LogWarning("specified file for deletion " + procedureName + " could not be found");
         }
-#endif
     }
 
     public async Task<string> LoadTextFile(string filePath)
@@ -204,18 +132,6 @@ public class LocalFileDataProvider : IProcedureDataProvider, ITextDataProvider
 
         try
         {
-#if !UNITY_WSA && !UNITY_EDITOR
-            StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
-            Debug.Log("LoadTextFile " + storageFolder.Name);
-            StorageFile file = await storageFolder.GetFileAsync(filePath);
-            if (file == null)
-            {
-                Debug.WriteLine("Could not find file '{0}'", filePath);
-                return string.Empty;
-            }
-
-            return await Windows.Storage.FileIO.ReadTextAsync(file);
-#else
             using (TextReader streamReader = new StreamReader(Path.Combine(Application.persistentDataPath, filePath)))
             {
 
@@ -223,7 +139,6 @@ public class LocalFileDataProvider : IProcedureDataProvider, ITextDataProvider
                 Debug.LogFormat("Data '{0}' loaded from file '{1}'", data, filePath);
                 return data;
             }
-#endif
         }
         catch (Exception ex)
         {
@@ -241,18 +156,11 @@ public class LocalFileDataProvider : IProcedureDataProvider, ITextDataProvider
 
         try
         {
-#if !UNITY_WSA && !UNITY_EDITOR
-            StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
-            Debug.Log("SaveTextFile " + storageFolder.Name);
-            StorageFile storageFile = await storageFolder.CreateFileAsync(filePath, CreationCollisionOption.ReplaceExisting);
-            await Windows.Storage.FileIO.WriteTextAsync(storageFile, contents);
-#else
             using (TextWriter streamWriter = new StreamWriter(Path.Combine(Application.persistentDataPath, filePath), append: false))
             {
                 streamWriter.Write(contents);
                 Debug.LogFormat("Data saved to file '{0}'", filePath);
             }
-#endif
         }
         catch (Exception ex)
         {
@@ -269,11 +177,7 @@ public class LocalFileDataProvider : IProcedureDataProvider, ITextDataProvider
 
         try
         {
-#if !UNITY_WSA && !UNITY_EDITOR
-            string storageFolder = ApplicationData.Current.LocalFolder;
-#else
             string storageFolder = Application.persistentDataPath;
-#endif
             Debug.Log("DeleteTextFile " + fileName + " from " + storageFolder);
             if (File.Exists(Path.Combine(storageFolder, fileName + fileExt)))
             {

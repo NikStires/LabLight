@@ -14,23 +14,21 @@ namespace PolySpatial.Samples
         [SerializeField]
         Material m_SelectedMat;
 
-        Rigidbody m_Rigidbody;
-        GameObject m_TempParent;
+        Rigidbody m_RigidBody;
+
+        public int selectingPointer { get; private set; } = ManipulationInputManager.k_Deselected;
 
         void Start()
         {
-            m_Rigidbody = GetComponent<Rigidbody>();
-
-            m_TempParent = new GameObject("tempParent_" + gameObject.name);
-            m_TempParent.transform.position = transform.position;
+            m_RigidBody = GetComponent<Rigidbody>();
         }
 
-        public void Select(bool selected, Vector3 interactionPosition)
+        public void SetSelected(int pointer)
         {
-            m_TempParent.transform.position = interactionPosition;
-            transform.SetParent(selected ? m_TempParent.transform : null);
-            m_MeshRenderer.material = selected ? m_SelectedMat : m_DefaultMat;
-            m_Rigidbody.isKinematic = selected;
+            var isSelected = pointer != ManipulationInputManager.k_Deselected;
+            selectingPointer = pointer;
+            m_MeshRenderer.material = isSelected ? m_SelectedMat : m_DefaultMat;
+            m_RigidBody.isKinematic = isSelected;
         }
     }
 }

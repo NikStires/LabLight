@@ -78,9 +78,9 @@ namespace PolySpatial.Samples
             if (touchZeroPhase == TouchPhase.Began || touchZeroPhase == TouchPhase.Moved)
             {
                 m_TouchZeroInputGizmo.position = touchZeroValue.interactionPosition;
-                m_TouchZeroInputGizmo.rotation = touchZeroValue.deviceRotation;
-                m_TouchZeroDeviceInputGizmo.position = touchZeroValue.devicePosition;
-                m_TouchZeroDeviceInputGizmo.rotation = touchZeroValue.deviceRotation;
+                m_TouchZeroInputGizmo.rotation = touchZeroValue.inputDeviceRotation;
+                m_TouchZeroDeviceInputGizmo.position = touchZeroValue.inputDevicePosition;
+                m_TouchZeroDeviceInputGizmo.rotation = touchZeroValue.inputDeviceRotation;
 
                 // Switch to unbounded mode to get selection ray data
                 var rayDirection = touchZeroValue.startInteractionRayDirection;
@@ -96,9 +96,9 @@ namespace PolySpatial.Samples
             if (touchOnePhase == TouchPhase.Began || touchOnePhase == TouchPhase.Moved)
             {
                 m_TouchOneInputGizmo.position = touchOneValue.interactionPosition;
-                m_TouchOneInputGizmo.rotation = touchOneValue.deviceRotation;
-                m_TouchOneDeviceInputGizmo.position = touchOneValue.devicePosition;
-                m_TouchOneDeviceInputGizmo.rotation = touchOneValue.deviceRotation;
+                m_TouchOneInputGizmo.rotation = touchOneValue.inputDeviceRotation;
+                m_TouchOneDeviceInputGizmo.position = touchOneValue.inputDevicePosition;
+                m_TouchOneDeviceInputGizmo.rotation = touchOneValue.inputDeviceRotation;
 
                 // Switch to unbounded mode to get selection ray data
                 var rayDirection = touchOneValue.startInteractionRayDirection;
@@ -115,8 +115,8 @@ namespace PolySpatial.Samples
         void SetTextValues(DebugTouchHelper debugTouch, SpatialPointerState touchState, TouchPhase touchPhase)
         {
             var touchPosition = touchState.interactionPosition;
-            var touchDevicePosition = touchState.devicePosition;
-            var touchDeviceRotation = touchState.deviceRotation.eulerAngles;
+            var touchDevicePosition = touchState.inputDevicePosition;
+            var touchDeviceRotation = touchState.inputDeviceRotation.eulerAngles;
             var touchSelectionRayPosition = touchState.startInteractionRayOrigin;
             var touchSelectionRayDirection = touchState.startInteractionRayDirection;
 

@@ -11,7 +11,6 @@ namespace PolySpatial.Samples
 {
     public class HandVisualizer : MonoBehaviour
     {
-        [FormerlySerializedAs("m_DebugDrawPrefab")]
         [SerializeField]
         GameObject m_JointPrefab;
 
@@ -297,17 +296,26 @@ namespace PolySpatial.Samples
                     return;
 
                 var jointIndex = joint.id.ToIndex();
-                if (!joint.TryGetPose(out var pose))
+                var drawJoint = m_DrawJoints[jointIndex];
+                var line = m_Lines[jointIndex];
+                if ((joint.trackingState & XRHandJointTrackingState.Pose) == 0 || !joint.TryGetPose(out var pose))
+                {
+                    drawJoint.SetActive(false);
+                    line.gameObject.SetActive(false);
                     return;
+                }
 
-                m_DrawJoints[jointIndex].transform.localPosition = pose.position;
-                m_DrawJoints[jointIndex].transform.localRotation = pose.rotation;
+                drawJoint.SetActive(true);
+                line.gameObject.SetActive(true);
+                var jointTransform = drawJoint.transform;
+                jointTransform.localPosition = pose.position;
+                jointTransform.localRotation = pose.rotation;
 
                 if (joint.id != XRHandJointID.Wrist)
                 {
                     s_LinePointsReuse[0] = m_DrawJoints[parentIndex].transform.position;
-                    s_LinePointsReuse[1] = m_DrawJoints[jointIndex].transform.position;
-                    m_Lines[jointIndex].SetPositions(s_LinePointsReuse);
+                    s_LinePointsReuse[1] = jointTransform.position;
+                    line.SetPositions(s_LinePointsReuse);
                 }
 
                 if (cacheParentPose)

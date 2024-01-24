@@ -19,7 +19,6 @@ namespace PolySpatial.Samples
         {
             base.Press(position);
             var localPosition = transform.InverseTransformPoint(position);
-            Debug.LogWarning($"{position} {localPosition} {m_BoxColliderSizeX}");
             var percentage = localPosition.x / m_BoxColliderSizeX + 0.5f;
             m_FillRenderer.material.SetFloat("_Percentage", Mathf.Clamp(percentage, 0.0f, 1.0f));
         }

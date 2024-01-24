@@ -25,14 +25,16 @@ public class SessionManager : Singleton<SessionManager>
         }
     }
 
+    public bool loadProcedure = true;
+
     public void Awake()
     {
         if (UseLocalFileSystem)
         {
             var resourceFileDataProvider = new ResourceFileDataProvider();
 
-            var aggregateFileDataProvider = new AggregateFileDataProvider(new List<IProcedureDataProvider> { resourceFileDataProvider, new LocalFileDataProvider() });
-            ServiceRegistry.RegisterService<IProcedureDataProvider>(aggregateFileDataProvider);
+            //var aggregateFileDataProvider = new AggregateFileDataProvider(new List<IProcedureDataProvider> { resourceFileDataProvider, new LocalFileDataProvider() });
+            ServiceRegistry.RegisterService<IProcedureDataProvider>(resourceFileDataProvider);
 
             ServiceRegistry.RegisterService<IMediaProvider>(resourceFileDataProvider);
             //ServiceRegistry.RegisterService<IWorkspaceProvider>(new StubbedWorkspaceProvider());
@@ -65,6 +67,44 @@ public class SessionManager : Singleton<SessionManager>
         //    Axes.SetValue(val);
         //}).AddTo(this);
     }
+
+    public void Update()
+    {
+        Debug.Log(ProtocolState.ProcedureTitle);
+        Debug.Log(ProtocolState.Steps.Count);
+
+    }
+
+    public void OnEnable()
+    {
+        if (loadProcedure)
+        {
+            LoadProcedure();
+        }
+    }
+
+    public void LoadProcedure()
+    {
+        var procedureDataProvider = ServiceRegistry.GetService<IProcedureDataProvider>();
+        if(procedureDataProvider != null)
+        {
+            procedureDataProvider.GetOrCreateProcedureDefinition("piplight_H551").Subscribe(procedure => 
+            {
+                ProtocolState.SetProcedureDefinition(procedure);
+            }, (e) =>
+            {
+                Debug.Log("Error fetching procedure");
+            });
+            ProtocolState.SetProcedureTitle("piplight_H551");
+        }
+        else
+        {
+            Debug.Log("Procedure Data provider null");
+        }
+
+    }
+
+
 
     /* used for charuco calibration, reimplement with hand tracking
     public void Update()

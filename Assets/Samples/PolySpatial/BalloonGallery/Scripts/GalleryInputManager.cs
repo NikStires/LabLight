@@ -41,13 +41,13 @@ namespace PolySpatial.Samples
                     }
 
                     // update input gizmo
-                    m_InputAxisTransform.SetPositionAndRotation(primaryTouchData.interactionPosition, primaryTouchData.deviceRotation);
+                    m_InputAxisTransform.SetPositionAndRotation(primaryTouchData.interactionPosition, primaryTouchData.inputDeviceRotation);
                 }
 
                 // visualize input gizmo while input is maintained
                 if (activeTouches[0].phase == TouchPhase.Moved)
                 {
-                    m_InputAxisTransform.SetPositionAndRotation(primaryTouchData.interactionPosition, primaryTouchData.deviceRotation);
+                    m_InputAxisTransform.SetPositionAndRotation(primaryTouchData.interactionPosition, primaryTouchData.inputDeviceRotation);
                 }
             }
         }

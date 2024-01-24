@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-#if UNITY_WSA && !UNITY_EDITOR
-using Windows.Storage;
-#endif
-
 /// <summary>
 /// Implements IDataProvider interface but delegate to multiple FileDataProvider implementations
 /// </summary>
@@ -53,6 +49,16 @@ public class AggregateFileDataProvider : IProcedureDataProvider
         }
         return null;
     }
+
+    //public ProcedureDefinition GetOrCreateProcedureDefinition(string procedureName)
+    //{
+    //    IProcedureDataProvider pv;
+    //    if(procedureLookup.TryGetValue(procedureName, out pv))
+    //    {
+    //        return pv.GetOrCreateProcedureDefinition(procedureName);
+    //    }
+    //    return null;
+    //}
 
     public void SaveProcedureDefinition(string procedureName, ProcedureDefinition procedure)
     {

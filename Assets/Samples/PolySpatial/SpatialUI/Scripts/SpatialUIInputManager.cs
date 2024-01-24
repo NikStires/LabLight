@@ -33,7 +33,6 @@ namespace PolySpatial.Samples
                     {
                         if (buttonObject.TryGetComponent(out SpatialUI button))
                         {
-                            Debug.Log("Button Touch");
                             button.Press(touchData.interactionPosition);
                         }
                     }

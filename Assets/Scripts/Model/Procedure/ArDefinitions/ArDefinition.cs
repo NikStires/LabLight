@@ -17,7 +17,6 @@ public enum ArDefinitionType
 
 public abstract class ArDefinition
 {
-    [HideInInspector]
     public ArDefinitionType arDefinitionType;
 
     // [HideReferenceObjectPicker]

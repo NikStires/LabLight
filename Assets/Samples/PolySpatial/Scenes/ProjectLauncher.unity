@@ -1429,53 +1429,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 497447600}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &531561207
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 531561209}
-  - component: {fileID: 531561208}
-  m_Layer: 0
-  m_Name: AR Session
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &531561208
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 531561207}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3859a92a05d4f5d418cb6ca605290e74, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AttemptUpdate: 1
-  m_MatchFrameRate: 1
-  m_TrackingMode: 2
---- !u!4 &531561209
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 531561207}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &601194363
 GameObject:
   m_ObjectHideFlags: 0
@@ -1972,7 +1925,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -2402,7 +2355,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -2845,6 +2798,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1311025579}
   - component: {fileID: 1311025580}
+  - component: {fileID: 1311025581}
   m_Layer: 0
   m_Name: VolumeCamera
   m_TagString: Untagged
@@ -2899,6 +2853,19 @@ MonoBehaviour:
   OnWindowFocused:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1311025581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1311025577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b0e24161653434389cbc153211c7545, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Mode: 0
 --- !u!1 &1361798807
 GameObject:
   m_ObjectHideFlags: 0
@@ -4120,7 +4087,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -1585602591384610058, guid: b1db1f01f9e2041e2803b9ff4a352a98, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1992509575}
+    - targetCorrespondingSourceObject: {fileID: 3074840979291717703, guid: b1db1f01f9e2041e2803b9ff4a352a98, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1992509568}
   m_SourcePrefab: {fileID: 100100000, guid: b1db1f01f9e2041e2803b9ff4a352a98, type: 3}
+--- !u!1 &1992509564 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3074840979291717703, guid: b1db1f01f9e2041e2803b9ff4a352a98, type: 3}
+  m_PrefabInstance: {fileID: 1992509563}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1992509565 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -1585602591384610058, guid: b1db1f01f9e2041e2803b9ff4a352a98, type: 3}
@@ -4136,6 +4111,27 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7755669532534355992, guid: b1db1f01f9e2041e2803b9ff4a352a98, type: 3}
   m_PrefabInstance: {fileID: 1992509563}
   m_PrefabAsset: {fileID: 0}
+--- !u!65 &1992509568
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1992509564}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.5, y: 1.9599999, z: 0.049999997}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &1992509572
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4880,4 +4876,3 @@ SceneRoots:
   - {fileID: 1465498689}
   - {fileID: 1820552219}
   - {fileID: 1025838181}
-  - {fileID: 531561209}
