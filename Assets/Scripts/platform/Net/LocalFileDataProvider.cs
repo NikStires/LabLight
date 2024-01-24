@@ -8,10 +8,6 @@ using System.Threading.Tasks;
 using UniRx;
 using UnityEngine;
 
-#if UNITY_WSA && !UNITY_EDITOR
-using Windows.Storage;
-#endif
-
 /// <summary>
 /// Implements IDataProvider interface for accessing available procedures and updating runtime state
 /// </summary>
@@ -88,29 +84,6 @@ public class LocalFileDataProvider : IProcedureDataProvider, ITextDataProvider
 
     public void DeleteProcedureDefinition(string procedureName)
     {
-<<<<<<< Updated upstream
-#if !UNITY_WSA && !UNITY_EDITOR
-        try
-        {
-            Debug.Log("DeleteProcedureDefinition " + procedureName);
-            // Create procedure file in the given storaeFolder
-            string pathForDeletion = Path.Combine(ApplicationData.Current.LocalFolder.Path, procedureName + ".json");
-            if(pathForDeletion != null)
-            {
-                File.Delete(pathForDeletion);
-            }
-            else
-            {
-                Debug.LogWarning("specified file for deletion " + procedureName + " could not be found");
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.LogError(ex.Message);
-        }
-#else
-=======
->>>>>>> Stashed changes
         Debug.Log("DeleteProcedureDefinition " + procedureName);
         string pathForDeletion = Path.Combine(Application.persistentDataPath, procedureName + ".json");
         if (pathForDeletion != null)
