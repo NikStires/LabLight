@@ -12,8 +12,8 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
-  productName: PolySpatial Project Template
+  companyName: LabLightAR
+  productName: LabLight
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -141,9 +141,9 @@ PlayerSettings:
   tvOSBundleVersion: 1.0
   bundleVersion: 0.1
   preloadedAssets:
-  - {fileID: 11400000, guid: bb65518a4a80049acbc5e85e70dbbee0, type: 2}
   - {fileID: -374473393521292908, guid: 91384b14c79fa804d924648a4e81b07c, type: 2}
   - {fileID: 11400000, guid: d1b44b12dbc12554c862e577406554bd, type: 2}
+  - {fileID: 11400000, guid: bb65518a4a80049acbc5e85e70dbbee0, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -164,7 +164,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    VisionOS: com.DefaultCompany.PolySpatial-Project-Template
+    VisionOS: com.LabLightAR.LabLight
     iPhone: com.DefaultCompany.PolySpatial-Project-Template
   buildNumber:
     Standalone: 0
@@ -239,14 +239,14 @@ PlayerSettings:
   metalAPIValidation: 1
   iOSRenderExtraFrameOnPause: 0
   iosCopyPluginsCodeInsteadOfSymlink: 0
-  appleDeveloperTeamID: 
+  appleDeveloperTeamID: Lablight AR, inc.
   iOSManualSigningProvisioningProfileID: 
   tvOSManualSigningProvisioningProfileID: 
   VisionOSManualSigningProvisioningProfileID: 
   iOSManualSigningProvisioningProfileType: 0
   tvOSManualSigningProvisioningProfileType: 0
   VisionOSManualSigningProvisioningProfileType: 0
-  appleEnableAutomaticSigning: 0
+  appleEnableAutomaticSigning: 1
   iOSRequireARKit: 0
   iOSAutomaticallyDetectAndAddCapabilities: 1
   appleEnableProMotion: 0
@@ -387,7 +387,10 @@ PlayerSettings:
       m_SubKind: App Store
   - m_BuildTarget: VisionOS
     m_Icons:
-    - m_Textures: []
+    - m_Textures:
+      - {fileID: 2800000, guid: 4806fa7f54f644baeb4450da556bfecc, type: 3}
+      - {fileID: 2800000, guid: 0620ba709ae9b48498f2b906fdf3a33f, type: 3}
+      - {fileID: 2800000, guid: 6ae2c1789fe164b94bb43738734989e1, type: 3}
       m_Width: 1024
       m_Height: 1024
       m_Kind: 0
@@ -502,9 +505,9 @@ PlayerSettings:
   enableInternalProfiler: 0
   logObjCUncaughtExceptions: 1
   enableCrashReportAPI: 0
-  cameraUsageDescription: 
+  cameraUsageDescription: Spatial mapping
   locationUsageDescription: 
-  microphoneUsageDescription: 
+  microphoneUsageDescription: Hands free voice control
   bluetoothUsageDescription: 
   macOSTargetOSVersion: 10.13.0
   switchNMETAOverride: 

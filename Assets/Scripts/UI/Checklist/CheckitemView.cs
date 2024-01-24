@@ -44,6 +44,7 @@ public class CheckitemView : MonoBehaviour
     public void Check()
     {
         itemChecked = true;
+        text.text = strikeText;
         m_StartLerpTime = Time.time;
         m_ToggleMesh.material = checkedMaterial;
     }
@@ -51,6 +52,7 @@ public class CheckitemView : MonoBehaviour
     public void Uncheck()
     {
         itemChecked = false;
+        text.text = rawText;
         m_StartLerpTime = Time.time;
         m_ToggleMesh.material = uncheckedMaterial;
     }

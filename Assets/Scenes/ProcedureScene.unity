@@ -1866,18 +1866,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8431068307063404667, guid: 5b467a18209324bb7a59bc7082f64023, type: 3}
-      propertyPath: m_Spacing
-      value: 0.04
-      objectReference: {fileID: 0}
-    - target: {fileID: 8431068307063404667, guid: 5b467a18209324bb7a59bc7082f64023, type: 3}
-      propertyPath: m_ChildAlignment
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8431068307063404667, guid: 5b467a18209324bb7a59bc7082f64023, type: 3}
-      propertyPath: m_ChildForceExpandHeight
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 9182683688938801064, guid: 5b467a18209324bb7a59bc7082f64023, type: 3}
       propertyPath: m_IsActive
       value: 1
