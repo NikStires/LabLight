@@ -1558,6 +1558,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e474f3ed687867d42be9b68ec551af34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugEnableAll: 1
 --- !u!114 &1748884005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1570,7 +1571,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5b7db0f748a34ff7a6915da77d01382, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UseLocalFileSystem: 1
   loadProcedure: 1
 --- !u!1001 &1896263140
 PrefabInstance:

@@ -19,6 +19,8 @@ public class SettingsManager : MonoBehaviour
     private const string ShowSourceContentsSetting = "ShowSourceContentsSetting";
     private const string ShowSourceTransformSetting = "ShowSourceContentsSetting";
 
+    public bool debugEnableAll;
+
     void Start()
     {
         // Initialize from player preferences
@@ -42,55 +44,101 @@ public class SettingsManager : MonoBehaviour
         //    PlayerPrefs.Save();
         //}).AddTo(this);
 
-        SessionState.ShowWorkspaceOrigin.Subscribe(value =>
+        if(debugEnableAll)
         {
-            PlayerPrefs.SetInt(ShowWorkspaceOrigin, value ? 1 : 0);
-            PlayerPrefs.Save();
-        }).AddTo(this);
+            SessionState.ShowRowColIndicators.Subscribe(value =>
+            {
+                PlayerPrefs.SetInt(ShowRowColIndicatorsSetting, 1);
+                PlayerPrefs.Save();
+            }).AddTo(this);
 
-        //well plate settings
+            SessionState.ShowRowColIndicatorHighlight.Subscribe(value =>
+            {
+                PlayerPrefs.SetInt(ShowRowColIndicatorHighlightSetting, 1);
+                PlayerPrefs.Save();
+            }).AddTo(this);
 
+            SessionState.ShowRowColHighlights.Subscribe(value =>
+            {
+                PlayerPrefs.SetInt(ShowRowColHighlightsSetting, 1);
+                PlayerPrefs.Save();
+            }).AddTo(this);
 
-        SessionState.ShowRowColIndicators.Subscribe(value =>
+            SessionState.ShowInformationPanel.Subscribe(value =>
+            {
+                PlayerPrefs.SetInt(ShowInformationPanelSetting, 1);
+                PlayerPrefs.Save();
+            }).AddTo(this);
+
+            SessionState.ShowMarker.Subscribe(value =>
+            {
+                PlayerPrefs.SetInt(ShowMarkerSetting, 1);
+                PlayerPrefs.Save();
+            }).AddTo(this);
+
+            SessionState.ShowSourceContents.Subscribe(value =>
+            {
+                PlayerPrefs.SetInt(ShowSourceContentsSetting, 1);
+                PlayerPrefs.Save();
+            }).AddTo(this);
+
+            SessionState.ShowSourceTransform.Subscribe(value =>
+            {
+                PlayerPrefs.SetInt(ShowSourceTransformSetting, 1);
+                PlayerPrefs.Save();
+            }).AddTo(this);
+        }
+        else
         {
-            PlayerPrefs.SetInt(ShowRowColIndicatorsSetting, value ? 1 : 0);
-            PlayerPrefs.Save();
-        }).AddTo(this);
+            SessionState.ShowWorkspaceOrigin.Subscribe(value =>
+            {
+                PlayerPrefs.SetInt(ShowWorkspaceOrigin, value ? 1 : 0);
+                PlayerPrefs.Save();
+            }).AddTo(this);
 
-        SessionState.ShowRowColIndicatorHighlight.Subscribe(value =>
-        {
-            PlayerPrefs.SetInt(ShowRowColIndicatorHighlightSetting, value ? 1 : 0);
-            PlayerPrefs.Save();
-        }).AddTo(this);
+            SessionState.ShowRowColIndicators.Subscribe(value =>
+            {
+                PlayerPrefs.SetInt(ShowRowColIndicatorsSetting, value ? 1 : 0);
+                PlayerPrefs.Save();
+            }).AddTo(this);
 
-        SessionState.ShowRowColHighlights.Subscribe(value =>
-        {
-            PlayerPrefs.SetInt(ShowRowColHighlightsSetting, value ? 1 : 0);
-            PlayerPrefs.Save();
-        }).AddTo(this);
+            SessionState.ShowRowColIndicatorHighlight.Subscribe(value =>
+            {
+                PlayerPrefs.SetInt(ShowRowColIndicatorHighlightSetting, value ? 1 : 0);
+                PlayerPrefs.Save();
+            }).AddTo(this);
 
-        SessionState.ShowInformationPanel.Subscribe(value =>
-        {
-            PlayerPrefs.SetInt(ShowInformationPanelSetting, value ? 1 : 0);
-            PlayerPrefs.Save();
-        }).AddTo(this);
+            SessionState.ShowRowColHighlights.Subscribe(value =>
+            {
+                PlayerPrefs.SetInt(ShowRowColHighlightsSetting, value ? 1 : 0);
+                PlayerPrefs.Save();
+            }).AddTo(this);
 
-        SessionState.ShowMarker.Subscribe(value =>
-        {
-            PlayerPrefs.SetInt(ShowMarkerSetting, value ? 1 : 0);
-            PlayerPrefs.Save();
-        }).AddTo(this);
+            SessionState.ShowInformationPanel.Subscribe(value =>
+            {
+                PlayerPrefs.SetInt(ShowInformationPanelSetting, value ? 1 : 0);
+                PlayerPrefs.Save();
+            }).AddTo(this);
 
-        SessionState.ShowSourceContents.Subscribe(value =>
-        {
-            PlayerPrefs.SetInt(ShowSourceContentsSetting, value ? 1 : 0);
-            PlayerPrefs.Save();
-        }).AddTo(this);
+            SessionState.ShowMarker.Subscribe(value =>
+            {
+                PlayerPrefs.SetInt(ShowMarkerSetting, value ? 1 : 0);
+                PlayerPrefs.Save();
+            }).AddTo(this);
 
-        SessionState.ShowSourceTransform.Subscribe(value =>
-        {
-            PlayerPrefs.SetInt(ShowSourceTransformSetting, value ? 1 : 0);
-            PlayerPrefs.Save();
-        }).AddTo(this);
+            SessionState.ShowSourceContents.Subscribe(value =>
+            {
+                PlayerPrefs.SetInt(ShowSourceContentsSetting, value ? 1 : 0);
+                PlayerPrefs.Save();
+            }).AddTo(this);
+
+            SessionState.ShowSourceTransform.Subscribe(value =>
+            {
+                PlayerPrefs.SetInt(ShowSourceTransformSetting, value ? 1 : 0);
+                PlayerPrefs.Save();
+            }).AddTo(this);
+        }
+
+        
     }
 }

@@ -377,7 +377,7 @@ public class ArObjectManager : MonoBehaviour
                 var prefabInstance = Instantiate(arViewPrefab, workspaceTransform);
                 // Resolve all trackedObjects that this definition wants
                 List<TrackedObject> trackedObjects = ResolveTrackedObjects(modelArDefinition.Targets());
-
+                Debug.Log("creating model - " + modelArDefinition.name);
                 prefabInstance.Initialize(modelArDefinition, trackedObjects);
 
                 // RS Quick fix to prevent overwriting models that were late loaded

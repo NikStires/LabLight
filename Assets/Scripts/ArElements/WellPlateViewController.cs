@@ -15,6 +15,8 @@ using TMPro;
 [RequireComponent(typeof(CapsuleCollider))]
 public class WellPlateViewController : ModelElementViewController
 {
+    public bool debugEnableAllSettings = true;
+    
     public bool modelActive;
 
     [SerializeField]
@@ -143,19 +145,33 @@ public class WellPlateViewController : ModelElementViewController
             //new imp
     public override void HighlightGroup(List<HighlightAction> actions)
     {
-        if(actions != null && !alignmentTriggered)
+
+        this.gameObject.SetActive(true); //debug
+        if (actions != null && !alignmentTriggered)
         {
             modelActive = true;
             currActions = actions;
             enableHighlight(actions[0]);
-            if(actions.Count() == 2) //usually dealing with transfer step on the same plate
+            Debug.Log("enabling highlight");
+            if (actions.Count() == 2) //usually dealing with transfer step on the same plate
             {
                 enableHighlight(actions[1]);
             }
-            toggleIndicators(SessionState.ShowRowColIndicators.Value);
-            if(actions[0].chainIDs.Count() > 0)
+            if (debugEnableAllSettings)
             {
-                toggleInfoPanel(SessionState.ShowInformationPanel.Value, actions);
+                toggleIndicators(true);
+                if (actions[0].chainIDs.Count() > 0)
+                {
+                    toggleInfoPanel(true, actions);
+                }
+            }
+            else
+            {
+                toggleIndicators(SessionState.ShowRowColIndicators.Value);
+                if (actions[0].chainIDs.Count() > 0)
+                {
+                    toggleInfoPanel(SessionState.ShowInformationPanel.Value, actions);
+                }
             }
         }
     }
@@ -193,12 +209,22 @@ public class WellPlateViewController : ModelElementViewController
             {
                 toggleTransform(Markers2D, true, id, Color.green);
             }
-            toggleTransform(Markers, SessionState.ShowMarker.Value, id, parsedColor);
-            toggleTransform(rowIndicators, SessionState.ShowRowColIndicatorHighlight.Value, id.Substring(0,1), parsedColor);
-            toggleTransform(colIndicators, SessionState.ShowRowColIndicatorHighlight.Value, id.Substring(1), parsedColor);
-            toggleTransform(rowHighlights, SessionState.ShowRowColHighlights.Value, id.Substring(0,1));
-            toggleTransform(colHighlights, SessionState.ShowRowColHighlights.Value, id.Substring(1));
-        
+            if(debugEnableAllSettings)
+            {
+                toggleTransform(Markers, true, id, parsedColor);
+                toggleTransform(rowIndicators, true, id.Substring(0, 1), parsedColor);
+                toggleTransform(colIndicators, true, id.Substring(1), parsedColor);
+                //toggleTransform(rowHighlights, true, id.Substring(0, 1));
+                //toggleTransform(colHighlights, true, id.Substring(1));
+            }
+            else
+            {
+                toggleTransform(Markers, SessionState.ShowMarker.Value, id, parsedColor);
+                toggleTransform(rowIndicators, SessionState.ShowRowColIndicatorHighlight.Value, id.Substring(0, 1), parsedColor);
+                toggleTransform(colIndicators, SessionState.ShowRowColIndicatorHighlight.Value, id.Substring(1), parsedColor);
+                //toggleTransform(rowHighlights, SessionState.ShowRowColHighlights.Value, id.Substring(0, 1));
+                //toggleTransform(colHighlights, SessionState.ShowRowColHighlights.Value, id.Substring(1));
+            }
         }
     }
 
@@ -222,8 +248,8 @@ public class WellPlateViewController : ModelElementViewController
             toggleTransform(Markers, false, id, Color.green);
             toggleTransform(rowIndicators, true, id.Substring(0,1), defaultIndicatorColor);
             toggleTransform(colIndicators, true, id.Substring(1), defaultIndicatorColor);
-            toggleTransform(rowHighlights, false, id.Substring(0,1));
-            toggleTransform(colHighlights, false, id.Substring(1));
+            //toggleTransform(rowHighlights, false, id.Substring(0,1));
+            //toggleTransform(colHighlights, false, id.Substring(1));
         }
     }
 
@@ -259,7 +285,11 @@ public class WellPlateViewController : ModelElementViewController
         {
             foreach(Transform obj in rowIndicators)
             {
-                if(!SessionState.ShowRowColIndicatorHighlight.Value && SessionState.ShowRowColIndicators.Value)
+                if(debugEnableAllSettings)
+                {
+                    obj.GetComponent<TextMeshProUGUI>().color = defaultIndicatorColor;
+                }
+                else if(!SessionState.ShowRowColIndicatorHighlight.Value && SessionState.ShowRowColIndicators.Value)
                 {
                     obj.GetComponent<TextMeshProUGUI>().color = defaultIndicatorColor;
                 }
@@ -271,7 +301,11 @@ public class WellPlateViewController : ModelElementViewController
             }
             foreach(Transform obj in colIndicators)
             {
-                if(!SessionState.ShowRowColIndicatorHighlight.Value && SessionState.ShowRowColIndicators.Value)
+                if (debugEnableAllSettings)
+                {
+                    obj.GetComponent<TextMeshProUGUI>().color = defaultIndicatorColor;
+                }
+                else if (!SessionState.ShowRowColIndicatorHighlight.Value && SessionState.ShowRowColIndicators.Value)
                 {
                     obj.GetComponent<TextMeshProUGUI>().color = defaultIndicatorColor;
                 }
@@ -336,17 +370,36 @@ public class WellPlateViewController : ModelElementViewController
             {
                 foreach(string id in action.chainIDs)
                 {
-                    toggleTransform(rowIndicators, (SessionState.ShowRowColIndicatorHighlight.Value && value), id.Substring(0,1));
-                    toggleTransform(colIndicators, (SessionState.ShowRowColIndicatorHighlight.Value && value), id.Substring(1));
-                    toggleTransform(rowHighlights, (SessionState.ShowRowColHighlights.Value && value), id.Substring(0,1));
-                    toggleTransform(colHighlights, (SessionState.ShowRowColHighlights.Value && value), id.Substring(1));
-                    toggleTransform(Markers, (SessionState.ShowMarker.Value && value), id);
+                    if (debugEnableAllSettings)
+                    {
+                        toggleTransform(rowIndicators, (true && value), id.Substring(0, 1));
+                        toggleTransform(colIndicators, (true && value), id.Substring(1));
+                        //toggleTransform(rowHighlights, (true && value), id.Substring(0, 1));
+                        //toggleTransform(colHighlights, (true && value), id.Substring(1));
+                        toggleTransform(Markers, (true && value), id);
+                    }
+                    else
+                    {
+                        toggleTransform(rowIndicators, (SessionState.ShowRowColIndicatorHighlight.Value && value), id.Substring(0, 1));
+                        toggleTransform(colIndicators, (SessionState.ShowRowColIndicatorHighlight.Value && value), id.Substring(1));
+                        //toggleTransform(rowHighlights, (SessionState.ShowRowColHighlights.Value && value), id.Substring(0, 1));
+                        //toggleTransform(colHighlights, (SessionState.ShowRowColHighlights.Value && value), id.Substring(1));
+                        toggleTransform(Markers, (SessionState.ShowMarker.Value && value), id);
+                    }
                 }
             }
         }
         toggleTransform(ModelName, value);
-        toggleInfoPanel((SessionState.ShowInformationPanel.Value && value), currActions);
-        toggleIndicators((SessionState.ShowRowColIndicators.Value && value));
+        if(debugEnableAllSettings)
+        {
+            toggleInfoPanel((true && value), currActions);
+            toggleIndicators((true && value));
+        }
+        else
+        {
+            toggleInfoPanel((SessionState.ShowInformationPanel.Value && value), currActions);
+            toggleIndicators((SessionState.ShowRowColIndicators.Value && value));
+        }
     }
 
     void OnCheckItemChanged()

@@ -7,7 +7,7 @@
       "$id": "2",
       "url": "horizontalwellplate96",
       "position": {
-        "x": 0.0,
+        "x": 0.15,
         "y": 0.0,
         "z": 0.0
       },
@@ -55,11 +55,11 @@
         "conditionType": "Anchor"
       }
     },
-    {
+    {                  
       "$id": "8",
       "url": "tuberack2ml.prefab",
       "position": {
-        "x": 0.3,
+        "x": -0.12,
         "y": 0.0,
         "z": 0.04
       },

@@ -15,6 +15,7 @@ using TMPro;
 [RequireComponent(typeof(CapsuleCollider))]
 public class SourceElementViewController : ModelElementViewController
 {
+    public bool debugeEnableAllSettings = true;
 
     public bool modelActive;
 
@@ -131,7 +132,9 @@ public class SourceElementViewController : ModelElementViewController
             //new imp
     public override void HighlightGroup(List<HighlightAction> actions)
     {
-        if(actions != null && !alignmentTriggered)
+
+        this.gameObject.SetActive(true); //debug
+        if (actions != null && !alignmentTriggered)
         {
             modelActive = true;
             currActions = actions;
@@ -165,8 +168,16 @@ public class SourceElementViewController : ModelElementViewController
         }
         foreach(string id in action.chainIDs)
         {
-            toggleTransform(Sources, SessionState.ShowSourceTransform.Value, id);
-            toggleTransform(nameTags, SessionState.ShowSourceContents.Value, id);
+            if(debugeEnableAllSettings)
+            {
+                toggleTransform(Sources, true, id);
+                toggleTransform(nameTags, true, id);
+            }
+            else
+            {
+                toggleTransform(Sources, SessionState.ShowSourceTransform.Value, id);
+                toggleTransform(nameTags, SessionState.ShowSourceContents.Value, id);
+            }
         }
     }
 
@@ -214,8 +225,16 @@ public class SourceElementViewController : ModelElementViewController
             {
                 foreach(string id in action.chainIDs)
                 {
-                    toggleTransform(Sources, (SessionState.ShowSourceTransform.Value && value), id);
-                    toggleTransform(nameTags, (SessionState.ShowSourceContents.Value && value), id);
+                    if (debugeEnableAllSettings)
+                    {
+                        toggleTransform(Sources, (true && value), id);
+                        toggleTransform(nameTags, (true && value), id);
+                    }
+                    else
+                    {
+                        toggleTransform(Sources, (SessionState.ShowSourceTransform.Value && value), id);
+                        toggleTransform(nameTags, (SessionState.ShowSourceContents.Value && value), id);
+                    }
                 }
             }
         }

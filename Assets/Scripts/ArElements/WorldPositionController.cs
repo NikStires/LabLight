@@ -54,13 +54,15 @@ public class WorldPositionController : ArElementViewController
             }
             else
             {
-                transform.position = _defaultPosition;
+
+                //transform.position = _defaultPosition;
+                transform.position = ((ModelArDefinition)this.arDefinition).position;
                 transform.localRotation = _defaultOrientation;
             }
         }
         else
         {
-            transform.position = _defaultPosition;
+            transform.position = ((ModelArDefinition)this.arDefinition).position;
             transform.localRotation = _defaultOrientation;
         }
     }
