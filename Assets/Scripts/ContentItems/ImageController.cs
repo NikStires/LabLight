@@ -9,7 +9,6 @@ using System;
 public class ImageController : ContentController<ImageItem>
 {
     public Image Image;
-    public GameObject LoadingIndicator;
     private IDisposable downloadSubscription;
 
     public override ImageItem ContentItem
@@ -38,7 +37,6 @@ public class ImageController : ContentController<ImageItem>
         downloadSubscription = null;
 
         Image.enabled = false;
-        LoadingIndicator.SetActive(true);
 
         // Start new download
         downloadSubscription = ServiceRegistry.GetService<IMediaProvider>().GetSprite(imagePath).Subscribe(sprite =>
@@ -51,7 +49,6 @@ public class ImageController : ContentController<ImageItem>
             Image.sprite = sprite;
             Image.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, transform.parent.GetComponent<RectTransform>().rect.width);
             Image.enabled = true;
-            LoadingIndicator.SetActive(false);
 
             var fitter = this.GetComponent<AspectRatioFitter>();
             if (fitter != null)
