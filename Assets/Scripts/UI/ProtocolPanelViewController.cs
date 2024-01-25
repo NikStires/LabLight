@@ -12,9 +12,6 @@ public class ProtocolPanelViewController : MonoBehaviour
     public TextMeshProUGUI procedureTitle;
     public TextMeshProUGUI stepText;
 
-    public XRSimpleInteractable m_PreviousButton;
-    public XRSimpleInteractable m_NextButton;
-
     public Transform contentFrame;
 
     //content item prefabs

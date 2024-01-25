@@ -127,8 +127,6 @@ public class Parsers
 
             Debug.Log("Procedure '" + procedure.title + "' file version " + procedure.version);
 
-            Debug.Log(json);
-
             if (procedure.version >= 1)
             {
                 procedure = JsonConvert.DeserializeObject<ProcedureDefinition>(json, serializerSettings);

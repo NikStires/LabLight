@@ -77,6 +77,7 @@ public class SessionManager : MonoBehaviour
         {
             procedureDataProvider.GetOrCreateProcedureDefinition("piplight_H551").Subscribe(procedure => 
             {
+                Debug.Log(procedure.title + " loaded");
                 ProtocolState.SetProcedureDefinition(procedure);
             }, (e) =>
             {
