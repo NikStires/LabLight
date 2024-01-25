@@ -41,20 +41,6 @@ public class ResourceFileDataProvider : IProcedureDataProvider, IMediaProvider
         var basePath = "Procedure/" + procedureName;
         var systemIoPath = @"Assets/Resources/" + basePath;
 
-#if !WINDOWS_UWP
-        // File existence checks do not work in UWP (
-        if (!Directory.Exists(systemIoPath) || !File.Exists(systemIoPath + "/index.json"))
-        {
-            // Create empty definition
-            ProcedureDefinition newProcedure = new ProcedureDefinition()
-            {
-                version = 9
-            };
-
-            return Observable.Return(newProcedure);
-        }
-#endif
-
         return LoadTextAsset(basePath + "/index").Select(jsonString =>
         {
             try
