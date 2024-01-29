@@ -10,7 +10,7 @@ public class HandCalibrationViewController : MonoBehaviour
     [SerializeField] MeshRenderer middleTip;
     [SerializeField] MeshRenderer ringTip;
     [SerializeField] MeshRenderer pinkyTip;
-    [SerializeField] MeshRenderer origin;
+    [SerializeField] GameObject origin;
 
     [SerializeField] Material fillMaterial;
 
@@ -44,21 +44,36 @@ public class HandCalibrationViewController : MonoBehaviour
         pinkyTip.gameObject.SetActive(true);
         progress += 0.14f;
         fillMaterial.SetFloat("_FillRate", progress);
-        yield return new WaitForSeconds(1f);
         StartCoroutine(LerpRingScale());
     }
 
     private IEnumerator LerpRingScale()
     {
         float timeElapsed = 0;
-        origin.gameObject.SetActive(true);
+        origin.SetActive(true);
         while (timeElapsed < lerpDuration)
         {
             progressRing.transform.localScale = progressRing.transform.localScale * Mathf.Lerp(1f, 0f, timeElapsed / lerpDuration);
+            if(progressRing.transform.localScale.x < 0.22f)
+            {
+                StartCoroutine(DeactivateFingerPoints());
+            }
             timeElapsed += Time.deltaTime;
             yield return null;
         }
         progressRing.transform.localScale = new Vector3(0,0,0);
+        yield return new WaitForSeconds(3f);
+        origin.SetActive(false);
+    }
+
+    private IEnumerator DeactivateFingerPoints()
+    {
+        yield return new WaitForSeconds(0.05f);
         progressRing.gameObject.SetActive(false);
+        thumbTip.gameObject.SetActive(false);
+        pointerTip.gameObject.SetActive(false);
+        middleTip.gameObject.SetActive(false);
+        ringTip.gameObject.SetActive(false);
+        pinkyTip.gameObject.SetActive(false);
     }
 }
