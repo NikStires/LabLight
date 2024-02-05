@@ -19,7 +19,7 @@ public class ProtocolMenuViewController : MonoBehaviour
     private int currentPage = 0;
     private int maxPage = 0;
 
-    private void OnEnable()
+    private void Start()
     {
         LoadProtocols();
     }

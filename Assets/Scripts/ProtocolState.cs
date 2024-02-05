@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UniRx;
 
 public class ProtocolState : MonoBehaviour
@@ -37,6 +38,16 @@ public class ProtocolState : MonoBehaviour
         {
             Debug.LogWarning("Multiple ProtocolState instances detected. Destroying duplicate (newest).");
             DestroyImmediate(gameObject);
+        }
+
+        if(SessionState.Instance.activeProtocol != null)
+        {
+            SetProcedureDefinition(SessionState.Instance.activeProtocol);
+        }
+        else
+        {
+            Debug.Log("No active protocol, returning to protocol selection");
+            SceneLoader.Instance.LoadNewScene("ProtocolMenu");
         }
     }
 

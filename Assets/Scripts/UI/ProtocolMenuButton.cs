@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.SceneManagement;
 using TMPro;
 using UniRx;
 
@@ -14,12 +15,12 @@ public class ProtocolMenuButton : SpatialUIButton
         description.text = protocol.description;
 
         GetComponent<XRSimpleInteractable>().onSelectEntered.AddListener((XRBaseInteractor interactor) => {
-            ServiceRegistry.GetService<IProcedureDataProvider>().GetOrCreateProcedureDefinition(protocol.title).First().Subscribe(procedure =>
+            ServiceRegistry.GetService<IProcedureDataProvider>().GetOrCreateProcedureDefinition(protocol.title).First().Subscribe(protocol =>
             {
-                Debug.Log(procedure.title + " loaded");
+                Debug.Log(protocol.title + " loaded");
                 //ServiceRegistry.Logger.Log("Select procedure " + protocol.title);
-                ProtocolState.SetProcedureDefinition(procedure);
-                //TODO: Go to procedure scene
+                SessionState.Instance.activeProtocol = protocol;
+                SceneLoader.Instance.LoadNewScene("Protocol");
             }, (e) =>
             {
                 Debug.Log("Error fetching procedure");

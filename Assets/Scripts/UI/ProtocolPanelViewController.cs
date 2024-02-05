@@ -11,8 +11,8 @@ public class ProtocolPanelViewController : MonoBehaviour
 {
     public TextMeshProUGUI procedureTitle;
     public TextMeshProUGUI stepText;
-
     public Transform contentFrame;
+    public XRSimpleInteractable closeProtocolButton;
 
     //content item prefabs
     public LayoutController ContainerHorizontalItem;
@@ -32,6 +32,13 @@ public class ProtocolPanelViewController : MonoBehaviour
         ProtocolState.stepStream.Subscribe(_ => { UpdateStepDisplay(); }).AddTo(this);
 
         ProtocolState.checklistStream.Subscribe(_ => UpdateContentItems()).AddTo(this);
+
+        closeProtocolButton.onSelectEntered.AddListener((XRBaseInteractor interactor) =>
+        {
+            //ServiceRegistry.Logger.Log("Close protocol");
+            SessionState.Instance.activeProtocol = null;
+            SceneLoader.Instance.LoadNewScene("ProtocolMenu");
+        });
     }
 
     private void UpdateContentItems()

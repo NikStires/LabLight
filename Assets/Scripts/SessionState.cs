@@ -11,7 +11,9 @@ public enum Mode { Master, Isolated, Observer }
 /// </summary>
 public class SessionState : MonoBehaviour
 {
-    public static SessionState instance;
+    public static SessionState Instance;
+
+    public ProcedureDefinition activeProtocol;
 
     public static string deviceId;
     public static WorkspaceFrame workspace;
@@ -52,10 +54,9 @@ public class SessionState : MonoBehaviour
 
     void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
+            Instance = this;
         }
         else
         {
