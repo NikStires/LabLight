@@ -13,6 +13,12 @@ public class ProtocolMenuViewController : MonoBehaviour
     public GridLayoutGroup buttonGrid;
     public GameObject buttonPrefab;
 
+    public GameObject previousButton;
+    public GameObject nextButton;
+
+    private int currentPage = 0;
+    private int maxPage = 0;
+
     private void OnEnable()
     {
         LoadProtocols();
@@ -20,59 +26,57 @@ public class ProtocolMenuViewController : MonoBehaviour
 
     private void OnDisable()
     {
-        //foreach (var buttton in buttons)
-        //{
-        //    if (button != null)
-        //    {
-        //        Destroy(button.gameObject);
-        //    }
-        //}
-        //buttons.Clear();
+        foreach (var button in buttons)
+        {
+           if (button != null)
+           {
+               Destroy(button.gameObject);
+           }
+        }
+        buttons.Clear();
     }
 
-    void Build(List<ProcedureDescriptor> protocols, Action<ProcedureDescriptor> onSelected, Action<ProcedureDescriptor> onHeld)
+    public void NextPage()
     {
-        // Destroy design time data,
-        // Note that tileObjectCollection.UpdateCollection may run before the design time objects are destroyed
-        // Making objects inactive so no one notices
+        if (currentPage < maxPage - 1)
+        {
+            currentPage++;
+            Build(currentPage);
+        }
+    }
+
+    public void PreviousPage()
+    {
+        if (currentPage > 0)
+        {
+            currentPage--;
+            Build(currentPage);
+        }
+    }
+
+    void Build(int pageNum)
+    {
+        //Destroy current page
         for (int i = 0; i < buttonGrid.transform.childCount; i++)
         {
             buttonGrid.transform.GetChild(i).gameObject.SetActive(false);
             Destroy(buttonGrid.transform.GetChild(i).gameObject);
         }
 
-        for (int i = 0; i < protocols.Count; i++)
+
+        //build the requested page
+        for (int i = currentPage * 8; i < Math.Min((currentPage + 1) * 8, protocols.Count); i++)
         {
             var protocol = protocols[i];
             var button = Instantiate(buttonPrefab, buttonGrid.transform);
             ProtocolMenuButton buttonScript = button.GetComponent<ProtocolMenuButton>();
-            buttonScript.title.text = protocol.title;
-            buttonScript.description.text = protocol.description;
-            buttonScript.OnClick += () => {
-                ServiceRegistry.Logger.Log("Select procedure " + protocol.title);
-
-                if (String.IsNullOrEmpty(protocol.title))
-                {
-                    ProtocolState.SetProcedureDefinition(null);
-                    return;
-                }
-
-                ServiceRegistry.GetService<IProcedureDataProvider>().GetOrCreateProcedureDefinition(protocol.title).First().Subscribe(procedure =>
-                {
-                    ProtocolState.SetProcedureDefinition(procedure);
-                }, (e) =>
-                {
-                    Debug.Log("Error fetching procedure");
-                    // TODO retry?!
-                });
-
-                //GO TO PROCEDURE SCENE
-
-                ProtocolState.SetProcedureTitle(protocol.title);
-            };
-
             buttons.Add(buttonScript);
+            buttonScript.Initialize(protocol);
         }
+
+        // Activate or deactivate previous and next buttons
+        previousButton.SetActive(currentPage > 0);
+        nextButton.SetActive(currentPage < maxPage - 1);
     }
 
     async void LoadProtocols()
@@ -81,38 +85,16 @@ public class ProtocolMenuViewController : MonoBehaviour
         if(ServiceRegistry.GetService<IProcedureDataProvider>() != null)
         {
             protocols = await ServiceRegistry.GetService<IProcedureDataProvider>()?.GetProcedureList();
+            maxPage = (int)Math.Ceiling((float)protocols.Count / 8);
+            currentPage = 0;
 
-            // Build menu
-            Build(protocols, pi => selectProtocol(pi.name), pi => deleteProtocol(pi.name));
+            // Build page 1
+            Build(currentPage);
         }
         else
         {
             Debug.LogWarning("Cannot load protocols, protocol data provider service NULL");
         }
-    }
-
-    void selectProtocol(string protocolTitle)
-    {
-        ServiceRegistry.Logger.Log("Select protocol " + protocolTitle);
-
-        if (String.IsNullOrEmpty(protocolTitle))
-        {
-            ProtocolState.SetProcedureDefinition(null);
-            return;
-        }
-
-        ServiceRegistry.GetService<IProcedureDataProvider>().GetOrCreateProcedureDefinition(protocolTitle).First().Subscribe(protocol =>
-        {
-            ProtocolState.SetProcedureDefinition(protocol);
-        }, (e) =>
-        {
-            Debug.Log("Error fetching procedure");
-            // TODO retry?!
-        });
-
-        //GO TO PROCEDURE SCENE
-
-        ProtocolState.SetProcedureTitle(protocolTitle);
     }
 
     void deleteProtocol(string protocolTitle)
