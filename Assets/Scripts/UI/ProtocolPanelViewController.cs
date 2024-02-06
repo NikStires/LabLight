@@ -27,8 +27,6 @@ public class ProtocolPanelViewController : MonoBehaviour
 
     private void Awake()
     {
-        ProtocolState.procedureStream.Subscribe(procedureName => procedureTitle.text = procedureName).AddTo(this);
-
         ProtocolState.stepStream.Subscribe(_ => { UpdateStepDisplay(); }).AddTo(this);
 
         ProtocolState.checklistStream.Subscribe(_ => UpdateContentItems()).AddTo(this);
@@ -39,6 +37,13 @@ public class ProtocolPanelViewController : MonoBehaviour
             SessionState.Instance.activeProtocol = null;
             SceneLoader.Instance.LoadNewScene("ProtocolMenu");
         });
+    }
+
+    void Start()
+    {
+        procedureTitle.text = ProtocolState.procedureDef.title;
+        UpdateStepDisplay();
+        UpdateContentItems();
     }
 
     private void UpdateContentItems()

@@ -20,6 +20,11 @@ public class ChecklistPanelViewController : MonoBehaviour
         ProtocolState.checklistStream.Subscribe(_ => UpdateVisualState()).AddTo(this);
     }
 
+    void Start()
+    {
+        UpdateVisualState();
+    }
+
     /// <summary>
     /// Checks the next unchecked item if possible
     /// </summary>
