@@ -10,6 +10,7 @@ public class ChecklistPanelViewController : MonoBehaviour
 {
     [SerializeField] GameObject unlockedIcon;
     [SerializeField] GameObject lockedIcon;
+    [SerializeField] Transform transformControls;
 
     private List<ProtocolState.CheckItemState> prevChecklist;
 
@@ -23,6 +24,11 @@ public class ChecklistPanelViewController : MonoBehaviour
     void Start()
     {
         UpdateVisualState();
+        if (SessionState.Instance.mainPanelPosition != null)
+        {
+            transformControls.eulerAngles = SessionState.Instance.mainPanelRotation;
+            transformControls.position = SessionState.Instance.mainPanelPosition - transformControls.right * 0.5f;
+        }
     }
 
     /// <summary>

@@ -15,6 +15,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Protocol.unity
     guid: 5cc9ac2b6a37148859f4d0f7f1480648
   m_configObjects:
+    UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: b8052296fc70e4ded8d5bb7511509640, type: 2}
     UnityEditor.XR.VisionOS.VisionOSSettings: {fileID: 11400000, guid: 25e1f68848051c946b9048e8426e646c, type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: bb65518a4a80049acbc5e85e70dbbee0, type: 2}
     com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: d1b44b12dbc12554c862e577406554bd, type: 2}

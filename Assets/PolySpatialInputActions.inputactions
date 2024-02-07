@@ -126,8 +126,30 @@
                 },
                 {
                     "name": "",
+                    "id": "11c728dc-c6c0-48fe-9b2c-6236bbb0ee96",
+                    "path": "<HandheldARInputDevice>/devicePosition",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DevicePosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "e830475f-8161-40b2-90ab-1dc682b02018",
                     "path": "<PolySpatialXRHMD>/deviceRotation",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DeviceRotation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5008ad50-dc4d-413c-bc7a-ab3768475df2",
+                    "path": "<HandheldARInputDevice>/deviceRotation",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

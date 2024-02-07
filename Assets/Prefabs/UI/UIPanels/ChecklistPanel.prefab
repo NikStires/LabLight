@@ -737,6 +737,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unlockedIcon: {fileID: 4029105014079747642}
   lockedIcon: {fileID: 2150125456795710939}
+  transformControls: {fileID: 2482400056811669236}
   checkitemViews:
   - {fileID: 8673346555308659568}
   - {fileID: 5641461888891000514}

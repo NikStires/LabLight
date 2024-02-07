@@ -915,6 +915,7 @@ MonoBehaviour:
   stepText: {fileID: 6587597985186328938}
   contentFrame: {fileID: 101651767396179420}
   closeProtocolButton: {fileID: 847381168133770459}
+  transformControls: {fileID: 130393121618397621}
   ContainerHorizontalItem: {fileID: 3878928379086764969, guid: ccf739193bf7f554283cf751e86d02e1, type: 3}
   ContainerVerticalItem: {fileID: 4234610004721033739, guid: ef32c55399f4c464e984104d19409013, type: 3}
   TextItem: {fileID: 7527683253692566170, guid: 90f27cbef998f514ab4eea03c89030b5, type: 3}

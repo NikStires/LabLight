@@ -7,20 +7,24 @@ using UniRx;
 
 public class ProtocolMenuViewController : MonoBehaviour
 {
-    List<ProcedureDescriptor> protocols;
-    List<ProtocolMenuButton> buttons = new List<ProtocolMenuButton>();
-
-    public GridLayoutGroup buttonGrid;
-    public GameObject buttonPrefab;
-
-    public GameObject previousButton;
-    public GameObject nextButton;
+    [SerializeField] GridLayoutGroup buttonGrid;
+    [SerializeField] GameObject buttonPrefab;
+    [SerializeField] GameObject previousButton;
+    [SerializeField] GameObject nextButton;
+    [SerializeField] Transform transformControls;
 
     private int currentPage = 0;
     private int maxPage = 0;
+    List<ProcedureDescriptor> protocols;
+    List<ProtocolMenuButton> buttons = new List<ProtocolMenuButton>();
 
     private void Start()
     {
+        if(SessionState.Instance.mainPanelPosition != null)
+        {
+            transformControls.position = SessionState.Instance.mainPanelPosition;
+            transformControls.eulerAngles = SessionState.Instance.mainPanelRotation;
+        }
         LoadProtocols();
     }
 
@@ -34,6 +38,13 @@ public class ProtocolMenuViewController : MonoBehaviour
            }
         }
         buttons.Clear();
+    }
+
+    private void OnDestroy() 
+    {
+        Debug.Log("ProtocolMenuViewController destroyed");
+        SessionState.Instance.mainPanelPosition = transformControls.position;
+        SessionState.Instance.mainPanelRotation = transformControls.eulerAngles;
     }
 
     public void NextPage()

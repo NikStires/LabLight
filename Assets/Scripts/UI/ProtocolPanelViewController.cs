@@ -9,19 +9,20 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class ProtocolPanelViewController : MonoBehaviour
 {
-    public TextMeshProUGUI procedureTitle;
-    public TextMeshProUGUI stepText;
-    public Transform contentFrame;
-    public XRSimpleInteractable closeProtocolButton;
+    [SerializeField] TextMeshProUGUI procedureTitle;
+    [SerializeField] TextMeshProUGUI stepText;
+    [SerializeField] Transform contentFrame;
+    [SerializeField] XRSimpleInteractable closeProtocolButton;
+    [SerializeField] Transform transformControls;
 
     //content item prefabs
-    public LayoutController ContainerHorizontalItem;
-    public LayoutController ContainerVerticalItem;
-    public TextController TextItem;
-    public PropertyTextController PropertyItem;
-    public ImageController ImageItem;
-    public VideoController VideoItem;
-    public SoundController SoundItem;
+    [SerializeField] LayoutController ContainerHorizontalItem;
+    [SerializeField] LayoutController ContainerVerticalItem;
+    [SerializeField] TextController TextItem;
+    [SerializeField] PropertyTextController PropertyItem;
+    [SerializeField] ImageController ImageItem;
+    [SerializeField] VideoController VideoItem;
+    [SerializeField] SoundController SoundItem;
 
     private List<MonoBehaviour> contentItemInstances = new List<MonoBehaviour>();
 
@@ -41,9 +42,20 @@ public class ProtocolPanelViewController : MonoBehaviour
 
     void Start()
     {
+        if(SessionState.Instance.mainPanelPosition != null)
+        {
+            transformControls.position = SessionState.Instance.mainPanelPosition;
+            transformControls.eulerAngles = SessionState.Instance.mainPanelRotation;
+        }
         procedureTitle.text = ProtocolState.procedureDef.title;
         UpdateStepDisplay();
         UpdateContentItems();
+    }
+
+    void OnDestroy()
+    {
+        SessionState.Instance.mainPanelPosition = transformControls.position;
+        SessionState.Instance.mainPanelRotation = transformControls.eulerAngles;
     }
 
     private void UpdateContentItems()

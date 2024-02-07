@@ -14,10 +14,13 @@ public class SessionState : MonoBehaviour
     public static SessionState Instance;
 
     public ProcedureDefinition activeProtocol;
-
     public static string deviceId;
     public static WorkspaceFrame workspace;
     public static float lastFrameTime;
+    public Vector3 mainPanelPosition;
+    public Vector3 mainPanelRotation;
+
+
     private static bool _connected;
     private static Mode mode;
 
