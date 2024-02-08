@@ -592,7 +592,9 @@ MonoBehaviour:
   ringTip: {fileID: 519408972}
   pinkyTip: {fileID: 1361860747}
   origin: {fileID: 2141682938}
+  jointPrefab: {fileID: 0}
   fillMaterial: {fileID: 2100000, guid: 77e31212903f44f10bb519f2e9c2d393, type: 2}
+  tapToPlacePrefab: {fileID: 0}
 --- !u!1 &519408968
 GameObject:
   m_ObjectHideFlags: 0
@@ -2336,13 +2338,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2115460893}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e1760703bbd54c04488a8d10600262ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_PlanePrefab: {fileID: 680114521416276321, guid: 40233115d590d40d9820329c17a84274, type: 3}
-  m_DetectionMode: -1
+  m_DetectionMode: 1
 --- !u!1 &2121586913
 GameObject:
   m_ObjectHideFlags: 0
