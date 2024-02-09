@@ -4066,7 +4066,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57485c3e6bbc54f51b35750c8f308088, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  View: {fileID: 1899983771427769081}
+  timerFlashMaterial: {fileID: 2100000, guid: d25001eecceb3274280b0b6d696415d3, type: 2}
+  backplateMesh: {fileID: 9007821322131904783}
   StartingTime: 10
   TimeDisplay: {fileID: 8516842780186474872}
   StartButton: {fileID: 4462499119546356986}
@@ -5217,11 +5218,6 @@ PrefabInstance:
       addedObject: {fileID: 8800194117812603186}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d9e148dcabfa0bd4aabab9b30d74d2e6, type: 3}
---- !u!1 &1899983771427769081 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8378630156982587248, guid: d9e148dcabfa0bd4aabab9b30d74d2e6, type: 3}
-  m_PrefabInstance: {fileID: 7933309065619768713}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2714514703515425805 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5454741153251039620, guid: d9e148dcabfa0bd4aabab9b30d74d2e6, type: 3}
@@ -5232,7 +5228,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3719860894234144271, guid: d9e148dcabfa0bd4aabab9b30d74d2e6, type: 3}
   m_PrefabInstance: {fileID: 7933309065619768713}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1899983771427769081}
+  m_GameObject: {fileID: 0}
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1a2d7d89889b4d94fa1f8d6fe49788e8, type: 3}

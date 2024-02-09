@@ -11,7 +11,9 @@ using UniRx;
 
 public class TimerViewController : MonoBehaviour
 {
-    [SerializeField] GameObject View;
+    [SerializeField] Material timerFlashMaterial;
+    Material defaultMaterial;
+    [SerializeField] MeshRenderer backplateMesh;
     [SerializeField] double StartingTime = 10.0f;
     [SerializeField] TextMeshProUGUI TimeDisplay;
     [SerializeField] GameObject StartButton;
@@ -22,6 +24,12 @@ public class TimerViewController : MonoBehaviour
 
     private double TimeLeft;
     private bool timerRunning = false;
+
+    void Awake()
+    {
+        ProtocolState.checklistStream.Subscribe(_ => OnCheckItemChange()).AddTo(this);
+        defaultMaterial = backplateMesh.material;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -48,12 +56,8 @@ public class TimerViewController : MonoBehaviour
         if(TimeLeft < 0 & timerRunning)
         {
             StopTimer();
+            StartCoroutine(FlashTimer());
         }
-    }
-
-    void Awake()
-    {
-        ProtocolState.checklistStream.Subscribe(_ => OnCheckItemChange()).AddTo(this);
     }
 
     //Event functions
@@ -137,6 +141,7 @@ public class TimerViewController : MonoBehaviour
         TimeLeft = StartingTime;
         StopTimer();
         TimeDisplay.text = GetTimeString();
+        audioPlayer.Stop();
     }
 
     public void StartTimer()
@@ -154,19 +159,9 @@ public class TimerViewController : MonoBehaviour
         StopButton.SetActive(false);
     }
 
-    public void HideTimer()
-    {
-        View.SetActive(false);
-    }
-
     public void CloseTimer()
     {
         Destroy(gameObject);
-    }
-
-    public void ShowTimer()
-    {
-        View.SetActive(true);
     }
 
     public void RestartTimer()
@@ -196,8 +191,18 @@ public class TimerViewController : MonoBehaviour
                 int timeSeconds = (currentCheckItem.hours * 60 * 60) + (currentCheckItem.minutes * 60) + currentCheckItem.seconds;
                 StartingTime = timeSeconds;
                 ResetTimer();
-                ShowTimer();
             }
+        }
+    }
+
+    private IEnumerator FlashTimer()
+    {
+        while(TimeLeft < 0 & !timerRunning)
+        {
+            backplateMesh.material = timerFlashMaterial;
+            yield return new WaitForSeconds(0.5f);
+            backplateMesh.material = defaultMaterial;
+            yield return new WaitForSeconds(0.5f);
         }
     }
 }
