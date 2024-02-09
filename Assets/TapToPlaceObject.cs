@@ -11,6 +11,8 @@ public class TapToPlaceObject : MonoBehaviour
 
     XRHandSubsystem m_HandSubsystem;
 
+    ARAnchorManager anchorManager;
+
     public GameObject jointPrefab;
 
     Dictionary<XRHandJointID, GameObject> jointsRight = new();
@@ -22,7 +24,6 @@ public class TapToPlaceObject : MonoBehaviour
     {
         //StartCoroutine(CalibrationAnimation());
         var handSubsystems = new List<XRHandSubsystem>();
-        var planeManager = GetComponent<ARPlaneManager>();
         SubsystemManager.GetSubsystems(handSubsystems);
 
         for (var i = 0; i < handSubsystems.Count; ++i)
@@ -38,6 +39,8 @@ public class TapToPlaceObject : MonoBehaviour
 
         if (m_HandSubsystem != null)
             m_HandSubsystem.updatedHands += OnUpdatedHands;
+
+        var anchorManager = GetComponent<ARAnchorManager>();
     }
 
     void OnUpdatedHands(XRHandSubsystem subsystem, XRHandSubsystem.UpdateSuccessFlags updateSuccessFlags, XRHandSubsystem.UpdateType updateType)
@@ -84,17 +87,22 @@ public class TapToPlaceObject : MonoBehaviour
     // Start is called before the first frame update
     public void OnInteractableEnter()
     {
-        XRHandJoint indexFinger = m_HandSubsystem.rightHand.GetJoint(XRHandJointIDUtility.FromIndex((int)XRHandJointID.IndexTip));
+        Debug.Log("interactable entered");
+        XRHandJoint indexFinger = m_HandSubsystem.rightHand.GetJoint(XRHandJointID.IndexTip);
+        Debug.Log("got joint");
         if(indexFinger.TryGetPose(out Pose pose))
         {
             /*
             Pose xrOrigin = new Pose(planeManager.Transform.position, planeManager.Transform.rotation);
             pose = pose.GetTransformedBy(xrOrigin);*/
-            var anchorManager = GetComponent<ARAnchorManager>();
-            ARAnchor anchor = anchorManager.AttachAnchor(this.GetComponent<ARPlane>(), pose);
-            Debug.Log("placing well plate at " + pose.position);
-            var instance = Instantiate(tapToPlacePrefab, anchor.transform.position, Quaternion.identity);
-            instance.transform.parent = anchor.transform;
+            //ARAnchor anchor = anchorManager.AttachAnchor(this.GetComponent<ARPlane>(), pose);
+            Debug.Log("placing cube at ");
+            Debug.Log(pose.position);
+            var instance = Instantiate(tapToPlacePrefab, pose.position, Quaternion.identity);
+            //instance.transform.parent = anchor.transform;
+        }else
+        {
+            Debug.Log("Getting pose failed");
         }
     }
 }
