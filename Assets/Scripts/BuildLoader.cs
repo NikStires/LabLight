@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class BuildLoader : MonoBehaviour
 {
+    [SerializeField] public string startingSceneName;
     private void Awake()
     {
         if (!Application.isEditor)
@@ -11,6 +12,6 @@ public class BuildLoader : MonoBehaviour
 
     private void LoadPersistent()
     {
-        SceneManager.LoadSceneAsync("ProtocolMenu", LoadSceneMode.Additive);
+        SceneManager.LoadSceneAsync(startingSceneName, LoadSceneMode.Additive);
     }
 }

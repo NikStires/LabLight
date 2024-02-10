@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37886d3c89f6f473181e3660063311de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startingSceneName: Calibration
 --- !u!4 &69848081
 Transform:
   m_ObjectHideFlags: 0
@@ -577,12 +578,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 248604192}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 2115460895}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &248604196
 MonoBehaviour:
@@ -616,6 +617,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5b7db0f748a34ff7a6915da77d01382, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anchorManager: {fileID: 2115460899}
+  planeManager: {fileID: 2115460898}
   loadProcedure: 0
 --- !u!1 &540428249
 GameObject:
@@ -1287,8 +1290,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2115460895}
   - component: {fileID: 2115460894}
-  - component: {fileID: 2115460896}
   - component: {fileID: 2115460897}
+  - component: {fileID: 2115460899}
+  - component: {fileID: 2115460898}
   m_Layer: 0
   m_Name: XR Origin
   m_TagString: Untagged
@@ -1326,23 +1330,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 248604195}
   - {fileID: 1517854672}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2115460896
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2115460893}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1760703bbd54c04488a8d10600262ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PlanePrefab: {fileID: 680114521416276321, guid: 1e005766ec61a4cbc9109b4563d84140, type: 3}
-  m_DetectionMode: -1
 --- !u!114 &2115460897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1360,6 +1351,33 @@ MonoBehaviour:
   m_EnvironmentDepthMode: 1
   m_EnvironmentDepthTemporalSmoothing: 1
   m_OcclusionPreferenceMode: 0
+--- !u!114 &2115460898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2115460893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1760703bbd54c04488a8d10600262ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PlanePrefab: {fileID: 680114521416276321, guid: 40233115d590d40d9820329c17a84274, type: 3}
+  m_DetectionMode: 1
+--- !u!114 &2115460899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2115460893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 728ad7fae8e460a4ba41265c7308d757, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AnchorPrefab: {fileID: 3125165527598978782, guid: 78be84f5d3a3c41f9ab0093b3f712a4e, type: 3}
 --- !u!1 &2121586913
 GameObject:
   m_ObjectHideFlags: 0
@@ -2883,7 +2901,6 @@ SceneRoots:
   - {fileID: 1671999108}
   - {fileID: 203844589}
   - {fileID: 2115460895}
-  - {fileID: 248604195}
   - {fileID: 2026256748}
   - {fileID: 1982171368}
   - {fileID: 1491826525}

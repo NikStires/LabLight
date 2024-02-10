@@ -15,6 +15,12 @@ public static class SceneMenu
         OpenScene("Protocol");
     }
 
+    [MenuItem("Scenes/Calibration")]
+    public static void OpenCalibration()
+    {
+        OpenScene("Calibration");
+    }
+
     private static void OpenScene(string sceneName)
     {
         EditorSceneManager.OpenScene("Assets/Scenes/Persistent.unity", OpenSceneMode.Single);

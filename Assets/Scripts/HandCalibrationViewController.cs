@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Hands;
 using UnityEngine.XR.ARFoundation;
+using UnityEngine.XR.ARSubsystems;
+using UnityEngine.XR;
+using UnityEngine.UIElements;
+using Unity.VisualScripting;
+using System.Linq;
+using System;
 
 public class HandCalibrationViewController : MonoBehaviour
 {
@@ -20,12 +26,27 @@ public class HandCalibrationViewController : MonoBehaviour
 
     [SerializeField] GameObject tapToPlacePrefab;
 
+    public static XRHandJointID[] calibrationJoints = new XRHandJointID[]
+    {
+        XRHandJointID.ThumbTip,
+        XRHandJointID.IndexTip,
+        XRHandJointID.MiddleTip,
+        XRHandJointID.RingTip,
+        XRHandJointID.LittleTip
+    };
+
+    public Dictionary<XRHandJointID, Pose> calibrationJointsPoseDict = new Dictionary<XRHandJointID, Pose>();
+
+    ARPlane planeSelected = null;
+
     XRHandSubsystem m_HandSubsystem;
 
     Dictionary<XRHandJointID, GameObject> jointsRight = new();
     Dictionary<XRHandJointID, GameObject> jointsLeft = new();
 
-    ARPlaneManager planeManager;
+    private bool inCalibration = false;
+
+    ARPlaneManager planeManager = null;
 
     private float progress = -0.4f;
     private float lerpDuration = 3f;
@@ -35,7 +56,7 @@ public class HandCalibrationViewController : MonoBehaviour
         fillMaterial.SetFloat("_FillRate", -0.4f);
         //StartCoroutine(CalibrationAnimation());
         var handSubsystems = new List<XRHandSubsystem>();
-        var planeManager = GetComponent<ARPlaneManager>();
+        planeManager = SessionManager.instance.planeManager;
         SubsystemManager.GetSubsystems(handSubsystems);
 
         for (var i = 0; i < handSubsystems.Count; ++i)
@@ -48,10 +69,150 @@ public class HandCalibrationViewController : MonoBehaviour
             }
         }
 
-        // if (m_HandSubsystem != null)
-        //     m_HandSubsystem.updatedHands += OnUpdatedHands;
+        if (m_HandSubsystem != null)
+            m_HandSubsystem.updatedHands += OnUpdatedHands;
     }
 
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log(IsInBoundsOfPlane(new Vector3(0, 0, 0)));
+        }
+    }
+    void OnUpdatedHands(XRHandSubsystem subsystem, XRHandSubsystem.UpdateSuccessFlags updateSuccessFlags, XRHandSubsystem.UpdateType updateType)
+    {
+        switch(updateType)
+        {
+            case XRHandSubsystem.UpdateType.BeforeRender:
+                //if hand is within bounds disable all other planes
+                for (var i = XRHandJointID.BeginMarker.ToIndex(); i < XRHandJointID.EndMarker.ToIndex();  i++)
+                {
+                    XRHandJointID jointID = XRHandJointIDUtility.FromIndex(i);
+
+                    var trackingDataRight = m_HandSubsystem.rightHand.GetJoint(jointID);
+                    //var trackingDataLeft = m_HandSubsystem.leftHand.GetJoint(jointID);
+
+                    if (trackingDataRight.TryGetPose(out Pose poseRight))
+                    {
+                        planeSelected = IsInBoundsOfPlane(poseRight.position);
+                        if(planeSelected != null)
+                        {
+                            Debug.Log("Lablight: plane selected " + planeSelected.trackableId);
+                            planeSelected.transform.Find("Cube").gameObject.SetActive(true);
+                            //can only calibrate with right hand for now
+
+                            //store relevant joints to check if they are within 0.05 y of plane
+                            if(calibrationJoints.Contains(jointID))
+                            {
+                                Debug.Log("Lablight: storing " + jointID + " pose");
+                                calibrationJointsPoseDict[jointID] = poseRight;
+                            }
+                        }else
+                        {
+                            Debug.Log("Lablight: no plane selected");
+                            foreach(ARPlane plane in planeManager.trackables)
+                            {
+                                plane.transform.Find("Cube").gameObject.SetActive(false);
+                            }
+                        }
+                    }
+                    // if (trackingDataLeft.TryGetPose(out Pose poseLeft))
+                    // {
+                    //     // Debug.Log("Distance between center of plane and left hand" + (Vector3.Distance(poseLeft.position, this.GetComponent<ARPlane>().center)));
+                    //     // if(Vector3.Distance(poseLeft.position, this.GetComponent<ARPlane>().center) < 2)
+                    //     // {
+                    //     //     Debug.Log("Your left hand is close to a plane");
+                    //     // }
+                    // }
+                }
+                //if hand is within the bounds of a plane, disable all other planes.
+                //else if hand is not within the bounds of the selected plane enable all planes if disabled
+                if(planeSelected != null) 
+                {
+                    //disable planes
+                    Debug.Log("Lablight: disabling all other planes");
+                    foreach(ARPlane plane in planeManager.trackables)
+                    {
+                        if(plane != planeSelected)
+                        {
+                            //plane.gameObject.SetActive(false);
+                            plane.transform.Find("Cube").gameObject.SetActive(false);
+                        }
+                    }
+
+                    //if calibration joints are within 0.05 y of plane, start calibration
+                    if(!inCalibration)
+                    {
+                        //check if all calibration joints are within 0.05 y of plane
+                        Debug.Log("Lablight: Checking if all calibration joints are within 0.05 y of plane");
+                        Debug.Log("Lablight: calibrationJointsPoseDict.Count " + calibrationJointsPoseDict.Count);
+                        if(calibrationJointsPoseDict.Count == 5)
+                        {
+                            foreach(KeyValuePair<XRHandJointID, Pose> joint in calibrationJointsPoseDict)
+                            {
+                                if(Mathf.Abs(joint.Value.position.y - planeSelected.center.y) > 0.06f)
+                                {
+                                    Debug.Log("Lablight: " + joint.Key + " y position: " + joint.Value.position.y + " plane y position: " + planeSelected.center.y);
+                                    Debug.Log("Lablight: " + joint.Key + " is not within 0.06 y of plane");
+                                    return;
+                                }else
+                                {
+                                    Debug.Log("Lablight: " + joint.Key + " y position: " + joint.Value.position.y + " plane y position: " + planeSelected.center.y);
+                                    Debug.Log("Lablight: " + joint.Key + " is within 0.06 y of plane");
+                                }
+                            }
+                            Debug.Log("Lablight: Starting calibration");
+                            StartCoroutine(startCalibration());
+                        }
+                    }
+                }
+                else
+                {
+                    // //enable planes
+                    // foreach(ARPlane plane in planeManager.trackables)
+                    // {
+                    //     plane.gameObject.SetActive(true);
+                    // }
+                }
+            break;
+        }
+    }
+
+
+    public ARPlane IsInBoundsOfPlane(Vector3 jointPosition)
+    {
+        if(jointPosition != null)
+        {
+            foreach (ARPlane plane in planeManager.trackables)
+            {
+                //ARPlane plane = planeManager.GetPlane(planeTrackable.trackableId);
+                Vector3 centerOffset = new Vector3(plane.center.x - plane.centerInPlaneSpace.x, plane.center.y - plane.centerInPlaneSpace.y, 0f);
+                Vector2[] adjustedBoundary = plane.boundary.Select(point => new Vector2(point.x + centerOffset.x, point.y + centerOffset.y)).ToArray();
+
+                if (IsPointInPolygon(adjustedBoundary, new Vector2(jointPosition.x, jointPosition.z)) && plane.classification == PlaneClassification.Table)
+                {
+                    return plane;
+                }
+            }
+        }
+        return null;
+    }
+            
+
+    public bool IsPointInPolygon(Vector2[] polygon, Vector2 point)
+    {
+        bool isInside = false;
+        for (int i = 0, j = polygon.Length - 1; i < polygon.Length; j = i++)
+        {
+            if (((polygon[i].y > point.y) != (polygon[j].y > point.y)) &&
+                (point.x < (polygon[j].x - polygon[i].x) * (point.y - polygon[i].y) / (polygon[j].y - polygon[i].y) + polygon[i].x))
+            {
+                isInside = !isInside;
+            }
+        }
+        return isInside;
+    }
 
 
     void OnInteractableEnter()
@@ -124,5 +285,97 @@ public class HandCalibrationViewController : MonoBehaviour
         pinkyTip.gameObject.SetActive(false);
     }
 
+    private IEnumerator startCalibration()
+    {
+        inCalibration = true;
+        //StartCoroutine(LerpRingScale());
+
+        // Start a countdown timer
+        float countdown = 5f;
+        Pose[] initialJointPositions = calibrationJointsPoseDict.Values.ToArray();
+        while (countdown > 0)
+        {
+            Debug.Log("Lablight: countdown " + countdown);
+            // Highlight each finger tip as each second passes
+            HighlightFingerTip((int)Math.Ceiling(5 - countdown));
+            countdown -= Time.deltaTime;
+
+            // Check if the hand moved out of a given distance
+            if (HasMovedOutOfDistance(initialJointPositions, calibrationJointsPoseDict.Values.ToArray()))
+            {
+                // Stop the calibration process
+                //StopCalibration();
+                inCalibration = false;
+                // Show a text window saying calibration failed
+                ShowCalibrationFailedMessage();
+                DeactivateFingerPoints();
+                yield break; // Exit the coroutine
+            }
+
+            yield return null;
+        }
+
+        // Calibration succeeded
+        //DeactivateFingerPoints();
+        ShowCalibrationSucceededMessage();
+        planeSelected.transform.Find("Cube").GetComponent<Renderer>().material.color = Color.green;
+    }
+
+    private void HighlightFingerTip(int index)
+    {
+        Debug.Log("Lablight: highlighting finger tip " + index);
+        switch (index)
+        {
+            case 1:
+                thumbTip.transform.position = calibrationJointsPoseDict[XRHandJointID.ThumbTip].position;
+                thumbTip.gameObject.SetActive(true);
+                break;
+            case 2:
+                pointerTip.transform.position = calibrationJointsPoseDict[XRHandJointID.IndexTip].position;
+                pointerTip.gameObject.SetActive(true);
+                break;
+            case 3:
+                middleTip.transform.position = calibrationJointsPoseDict[XRHandJointID.MiddleTip].position;
+                middleTip.gameObject.SetActive(true);
+                break;
+            case 4:
+                ringTip.transform.position = calibrationJointsPoseDict[XRHandJointID.RingTip].position;
+                ringTip.gameObject.SetActive(true);
+                break;
+            case 5:
+                pinkyTip.transform.position = calibrationJointsPoseDict[XRHandJointID.LittleTip].position;
+                pinkyTip.gameObject.SetActive(true);
+                break;
+        }
+    }
+
+    private void StopCalibration()
+    {
+        inCalibration = false;
+        StopCoroutine(LerpRingScale());
+        DeactivateFingerPoints();
+    }
+
+    private void ShowCalibrationFailedMessage()
+    {
+        Debug.Log("Lablight: Calibration failed");
+    }
+
+    private void ShowCalibrationSucceededMessage()
+    {
+        Debug.Log("Lablight: Calibration succeeded");
+    }
+
+    public bool HasMovedOutOfDistance(Pose[] initialJointPositions, Pose[] currentJointPositions)
+    {
+        for (int i = 0; i < initialJointPositions.Length; i++)
+        {
+            if (Vector3.Distance(initialJointPositions[i].position, currentJointPositions[i].position) > 0.05f)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

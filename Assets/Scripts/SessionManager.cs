@@ -3,10 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using UniRx;
 using UnityEngine;
+using UnityEngine.XR.ARFoundation;
 
 public class SessionManager : MonoBehaviour
 {
     public static SessionManager instance;
+
+    public ARAnchorManager anchorManager;
+
+    public ARPlaneManager planeManager;
 
     //audio manager
 
@@ -33,6 +38,10 @@ public class SessionManager : MonoBehaviour
             Debug.LogWarning("Multiple SessionManager instances detected. Destroying duplicate (newest).");
             DestroyImmediate(gameObject);
         }
+
+        anchorManager = this.transform.parent.GetComponent<ARAnchorManager>();
+
+        planeManager = this.transform.parent.GetComponent<ARPlaneManager>();
 
         var resourceFileDataProvider = new ResourceFileDataProvider();
 
