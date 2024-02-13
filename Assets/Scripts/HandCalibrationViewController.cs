@@ -13,12 +13,8 @@ using System;
 public class HandCalibrationViewController : MonoBehaviour
 {
     [SerializeField] MeshRenderer progressRing;
-    [SerializeField] MeshRenderer thumbTip;
-    [SerializeField] MeshRenderer pointerTip;
-    [SerializeField] MeshRenderer middleTip;
-    [SerializeField] MeshRenderer ringTip;
-    [SerializeField] MeshRenderer pinkyTip;
-    [SerializeField] GameObject origin;
+    //[SerializeField] GameObject origin;
+    [SerializeField] GameObject originPrefab;
 
     [SerializeField] GameObject jointPrefab;
 
@@ -28,16 +24,22 @@ public class HandCalibrationViewController : MonoBehaviour
 
     public static XRHandJointID[] calibrationJoints = new XRHandJointID[]
     {
-        XRHandJointID.ThumbTip,
+        //XRHandJointID.ThumbTip,
         XRHandJointID.IndexTip,
         XRHandJointID.MiddleTip,
         XRHandJointID.RingTip,
-        XRHandJointID.LittleTip
+        XRHandJointID.LittleTip,
+        XRHandJointID.IndexProximal,
+        XRHandJointID.MiddleProximal,
+        XRHandJointID.RingProximal,
+        XRHandJointID.LittleProximal
     };
 
     public Dictionary<XRHandJointID, Pose> calibrationJointsPoseDict = new Dictionary<XRHandJointID, Pose>();
 
     ARPlane planeSelected = null;
+
+    List<ARPlane> tablePlanes = new List<ARPlane>();
 
     XRHandSubsystem m_HandSubsystem;
 
@@ -47,6 +49,9 @@ public class HandCalibrationViewController : MonoBehaviour
     private bool inCalibration = false;
 
     ARPlaneManager planeManager = null;
+    ARAnchorManager anchorManager = null;
+    
+    public float distanceThreshold = 0.08f;
 
     private float progress = -0.4f;
     private float lerpDuration = 3f;
@@ -57,6 +62,7 @@ public class HandCalibrationViewController : MonoBehaviour
         //StartCoroutine(CalibrationAnimation());
         var handSubsystems = new List<XRHandSubsystem>();
         planeManager = SessionManager.instance.planeManager;
+        anchorManager = SessionManager.instance.anchorManager;
         SubsystemManager.GetSubsystems(handSubsystems);
 
         for (var i = 0; i < handSubsystems.Count; ++i)
@@ -80,6 +86,38 @@ public class HandCalibrationViewController : MonoBehaviour
             Debug.Log(IsInBoundsOfPlane(new Vector3(0, 0, 0)));
         }
     }
+
+    public void OnPlanesChanged(ARPlanesChangedEventArgs changes)
+    {
+        foreach(var plane in changes.added)
+        {
+            //disable plane if not a table
+            if(plane.classification != PlaneClassification.Table)
+            {
+                plane.gameObject.SetActive(false);
+            }else
+            {
+                tablePlanes.Add(plane);
+            }
+        }
+
+        foreach(var plane in changes.updated)
+        {
+            if(tablePlanes.Contains(plane))
+            {
+                tablePlanes[tablePlanes.IndexOf(plane)] = changes.updated[changes.updated.IndexOf(plane)];
+            }
+        }
+
+        foreach(var plane in changes.removed)
+        {
+            if(tablePlanes.Contains(plane))
+            {
+                tablePlanes.Remove(plane);
+            }
+        }
+    }
+
     void OnUpdatedHands(XRHandSubsystem subsystem, XRHandSubsystem.UpdateSuccessFlags updateSuccessFlags, XRHandSubsystem.UpdateType updateType)
     {
         switch(updateType)
@@ -111,10 +149,6 @@ public class HandCalibrationViewController : MonoBehaviour
                         }else
                         {
                             Debug.Log("Lablight: no plane selected");
-                            foreach(ARPlane plane in planeManager.trackables)
-                            {
-                                plane.transform.Find("Cube").gameObject.SetActive(false);
-                            }
                         }
                     }
                     // if (trackingDataLeft.TryGetPose(out Pose poseLeft))
@@ -131,8 +165,8 @@ public class HandCalibrationViewController : MonoBehaviour
                 if(planeSelected != null) 
                 {
                     //disable planes
-                    Debug.Log("Lablight: disabling all other planes");
-                    foreach(ARPlane plane in planeManager.trackables)
+                    // Debug.Log("Lablight: disabling all other planes");
+                    foreach(ARPlane plane in tablePlanes)
                     {
                         if(plane != planeSelected)
                         {
@@ -141,39 +175,31 @@ public class HandCalibrationViewController : MonoBehaviour
                         }
                     }
 
-                    //if calibration joints are within 0.05 y of plane, start calibration
+                    //if calibration joints are within distance threshold y of plane, start calibration
                     if(!inCalibration)
                     {
-                        //check if all calibration joints are within 0.05 y of plane
-                        Debug.Log("Lablight: Checking if all calibration joints are within 0.05 y of plane");
+                        //check if all calibration joints are within distance threshold y of plane
+                        Debug.Log("Lablight: Checking if all calibration joints are within " + distanceThreshold + " y of plane");
                         Debug.Log("Lablight: calibrationJointsPoseDict.Count " + calibrationJointsPoseDict.Count);
-                        if(calibrationJointsPoseDict.Count == 5)
+                        if(calibrationJointsPoseDict.Count == calibrationJoints.Length)
                         {
                             foreach(KeyValuePair<XRHandJointID, Pose> joint in calibrationJointsPoseDict)
                             {
-                                if(Mathf.Abs(joint.Value.position.y - planeSelected.center.y) > 0.06f)
+                                if(Mathf.Abs(joint.Value.position.y - planeSelected.center.y) > distanceThreshold)
                                 {
                                     Debug.Log("Lablight: " + joint.Key + " y position: " + joint.Value.position.y + " plane y position: " + planeSelected.center.y);
-                                    Debug.Log("Lablight: " + joint.Key + " is not within 0.06 y of plane");
+                                    Debug.Log("Lablight: " + joint.Key + " is not within " + distanceThreshold + " y of plane");
                                     return;
                                 }else
                                 {
                                     Debug.Log("Lablight: " + joint.Key + " y position: " + joint.Value.position.y + " plane y position: " + planeSelected.center.y);
-                                    Debug.Log("Lablight: " + joint.Key + " is within 0.06 y of plane");
+                                    Debug.Log("Lablight: " + joint.Key + " is within " + distanceThreshold + " y of plane");
                                 }
                             }
                             Debug.Log("Lablight: Starting calibration");
                             StartCoroutine(startCalibration());
                         }
                     }
-                }
-                else
-                {
-                    // //enable planes
-                    // foreach(ARPlane plane in planeManager.trackables)
-                    // {
-                    //     plane.gameObject.SetActive(true);
-                    // }
                 }
             break;
         }
@@ -184,13 +210,12 @@ public class HandCalibrationViewController : MonoBehaviour
     {
         if(jointPosition != null)
         {
-            foreach (ARPlane plane in planeManager.trackables)
+            foreach (ARPlane plane in tablePlanes)
             {
-                //ARPlane plane = planeManager.GetPlane(planeTrackable.trackableId);
                 Vector3 centerOffset = new Vector3(plane.center.x - plane.centerInPlaneSpace.x, plane.center.y - plane.centerInPlaneSpace.y, 0f);
                 Vector2[] adjustedBoundary = plane.boundary.Select(point => new Vector2(point.x + centerOffset.x, point.y + centerOffset.y)).ToArray();
 
-                if (IsPointInPolygon(adjustedBoundary, new Vector2(jointPosition.x, jointPosition.z)) && plane.classification == PlaneClassification.Table)
+                if (IsPointInPolygon(adjustedBoundary, new Vector2(jointPosition.x, jointPosition.z)))
                 {
                     return plane;
                 }
@@ -214,42 +239,20 @@ public class HandCalibrationViewController : MonoBehaviour
         return isInside;
     }
 
-
-    void OnInteractableEnter()
-    {
-        //Pose pointerFingerPose = new Pose(origin.position, origin.rotation);
-        XRHandJoint trackingData = m_HandSubsystem.rightHand.GetJoint(XRHandJointIDUtility.FromIndex((int)XRHandJointID.IndexTip));
-        if(trackingData.TryGetPose(out Pose pose))
-        {
-            /*
-            Pose xrOrigin = new Pose(planeManager.Transform.position, planeManager.Transform.rotation);
-            pose = pose.GetTransformedBy(xrOrigin);*/
-            var anchorManager = GetComponent<ARAnchorManager>();
-            //ARAnchor anchor = anchorManager.AttachAnchor(plane, pose);
-            //var instance = Instantiate(tapToPlacePrefab, pose.position, Quaternion.identity);
-            //instance.transform.parent = anchor.transform;
-        }
-    }
-
     private IEnumerator CalibrationAnimation()
     {
-        thumbTip.gameObject.SetActive(true);
         progress += 0.14f;
         fillMaterial.SetFloat("_FillRate", progress);
         yield return new WaitForSeconds(1f);
-        pointerTip.gameObject.SetActive(true);
         progress += 0.14f;
         fillMaterial.SetFloat("_FillRate", progress);
         yield return new WaitForSeconds(1f);
-        middleTip.gameObject.SetActive(true);
         progress += 0.14f;
         fillMaterial.SetFloat("_FillRate", progress);
         yield return new WaitForSeconds(1f);
-        ringTip.gameObject.SetActive(true);
         progress += 0.14f;
         fillMaterial.SetFloat("_FillRate", progress);
         yield return new WaitForSeconds(1f);
-        pinkyTip.gameObject.SetActive(true);
         progress += 0.14f;
         fillMaterial.SetFloat("_FillRate", progress);
         StartCoroutine(LerpRingScale());
@@ -258,7 +261,6 @@ public class HandCalibrationViewController : MonoBehaviour
     private IEnumerator LerpRingScale()
     {
         float timeElapsed = 0;
-        origin.SetActive(true);
         while (timeElapsed < lerpDuration)
         {
             progressRing.transform.localScale = progressRing.transform.localScale * Mathf.Lerp(1f, 0f, timeElapsed / lerpDuration);
@@ -271,18 +273,12 @@ public class HandCalibrationViewController : MonoBehaviour
         }
         progressRing.transform.localScale = new Vector3(0,0,0);
         yield return new WaitForSeconds(3f);
-        origin.SetActive(false);
     }
 
     private IEnumerator DeactivateFingerPoints()
     {
         yield return new WaitForSeconds(0.05f);
         progressRing.gameObject.SetActive(false);
-        thumbTip.gameObject.SetActive(false);
-        pointerTip.gameObject.SetActive(false);
-        middleTip.gameObject.SetActive(false);
-        ringTip.gameObject.SetActive(false);
-        pinkyTip.gameObject.SetActive(false);
     }
 
     private IEnumerator startCalibration()
@@ -293,67 +289,62 @@ public class HandCalibrationViewController : MonoBehaviour
         // Start a countdown timer
         float countdown = 5f;
         Pose[] initialJointPositions = calibrationJointsPoseDict.Values.ToArray();
+        //send joint positions to lighthouse
+        StartCoroutine(HighlightCalibrationJoints(initialJointPositions));
         while (countdown > 0)
         {
             Debug.Log("Lablight: countdown " + countdown);
             // Highlight each finger tip as each second passes
-            HighlightFingerTip((int)Math.Ceiling(5 - countdown));
             countdown -= Time.deltaTime;
 
             // Check if the hand moved out of a given distance
             if (HasMovedOutOfDistance(initialJointPositions, calibrationJointsPoseDict.Values.ToArray()))
             {
                 // Stop the calibration process
-                //StopCalibration();
                 inCalibration = false;
+                StopCoroutine(LerpRingScale());
+                //StopCoroutine(CalibrationAnimation());
                 // Show a text window saying calibration failed
                 ShowCalibrationFailedMessage();
                 DeactivateFingerPoints();
                 yield break; // Exit the coroutine
             }
-
+            
             yield return null;
         }
 
         // Calibration succeeded
         //DeactivateFingerPoints();
         ShowCalibrationSucceededMessage();
+        
         planeSelected.transform.Find("Cube").GetComponent<Renderer>().material.color = Color.green;
+        Pose calibrationPose = calibrationJointsPoseDict[XRHandJointID.MiddleTip];
+        calibrationPose.position.y = planeSelected.transform.position.y;
+        ARAnchor anchor = anchorManager.AttachAnchor(planeSelected, calibrationPose);
+        var originInstance = Instantiate(originPrefab, calibrationPose.position, Quaternion.identity);
+        originInstance.transform.parent = anchor.transform;
     }
 
-    private void HighlightFingerTip(int index)
+    private IEnumerator HighlightCalibrationJoints(Pose[] jointPositions)
     {
-        Debug.Log("Lablight: highlighting finger tip " + index);
-        switch (index)
+        GameObject[] jointObjects = new GameObject[jointPositions.Length];
+        foreach (Pose jointPose in jointPositions)
         {
-            case 1:
-                thumbTip.transform.position = calibrationJointsPoseDict[XRHandJointID.ThumbTip].position;
-                thumbTip.gameObject.SetActive(true);
-                break;
-            case 2:
-                pointerTip.transform.position = calibrationJointsPoseDict[XRHandJointID.IndexTip].position;
-                pointerTip.gameObject.SetActive(true);
-                break;
-            case 3:
-                middleTip.transform.position = calibrationJointsPoseDict[XRHandJointID.MiddleTip].position;
-                middleTip.gameObject.SetActive(true);
-                break;
-            case 4:
-                ringTip.transform.position = calibrationJointsPoseDict[XRHandJointID.RingTip].position;
-                ringTip.gameObject.SetActive(true);
-                break;
-            case 5:
-                pinkyTip.transform.position = calibrationJointsPoseDict[XRHandJointID.LittleTip].position;
-                pinkyTip.gameObject.SetActive(true);
-                break;
+            if(HasMovedOutOfDistance(jointPositions, calibrationJointsPoseDict.Values.ToArray()))
+            {
+                foreach(GameObject jointGameObject in jointObjects)
+                {
+                    Destroy(jointGameObject);
+                }
+                yield break;
+            }
+            GameObject joint = Instantiate(jointPrefab, jointPose.position, jointPose.rotation);
+            Debug.Log("Instantiating joint at " + jointPose.position);
+            jointObjects.Append(joint);
+            joint.transform.localScale = new Vector3(1f, 1f, 1f);
+            yield return new WaitForSeconds(0.5f);
         }
-    }
-
-    private void StopCalibration()
-    {
-        inCalibration = false;
-        StopCoroutine(LerpRingScale());
-        DeactivateFingerPoints();
+        yield return null;
     }
 
     private void ShowCalibrationFailedMessage()
