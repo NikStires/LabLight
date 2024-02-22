@@ -537,6 +537,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 248604195}
+  - component: {fileID: 248604198}
   - component: {fileID: 248604194}
   - component: {fileID: 248604193}
   - component: {fileID: 248604197}
@@ -625,6 +626,19 @@ MonoBehaviour:
   anchorManager: {fileID: 0}
   planeManager: {fileID: 0}
   loadProcedure: 0
+  charucoTransform: {fileID: 0}
+--- !u!114 &248604198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248604192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23dd9f2672b2e6644a83e39dffaf0268, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &540428249
 GameObject:
   m_ObjectHideFlags: 0
@@ -861,7 +875,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8098545432528756968, guid: 9fd7d9f95c9e113478d23ddca0fb09ab, type: 3}
       propertyPath: m_Name
-      value: IconButton
+      value: HudButton
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -997,10 +1011,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 4914628502615507463}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50, y: -30.4735}
-  m_SizeDelta: {x: 100, y: 60.947}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1126609147
 GameObject:
@@ -1870,7 +1884,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &668884605292407047
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2543,7 +2557,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 331b4fb89bded49c7b7b9d8b5126c229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  networking: {fileID: 1254687815}
   Text: {fileID: 1124820453}
 --- !u!223 &6274229228609166275
 Canvas:
@@ -3123,6 +3136,34 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4194583014581430610, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4194583014581430610, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4194583014581430610, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 6256733871345266859}
+    - target: {fileID: 4194583014581430610, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4194583014581430610, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: ToggleView
+      objectReference: {fileID: 0}
+    - target: {fileID: 4194583014581430610, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: NetworkingDebugViewController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4194583014581430610, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 5360583803481970582, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3171,6 +3212,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5956193710232206802, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5998ee47d79b343b5a6d41ff908860ba, type: 3}
     - target: {fileID: 5974050742793267528, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_Name
       value: ActionCenterPanel
@@ -3179,6 +3224,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6716201061803074351, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5dba898e37f444bbc978f07d3c2ef649, type: 3}
     - target: {fileID: 7319893822664835165, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_Camera
       value: 
