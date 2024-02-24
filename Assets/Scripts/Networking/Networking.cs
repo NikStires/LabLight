@@ -216,6 +216,11 @@ public partial class Networking : MonoBehaviour
             case (byte)packet_type.packet_server_aruco_markers:
                 Debug.Log($"Lighthouse Aruco detected");
                 break;
+            case (byte)packet_type.packet_server_aruco_marker_mat:
+                Debug.Log("Lighthouse hand detected");
+                var hand = (HandData)data;
+                UpdatedLighthouseHand(hand);
+                break;
             case (byte)packet_type.packet_server_charuco_board_quat:
             case (byte)packet_type.packet_server_charuco_board_mat:
             case (byte)packet_type.packet_server_charuco_board_vecs:
@@ -299,6 +304,14 @@ public partial class Networking : MonoBehaviour
                             (SessionState.ArucoSettings.Value.DictionaryType == SessionState.LastUsedArucoSettings.DictionaryType) &&
                             Mathf.Approximately(SessionState.ArucoSettings.Value.BoardSquareSize, SessionState.LastUsedArucoSettings.BoardSquareSize);
             SessionState.CalibrationDirty.Value = !equal;
+        });
+    }
+
+    private void UpdatedLighthouseHand(HandData hand)
+    {
+        Dispatcher.Current.BeginInvoke(() =>
+        {
+            SessionState.CalibrationDirty.Value = true;
         });
     }
 

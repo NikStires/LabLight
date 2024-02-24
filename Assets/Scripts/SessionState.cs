@@ -21,7 +21,6 @@ public class SessionState : MonoBehaviour
     public Vector3 mainPanelPosition;
     public Vector3 mainPanelRotation;
 
-
     private static bool _connected = false;
     private static bool _recording;
     private static Mode mode;
