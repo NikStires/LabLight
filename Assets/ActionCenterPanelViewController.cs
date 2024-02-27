@@ -18,5 +18,6 @@ public class ActionCenterPanelViewController : MonoBehaviour
     public void StartCalibration()
     {
         SceneLoader.Instance.LoadNewScene("Calibration");
+        this.gameObject.SetActive(false);
     }
 }
