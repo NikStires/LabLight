@@ -60,6 +60,7 @@ public class ProtocolPanelViewController : MonoBehaviour
 
     private void UpdateContentItems()
     {
+        Debug.Log("Updating protocol panel content items");
         //remove all content item views
         foreach (Transform child in contentFrame)
         {
@@ -115,6 +116,7 @@ public class ProtocolPanelViewController : MonoBehaviour
                     }
                     break;
                 case ContentType.Text:
+                    Debug.Log("Creating text item");
                     var textController = Instantiate(TextItem, container.transform);
                     textController.ContentItem = contentItem as TextItem;
 
@@ -124,6 +126,7 @@ public class ProtocolPanelViewController : MonoBehaviour
                     }
                     break;
                 case ContentType.Image:
+                    Debug.Log("Creating image item");
                     var imageController = Instantiate(ImageItem, container.transform);
                     imageController.ContentItem = contentItem as ImageItem;
 
@@ -233,6 +236,7 @@ public class ProtocolPanelViewController : MonoBehaviour
 
     void UpdateStepDisplay()
     {
+        Debug.Log("Updating proctol panel step display ");
         if (ProtocolState.procedureDef == null)
         {
             stepText.text = "0/0";
@@ -245,10 +249,10 @@ public class ProtocolPanelViewController : MonoBehaviour
 
         if (ProtocolState.procedureDef.steps[ProtocolState.Step].isCritical || (ProtocolState.Step > 0 && ProtocolState.procedureDef.steps[ProtocolState.Step - 1].isCritical))
         {
-            if (SessionState.Recording)
-            {
-               ServiceRegistry.GetService<ILighthouseControl>()?.StopRecordingVideo();
-            }
+            //if (SessionState.Recording.Value)
+            //{
+            //    ServiceRegistry.GetService<ILighthouseControl>()?.StopRecordingVideo();
+            //}
             //if (ProtocolState.procedureDef.steps[ProtocolState.Step].isCritical & confirmationPanelVC != null)
             //{
             //    confirmationPanelVC.CriticalStepMessage();

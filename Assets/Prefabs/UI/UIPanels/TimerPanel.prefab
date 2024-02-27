@@ -3394,7 +3394,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9d074f04d10974f6db01b0cf2c2e6a0c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 76b8659bea70f48fbb8a70a73a9c9888, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4671,7 +4671,7 @@ PrefabInstance:
     - target: {fileID: 948164155237512638, guid: 9fd7d9f95c9e113478d23ddca0fb09ab, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: f7ef351cca58240b3a1f138ed9116246, type: 3}
+      objectReference: {fileID: 21300000, guid: 5f4d26dedc364e74d880a7125d57119c, type: 3}
     - target: {fileID: 2896763459697520493, guid: 9fd7d9f95c9e113478d23ddca0fb09ab, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.38461542
@@ -4782,7 +4782,7 @@ PrefabInstance:
     - target: {fileID: 948164155237512638, guid: 9fd7d9f95c9e113478d23ddca0fb09ab, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 1fc23e97fa23643adbef642b3dc27268, type: 3}
+      objectReference: {fileID: 21300000, guid: 490272c7e5fa30f4a88f5f77ac90ca97, type: 3}
     - target: {fileID: 2896763459697520493, guid: 9fd7d9f95c9e113478d23ddca0fb09ab, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.38461542
@@ -4889,7 +4889,7 @@ PrefabInstance:
     - target: {fileID: 948164155237512638, guid: 9fd7d9f95c9e113478d23ddca0fb09ab, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 97c7bbd85f5c444b582650619b995536, type: 3}
+      objectReference: {fileID: 21300000, guid: ae2fef5f6398dd24caa6e6bb247b3d5c, type: 3}
     - target: {fileID: 2896763459697520493, guid: 9fd7d9f95c9e113478d23ddca0fb09ab, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.38461542
@@ -4991,7 +4991,7 @@ PrefabInstance:
     - target: {fileID: 948164155237512638, guid: 9fd7d9f95c9e113478d23ddca0fb09ab, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: ebec96193025149088966ac359379ff5, type: 3}
+      objectReference: {fileID: 21300000, guid: 2df2c5b2c93704de39cd182d47ce47ae, type: 3}
     - target: {fileID: 2896763459697520493, guid: 9fd7d9f95c9e113478d23ddca0fb09ab, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.38461542

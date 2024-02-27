@@ -4,7 +4,6 @@ using System.Linq;
 using UniRx;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
-using Lighthouse.MessagePack;
 
 public class SessionManager : MonoBehaviour
 {
@@ -25,16 +24,6 @@ public class SessionManager : MonoBehaviour
         get
         {
             return workspaceTransform;
-        }
-    }
-
-    [SerializeField]
-    private Transform charucoTransform;
-    public Transform CharucoTransform
-    {
-        get
-        {
-            return charucoTransform;
         }
     }
 
@@ -129,20 +118,4 @@ public class SessionManager : MonoBehaviour
     /*
     private void GoToScene(procedure data)
     */
-
-    public void UpdateCalibration(Matrix4x4 pose)
-    {
-        if (CharucoTransform == null)
-        {
-            Debug.LogError("Missing CharucoTransform on SessionManager");
-            return;
-        }
-
-        // Set the stage coordinate frame
-        CharucoTransform.FromMatrix(pose);
-
-        // TODO: World lock the charuco transform
-
-        //TODO: Show origin?
-    }
 }
