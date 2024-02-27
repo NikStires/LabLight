@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UniRx;
 using UnityEngine;
+using Lighthouse.MessagePack;
 
 public enum Mode { Master, Isolated, Observer }
 
@@ -20,8 +21,8 @@ public class SessionState : MonoBehaviour
     public Vector3 mainPanelPosition;
     public Vector3 mainPanelRotation;
 
-
-    private static bool _connected;
+    private static bool _connected = false;
+    private static bool _recording;
     private static Mode mode;
 
     
@@ -37,13 +38,20 @@ public class SessionState : MonoBehaviour
 
     // Data streams typed bus where required
     public static Subject<bool> connectedStream = new Subject<bool>();
+    public static Subject<bool> recordingStream = new Subject<bool>();
+    public static ReactiveProperty<ArucoSettings> ArucoSettings = new ReactiveProperty<ArucoSettings>();
     public static ReactiveCollection<TrackedObject> TrackedObjects = new ReactiveCollection<TrackedObject>();
+    
+    /// <summary>
+    /// Keep track of the last settings that where last used for detection so we can detect if Lighthouse changed settings in the meantime 
+    /// </summary>
+    public static ArucoSettings LastUsedArucoSettings;
 
     /// Flag that indicates if lighthouse was calibrated with different Charuco settings than the last Charuco settings used on HoloLens
-    //public static ReactiveProperty<bool> CalibrationDirty = new ReactiveProperty<bool>();
+    public static ReactiveProperty<bool> CalibrationDirty = new ReactiveProperty<bool>();
 
     /// CSV file that is marked as available for download 
-    //public static ReactiveProperty<string> CsvFileDownloadable = new ReactiveProperty<string>();
+    public static ReactiveProperty<string> CsvFileDownloadable = new ReactiveProperty<string>();
 
     //wellplate settings
     public static ReactiveProperty<bool> ShowRowColIndicators = new ReactiveProperty<bool>();
@@ -76,12 +84,33 @@ public class SessionState : MonoBehaviour
             if (_connected != value)
             {
                 _connected = value;
+                if(_connected)
+                {
+                    Debug.Log("requesting aruco settings");
+                    ServiceRegistry.GetService<ILighthouseControl>()?.RequestArucoSettings();
+                }
                 connectedStream.OnNext(value);
             }
         }
         get
         {
             return _connected;
+        }
+    }
+
+    public static bool Recording
+    {
+        set
+        {
+            if (_recording != value)
+            {
+                _recording = value;
+                recordingStream.OnNext(value);
+            }
+        }
+        get
+        {
+            return _recording;
         }
     }
 }
