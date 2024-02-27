@@ -40,8 +40,10 @@ public class SessionManager : MonoBehaviour
         }
 
         anchorManager = this.transform.parent.GetComponent<ARAnchorManager>();
-
         planeManager = this.transform.parent.GetComponent<ARPlaneManager>();
+
+        // anchorManager.enabled = false;
+        // planeManager.enabled = false;
 
         var resourceFileDataProvider = new ResourceFileDataProvider();
 

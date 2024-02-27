@@ -21,6 +21,7 @@ public static class SceneMenu
         OpenScene("Calibration");
     }
 
+
     private static void OpenScene(string sceneName)
     {
         EditorSceneManager.OpenScene("Assets/Scenes/Persistent.unity", OpenSceneMode.Single);

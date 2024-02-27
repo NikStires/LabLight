@@ -3987,6 +3987,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerPrefab: {fileID: 8865446257386590653, guid: a7d6972eb7de04e3ab65efc1613d80bf, type: 3}
+  calibrationManager: {fileID: 11400000, guid: e994e283a5b104d668e7d8427359ef92, type: 2}
 --- !u!1 &6408320339331744813
 GameObject:
   m_ObjectHideFlags: 0

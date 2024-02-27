@@ -375,6 +375,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 311feaf6a99314dcba3c8991eabf2a35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  progressRing: {fileID: 0}
+  thumbTip: {fileID: 0}
+  pointerTip: {fileID: 0}
+  middleTip: {fileID: 0}
+  ringTip: {fileID: 0}
+  pinkyTip: {fileID: 0}
+  origin: {fileID: 0}
   jointPrefab: {fileID: 0}
   tapToPlacePrefab: {fileID: 5772616215907034111, guid: e8a05466d444b4f18bd9f9c894337036, type: 3}
 --- !u!1 &682886992856445604
