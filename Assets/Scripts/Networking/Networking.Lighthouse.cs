@@ -14,10 +14,10 @@ public partial class Networking : MonoBehaviour, ILighthouseControl
     {
         if (!string.IsNullOrEmpty(_directIpAddress))
         {
-            // SessionState.Recording.Value = true;
-            // string filename = ProtocolState.ProcedureTitle + "_step" + ProtocolState.Step;
-            // var packetType = packet_type.packet_client_video_start_recording;
-            // PingServer(packetType, filename, 0f);
+            SessionState.Recording = true;
+            string filename = ProtocolState.ProcedureTitle + "_step" + ProtocolState.Step;
+            var packetType = packet_type.packet_client_video_start_recording;
+            PingServer(packetType, filename, 0f);
         }
         else
         {
@@ -30,9 +30,9 @@ public partial class Networking : MonoBehaviour, ILighthouseControl
     {
         if (!string.IsNullOrEmpty(_directIpAddress))
         {
-            // SessionState.Recording.Value = false;
-            // var packetType = packet_type.packet_client_video_stop_recording;
-            // PingServer(packetType);
+            SessionState.Recording = false;
+            var packetType = packet_type.packet_client_video_stop_recording;
+            PingServer(packetType);
         }
         else
         {
@@ -177,19 +177,19 @@ public partial class Networking : MonoBehaviour, ILighthouseControl
         if(!string.IsNullOrEmpty(_directIpAddress))
         {
             var packetType = packet_type.packet_client_protocol_state;
-            // PingServer
-            // (
-            //     packetType, 
-            //     ProtocolState.ProcedureTitle, 
-            //     "operatorName", 
-            //     ProtocolState.StartTime.ToString(), 
-            //     ProtocolState.Step + 1, 
-            //     ProtocolState.Steps.Count, 
-            //     ProtocolState.Steps[ProtocolState.Step].CheckNum + 1, 
-            //     ProtocolState.Steps[ProtocolState.Step].Checklist == null ? 0 : ProtocolState.Steps[ProtocolState.Step].Checklist.Count,
-            //     "Check Item Text", 
-            //     ProtocolState.Steps[ProtocolState.Step].SignedOff ? 1 : 0
-            // );
+            PingServer
+            (
+                packetType, 
+                ProtocolState.ProcedureTitle, 
+                "operatorName", 
+                ProtocolState.StartTime.ToString(), 
+                ProtocolState.Step + 1, 
+                ProtocolState.Steps.Count, 
+                ProtocolState.Steps[ProtocolState.Step].CheckNum + 1, 
+                ProtocolState.Steps[ProtocolState.Step].Checklist == null ? 0 : ProtocolState.Steps[ProtocolState.Step].Checklist.Count,
+                "Check Item Text", 
+                ProtocolState.Steps[ProtocolState.Step].SignedOff ? 1 : 0
+            );
         }
     }
 

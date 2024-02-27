@@ -216,6 +216,11 @@ public partial class Networking : MonoBehaviour
             case (byte)packet_type.packet_server_aruco_markers:
                 Debug.Log($"Lighthouse Aruco detected");
                 break;
+            case (byte)packet_type.packet_server_aruco_marker_mat:
+                Debug.Log("Lighthouse hand detected");
+                var hand = (HandData)data;
+                UpdatedLighthouseHand(hand);
+                break;
             case (byte)packet_type.packet_server_charuco_board_quat:
             case (byte)packet_type.packet_server_charuco_board_mat:
             case (byte)packet_type.packet_server_charuco_board_vecs:
@@ -249,7 +254,16 @@ public partial class Networking : MonoBehaviour
                 Debug.Log($"Lighthouse aruco detection settings updated");
                 Dispatcher.Current.BeginInvoke(() =>
                 {
-                    //SessionState.ArucoSettings.Value = (ArucoSettings)data;
+                    //TEMP last used aruco settins should be saved during calibration when aruco settings are requested
+                    if(SessionState.LastUsedArucoSettings != null && SessionState.ArucoSettings.Value != null)
+                    {
+                        SessionState.LastUsedArucoSettings = SessionState.ArucoSettings.Value;
+                    }
+                    else
+                    {
+                        SessionState.LastUsedArucoSettings = (ArucoSettings)data;
+                    }
+                    SessionState.ArucoSettings.Value = (ArucoSettings)data;
                 });
                 break;
             case (byte)packet_type.packet_server_settings_codes:
@@ -284,12 +298,20 @@ public partial class Networking : MonoBehaviour
     {
         Dispatcher.Current.BeginInvoke(() =>
         {
-            // Check if calibration settings used by HoloLens match the settings used by Lighthouse
-            // bool equal = SessionState.ArucoSettings.Value == null ? false : (SessionState.ArucoSettings.Value.BoardNumX == SessionState.LastUsedArucoSettings.BoardNumX) &&
-            //                 (SessionState.ArucoSettings.Value.BoardNumY == SessionState.LastUsedArucoSettings.BoardNumY) &&
-            //                 (SessionState.ArucoSettings.Value.DictionaryType == SessionState.LastUsedArucoSettings.DictionaryType) &&
-            //                 Mathf.Approximately(SessionState.ArucoSettings.Value.BoardSquareSize, SessionState.LastUsedArucoSettings.BoardSquareSize);
-            // SessionState.CalibrationDirty.Value = !equal;
+            // Check if client calibration settings match the settings used by Lighthouse
+            bool equal = SessionState.ArucoSettings.Value == null ? false : (SessionState.ArucoSettings.Value.BoardNumX == SessionState.LastUsedArucoSettings.BoardNumX) &&
+                            (SessionState.ArucoSettings.Value.BoardNumY == SessionState.LastUsedArucoSettings.BoardNumY) &&
+                            (SessionState.ArucoSettings.Value.DictionaryType == SessionState.LastUsedArucoSettings.DictionaryType) &&
+                            Mathf.Approximately(SessionState.ArucoSettings.Value.BoardSquareSize, SessionState.LastUsedArucoSettings.BoardSquareSize);
+            SessionState.CalibrationDirty.Value = !equal;
+        });
+    }
+
+    private void UpdatedLighthouseHand(HandData hand)
+    {
+        Dispatcher.Current.BeginInvoke(() =>
+        {
+            SessionState.CalibrationDirty.Value = true;
         });
     }
 
@@ -298,7 +320,7 @@ public partial class Networking : MonoBehaviour
         Debug.Log("New Csv file available for download: " + fileInfo.FileName);
         Dispatcher.Current.BeginInvoke(() =>
         {
-            //SessionState.CsvFileDownloadable.Value = fileInfo.FileName;
+            SessionState.CsvFileDownloadable.Value = fileInfo.FileName;
         });
     }
 
@@ -336,7 +358,7 @@ public partial class Networking : MonoBehaviour
 
             Dispatcher.Current.BeginInvoke(() =>
             {
-                //SessionState.TrackedObjects.Add(trackedObject);
+                SessionState.TrackedObjects.Add(trackedObject);
             });
         }
         else
@@ -375,10 +397,9 @@ public partial class Networking : MonoBehaviour
             Debug.Log("create new udp client");
             CreateUdpClient(_directPort);
             Debug.Log("start pinging server");
-            StartPingingServer(1000);
+            StartPingingServer(2000);
             Debug.Log("listen to packets at new address");
             ListenForPackets(new IPEndPoint(IPAddress.Parse(_directIpAddress), _directPort));
-
         }
         catch (Exception ex)
         {
@@ -464,8 +485,7 @@ public partial class Networking : MonoBehaviour
         }
         else
         {
-            Debug.Log("Sending packet");
-            DebugView.Log("Sending packet");
+            DebugView.Log("Sending " + packetType.ToString());
             var outputStream = new MemoryStream();
             object[] msg = new object[] { packetType };
             MessagePack.MessagePackSerializer.Serialize(outputStream, msg);
@@ -516,7 +536,7 @@ public partial class Networking : MonoBehaviour
 
     private void Awake()
     {
-        //ServiceRegistry.RegisterService<ILighthouseControl>(this);
+        ServiceRegistry.RegisterService<ILighthouseControl>(this);
     }
 
     /// <summary>Starts as client.</summary>
@@ -536,11 +556,11 @@ public partial class Networking : MonoBehaviour
         // allow up to 10 second lag
         if (DateTime.Now - _receivedLastPacketTime > TimeSpan.FromSeconds(10))
         {
-            //SessionState.Connected = false;
+            SessionState.Connected = false;
         }
         else
         {
-            //SessionState.Connected = true;
+            SessionState.Connected = true;
         }
 
         if (ObjectPruningTimeoutInSeconds > 0)
@@ -577,7 +597,7 @@ public partial class Networking : MonoBehaviour
 
             Dispatcher.Current.BeginInvoke(() =>
             {
-                //SessionState.TrackedObjects.Remove(objectToRemove);
+                SessionState.TrackedObjects.Remove(objectToRemove);
             });
         }
     }
