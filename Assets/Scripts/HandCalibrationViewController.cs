@@ -127,6 +127,8 @@ public class HandCalibrationViewController : MonoBehaviour
         Debug.Log("Lablight: Calibration complete");
         Debug.Log("Lablight: origin position " + originPosition);
 
+        SessionManager.instance.WorkspaceTransform = originInstance.transform;
+
         if(m_HandSubsystem != null)
         {
             m_HandSubsystem.updatedHands -= OnUpdatedHands;

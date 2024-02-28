@@ -22,6 +22,10 @@ public class SessionManager : MonoBehaviour
 
     public Transform WorkspaceTransform
     {
+        set
+        {
+            workspaceTransform = value;
+        }
         get
         {
             return workspaceTransform;
