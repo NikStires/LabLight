@@ -112,16 +112,14 @@ public class HandCalibrationViewController : MonoBehaviour
         //store started lighthouse origin and current plane in session manager
     }
 
-    public void CompleteCalibration()
+    public void CompleteCalibration(Vector3 originPosition)
     {
         inCalibration = false;
         calibrationManager.UpdateCalibrationStatus("Calibration complete");
         calibrationManager.CalibrationStarted(false);
         planeSelected.transform.Find("Cube").GetComponent<Renderer>().material.color = Color.green;
-        Pose calibrationPose = calibrationJointsPoseDict[XRHandJointID.MiddleTip];
-        calibrationPose.position.y = planeSelected.transform.position.y;
         //ARAnchor anchor = anchorManager.AttachAnchor(planeSelected, calibrationPose);
-        var originInstance = Instantiate(originPrefab, calibrationPose.position, Quaternion.identity);
+        var originInstance = Instantiate(originPrefab, originPosition, Quaternion.identity);
         //stop plane tracking
 
         calibrationCoroutine = null;
@@ -290,10 +288,11 @@ public class HandCalibrationViewController : MonoBehaviour
         {
             initialJointPositions[i].position = new Vector3(initialJointPositions[i].position.x, planeSelected.center.y, initialJointPositions[i].position.z);
         }
-        
+        float timeElapsed = 0;
         foreach (XRHandJointID joint in calibrationJoints)
         {
-            if(HasMovedOutOfDistance(initialJointPositions, calibrationJointsPoseDict.Values.ToArray()))
+
+            if(timeElapsed > 2f && HasMovedOutOfDistance(initialJointPositions, calibrationJointsPoseDict.Values.ToArray())) //wait 2 seconds for hand position to stabalize before checking if hand has moved
             {
                 calibrationManager.UpdateCalibrationStatus("Calibration failed please place hands on plane");
                 DeactivateFingerPoints();
@@ -304,10 +303,21 @@ public class HandCalibrationViewController : MonoBehaviour
             Debug.Log("Instantiating joint at " + jointPose.position);
             fingerPoints.Append(jointInstance);
             jointInstance.transform.localScale = new Vector3(1f, 1f, 1f);
+            timeElapsed += 0.5f;
             yield return new WaitForSeconds(0.5f);
         }
-
-        CompleteCalibration();
+        Matrix4x4 calibrationMatrix = CalibrationFromMatrix.Calculate_Hand_Coordinate_System_Transform(true, 
+            calibrationJointsPoseDict[XRHandJointID.IndexProximal].position.x, planeSelected.transform.position.y, calibrationJointsPoseDict[XRHandJointID.IndexProximal].position.z,
+            calibrationJointsPoseDict[XRHandJointID.MiddleProximal].position.x, planeSelected.transform.position.y, calibrationJointsPoseDict[XRHandJointID.MiddleProximal].position.z,
+            calibrationJointsPoseDict[XRHandJointID.RingProximal].position.x, planeSelected.transform.position.y, calibrationJointsPoseDict[XRHandJointID.RingProximal].position.z,
+            calibrationJointsPoseDict[XRHandJointID.LittleProximal].position.x, planeSelected.transform.position.y, calibrationJointsPoseDict[XRHandJointID.LittleProximal].position.z,
+            calibrationJointsPoseDict[XRHandJointID.IndexTip].position.x, planeSelected.transform.position.y, calibrationJointsPoseDict[XRHandJointID.IndexTip].position.z,
+            calibrationJointsPoseDict[XRHandJointID.MiddleTip].position.x, planeSelected.transform.position.y, calibrationJointsPoseDict[XRHandJointID.MiddleTip].position.z,
+            calibrationJointsPoseDict[XRHandJointID.RingTip].position.x, planeSelected.transform.position.y, calibrationJointsPoseDict[XRHandJointID.RingTip].position.z,
+            calibrationJointsPoseDict[XRHandJointID.LittleTip].position.x, planeSelected.transform.position.y, calibrationJointsPoseDict[XRHandJointID.LittleTip].position.z
+        );
+        Vector3 originPosition = new Vector3(calibrationMatrix.m03, calibrationMatrix.m13, calibrationMatrix.m23);
+        CompleteCalibration(originPosition);
         yield return null;
     }
 
