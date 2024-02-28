@@ -53,8 +53,8 @@ public class SessionManager : MonoBehaviour
         anchorManager = this.transform.parent.GetComponent<ARAnchorManager>();
         planeManager = this.transform.parent.GetComponent<ARPlaneManager>();
 
-        // anchorManager.enabled = false;
-        // planeManager.enabled = false;
+        //anchorManager.enabled = false;
+        //planeManager.requestedDetectionMode = UnityEngine.XR.ARSubsystems.PlaneDetectionMode.None;
 
         var resourceFileDataProvider = new ResourceFileDataProvider();
 

@@ -54,7 +54,7 @@ public class HandCalibrationViewController : MonoBehaviour
 
     public bool calibrationCountdownStarted = false;
     
-    public float distanceThreshold = 0.04f;
+    public float distanceThreshold = 0.05f;
 
     private float progress = -0.4f;
     private float lerpDuration = 3f;
@@ -92,7 +92,7 @@ public class HandCalibrationViewController : MonoBehaviour
     {
         //start plane tracking
         //start hand tracking
-        //planeManager.enabled = true;
+        //planeManager.requestedDetectionMode = UnityEngine.XR.ARSubsystems.PlaneDetectionMode.Horizontal;
         //anchorManager.enabled = true;
 
         Debug.Log("calibration requested");
@@ -125,11 +125,14 @@ public class HandCalibrationViewController : MonoBehaviour
         calibrationCoroutine = null;
 
         Debug.Log("Lablight: Calibration complete");
+        Debug.Log("Lablight: origin position " + originPosition);
 
         if(m_HandSubsystem != null)
         {
             m_HandSubsystem.updatedHands -= OnUpdatedHands;
         }
+
+        //planeManager.requestedDetectionMode = UnityEngine.XR.ARSubsystems.PlaneDetectionMode.None;
 
         if(planeManager != null)
         {
@@ -139,6 +142,7 @@ public class HandCalibrationViewController : MonoBehaviour
 
     void OnPlanesChanged(ARPlanesChangedEventArgs args)
     {
+        Debug.Log("Lablight: planes changed");
         foreach (var plane in args.added)
         {
             if(plane.classification != PlaneClassification.Table)
@@ -278,21 +282,22 @@ public class HandCalibrationViewController : MonoBehaviour
 
     private IEnumerator startCalibration()
     {
-        Pose[] initialJointPositions = calibrationJointsPoseDict.Values.ToArray();
 
         calibrationManager.UpdateCalibrationStatus("Calibration in progress");
 
-
+        yield return new WaitForSeconds(1.5f); // to remove, debug waiting 1 second to ensure optimal hand position
         //call send data to lighthouse
+
+        Pose[] initialJointPositions = calibrationJointsPoseDict.Values.ToArray();
+
         for (int i = 0; i < initialJointPositions.Length; i++)
         {
             initialJointPositions[i].position = new Vector3(initialJointPositions[i].position.x, planeSelected.center.y, initialJointPositions[i].position.z);
         }
-        float timeElapsed = 0;
         foreach (XRHandJointID joint in calibrationJoints)
         {
 
-            if(timeElapsed > 2f && HasMovedOutOfDistance(initialJointPositions, calibrationJointsPoseDict.Values.ToArray())) //wait 2 seconds for hand position to stabalize before checking if hand has moved
+            if(HasMovedOutOfDistance(initialJointPositions, calibrationJointsPoseDict.Values.ToArray())) //wait 2 seconds for hand position to stabalize 
             {
                 calibrationManager.UpdateCalibrationStatus("Calibration failed please place hands on plane");
                 DeactivateFingerPoints();
@@ -303,7 +308,8 @@ public class HandCalibrationViewController : MonoBehaviour
             Debug.Log("Instantiating joint at " + jointPose.position);
             fingerPoints.Append(jointInstance);
             jointInstance.transform.localScale = new Vector3(1f, 1f, 1f);
-            timeElapsed += 0.5f;
+            Debug.Log("Lablight: middle tip position: " + calibrationJointsPoseDict[XRHandJointID.MiddleTip].position.y + " plane selected y position: " +  planeSelected.center.y);
+
             yield return new WaitForSeconds(0.5f);
         }
         Matrix4x4 calibrationMatrix = CalibrationFromMatrix.Calculate_Hand_Coordinate_System_Transform(true, 
@@ -325,11 +331,13 @@ public class HandCalibrationViewController : MonoBehaviour
     {
         for (int i = 0; i < initialPositions.Length; i++)
         {
-            Physics.Raycast(initialPositions[i].position, Vector3.down, out RaycastHit hit, 1f);
-            if(hit.collider.GetComponent<ARPlane>() == planeSelected)
-            {
-                Debug.Log("Lablight: distance from plane " + hit.distance);
-            }
+            // if(Physics.Raycast(initialPositions[i].position, Vector3.down, out RaycastHit hit, 1f))
+            // {
+            //     if(hit.collider.GetComponent<ARPlane>() == planeSelected)
+            //     {
+            //         Debug.Log("Lablight: distance from plane " + hit.distance);
+            //     }
+            // }
 
             if (Vector3.Distance(initialPositions[i].position, currentPositions[i].position) > 0.05f)
             {
