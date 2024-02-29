@@ -54,7 +54,7 @@ public class HandCalibrationViewController : MonoBehaviour
 
     public bool calibrationCountdownStarted = false;
     
-    public float distanceThreshold = 0.05f;
+    public float distanceThreshold = 0.02f;
 
     private float progress = -0.4f;
     private float lerpDuration = 3f;
@@ -104,6 +104,11 @@ public class HandCalibrationViewController : MonoBehaviour
         if(planeManager != null)
         {
             planeManager.planesChanged += OnPlanesChanged;
+        }
+
+        if(planeSelected != null)
+        {
+            planeSelected.transform.Find("Cube").gameObject.SetActive(false); //disable any previous cubes
         }
         //start calibration
         calibrationManager.UpdateCalibrationStatus("Looking for planes");
