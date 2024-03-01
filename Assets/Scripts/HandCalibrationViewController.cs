@@ -93,6 +93,7 @@ public class HandCalibrationViewController : MonoBehaviour
         //start plane tracking
         //start hand tracking
         //planeManager.requestedDetectionMode = UnityEngine.XR.ARSubsystems.PlaneDetectionMode.Horizontal;
+        //planeManager.enabled = true;
         //anchorManager.enabled = true;
 
         Debug.Log("calibration requested");
@@ -125,21 +126,15 @@ public class HandCalibrationViewController : MonoBehaviour
         planeSelected.transform.Find("Cube").GetComponent<Renderer>().material.color = Color.green;
         //ARAnchor anchor = anchorManager.AttachAnchor(planeSelected, calibrationPose);
         var originInstance = Instantiate(originPrefab, originPosition, Quaternion.identity);
-        //stop plane tracking
-
         calibrationCoroutine = null;
 
         Debug.Log("Lablight: Calibration complete");
         Debug.Log("Lablight: origin position " + originPosition);
 
-        SessionManager.instance.WorkspaceTransform = originInstance.transform;
-
         if(m_HandSubsystem != null)
         {
             m_HandSubsystem.updatedHands -= OnUpdatedHands;
         }
-
-        //planeManager.requestedDetectionMode = UnityEngine.XR.ARSubsystems.PlaneDetectionMode.None;
 
         if(planeManager != null)
         {
@@ -149,7 +144,6 @@ public class HandCalibrationViewController : MonoBehaviour
 
     void OnPlanesChanged(ARPlanesChangedEventArgs args)
     {
-        Debug.Log("Lablight: planes changed");
         foreach (var plane in args.added)
         {
             if(plane.classification != PlaneClassification.Table)
@@ -330,6 +324,7 @@ public class HandCalibrationViewController : MonoBehaviour
             calibrationJointsPoseDict[XRHandJointID.LittleTip].position.x, planeSelected.transform.position.y, calibrationJointsPoseDict[XRHandJointID.LittleTip].position.z
         );
         Vector3 originPosition = new Vector3(calibrationMatrix.m03, calibrationMatrix.m13, calibrationMatrix.m23);
+        SessionManager.UpdateCalibration(calibrationMatrix);
         CompleteCalibration(originPosition);
         yield return null;
     }

@@ -33,8 +33,8 @@ public class SessionManager : MonoBehaviour
     }
 
     [SerializeField]
-    private Transform charucoTransform;
-    public Transform CharucoTransform
+    private static Transform charucoTransform;
+    public static Transform CharucoTransform
     {
         get
         {
@@ -56,9 +56,6 @@ public class SessionManager : MonoBehaviour
 
         anchorManager = this.transform.parent.GetComponent<ARAnchorManager>();
         planeManager = this.transform.parent.GetComponent<ARPlaneManager>();
-
-        //anchorManager.enabled = false;
-        //planeManager.requestedDetectionMode = UnityEngine.XR.ARSubsystems.PlaneDetectionMode.None;
 
         var resourceFileDataProvider = new ResourceFileDataProvider();
 
@@ -87,35 +84,6 @@ public class SessionManager : MonoBehaviour
         //add grid?
     }
 
-    public void OnEnable()
-    {
-        if (loadProcedure)
-        {
-            LoadProcedure();
-        }
-    }
-
-    public void LoadProcedure()
-    {
-        var procedureDataProvider = ServiceRegistry.GetService<IProcedureDataProvider>();
-        if(procedureDataProvider != null)
-        {
-            procedureDataProvider.GetOrCreateProcedureDefinition("piplight_H551").Subscribe(procedure => 
-            {
-                Debug.Log(procedure.title + " loaded");
-                ProtocolState.SetProcedureDefinition(procedure);
-            }, (e) =>
-            {
-                Debug.Log("Error fetching procedure");
-            });
-        }
-        else
-        {
-            Debug.Log("Procedure Data provider null");
-        }
-
-    }
-
 
 
     /* used for charuco calibration, reimplement with hand tracking
@@ -129,12 +97,7 @@ public class SessionManager : MonoBehaviour
 
     }*/
 
-    //add switch scene code
-    /*
-    private void GoToScene(procedure data)
-    */
-
-    public void UpdateCalibration(Matrix4x4 pose)
+    public static void UpdateCalibration(Matrix4x4 pose)
     {
         if (CharucoTransform == null)
         {
