@@ -65,7 +65,7 @@ public class ProtocolPanelViewController : MonoBehaviour
             //create content items for this step
             var currentStep = ProtocolState.procedureDef.steps[ProtocolState.Step];
 
-            //create content items for current check item, iif no content items for check item show step content items
+            //create content items for current check item, if no content items for check item show step content items
             if (currentStep.checklist != null && currentStep.checklist[ProtocolState.CheckItem].contentItems.Count > 0)
             {
                 CreateContentItem(currentStep.contentItems, contentFrame.GetComponent<LayoutGroup>(), null);

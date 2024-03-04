@@ -12,6 +12,34 @@ PrefabInstance:
       propertyPath: m_text
       value: PDF Reader
       objectReference: {fileID: 0}
+    - target: {fileID: 3932958200858409884, guid: 7559f43eba7ae473ab2f6789b7820ec2, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3932958200858409884, guid: 7559f43eba7ae473ab2f6789b7820ec2, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3932958200858409884, guid: 7559f43eba7ae473ab2f6789b7820ec2, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 8367569941018690857}
+    - target: {fileID: 3932958200858409884, guid: 7559f43eba7ae473ab2f6789b7820ec2, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3932958200858409884, guid: 7559f43eba7ae473ab2f6789b7820ec2, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 3932958200858409884, guid: 7559f43eba7ae473ab2f6789b7820ec2, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3932958200858409884, guid: 7559f43eba7ae473ab2f6789b7820ec2, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 4040129738761332744, guid: 7559f43eba7ae473ab2f6789b7820ec2, type: 3}
       propertyPath: m_Name
       value: PdfPanel
@@ -67,6 +95,11 @@ PrefabInstance:
 --- !u!224 &7698500893359082038 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2799103538423768855, guid: 7559f43eba7ae473ab2f6789b7820ec2, type: 3}
+  m_PrefabInstance: {fileID: 5480590547028258081}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8367569941018690857 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4040129738761332744, guid: 7559f43eba7ae473ab2f6789b7820ec2, type: 3}
   m_PrefabInstance: {fileID: 5480590547028258081}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5791548872990926998
