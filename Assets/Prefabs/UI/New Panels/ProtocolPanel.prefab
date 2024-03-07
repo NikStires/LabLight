@@ -24,6 +24,10 @@ PrefabInstance:
       propertyPath: m_ChildControlWidth
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5429743727582873281, guid: dd216cbce70c340968d5d438f8592667, type: 3}
+      propertyPath: m_fontSize
+      value: 21.6
+      objectReference: {fileID: 0}
     - target: {fileID: 7636341260724178765, guid: dd216cbce70c340968d5d438f8592667, type: 3}
       propertyPath: m_SelectExited.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -76,6 +80,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8560964804999824006, guid: dd216cbce70c340968d5d438f8592667, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -17.71
+      objectReference: {fileID: 0}
+    - target: {fileID: 8560964804999824006, guid: dd216cbce70c340968d5d438f8592667, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.10000038
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8941642355252626800, guid: dd216cbce70c340968d5d438f8592667, type: 3}
     - {fileID: 6672678368126033483, guid: dd216cbce70c340968d5d438f8592667, type: 3}
@@ -112,7 +124,6 @@ MonoBehaviour:
   procedureTitle: {fileID: 4714901093462294915}
   stepText: {fileID: 0}
   contentFrame: {fileID: 4025193009268289543}
-  closeProtocolButton: {fileID: 0}
   ContainerHorizontalItem: {fileID: 3878928379086764969, guid: ccf739193bf7f554283cf751e86d02e1, type: 3}
   ContainerVerticalItem: {fileID: 4234610004721033739, guid: ef32c55399f4c464e984104d19409013, type: 3}
   TextItem: {fileID: 7527683253692566170, guid: 90f27cbef998f514ab4eea03c89030b5, type: 3}

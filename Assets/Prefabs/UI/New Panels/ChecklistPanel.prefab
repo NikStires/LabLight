@@ -465,30 +465,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ProtocolPanel
       objectReference: {fileID: 0}
-    - target: {fileID: 3204518221397658297, guid: b01e6c932734e4cbf8eb701d5e2bc61a, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 3454972135295401754, guid: b01e6c932734e4cbf8eb701d5e2bc61a, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 3933519186898055108, guid: b01e6c932734e4cbf8eb701d5e2bc61a, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4512407119142859835, guid: b01e6c932734e4cbf8eb701d5e2bc61a, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5182593687964606879, guid: b01e6c932734e4cbf8eb701d5e2bc61a, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6024882440896645738, guid: b01e6c932734e4cbf8eb701d5e2bc61a, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 7229238141035760777, guid: b01e6c932734e4cbf8eb701d5e2bc61a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.365
