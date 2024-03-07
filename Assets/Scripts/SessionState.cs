@@ -4,6 +4,7 @@ using System.Linq;
 using UniRx;
 using UnityEngine;
 using Lighthouse.MessagePack;
+using UnityEngine.Events;
 
 public enum Mode { Master, Isolated, Observer }
 
@@ -24,6 +25,8 @@ public class SessionState : MonoBehaviour
     private static bool _connected = false;
     private static bool _recording;
     private static Mode mode;
+
+    public static UnityEvent onCalibrationUpdated = new UnityEvent();
 
     
     public static ReactiveProperty<bool> enableGenericVisualizations = new ReactiveProperty<bool>();

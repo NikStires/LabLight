@@ -11,10 +11,11 @@ using System.Linq;
 using System;
 using UniRx;
 using TMPro;
+using UnityEngine.PlayerLoop;
 
 public class HandCalibrationViewController : MonoBehaviour
 {
-    [SerializeField] MeshRenderer progressRing;
+    //[SerializeField] MeshRenderer progressRing;
     //[SerializeField] GameObject origin;
     [SerializeField] GameObject originPrefab;
 
@@ -59,8 +60,6 @@ public class HandCalibrationViewController : MonoBehaviour
     private float progress = -0.4f;
     private float lerpDuration = 3f;
 
-    private bool abovePlane = false;
-
     private bool inCalibration = false;
 
     private void Awake()
@@ -90,8 +89,6 @@ public class HandCalibrationViewController : MonoBehaviour
 
     public void RequestCalibration()
     {
-        //start plane tracking
-        //start hand tracking
         //planeManager.requestedDetectionMode = UnityEngine.XR.ARSubsystems.PlaneDetectionMode.Horizontal;
         //anchorManager.enabled = true;
 
@@ -122,14 +119,13 @@ public class HandCalibrationViewController : MonoBehaviour
         inCalibration = false;
         calibrationManager.UpdateCalibrationStatus("Calibration complete");
         calibrationManager.CalibrationStarted(false);
-        planeSelected.transform.Find("Cube").GetComponent<Renderer>().material.color = Color.green;
+        planeSelected.transform.Find("Cube").gameObject.SetActive(false);
         //ARAnchor anchor = anchorManager.AttachAnchor(planeSelected, calibrationPose);
         var originInstance = Instantiate(originPrefab, originPosition, Quaternion.identity);
         //stop plane tracking
 
         calibrationCoroutine = null;
 
-        Debug.Log("Lablight: Calibration complete");
         Debug.Log("Lablight: origin position " + originPosition);
 
         SessionManager.instance.WorkspaceTransform = originInstance.transform;
@@ -145,11 +141,12 @@ public class HandCalibrationViewController : MonoBehaviour
         {
             planeManager.planesChanged -= OnPlanesChanged;
         }
+        planeSelected = null;
+
     }
 
     void OnPlanesChanged(ARPlanesChangedEventArgs args)
     {
-        Debug.Log("Lablight: planes changed");
         foreach (var plane in args.added)
         {
             if(plane.classification != PlaneClassification.Table)
@@ -185,66 +182,52 @@ public class HandCalibrationViewController : MonoBehaviour
                         {
                             if(Physics.Raycast(poseRight.position, Vector3.down, out RaycastHit hit, 1f))
                             {
-                                if(hit.collider.GetComponent<ARPlane>().classification == PlaneClassification.Table)
+                                if(hit.collider.TryGetComponent<ARPlane>(out ARPlane hitPlane))
                                 {
-                                    //Debug.Log("Lablight: hand distance above plane " + hit.distance);
-                                    if(planeSelected == null)
+                                    if(hitPlane != null)
                                     {
-                                        //Debug.Log("plane selected");
-                                        abovePlane = true;
-                                        //activate cube
-                                        planeSelected = hit.collider.GetComponent<ARPlane>();
-                                        planeSelected.GetComponent<ARPlane>().transform.Find("Cube").gameObject.SetActive(true);
-                                    }else if(planeSelected != hit.collider.GetComponent<ARPlane>()) //very rare case
-                                    {
-                                        abovePlane = true;
-                                        //decative old cube
-                                        planeSelected.GetComponent<ARPlane>().transform.Find("Cube").gameObject.SetActive(false);
-                                        //Debug.Log("new plane selected");
-                                        planeSelected = hit.collider.GetComponent<ARPlane>();
-                                    }else
-                                    {
-                                        //do nothing
-                                        //Debug.Log("Lablight: plane selected " + planeSelected.trackableId);
-                                    }
-                                }else if(hit.collider.GetComponent<ARPlane>().classification != PlaneClassification.Table)
-                                {
-                                    if(planeSelected != null) //if not over any plane, disable current plane cube 
-                                    {
-                                        abovePlane = false;
-                                        planeSelected.GetComponent<ARPlane>().transform.Find("Cube").gameObject.SetActive(false);
-                                        planeSelected = null;
+                                        if(hitPlane.classification == PlaneClassification.Table)
+                                        {
+                                            //Debug.Log("Lablight: hand distance above plane " + hit.distance);
+                                            if(planeSelected == null)
+                                            {
+                                                planeSelected = hitPlane;
+                                                planeSelected.transform.Find("Cube").gameObject.SetActive(true);
+                                            }else if(planeSelected != hitPlane) //very rare case
+                                            {
+                                                planeSelected.transform.Find("Cube").gameObject.SetActive(false);
+                                                //Debug.Log("new plane selected");
+                                                planeSelected = hitPlane;
+                                            }
+                                        }else if(hitPlane.classification != PlaneClassification.Table)
+                                        {
+                                            if(planeSelected != null && !inCalibration) //if we aren't in calibration and we aren't over a table we unselect the plane. bool is there to correct cases in which raycast hits plane below the current plane
+                                            {
+                                                planeSelected.transform.Find("Cube").gameObject.SetActive(false);
+                                                planeSelected = null;
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
                         //only check if calibration joints are above plane
-                        if(calibrationJoints.Contains(jointID) && abovePlane)
+                        if(calibrationJoints.Contains(jointID))
                         {
                             //Debug.Log("Lablight: storing " + jointID + " pose");
                             calibrationJointsPoseDict[jointID] = poseRight;
                         }
                     }
-                    // if (trackingDataLeft.TryGetPose(out Pose poseLeft)) left hand calibration todo
-                    // {
-                    // }
                 }
                 if(planeSelected != null && calibrationJointsPoseDict.Count == calibrationJoints.Length && !inCalibration)
                 {
+                    //Debug.Log("Lablight: Plane selected, unsubscribing from plane detection events");
                     inCalibration = true;
-                    if(planeManager != null)
-                    {
-                        planeManager.planesChanged -= OnPlanesChanged;
-                    }
+                    // if(planeManager != null)
+                    // {
+                    //     planeManager.planesChanged -= OnPlanesChanged;
+                    // }
                     StartCalibrationOnPlane();
-                }else if(planeSelected == null && inCalibration)
-                {
-                    if(planeManager != null)
-                    {
-                        planeManager.planesChanged += OnPlanesChanged;
-                    }
-                    inCalibration = false;
-                    calibrationManager.CalibrationStarted(inCalibration);
                 }
             break;
         }
@@ -281,44 +264,40 @@ public class HandCalibrationViewController : MonoBehaviour
         //progressRing.gameObject.SetActive(false);
         foreach(GameObject fingerPoint in fingerPoints)
         {
-            fingerPoints.Remove(fingerPoint);
             fingerPoint.SetActive(false);
             Destroy(fingerPoint);
         }
+        fingerPoints.Clear();
     }
 
     private IEnumerator startCalibration()
     {
-
+        Debug.Log("startCalibration: Starting calibration");
         calibrationManager.UpdateCalibrationStatus("Calibration in progress");
 
         yield return new WaitForSeconds(1.5f); // to remove, debug waiting 1 second to ensure optimal hand position
         //call send data to lighthouse
 
         Pose[] initialJointPositions = calibrationJointsPoseDict.Values.ToArray();
-
-        for (int i = 0; i < initialJointPositions.Length; i++)
-        {
-            initialJointPositions[i].position = new Vector3(initialJointPositions[i].position.x, planeSelected.center.y, initialJointPositions[i].position.z);
-        }
         foreach (XRHandJointID joint in calibrationJoints)
         {
-
             if(HasMovedOutOfDistance(initialJointPositions, calibrationJointsPoseDict.Values.ToArray())) //wait 2 seconds for hand position to stabalize 
             {
                 calibrationManager.UpdateCalibrationStatus("Calibration failed please place hands on plane");
+                inCalibration = false;
                 DeactivateFingerPoints();
                 yield break;
             }
             Pose jointPose = calibrationJointsPoseDict[joint];
             GameObject jointInstance = Instantiate(jointPrefab, jointPose.position, jointPose.rotation);
-            Debug.Log("Instantiating joint at " + jointPose.position);
+            Debug.Log("startCalibration: Instantiating joint at " + jointPose.position);
             fingerPoints.Append(jointInstance);
             jointInstance.transform.localScale = new Vector3(1f, 1f, 1f);
-            Debug.Log("Lablight: middle tip position: " + calibrationJointsPoseDict[XRHandJointID.MiddleTip].position.y + " plane selected y position: " +  planeSelected.center.y);
-
+            //Debug.Log("Lablight: middle tip position: " + calibrationJointsPoseDict[XRHandJointID.MiddleTip].position.y + " plane selected y position: " +  planeSelected.transform.position.y);
             yield return new WaitForSeconds(0.5f);
         }
+        Debug.Log("startCalibration: instnatiated all joints");
+        Debug.Log("startCalibration: plane selected info" + planeSelected.transform.position);
         Matrix4x4 calibrationMatrix = CalibrationFromMatrix.Calculate_Hand_Coordinate_System_Transform(true, 
             calibrationJointsPoseDict[XRHandJointID.IndexProximal].position.x, planeSelected.transform.position.y, calibrationJointsPoseDict[XRHandJointID.IndexProximal].position.z,
             calibrationJointsPoseDict[XRHandJointID.MiddleProximal].position.x, planeSelected.transform.position.y, calibrationJointsPoseDict[XRHandJointID.MiddleProximal].position.z,
@@ -345,9 +324,9 @@ public class HandCalibrationViewController : MonoBehaviour
             //         Debug.Log("Lablight: distance from plane " + hit.distance);
             //     }
             // }
-
-            if (Vector3.Distance(initialPositions[i].position, currentPositions[i].position) > 0.05f)
+            if (Vector3.Distance(initialPositions[i].position, currentPositions[i].position) > 0.03f)
             {
+                Debug.Log("HasMovedOutOfDistance: Hand detected out of distance by " + Vector3.Distance(initialPositions[i].position, currentPositions[i].position) + " units");
                 return true;
             }
         }

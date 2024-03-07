@@ -21,9 +21,9 @@ public class ArObjectManager : MonoBehaviour
     public LayoutController ContainerVerticalItem;
     public TextController TextItem;
     public PropertyTextController PropertyItem;
-    public ImageController ImageItem;
-    public VideoController VideoItem;
-    public SoundController SoundItem;
+    // public ImageController ImageItem;
+    // public VideoController VideoItem;
+    // public SoundController SoundItem;
 
     //prefabs for generic
     public ArrowElementViewController ArrowPrefab;
@@ -69,6 +69,7 @@ public class ArObjectManager : MonoBehaviour
                 
                 foreach(var arDefinition in specificArDefinitions)
                 {
+                    Debug.Log("Adding specific definition");
                     SpecificArDefinitionAdded(arDefinition);
                 }
             }
@@ -101,6 +102,7 @@ public class ArObjectManager : MonoBehaviour
         }
         if(SessionState.enableGenericVisualizations.Value)
         {
+            Debug.Log("Processing added generic object" + trackedObject.label);
             processAddedGenericObject(trackedObject);
         }
     }
@@ -110,8 +112,10 @@ public class ArObjectManager : MonoBehaviour
         Transform parent = SessionManager.instance.WorkspaceTransform;
 
         // Apply generic definitions
+        Debug.Log(genericArDefinitions.Count);
         foreach (var arDefinition in genericArDefinitions)
         {
+            Debug.Log(arDefinition.arDefinitionType);
             switch (arDefinition.arDefinitionType)
             {
                 case ArDefinitionType.Container:
@@ -450,33 +454,33 @@ public class ArObjectManager : MonoBehaviour
                         contentItemInstances.Add(textController);
                     }
                     break;
-                case ContentType.Image:
-                    var imageController = Instantiate(ImageItem, container.transform);
-                    imageController.ContentItem = contentItem as ImageItem;
+                // case ContentType.Image:
+                //     var imageController = Instantiate(ImageItem, container.transform);
+                //     imageController.ContentItem = contentItem as ImageItem;
 
-                    if (store)
-                    {
-                        contentItemInstances.Add(imageController);
-                    }
-                    break;
-                case ContentType.Video:
-                    var videoController = Instantiate(VideoItem, container.transform);
-                    videoController.ContentItem = contentItem as VideoItem;
+                //     if (store)
+                //     {
+                //         contentItemInstances.Add(imageController);
+                //     }
+                //     break;
+                // case ContentType.Video:
+                //     var videoController = Instantiate(VideoItem, container.transform);
+                //     videoController.ContentItem = contentItem as VideoItem;
 
-                    if (store)
-                    {
-                        contentItemInstances.Add(videoController);
-                    }
-                    break;
-                case ContentType.Sound:
-                    var soundController = Instantiate(SoundItem, container.transform);
-                    soundController.ContentItem = contentItem as SoundItem;
+                //     if (store)
+                //     {
+                //         contentItemInstances.Add(videoController);
+                //     }
+                //     break;
+                // case ContentType.Sound:
+                //     var soundController = Instantiate(SoundItem, container.transform);
+                //     soundController.ContentItem = contentItem as SoundItem;
 
-                    if (store)
-                    {
-                        contentItemInstances.Add(soundController);
-                    }
-                    break;
+                //     if (store)
+                //     {
+                //         contentItemInstances.Add(soundController);
+                //     }
+                //     break;
                 case ContentType.Layout:
                     // Recurse into subcontainers and their items
                     LayoutItem layoutItem = ((LayoutItem)contentItem);

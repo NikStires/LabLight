@@ -62,7 +62,8 @@ public class WorldPositionController : ArElementViewController
         }
         else
         {
-            transform.position = ((ModelArDefinition)this.arDefinition).position;
+            //transform.position = ((ModelArDefinition)this.arDefinition).position; removed for debugging purposes
+            transform.position = Vector3.zero;
             transform.localRotation = _defaultOrientation;
         }
     }

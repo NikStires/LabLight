@@ -20,4 +20,9 @@ public class ActionCenterPanelViewController : MonoBehaviour
         SceneLoader.Instance.LoadNewScene("Calibration");
         this.gameObject.SetActive(false);
     }
+
+    public void ToggleTestARObjects()
+    {
+        SessionState.enableGenericVisualizations.Value = !SessionState.enableGenericVisualizations.Value;
+    }
 }

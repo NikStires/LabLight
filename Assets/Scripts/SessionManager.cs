@@ -18,13 +18,16 @@ public class SessionManager : MonoBehaviour
 
     public bool loadProcedure = true;
 
-    private Transform workspaceTransform;
+    private static Transform workspaceTransform;
 
     public Transform WorkspaceTransform
     {
         set
         {
-            workspaceTransform = value;
+            if(workspaceTransform != value)
+            {
+                workspaceTransform = value;
+            }
         }
         get
         {
@@ -32,10 +35,20 @@ public class SessionManager : MonoBehaviour
         }
     }
 
+    //for testing AM
+    public List<TrackedObject> TrackedObjectsDebug = new List<TrackedObject>();
+
     [SerializeField]
-    private Transform charucoTransform;
+    private static Transform charucoTransform;
     public Transform CharucoTransform
     {
+        set
+        {
+            if(charucoTransform != value)
+            {
+                charucoTransform = value;
+            }
+        }
         get
         {
             return charucoTransform;
@@ -66,6 +79,15 @@ public class SessionManager : MonoBehaviour
 
         ServiceRegistry.RegisterService<IMediaProvider>(resourceFileDataProvider);
 
+
+        //Set up default state
+        SessionState.deviceId = SystemInfo.deviceName;
+        SessionState.Connected = false;
+
+        //for debug to remove AM
+        charucoTransform = this.transform;
+        workspaceTransform = this.transform;
+
         //var producer = new StubbedNetworkFrameProducer();
         //ServiceRegistry.RegisterService<ISharedStateController>(producer);
         //ServiceRegistry.RegisterService<INetworkFrameProducer>(producer);
@@ -80,9 +102,8 @@ public class SessionManager : MonoBehaviour
          * file upload handler
          */
 
-        //Set up default state
-        SessionState.deviceId = SystemInfo.deviceName;
-        SessionState.Connected = false;
+        // charucoTransform.position = new Vector3(0, 0, 0);
+        // workspaceTransform.position = new Vector3(0, 0, 0);
 
         //add grid?
     }
@@ -116,7 +137,10 @@ public class SessionManager : MonoBehaviour
 
     }
 
-
+    public void Update()
+    {
+        TrackedObjectsDebug = SessionState.TrackedObjects.ToList();
+    }
 
     /* used for charuco calibration, reimplement with hand tracking
     public void Update()
@@ -129,11 +153,6 @@ public class SessionManager : MonoBehaviour
 
     }*/
 
-    //add switch scene code
-    /*
-    private void GoToScene(procedure data)
-    */
-
     public void UpdateCalibration(Matrix4x4 pose)
     {
         if (CharucoTransform == null)
@@ -144,6 +163,8 @@ public class SessionManager : MonoBehaviour
 
         // Set the stage coordinate frame
         CharucoTransform.FromMatrix(pose);
+
+        SessionState.onCalibrationUpdated.Invoke();
 
         // TODO: World lock the charuco transform
 

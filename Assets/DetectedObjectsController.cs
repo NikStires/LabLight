@@ -1,0 +1,58 @@
+using System.Collections;
+using System.Collections.Generic;
+using UniRx;
+using System.Linq;
+using Unity.Collections;
+using UnityEngine;
+using UnityEngine.UIElements;
+using Unity.VisualScripting;
+using UnityEngine.UI;
+
+public class DetectedObjectsController : MonoBehaviour
+{
+
+    private Dictionary<TrackedObject, GameObject> trackedObjectLabels = new Dictionary<TrackedObject, GameObject>();
+    [SerializeField]
+    private GameObject labelPrefab;
+
+    void Awake()
+    {
+        SessionState.TrackedObjects.ObserveAdd().Subscribe(trackedObject => processAddedObject(trackedObject.Value)).AddTo(this);
+        SessionState.TrackedObjects.ObserveRemove().Subscribe(trackedObject => processRemovedObject(trackedObject.Value)).AddTo(this);
+        SessionState.enableGenericVisualizations.Subscribe(_ => ToggleGenericViews()).AddTo(this);
+    }
+
+    private void processAddedObject(TrackedObject trackedObject)
+    {
+        Transform parent = SessionManager.instance.CharucoTransform;
+
+        instantiateLabel(parent, trackedObject);
+    }
+
+    private void processRemovedObject(TrackedObject trackedObject)
+    {
+        //remove label
+        Destroy(trackedObjectLabels[trackedObject]);
+        trackedObjectLabels.Remove(trackedObject);
+    }
+
+    private void instantiateLabel(Transform parent, TrackedObject trackedObject)
+    {
+        GameObject newLabelPrefab = Instantiate(labelPrefab, parent);
+
+        newLabelPrefab.GetComponent<LabelViewController>().Initialize( new List<TrackedObject> { trackedObject });
+
+        trackedObjectLabels.Add(trackedObject, newLabelPrefab);
+
+        //add to dictionary
+    }
+
+    private void ToggleGenericViews()
+    {
+        // foreach(GameObject label in trackedObjectLabels.Values)
+        // {
+        //     label.SetActive(SessionState.enableGenericVisualizations.Value);
+        // }
+        //toggle all labels
+    }
+}
