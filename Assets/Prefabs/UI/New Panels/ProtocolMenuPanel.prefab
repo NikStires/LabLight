@@ -16,6 +16,10 @@ PrefabInstance:
       propertyPath: m_text
       value: Select a Protocol
       objectReference: {fileID: 0}
+    - target: {fileID: 5429743727582873281, guid: dd216cbce70c340968d5d438f8592667, type: 3}
+      propertyPath: m_fontSize
+      value: 22.55
+      objectReference: {fileID: 0}
     - target: {fileID: 7709069514994602897, guid: dd216cbce70c340968d5d438f8592667, type: 3}
       propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.size
       value: 3
@@ -83,6 +87,14 @@ PrefabInstance:
     - target: {fileID: 7955480645091986379, guid: dd216cbce70c340968d5d438f8592667, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8560964804999824006, guid: dd216cbce70c340968d5d438f8592667, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -16.62
+      objectReference: {fileID: 0}
+    - target: {fileID: 8560964804999824006, guid: dd216cbce70c340968d5d438f8592667, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.030000687
       objectReference: {fileID: 0}
     - target: {fileID: 9083621353382942602, guid: dd216cbce70c340968d5d438f8592667, type: 3}
       propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.size
