@@ -114,21 +114,19 @@ public class HandCalibrationViewController : MonoBehaviour
         //store started lighthouse origin and current plane in session manager
     }
 
-    public void CompleteCalibration(Vector3 originPosition)
+    public void CompleteCalibration()
     {
         inCalibration = false;
         calibrationManager.UpdateCalibrationStatus("Calibration complete");
         calibrationManager.CalibrationStarted(false);
         planeSelected.transform.Find("Cube").gameObject.SetActive(false);
         //ARAnchor anchor = anchorManager.AttachAnchor(planeSelected, calibrationPose);
-        var originInstance = Instantiate(originPrefab, originPosition, Quaternion.identity);
+        var originInstance = Instantiate(originPrefab, SessionManager.instance.CharucoTransform.position, SessionManager.instance.CharucoTransform.rotation);
         //stop plane tracking
 
         calibrationCoroutine = null;
 
-        Debug.Log("Lablight: origin position " + originPosition);
-
-        SessionManager.instance.WorkspaceTransform = originInstance.transform;
+        Debug.Log("Lablight: origin position " + originInstance.transform.position);
 
         if(m_HandSubsystem != null)
         {
@@ -308,8 +306,8 @@ public class HandCalibrationViewController : MonoBehaviour
             calibrationJointsPoseDict[XRHandJointID.RingTip].position.x, planeSelected.transform.position.y, calibrationJointsPoseDict[XRHandJointID.RingTip].position.z,
             calibrationJointsPoseDict[XRHandJointID.LittleTip].position.x, planeSelected.transform.position.y, calibrationJointsPoseDict[XRHandJointID.LittleTip].position.z
         );
-        Vector3 originPosition = new Vector3(calibrationMatrix.m03, calibrationMatrix.m13, calibrationMatrix.m23);
-        CompleteCalibration(originPosition);
+        SessionManager.instance.UpdateCalibration(calibrationMatrix);
+        CompleteCalibration();
         yield return null;
     }
 

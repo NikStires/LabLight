@@ -405,11 +405,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6523084752116367928, guid: c7947077ce28144889e3bfbfb9c82469, type: 3}
   m_PrefabInstance: {fileID: 180330198}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &180330200 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8265223533003868864, guid: c7947077ce28144889e3bfbfb9c82469, type: 3}
-  m_PrefabInstance: {fileID: 180330198}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &196291056
 GameObject:
   m_ObjectHideFlags: 0
@@ -1239,7 +1234,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1097637657}
-  - component: {fileID: 1097637658}
   - component: {fileID: 1097637660}
   m_Layer: 0
   m_Name: TestARObjects
@@ -1263,27 +1257,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1097637658
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1097637656}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f0a3c7c6af9a8b48a122561a684979f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CharucoFrame: {fileID: 180330200}
-  HelperPrefab: {fileID: 3711863763955802890, guid: 921c6c06d6cdf42ecb9fd8f08c097ff2, type: 3}
-  Detections:
-  - Name: 96 Well Plate
-    Enabled: 1
-  - Name: Tube Rack
-    Enabled: 1
-  - Name: Pipette
-    Enabled: 1
 --- !u!114 &1097637660
 MonoBehaviour:
   m_ObjectHideFlags: 0

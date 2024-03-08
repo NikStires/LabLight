@@ -85,8 +85,10 @@ public class SessionManager : MonoBehaviour
         SessionState.Connected = false;
 
         //for debug to remove AM
-        charucoTransform = this.transform;
-        workspaceTransform = this.transform;
+        charucoTransform = transform;
+        //workspaceTransform = transform;
+
+        charucoTransform = Instantiate(new GameObject("CharucoTransform"), transform.parent.transform).transform;
 
         //var producer = new StubbedNetworkFrameProducer();
         //ServiceRegistry.RegisterService<ISharedStateController>(producer);
@@ -164,10 +166,13 @@ public class SessionManager : MonoBehaviour
         // Set the stage coordinate frame
         CharucoTransform.FromMatrix(pose);
 
+        Quaternion rotation = Quaternion.Euler(0f, 90f, 0f);
+        CharucoTransform.rotation *= rotation;
         SessionState.onCalibrationUpdated.Invoke();
 
         // TODO: World lock the charuco transform
 
         //TODO: Show origin?
     }
+
 }

@@ -49,7 +49,7 @@ public class LabelViewController : MonoBehaviour
         if(TrackedObjects != null && TrackedObjects.Count == 1)
         {
             Debug.Log("Updating " + TrackedObjects[0].id  + TrackedObjects[0].position);
-            target = NNPostProcessing.roundToCM(TrackedObjects[0].position);
+            target = NNPostProcessing.roundToCM(new Vector3(TrackedObjects[0].position.x, 0, TrackedObjects[0].position.z));
             transform.localPosition = Vector3.SmoothDamp(transform.localPosition, target, ref currentVelocity, smoothTime);
             transform.localRotation = QuaternionUtil.SmoothDamp(transform.localRotation, TrackedObjects[0].rotation, ref currentQuaternionVelocity, smoothTime);
         }

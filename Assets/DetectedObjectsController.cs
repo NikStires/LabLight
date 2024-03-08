@@ -1,15 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
 using UniRx;
-using System.Linq;
-using Unity.Collections;
 using UnityEngine;
-using UnityEngine.UIElements;
-using Unity.VisualScripting;
-using UnityEngine.UI;
 
 public class DetectedObjectsController : MonoBehaviour
 {
+
+    [SerializeField]
+    private float duplicateDetectionThreshold = 0.03f;
 
     private Dictionary<TrackedObject, GameObject> trackedObjectLabels = new Dictionary<TrackedObject, GameObject>();
     [SerializeField]
@@ -25,8 +22,15 @@ public class DetectedObjectsController : MonoBehaviour
     private void processAddedObject(TrackedObject trackedObject)
     {
         Transform parent = SessionManager.instance.CharucoTransform;
-
-        instantiateLabel(parent, trackedObject);
+        foreach(TrackedObject to in trackedObjectLabels.Keys)
+        {
+            if(Vector3.Distance(new Vector3(to.position.x, 0, to.position.z), new Vector3(trackedObject.position.x, 0, trackedObject.position.y)) < duplicateDetectionThreshold)
+            {
+                Debug.Log("DetectedobjectsController: not generating model of label " + trackedObject.label + " because it is too close to tracked object " + to.id);
+                return;
+            }
+        }
+        instantiateLabel(SessionManager.instance.CharucoTransform, trackedObject);
     }
 
     private void processRemovedObject(TrackedObject trackedObject)

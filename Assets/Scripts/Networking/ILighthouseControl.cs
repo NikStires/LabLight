@@ -49,7 +49,7 @@ public interface ILighthouseControl
     public void StopPlayingVideo();
 
     /// <summary>Request recalibration on lighthouse server.</summary>
-    public void RequestLighthouseCalibration();
+    public void RequestLighthouseCalibration(int align_type, int markerID);
     
     /// <summary>Request current Aruco settings on lighthouse server.</summary>
     public void RequestArucoSettings();

@@ -100,19 +100,45 @@ public partial class Networking : MonoBehaviour, ILighthouseControl
         PingServer(packetType);
     }
 
-    /// <summary>Request recalibration on lighthouse server.</summary>
-    void ILighthouseControl.RequestLighthouseCalibration()
+    void ILighthouseControl.RequestLighthouseCalibration(int align_type, int markerID)
     {
-        if (!string.IsNullOrEmpty(_directIpAddress))
+        if(!string.IsNullOrEmpty(_directIpAddress))
         {
             Debug.Log("Recalibrate lighthouse");
-            PingServer(packet_type.packet_client_request_alignment);
+            PingServer(packet_type.packet_client_request_alignment, align_type, markerID);
         }
         else
         {
             Debug.LogWarning("Not connected yet");
         }
     }
+
+    // /// <summary>Request recalibration on lighthouse server.</summary>
+    // void ILighthouseControl.RequestLighthouseCalibration()
+    // {
+    //     if (!string.IsNullOrEmpty(_directIpAddress))
+    //     {
+    //         Debug.Log("Recalibrate lighthouse");
+    //         PingServer(packet_type.packet_client_request_alignment);
+    //     }
+    //     else
+    //     {
+    //         Debug.LogWarning("Not connected yet");
+    //     }
+    // }
+
+    // void ILighthouseControl.RequestLighthouseHandCalibration()
+    // {
+    //     if(!string.IsNullOrEmpty(_directIpAddress))
+    //     {
+    //         Debug.Log("Requesting hand calibration");
+    //         PingServer(packet_type.packet_client_request_alignment, 2);
+    //     }
+    //     else
+    //     {
+    //         Debug.LogWarning("Not connected yet");
+    //     }
+    // }
 
     void ILighthouseControl.RequestArucoSettings()
     {
