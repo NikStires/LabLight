@@ -19,28 +19,15 @@ namespace Paroxe.PdfRenderer
         private byte[] m_DocumentBuffer;
         private bool m_ValidDocument;
         private PDFRenderer m_Renderer;
-#if !UNITY_WEBGL
         private PDFBookmark m_RootBookmark;
-#endif
 
         public static PDFJS_Promise<PDFDocument> LoadDocumentFromUrlAsync(string url)
         {
             PDFJS_Promise<PDFDocument> documentPromise = new PDFJS_Promise<PDFDocument>();
 
-#if !UNITY_WEBGL || UNITY_EDITOR
-
             PDFJS_Library.Instance.PreparePromiseCoroutine(LoadDocumentFromWWWCoroutine, documentPromise, url).Start();
-#else
-            LoadDocumentParameters parameters = new LoadDocumentParameters();
-            parameters.url = url;
-
-            PDFJS_Library.Instance.PreparePromiseCoroutine(LoadDocumentCoroutine, documentPromise, parameters).Start();
-#endif
-
             return documentPromise;
         }
-
-#if !UNITY_WEBGL || UNITY_EDITOR
         private static IEnumerator LoadDocumentFromWWWCoroutine(PDFJS_PromiseCoroutine promiseCoroutine, IPDFJS_Promise promise, object urlString)
         {
             PDFJS_Promise<PDFDocument> documentPromise = promise as PDFJS_Promise<PDFDocument>;
@@ -76,24 +63,15 @@ namespace Paroxe.PdfRenderer
             www.Dispose();
             www = null;
         }
-#endif
 
         public static PDFJS_Promise<PDFDocument> LoadDocumentFromBytesAsync(byte[] bytes)
         {
             PDFJS_Promise<PDFDocument> documentPromise = new PDFJS_Promise<PDFDocument>();
 
-#if !UNITY_WEBGL || UNITY_EDITOR
             documentPromise.HasFinished = true;
             documentPromise.HasSucceeded = true;
             documentPromise.HasReceivedJSResponse = true;
             documentPromise.Result = new PDFDocument(bytes);
-#else
-            LoadDocumentParameters parameters = new LoadDocumentParameters();
-            parameters.bytes = bytes;
-
-            PDFJS_Library.Instance.PreparePromiseCoroutine(LoadDocumentCoroutine, documentPromise, parameters).Start();
-#endif
-
             return documentPromise;
         }
 
@@ -102,8 +80,6 @@ namespace Paroxe.PdfRenderer
 			m_NativePointer = nativePointer;
 			m_ValidDocument = true;
 		}
-
-#if !UNITY_WEBGL || UNITY_EDITOR
 		/// <summary>
 		/// Open PDF Document with the specified byte array.
 		/// </summary>
@@ -140,7 +116,6 @@ namespace Paroxe.PdfRenderer
 	        CommonInit(File.ReadAllBytes(filePath), password);
         }
 
-#endif
 	    ~PDFDocument()
         {
 	        Close();
@@ -160,12 +135,7 @@ namespace Paroxe.PdfRenderer
 
 	        if (m_NativePointer != IntPtr.Zero)
 	        {
-#if !UNITY_WEBGL || UNITY_EDITOR
                 PDFLibrary.Instance.DisposeCoordinator.RemoveReference(this);
-#else
-				NativeMethods.PDFJS_CloseDocument(m_NativePointer.ToInt32());
-#endif
-
                 m_NativePointer = IntPtr.Zero;
 	        }
 
@@ -214,14 +184,9 @@ namespace Paroxe.PdfRenderer
 
 		public int GetPageCount()
         {
-#if UNITY_WEBGL && !UNITY_EDITOR
-            return NativeMethods.PDFJS_GetPageCount(m_NativePointer.ToInt32());
-#else
             return NativeMethods.FPDF_GetPageCount(m_NativePointer);
-#endif
         }
 
-#if !UNITY_WEBGL || UNITY_EDITOR
         public Vector2 GetPageSize(int pageIndex)
         {
             double width;
@@ -231,9 +196,7 @@ namespace Paroxe.PdfRenderer
 
             return new Vector2((float)width, (float)height);
         }
-#endif
 
-#if !UNITY_WEBGL || UNITY_EDITOR
         public int GetPageWidth(int pageIndex)
         {
             double width;
@@ -243,9 +206,7 @@ namespace Paroxe.PdfRenderer
 
             return (int)width;
         }
-#endif
 
-#if !UNITY_WEBGL || UNITY_EDITOR
         public int GetPageHeight(int pageIndex)
         {
             double width;
@@ -255,9 +216,7 @@ namespace Paroxe.PdfRenderer
 
             return (int)height;
         }
-#endif
 
-#if !UNITY_WEBGL
 	    /// <summary>
 	    /// Return the root bookmark of the document.
 	    /// </summary>
@@ -268,14 +227,11 @@ namespace Paroxe.PdfRenderer
 	            m_RootBookmark = new PDFBookmark(this, null, IntPtr.Zero);
             return m_RootBookmark;
         }
-#endif
 
-#if !UNITY_WEBGL || UNITY_EDITOR
         public PDFPage GetPage(int index)
         {
 	        return new PDFPage(this, index);
         }
-#endif
 
         public PDFJS_Promise<PDFPage> GetPageAsync(int index)
         {
@@ -288,7 +244,6 @@ namespace Paroxe.PdfRenderer
 
             if (m_DocumentBuffer != null)
             {
-#if !UNITY_WEBGL || UNITY_EDITOR
 
 	            PDFLibrary.Instance.DisposeCoordinator.EnsureNativeLibraryIsInitialized();
 
@@ -298,7 +253,6 @@ namespace Paroxe.PdfRenderer
 
                 if (m_NativePointer != IntPtr.Zero)
 					PDFLibrary.Instance.DisposeCoordinator.AddReference(this);
-#endif
 
                 m_ValidDocument = (m_NativePointer != IntPtr.Zero);
             }
@@ -320,56 +274,7 @@ namespace Paroxe.PdfRenderer
 
         Action<IntPtr> ICoordinatedNativeDisposable.GetDisposeMethod()
 		{
-#if !UNITY_WEBGL || UNITY_EDITOR
             return NativeMethods.FPDF_CloseDocument;
-#else
-			return null;
-#endif
         }
-
-#if UNITY_WEBGL && !UNITY_EDITOR
-        class LoadDocumentParameters
-        {
-            public string url;
-            public byte[] bytes;
-        }
-
-        private static IEnumerator LoadDocumentCoroutine(PDFJS_PromiseCoroutine promiseCoroutine, IPDFJS_Promise promise, object pars)
-        {
-            PDFJS_Promise<PDFDocument> documentPromise = promise as PDFJS_Promise<PDFDocument>;
-
-            PDFLibrary.Instance.EnsureInitialized();
-            while (!PDFLibrary.Instance.IsInitialized)
-                yield return null;
-
-            LoadDocumentParameters parameters = pars as LoadDocumentParameters;
-
-            if (!string.IsNullOrEmpty(parameters.url))
-                NativeMethods.PDFJS_LoadDocumentFromURL(promise.PromiseHandle, parameters.url);
-            else
-                NativeMethods.PDFJS_LoadDocumentFromBytes(promise.PromiseHandle, Convert.ToBase64String(parameters.bytes));
-
-            while (!promiseCoroutine.Promise.HasReceivedJSResponse)
-                yield return null;
-
-            if (documentPromise.HasSucceeded)
-            {
-                int documentHandle = int.Parse(promiseCoroutine.Promise.JSObjectHandle);
-                PDFDocument document = new PDFDocument(new IntPtr(documentHandle));
-
-                documentPromise.Result = document;
-                documentPromise.HasFinished = true;
-
-                promiseCoroutine.ExecuteThenAction(true, documentHandle);
-            }
-            else
-            {
-                documentPromise.Result = null;
-                documentPromise.HasFinished = true;
-
-                promiseCoroutine.ExecuteThenAction(false, null);
-            }
-        }
-#endif
 	}
 }

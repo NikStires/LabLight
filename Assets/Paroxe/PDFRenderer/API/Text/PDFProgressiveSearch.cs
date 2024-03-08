@@ -6,7 +6,6 @@ using UnityEngine.EventSystems;
 
 namespace Paroxe.PdfRenderer
 {
-#if !UNITY_WEBGL
 	/// <summary>
 	/// Don't instantiate this class directly. Use the static method instead PDFProgressiveSearch.CreateSearch
 	/// </summary>
@@ -185,5 +184,4 @@ namespace Paroxe.PdfRenderer
             }
         }
     }
-#endif
 }

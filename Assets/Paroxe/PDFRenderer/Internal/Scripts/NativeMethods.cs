@@ -6,7 +6,6 @@ namespace Paroxe.PdfRenderer.Internal
 {
 	public static class NativeMethods
 	{
-#if !UNITY_WEBGL || UNITY_EDITOR
         [MethodImpl(MethodImplOptions.Synchronized), DllImport(PDFLibrary.PLUGIN_ASSEMBLY)]
         public static extern IntPtr FPDFAction_GetDest(IntPtr document, IntPtr action);
 
@@ -180,45 +179,5 @@ namespace Paroxe.PdfRenderer.Internal
 
         [MethodImpl(MethodImplOptions.Synchronized), DllImport(PDFLibrary.PLUGIN_ASSEMBLY)]
         public static extern PDFBitmap.BitmapFormat FPDFBitmap_GetFormat(IntPtr bitmap);
-#else
-        [MethodImpl(MethodImplOptions.Synchronized), DllImport(PDFLibrary.PLUGIN_ASSEMBLY)]
-        public static extern void PDFJS_LoadDocumentFromURL(string promiseHandle, string documentUrl);
-
-        [MethodImpl(MethodImplOptions.Synchronized), DllImport(PDFLibrary.PLUGIN_ASSEMBLY)]
-        public static extern void PDFJS_LoadDocumentFromBytes(string promiseHandle, string base64);
-
-        [MethodImpl(MethodImplOptions.Synchronized), DllImport(PDFLibrary.PLUGIN_ASSEMBLY)]
-        public static extern void PDFJS_CloseDocument(int document);
-
-        [MethodImpl(MethodImplOptions.Synchronized), DllImport(PDFLibrary.PLUGIN_ASSEMBLY)]
-        public static extern int PDFJS_GetPageCount(int documentHandle);
-
-		[MethodImpl(MethodImplOptions.Synchronized), DllImport(PDFLibrary.PLUGIN_ASSEMBLY)]
-        public static extern void PDFJS_InitLibrary();
-
-        [MethodImpl(MethodImplOptions.Synchronized), DllImport(PDFLibrary.PLUGIN_ASSEMBLY)]
-        public static extern void PDFJS_LoadPage(string promiseHandle, int documentHandle, int pageIndex);
-
-        [MethodImpl(MethodImplOptions.Synchronized), DllImport(PDFLibrary.PLUGIN_ASSEMBLY)]
-        public static extern void PDFJS_ClosePage(int pageHandle);
-
-        [MethodImpl(MethodImplOptions.Synchronized), DllImport(PDFLibrary.PLUGIN_ASSEMBLY)]
-        public static extern int PDFJS_GetPageWidth(int pageHandle, float scale);
-
-        [MethodImpl(MethodImplOptions.Synchronized), DllImport(PDFLibrary.PLUGIN_ASSEMBLY)]
-        public static extern int PDFJS_GetPageHeight(int pageHandle, float scale);
-
-        [MethodImpl(MethodImplOptions.Synchronized), DllImport(PDFLibrary.PLUGIN_ASSEMBLY)]
-        public static extern void PDFJS_RenderPageIntoCanvas(string promiseHandle, int pageHandle, float scale, float width, float height);
-
-        [MethodImpl(MethodImplOptions.Synchronized), DllImport(PDFLibrary.PLUGIN_ASSEMBLY)]
-        public static extern void PDFJS_RenderCanvasIntoTexture(int canvasHandle, int textureHandle);
-
-        [MethodImpl(MethodImplOptions.Synchronized), DllImport(PDFLibrary.PLUGIN_ASSEMBLY)]
-        public static extern void PDFJS_TryTerminateRenderWorker(string promiseHandle);
-
-        [MethodImpl(MethodImplOptions.Synchronized), DllImport(PDFLibrary.PLUGIN_ASSEMBLY)]
-        public static extern void PDFJS_DestroyCanvas(int canvasHandle);
-#endif
     }
 }

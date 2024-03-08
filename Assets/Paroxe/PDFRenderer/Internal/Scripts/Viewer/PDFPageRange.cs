@@ -101,40 +101,16 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
 
             for (int i = 0; i < pagesToUnLoad.Length; ++i)
             {
-#if UNITY_WEBGL
-                pageTextureHolderList[pagesToUnLoad[i]].Visible = false;
-
-                if (pageTextureHolderList[pagesToUnLoad[i]].RenderingPromise != null)
-                {
-                    PDFJS_Library.Instance.TryTerminateRenderingWorker(pageTextureHolderList[pagesToUnLoad[i]].RenderingPromise.PromiseHandle);
-                    pageTextureHolderList[pagesToUnLoad[i]].RenderingPromise = null;
-                }
-
                 Texture2D tex = pageTextureHolderList[pagesToUnLoad[i]].Texture;
                 if (tex != null)
                 {
                     recyclableTextures.Add(tex);
                     pageTextureHolderList[pagesToUnLoad[i]].Texture = null;
                 }
-#else
-                Texture2D tex = pageTextureHolderList[pagesToUnLoad[i]].Texture;
-                if (tex != null)
-                {
-                    recyclableTextures.Add(tex);
-                    pageTextureHolderList[pagesToUnLoad[i]].Texture = null;
-                }
-#endif
             }
 
             for (int i = 0; i < pagesToLoad.Length; ++i)
             {
-#if UNITY_WEBGL
-                pageTextureHolderList[pagesToLoad[i]].Visible = true;
-
-                if (pageTextureHolderList[pagesToLoad[i]].RenderingStarted)
-                    continue;
-#endif
-
                 int w = Mathf.RoundToInt(pageSizes[pagesToLoad[i]].x * scale);
                 int h = Mathf.RoundToInt(pageSizes[pagesToLoad[i]].y * scale);
 
@@ -149,21 +125,6 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
                     }
                 }
 
-#if UNITY_WEBGL
-                if (tex != null)
-                {
-                    recyclableTextures.Remove(tex);
-
-                    pageTextureHolderList[pagesToLoad[i]].RenderingStarted = true;
-                    PDFJS_Library.Instance.StartCoroutine(UpdatePageWithExistingTexture(pdfDocument, pagesToLoad[i], tex, pageTextureHolderList));
-                }
-                else
-                {
-
-                    pageTextureHolderList[pagesToLoad[i]].RenderingStarted = true;
-                    PDFJS_Library.Instance.StartCoroutine(UpdatePageWithNewTexture(pdfDocument, pagesToLoad[i], pageTextureHolderList, w, h));
-                }
-#else
                 if (tex != null)
                 {
                     recyclableTextures.Remove(tex);
@@ -183,7 +144,6 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
                    
 
                 pageTextureHolderList[pagesToLoad[i]].Texture = tex;
-#endif
             }
 
             foreach (Texture2D unusedTexture in recyclableTextures)
@@ -193,97 +153,6 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
 
             recyclableTextures.Clear();
         }
-
-#if UNITY_WEBGL
-        public static IEnumerator UpdatePageWithExistingTexture(PDFDocument document, int pageIndex, Texture2D existingTexture, PDFPageTextureHolder[] pageTextureHolderList)
-        {
-            PDFJS_Promise<PDFPage> pagePromise = document.GetPageAsync(pageIndex);
-
-            while (!pagePromise.HasFinished)
-                yield return null;
-
-            if (pagePromise.HasSucceeded)
-            {
-                PDFJS_Promise<Texture2D> renderPromise = PDFRenderer.RenderPageToExistingTextureAsync(pagePromise.Result, existingTexture);
-
-                pageTextureHolderList[pageIndex].RenderingPromise = renderPromise;
-
-                while (!renderPromise.HasFinished)
-                    yield return null;
-
-                pageTextureHolderList[pageIndex].RenderingPromise = null;
-                pageTextureHolderList[pageIndex].RenderingStarted = false;
-
-                if (renderPromise.HasSucceeded)
-                {
-                    if (pageTextureHolderList[pageIndex].Texture != null
-                        && pageTextureHolderList[pageIndex].Texture != renderPromise.Result)
-                    {
-                        UnityEngine.Object.Destroy(pageTextureHolderList[pageIndex].Texture);
-                        pageTextureHolderList[pageIndex].Texture = null;
-                    }
-
-                    if (pageTextureHolderList[pageIndex].Visible)
-                        pageTextureHolderList[pageIndex].Texture = renderPromise.Result;
-                    else
-                    {
-
-                        UnityEngine.Object.Destroy(renderPromise.Result);
-                        renderPromise.Result = null;
-                    }
-                }
-            }
-            else
-            {
-                pageTextureHolderList[pageIndex].RenderingPromise = null;
-                pageTextureHolderList[pageIndex].RenderingStarted = false;
-            }
-        }
-
-        public static IEnumerator UpdatePageWithNewTexture(PDFDocument document, int pageIndex, PDFPageTextureHolder[] pageTextureHolderList, int width, int height)
-        {
-            PDFJS_Promise<PDFPage> pagePromise = document.GetPageAsync(pageIndex);
-
-            while (!pagePromise.HasFinished)
-                yield return null;
-
-            if (pagePromise.HasSucceeded)
-            {
-                PDFJS_Promise<Texture2D> renderPromise = PDFRenderer.RenderPageToTextureAsync(pagePromise.Result, width, height);
-
-                pageTextureHolderList[pageIndex].RenderingPromise = renderPromise;
-
-                while (!renderPromise.HasFinished)
-                    yield return null;
-
-                pageTextureHolderList[pageIndex].RenderingPromise = null;
-                pageTextureHolderList[pageIndex].RenderingStarted = false;
-
-                if (renderPromise.HasSucceeded)
-                {
-                    if (pageTextureHolderList[pageIndex].Texture != null)
-                    {
-                        UnityEngine.Object.Destroy(pageTextureHolderList[pageIndex].Texture);
-                        pageTextureHolderList[pageIndex].Texture = null;
-                    }
-
-                    if (pageTextureHolderList[pageIndex].Visible)
-                        pageTextureHolderList[pageIndex].Texture = renderPromise.Result;
-                    else
-                    {
-                        UnityEngine.Object.Destroy(renderPromise.Result);
-                        renderPromise.Result = null;
-                    }
-                }
-            }
-            else
-            {
-                pageTextureHolderList[pageIndex].RenderingPromise = null;
-                pageTextureHolderList[pageIndex].RenderingStarted = false;
-            }
-        }
-#endif
-
 
         public bool ContainsPage(int pageIndex)
         {

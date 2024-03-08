@@ -248,11 +248,6 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
             {
 	            int[] pagesToLoad = PDFPageRange.GetPagesToload(m_CurrentPageRange, pageRange);
 
-#if UNITY_WEBGL && !UNITY_EDITOR
-	            foreach (int pageIndex in pagesToLoad)
-		            m_PageTextureHolders[pageIndex].Texture = null;
-#endif
-
                 PDFPageRange.UpdatePageAgainstRanges(m_CurrentPageRange, pageRange, m_Document, m_PageTextureHolders, null, 0.25f, null, m_Viewer.GetCachedNormalPageSizes());
 
                 foreach (int pageIndex in pagesToLoad)

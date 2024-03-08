@@ -5,7 +5,6 @@ using Paroxe.PdfRenderer.Internal;
 
 namespace Paroxe.PdfRenderer
 {
-#if !UNITY_WEBGL
     /// <summary>
     /// Represent a search session within a specific page. To search in entire document use PDFTextPage.Search
     /// </summary>
@@ -143,6 +142,4 @@ namespace Paroxe.PdfRenderer
 	        return NativeMethods.FPDFText_FindClose;
         }
     }
-
-#endif
 }

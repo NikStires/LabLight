@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace Paroxe.PdfRenderer
 {
-#if !UNITY_WEBGL
     /// <summary>
     /// This class allow to access the text of a page.
     /// </summary>
@@ -248,5 +247,4 @@ namespace Paroxe.PdfRenderer
 	        return NativeMethods.FPDFText_ClosePage;
         }
     }
-#endif
 }

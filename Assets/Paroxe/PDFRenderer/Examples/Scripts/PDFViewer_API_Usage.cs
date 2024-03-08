@@ -11,9 +11,6 @@ namespace Paroxe.PdfRenderer.Examples
 
         IEnumerator Start()
         {
-#if UNITY_WEBGL
-            yield break;
-#else
             Debug.Log(Application.persistentDataPath);
 
             m_Viewer.gameObject.SetActive(true);
@@ -40,8 +37,6 @@ namespace Paroxe.PdfRenderer.Examples
             yield return new WaitForSeconds(2.0f);
 
             m_Viewer.LoadDocumentFromAsset(m_PDFAsset);
-#endif
-
         }
     }
 }

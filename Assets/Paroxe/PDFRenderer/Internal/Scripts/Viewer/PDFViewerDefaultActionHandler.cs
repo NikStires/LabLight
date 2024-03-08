@@ -11,12 +11,10 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
 
         public void HandleLaunchAction(IPDFDevice device, string filePath)
         {
-#if !UNITY_WEBGL
             if (filePath.Trim().Substring(filePath.Length - 4).ToLower().Contains("pdf"))
             {
                 device.LoadDocumentFromFile(filePath, "", 0);
             }
-#endif
         }
 
         public string HandleRemoteGotoActionPasswordResolving(IPDFDevice device, string resolvedFilePath)
@@ -31,9 +29,7 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
 
         public void HandleRemoteGotoActionResolved(IPDFDevice device, PDFDocument document, int pageIndex)
         {
-#if !UNITY_WEBGL
             device.LoadDocument(document, "", pageIndex);
-#endif
         }
 
         public void HandleRemoteGotoActionUnresolved(IPDFDevice device, string resolvedFilePath)
@@ -50,9 +46,7 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
         {
             if (uri.Trim().Substring(uri.Length - 4).ToLower().Contains("pdf"))
             {
-#if !UNITY_WEBGL
                 device.LoadDocumentFromWeb(uri, "", 0);
-#endif
             }
             else if (device.AllowOpenURL)
             {

@@ -6,9 +6,7 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
     {
         public void OnClick()
         {
-#if !UNITY_WEBGL
             GetComponentInParent<PDFViewer>().m_Internal.SearchPanel.GetComponent<PDFSearchPanel>().Toggle();
-#endif
         }
     }
 }

@@ -31,35 +31,14 @@ namespace Paroxe.PdfRenderer
         {
             PDFJS_Promise<PDFPage> pagePromise = new PDFJS_Promise<PDFPage>();
 
-#if UNITY_WEBGL && !UNITY_EDITOR
-            LoadPageParameters parameters = new LoadPageParameters(document, pageIndex);
-
-            PDFJS_Library.Instance.PreparePromiseCoroutine(LoadPageCoroutine, pagePromise, parameters).Start();
-#else
             pagePromise.HasFinished = true;
             pagePromise.HasSucceeded = true;
             pagePromise.HasReceivedJSResponse = true;
             pagePromise.Result = document.GetPage(pageIndex);
-#endif
 
             return pagePromise;
         }
 
-#if UNITY_WEBGL && !UNITY_EDITOR
-        public PDFPage(PDFDocument document, IntPtr pageHandle, int pageIndex)
-        {
-            if (document == null)
-                throw new ArgumentNullException("document");
-            if (pageIndex < 0)
-                throw new ArgumentOutOfRangeException("pageIndex");
-
-            m_Document = document;
-            m_PageIndex = pageIndex;
-            m_NativePointer = pageHandle;
-        }
-#endif
-
-#if !UNITY_WEBGL || UNITY_EDITOR
         public PDFPage(PDFDocument document, int pageIndex)
         {
             if (document == null)
@@ -80,7 +59,6 @@ namespace Paroxe.PdfRenderer
 						PDFLibrary.Instance.DisposeCoordinator.AddReference(this);
             }
         }
-#endif
 
         ~PDFPage()
         {
@@ -99,13 +77,9 @@ namespace Paroxe.PdfRenderer
 	        if (m_NativePointer == IntPtr.Zero)
 		        return;
 
-#if !UNITY_WEBGL || UNITY_EDITOR
             PDFLibrary.Instance.DisposeCoordinator.RemoveReference(this);
-#else
-					NativeMethods.PDFJS_ClosePage(m_NativePointer.ToInt32());
-#endif
-                    m_NativePointer = IntPtr.Zero;
-                }
+            m_NativePointer = IntPtr.Zero;
+        }
 
         public IntPtr NativePointer
         {
@@ -124,25 +98,9 @@ namespace Paroxe.PdfRenderer
 
         public Vector2 GetPageSize(float scale = 1.0f)
         {
-#if !UNITY_WEBGL || UNITY_EDITOR
             return m_Document.GetPageSize(m_PageIndex) * scale;
-#else
-            return new Vector2(
-                NativeMethods.PDFJS_GetPageWidth(m_NativePointer.ToInt32(), scale),
-                NativeMethods.PDFJS_GetPageHeight(m_NativePointer.ToInt32(), scale));
-#endif
         }
 
-#if UNITY_WEBGL && !UNITY_EDITOR
-        internal static Vector2 GetPageSize(IntPtr pageHandle, float scale = 1.0f)
-        {
-            return new Vector2(
-                NativeMethods.PDFJS_GetPageWidth(pageHandle.ToInt32(), scale),
-                NativeMethods.PDFJS_GetPageHeight(pageHandle.ToInt32(), scale));
-        }
-#endif
-
-#if !UNITY_WEBGL
         /// <summary>
         /// Return an instance of PDFTextPage that give access the the current page text content
         /// </summary>
@@ -226,7 +184,6 @@ namespace Paroxe.PdfRenderer
             return new Vector2((float)page_x, (float)page_y);
         }
 
-#endif
         public bool Equals(PDFPage other)
         {
 	        if (other == null)
@@ -247,59 +204,7 @@ namespace Paroxe.PdfRenderer
 
         Action<IntPtr> ICoordinatedNativeDisposable.GetDisposeMethod()
 		{
-#if !UNITY_WEBGL || UNITY_EDITOR
             return NativeMethods.FPDF_ClosePage;
-#else
-			return null;
-#endif
         }
-
-#if UNITY_WEBGL && !UNITY_EDITOR
-        private class LoadPageParameters
-        {
-            public PDFDocument document;
-            public int pageIndex;
-
-            public LoadPageParameters(PDFDocument document, int pageIndex)
-            {
-                this.document = document;
-                this.pageIndex = pageIndex;
-            }
-        }
-
-        private static IEnumerator LoadPageCoroutine(PDFJS_PromiseCoroutine promiseCoroutine, IPDFJS_Promise promise, object par)
-        {
-            PDFLibrary.Instance.EnsureInitialized();
-            while (!PDFLibrary.Instance.IsInitialized)
-                yield return null;
-
-            PDFJS_Promise<PDFPage> pagePromise = promise as PDFJS_Promise<PDFPage>;
-
-            LoadPageParameters parameters = par as LoadPageParameters;
-
-            NativeMethods.PDFJS_LoadPage(promise.PromiseHandle, parameters.document.NativePointer.ToInt32(), parameters.pageIndex + 1);
-
-            while (!pagePromise.HasReceivedJSResponse)
-                yield return null;
-
-            if (pagePromise.HasSucceeded)
-            {
-                int pageHandle = int.Parse(pagePromise.JSObjectHandle);
-                PDFPage page = new PDFPage(parameters.document, new IntPtr(pageHandle), parameters.pageIndex);
-
-                pagePromise.Result = page;
-                pagePromise.HasFinished = true;
-
-                promiseCoroutine.ExecuteThenAction(true, page);
-            }
-            else
-            {
-                pagePromise.Result = null;
-                pagePromise.HasFinished = true;
-
-                promiseCoroutine.ExecuteThenAction(false, null);
-            }
-        }
-#endif
     }
 }

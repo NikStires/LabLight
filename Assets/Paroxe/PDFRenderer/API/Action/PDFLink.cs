@@ -3,7 +3,6 @@ using Paroxe.PdfRenderer.Internal;
 
 namespace Paroxe.PdfRenderer
 {
-#if !UNITY_WEBGL
     /// <summary>
     /// Represents the annotation link in a PDF page.
     /// </summary>
@@ -99,5 +98,4 @@ namespace Paroxe.PdfRenderer
 	        }
         }
     }
-#endif
 }

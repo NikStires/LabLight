@@ -17,12 +17,9 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
         [SerializeField]
         private Image m_LastHighlightedImage;
 
-#if !UNITY_WEBGL
         private CanvasGroup m_ContainerCanvasGroup;
         private PDFViewerLeftPanelScrollbar m_Scrollbar;
-#pragma warning disable 414 // Remove unread private members
         private bool m_Initialized = false;
-#pragma warning restore 414 // Remove unread private members
         private RectTransform m_LeftPanel;
         private bool m_Loaded = false;
         private PDFDocument m_Document;
@@ -32,7 +29,6 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
         private PDFBookmark m_RootBookmark;
         private bool m_IsEnableCalled;
         private List<PDFBookmarkListItem> m_Items = new List<PDFBookmarkListItem>();
-#endif
 
         public Image LastHighlightedImage
 	    {
@@ -40,7 +36,6 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
 		    set { m_LastHighlightedImage = value; }
 	    }
 
-#if !UNITY_WEBGL
         public PDFBookmark RootBookmark
 	    {
 		    get { return m_RootBookmark; }
@@ -50,9 +45,7 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
 	    {
 		    get { return m_Viewer; }
 	    }
-#endif
 
-#if !UNITY_WEBGL
         public void RegisterItem(PDFBookmarkListItem item)
 	    {
 		    m_Items.Add(item);
@@ -68,22 +61,18 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
 		        item.UpdateItem();
 	        }
         }
-#endif
 
         public void DoUpdate()
         {
-#if !UNITY_WEBGL
 	        if (m_RectTransform != null && m_LeftPanel != null &&
                 Math.Abs(m_RectTransform.sizeDelta.x - (m_LeftPanel.sizeDelta.x - 24.0f)) > 0.01f)
             {
                 m_RectTransform.sizeDelta = new Vector2(m_LeftPanel.sizeDelta.x - 24.0f, m_RectTransform.sizeDelta.y);
             }
-#endif
         }
 
         private void Cleanup()
         {
-#if !UNITY_WEBGL
             if (m_Loaded)
             {
                 m_Loaded = false;
@@ -106,12 +95,10 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
 
                 m_Items.Clear();
             }
-#endif
         }
 
         public void OnDocumentLoaded(PDFDocument document)
         {
-#if !UNITY_WEBGL
 	        if (m_Loaded) 
 		        return;
 
@@ -156,10 +143,8 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
             SetAlpha(0.0f);
 
             Viewer.StartCoroutine(DelayedShow(m_Document));
-#endif
         }
 
-#if !UNITY_WEBGL
         IEnumerator DelayedShow(PDFDocument document)
         {
 	        for (int i = 0; i < 3; ++i)
@@ -175,36 +160,27 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
 		        SetAlpha(1.0f);
             }
         }
-#endif
 
         public void OnDocumentUnloaded()
         {
-#if !UNITY_WEBGL
             Cleanup();
-#endif
         }
-
-#if !UNITY_WEBGL
         protected override void OnEnable()
         {
             base.OnEnable();
 
             DoOnEnable();
         }
-#endif
 
-#if !UNITY_WEBGL
         protected override void OnDisable()
 	    {
             base.OnDisable();
 
             m_IsEnableCalled = false;
         }
-#endif
 
         public void DoOnEnable()
         {
-#if !UNITY_WEBGL
 	        if (m_IsEnableCalled)
 		        return;
 	        m_IsEnableCalled = true;
@@ -250,10 +226,8 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
             {
 	            UpdateItemsPlacement();
             }
-#endif
         }
 
-#if !UNITY_WEBGL
         private void SetAlpha(float alpha)
         {
 	        m_ContainerCanvasGroup.alpha = alpha;
@@ -261,6 +235,5 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
             if (m_Scrollbar != null)
 	            m_Scrollbar.Alpha = alpha;
         }
-#endif
     }
 }

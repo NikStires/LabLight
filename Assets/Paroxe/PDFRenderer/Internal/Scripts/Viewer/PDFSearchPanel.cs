@@ -21,7 +21,6 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
         [SerializeField]
         private Image m_ValidatorImage;
 
-#if !UNITY_WEBGL
         private float m_AnimationDuration = 0.40f;
         private float m_AnimationPosition = 1.0f;
         private int m_CurrentSearchIndex = 0;
@@ -299,6 +298,5 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
             RectTransform validatorTransform = (RectTransform)m_ValidatorImage.transform;
             validatorTransform.sizeDelta = new Vector2(m_TotalResultText.preferredWidth + 18.0f, validatorTransform.sizeDelta.y);
         }
-#endif
     }
 }

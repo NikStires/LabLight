@@ -18,7 +18,6 @@ namespace Paroxe.PdfRenderer
 
         bool AllowOpenURL { get; set; }
 
-#if !UNITY_WEBGL
         void LoadDocument(PDFDocument document, int pageIndex);
         void LoadDocument(PDFDocument document, string password, int pageIndex);
 
@@ -42,6 +41,5 @@ namespace Paroxe.PdfRenderer
 
         void LoadDocumentFromFile(string filePath, int pageIndex);
         void LoadDocumentFromFile(string filePath, string password, int pageIndex);
-#endif
     }
 }

@@ -4,7 +4,6 @@ using Paroxe.PdfRenderer.Internal;
 
 namespace Paroxe.PdfRenderer
 {
-#if !UNITY_WEBGL
     /// <summary>
     /// Represents the bookmark into a PDF document.
     /// </summary>
@@ -174,5 +173,4 @@ namespace Paroxe.PdfRenderer
             return m_NextSibling;
         }
     }
-#endif
 }
