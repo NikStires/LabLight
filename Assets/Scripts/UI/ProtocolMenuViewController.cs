@@ -11,7 +11,6 @@ public class ProtocolMenuViewController : MonoBehaviour
     [SerializeField] GameObject buttonPrefab;
     [SerializeField] GameObject previousButton;
     [SerializeField] GameObject nextButton;
-    [SerializeField] Transform transformControls;
 
     private int currentPage = 0;
     private int maxPage = 0;
@@ -20,11 +19,6 @@ public class ProtocolMenuViewController : MonoBehaviour
 
     private void Start()
     {
-        if(SessionState.Instance.mainPanelPosition != null)
-        {
-            transformControls.position = SessionState.Instance.mainPanelPosition;
-            transformControls.eulerAngles = SessionState.Instance.mainPanelRotation;
-        }
         LoadProtocols();
     }
 
@@ -43,8 +37,7 @@ public class ProtocolMenuViewController : MonoBehaviour
     private void OnDestroy() 
     {
         Debug.Log("ProtocolMenuViewController destroyed");
-        SessionState.Instance.mainPanelPosition = transformControls.position;
-        SessionState.Instance.mainPanelRotation = transformControls.eulerAngles;
+
     }
 
     public void NextPage()
@@ -84,10 +77,6 @@ public class ProtocolMenuViewController : MonoBehaviour
             buttons.Add(buttonScript);
             buttonScript.Initialize(protocol);
         }
-
-        // Activate or deactivate previous and next buttons
-        previousButton.SetActive(currentPage > 0);
-        nextButton.SetActive(currentPage < maxPage - 1);
     }
 
     async void LoadProtocols()

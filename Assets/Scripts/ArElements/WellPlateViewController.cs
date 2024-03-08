@@ -214,8 +214,10 @@ public class WellPlateViewController : ModelElementViewController
                 toggleTransform(Markers, true, id, parsedColor);
                 toggleTransform(rowIndicators, true, id.Substring(0, 1), parsedColor);
                 toggleTransform(colIndicators, true, id.Substring(1), parsedColor);
-                //toggleTransform(rowHighlights, true, id.Substring(0, 1));
-                //toggleTransform(colHighlights, true, id.Substring(1));
+                // toggleTransform(rowHighlights, true, id.Substring(0, 1));
+                // toggleTransform(colHighlights, true, id.Substring(1));
+                Debug.Log("enabling color: " + parsedColor);
+                Debug.Log("default color: " + defaultIndicatorColor);
             }
             else
             {
@@ -263,9 +265,9 @@ public class WellPlateViewController : ModelElementViewController
                 childObject.SetActive(value);
                 if(color != default)
                 {
-                    if(childObject.TryGetComponent<Renderer>(out Renderer ren))
+                    if(childObject.TryGetComponent<MeshRenderer>(out MeshRenderer ren))
                     {
-                        ren.material.SetColor("_Color", color);
+                        ren.material.color = color;
                     }
                     else if(childObject.TryGetComponent<TextMeshProUGUI>(out TextMeshProUGUI tmp))
                     {

@@ -438,10 +438,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1076852016}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 20}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 80, y: -10}
+  m_SizeDelta: {x: 120, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &196291058
 MonoBehaviour:
@@ -778,10 +778,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5b7db0f748a34ff7a6915da77d01382, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anchorManager: {fileID: 2115460899}
-  planeManager: {fileID: 2115460898}
+  anchorManager: {fileID: 0}
+  planeManager: {fileID: 0}
   loadProcedure: 0
-  TrackedObjectsDebug: []
 --- !u!114 &248604198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1085,7 +1084,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0.382, y: 0.65}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 140, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1076852018
 MonoBehaviour:
@@ -1225,51 +1224,6 @@ MonoBehaviour:
   _onIndicator: {fileID: 1789386360}
   text: {fileID: 196291059}
   calibrationManager: {fileID: 11400000, guid: e994e283a5b104d668e7d8427359ef92, type: 2}
---- !u!1 &1097637656
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1097637657}
-  - component: {fileID: 1097637660}
-  m_Layer: 0
-  m_Name: TestARObjects
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1097637657
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1097637656}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.7120687, y: 1.2382572, z: 1.270629}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1097637660
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1097637656}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cdf60024d073d477c9c1917da6accac1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  labelPrefab: {fileID: 1638378160255222363, guid: 2b02d4c4e35ae4f818923d496db78dc3, type: 3}
 --- !u!1 &1124820452
 GameObject:
   m_ObjectHideFlags: 0
@@ -1475,10 +1429,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1076852016}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 10}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 5, y: -10}
+  m_SizeDelta: {x: 10, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1192487587
 MonoBehaviour:
@@ -6600,40 +6554,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5974050742793267528, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6716201061803074351, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 5dba898e37f444bbc978f07d3c2ef649, type: 3}
-    - target: {fileID: 7182426023415192798, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
-      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7182426023415192798, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
-      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7182426023415192798, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
-      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[2].m_Target
-      value: 
-      objectReference: {fileID: 9004432171206761412}
-    - target: {fileID: 7182426023415192798, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
-      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7182426023415192798, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
-      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
-      value: ToggleTestARObjects
-      objectReference: {fileID: 0}
-    - target: {fileID: 7182426023415192798, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
-      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
-      value: ActionCenterPanelViewController, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 7182426023415192798, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
-      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 7319893822664835165, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_Camera
       value: 
@@ -6877,17 +6803,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 182214849832951045, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
   m_PrefabInstance: {fileID: 8537630422445180475}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &9004432171206761412 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4260026214602192422, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
-  m_PrefabInstance: {fileID: 8537630422445180475}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2481998337745020063}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08c3ad8ae9c484195b42d73ac784c269, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!33 &9081251199995611630
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -7002,4 +6917,3 @@ SceneRoots:
   - {fileID: 1254687816}
   - {fileID: 2479193154366703358}
   - {fileID: 4729299863651358912}
-  - {fileID: 1097637657}

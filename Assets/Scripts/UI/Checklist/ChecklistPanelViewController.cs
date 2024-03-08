@@ -5,30 +5,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using System.Linq;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class ChecklistPanelViewController : MonoBehaviour
 {
     [SerializeField] GameObject unlockedIcon;
     [SerializeField] GameObject lockedIcon;
-    [SerializeField] Transform transformControls;
+
+    [SerializeField] XRSimpleInteractable closeProtocolButton;
 
     private List<ProtocolState.CheckItemState> prevChecklist;
-
     public List<CheckitemView> checkitemViews;
 
     private void Awake()
     {
         ProtocolState.checklistStream.Subscribe(_ => UpdateVisualState()).AddTo(this);
+
+        closeProtocolButton.onSelectEntered.AddListener((XRBaseInteractor interactor) =>
+        {
+            //ServiceRegistry.Logger.Log("Close protocol");
+            SessionState.Instance.activeProtocol = null;
+            SceneLoader.Instance.LoadNewScene("ProtocolMenu");
+        });
     }
 
     void Start()
     {
         UpdateVisualState();
-        if (SessionState.Instance.mainPanelPosition != null)
-        {
-            transformControls.eulerAngles = SessionState.Instance.mainPanelRotation;
-            transformControls.position = SessionState.Instance.mainPanelPosition - transformControls.right * 0.5f;
-        }
     }
 
     /// <summary>
@@ -133,6 +136,65 @@ public class ChecklistPanelViewController : MonoBehaviour
     }
 
 
+/// <summary>
+/// Migrating step control to checklist panel...
+/// </summary>
+    public void PreviousStep()
+    {
+        if (ProtocolState.LockingTriggered.Value)
+        {
+            //audioPlayer?.Play(AudioEventEnum.Error);
+            Debug.LogWarning("cannot navigate to previous step: locking in progress");
+            return;
+        }
+        //if (!SessionState.ConfirmationPanelVisible.Value)
+        //{
+        //    audioPlayer?.Play(AudioEventEnum.PreviousStep);
+        //    ProtocolState.SetStep(ProtocolState.Step - 1);
+        //}
+        if(ProtocolState.Step == 0)
+        {
+            return;
+        }
+        ProtocolState.SetStep(ProtocolState.Step - 1);
+    }
+
+    public void NextStep()
+    {
+        //if there is a checklist that has not been signed off verify that the operator wants to progress
+        if (ProtocolState.Steps[ProtocolState.Step].Checklist != null)
+        {
+            if(!ProtocolState.Steps[ProtocolState.Step].SignedOff)
+            {
+                //if all items are checked but checklist is not signed off
+                if (ProtocolState.CheckItem == ProtocolState.Steps[ProtocolState.Step].Checklist.Count - 1 &&
+                    ProtocolState.Steps[ProtocolState.Step].Checklist[ProtocolState.CheckItem].IsChecked.Value)
+                {
+                    //update confirmation panel UI and button controls
+                    Debug.LogWarning("trying to go to next step without signing off");
+                    //confirmationPanelVC.SignOffMessage();
+                    return;
+                }
+                else
+                {
+                    //update confirmation panel UI and button controls
+                    Debug.LogWarning("trying to go to the next step without checking all items");
+                    //confirmationPanelVC.ChecklistIncompleteMessage();
+                    return;
+                }
+            }
+
+            if (ProtocolState.LockingTriggered.Value)
+            {
+                //audioPlayer?.Play(AudioEventEnum.Error);
+                Debug.LogWarning("cannot navigate to next step: locking in progress");
+                return;
+            }
+
+            ProtocolState.SetStep(ProtocolState.Step + 1);
+        }
+    }
+
     /// <summary>
     /// Destroys stale UI and creates active UI when a new step is loaded 
     /// </summary>
@@ -163,7 +225,7 @@ public class ChecklistPanelViewController : MonoBehaviour
 
                     //scale the item based on its position relative to the active item
                     float scaleFactor = (float)Math.Pow(1.3, Math.Abs(i - ProtocolState.CheckItem));
-                    checkitemView.transform.localScale = new Vector3(1 / scaleFactor, 1 / scaleFactor, 1);
+                    checkitemView.transform.localScale = new Vector3(7.5f / scaleFactor, 7.5f / scaleFactor, 0.075f);
 
                     checkitemView.gameObject.SetActive(true);
 
@@ -194,7 +256,7 @@ public class ChecklistPanelViewController : MonoBehaviour
 
                     //scale the item based on its position relative to the active item
                     float scaleFactor = (float)Math.Pow(1.3, Math.Abs(i - ProtocolState.CheckItem));
-                    checkitemView.transform.localScale = new Vector3(1 / scaleFactor, 1 / scaleFactor, 1);
+                    checkitemView.transform.localScale = new Vector3(7.5f / scaleFactor, 7.5f / scaleFactor, 0.075f);
 
                     checkitemView.gameObject.SetActive(true);
 

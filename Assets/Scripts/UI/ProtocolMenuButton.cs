@@ -6,7 +6,8 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using UniRx;
 
-public class ProtocolMenuButton : SpatialUIButton
+[RequireComponent(typeof(XRSimpleInteractable))]
+public class ProtocolMenuButton : MonoBehaviour
 {
     public void Initialize(ProcedureDescriptor protocol)
     {

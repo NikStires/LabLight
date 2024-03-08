@@ -12,8 +12,6 @@ public class ProtocolPanelViewController : MonoBehaviour
     [SerializeField] TextMeshProUGUI procedureTitle;
     [SerializeField] TextMeshProUGUI stepText;
     [SerializeField] Transform contentFrame;
-    [SerializeField] XRSimpleInteractable closeProtocolButton;
-    [SerializeField] Transform transformControls;
 
     //content item prefabs
     [SerializeField] LayoutController ContainerHorizontalItem;
@@ -28,34 +26,16 @@ public class ProtocolPanelViewController : MonoBehaviour
 
     private void Awake()
     {
-        ProtocolState.stepStream.Subscribe(_ => { UpdateStepDisplay(); }).AddTo(this);
+        //ProtocolState.stepStream.Subscribe(_ => { UpdateStepDisplay(); }).AddTo(this);
 
         ProtocolState.checklistStream.Subscribe(_ => UpdateContentItems()).AddTo(this);
-
-        closeProtocolButton.onSelectEntered.AddListener((XRBaseInteractor interactor) =>
-        {
-            //ServiceRegistry.Logger.Log("Close protocol");
-            SessionState.Instance.activeProtocol = null;
-            SceneLoader.Instance.LoadNewScene("ProtocolMenu");
-        });
     }
 
     void Start()
     {
-        if(SessionState.Instance.mainPanelPosition != null)
-        {
-            transformControls.position = SessionState.Instance.mainPanelPosition;
-            transformControls.eulerAngles = SessionState.Instance.mainPanelRotation;
-        }
         procedureTitle.text = ProtocolState.procedureDef.title;
-        UpdateStepDisplay();
+        //UpdateStepDisplay();
         UpdateContentItems();
-    }
-
-    void OnDestroy()
-    {
-        SessionState.Instance.mainPanelPosition = transformControls.position;
-        SessionState.Instance.mainPanelRotation = transformControls.eulerAngles;
     }
 
     private void UpdateContentItems()
@@ -85,7 +65,7 @@ public class ProtocolPanelViewController : MonoBehaviour
             //create content items for this step
             var currentStep = ProtocolState.procedureDef.steps[ProtocolState.Step];
 
-            //create content items for current check item, iif no content items for check item show step content items
+            //create content items for current check item, if no content items for check item show step content items
             if (currentStep.checklist != null && currentStep.checklist[ProtocolState.CheckItem].contentItems.Count > 0)
             {
                 CreateContentItem(currentStep.contentItems, contentFrame.GetComponent<LayoutGroup>(), null);
