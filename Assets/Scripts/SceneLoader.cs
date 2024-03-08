@@ -39,6 +39,22 @@ public class SceneLoader : MonoBehaviour
         }
     }
 
+    public void LoadSceneAdditive(string sceneName)
+    {
+        if(!isLoading)
+        {
+            StartCoroutine(LoadNew(sceneName));
+        }
+    }
+
+    public void UnloadCurrentActiveScene()
+    {
+        if(!isLoading && SceneManager.GetActiveScene().name != "Persistent")
+        {
+            StartCoroutine(UnloadCurrent());
+        }
+    }
+
     public IEnumerator LoadScene(string sceneName)
     {
         isLoading = true;

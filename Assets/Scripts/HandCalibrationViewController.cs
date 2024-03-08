@@ -119,7 +119,7 @@ public class HandCalibrationViewController : MonoBehaviour
         inCalibration = false;
         calibrationManager.UpdateCalibrationStatus("Calibration complete");
         calibrationManager.CalibrationStarted(false);
-        planeSelected.transform.Find("Cube").gameObject.SetActive(false);
+        planeSelected.gameObject.SetActive(false);
         //ARAnchor anchor = anchorManager.AttachAnchor(planeSelected, calibrationPose);
         var originInstance = Instantiate(originPrefab, SessionManager.instance.CharucoTransform.position, SessionManager.instance.CharucoTransform.rotation);
         //stop plane tracking
