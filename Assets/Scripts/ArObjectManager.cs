@@ -595,7 +595,10 @@ public class ArObjectManager : MonoBehaviour
 
         foreach (var arView in specificArViews)
         {
-            Destroy(arView.Value.gameObject);
+            if(arView.Value != null)
+            {
+                Destroy(arView.Value.gameObject);
+            }
         }
         specificArViews.Clear();
 

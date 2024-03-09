@@ -216,8 +216,6 @@ public class WellPlateViewController : ModelElementViewController
                 toggleTransform(colIndicators, true, id.Substring(1), parsedColor);
                 // toggleTransform(rowHighlights, true, id.Substring(0, 1));
                 // toggleTransform(colHighlights, true, id.Substring(1));
-                Debug.Log("enabling color: " + parsedColor);
-                Debug.Log("default color: " + defaultIndicatorColor);
             }
             else
             {

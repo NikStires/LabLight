@@ -6,9 +6,16 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using UniRx;
 
+/// <summary>
+/// Represents a button in the protocol menu.
+/// </summary>
 [RequireComponent(typeof(XRSimpleInteractable))]
 public class ProtocolMenuButton : MonoBehaviour
 {
+    /// <summary>
+    /// Initializes the protocol menu button with the specified protocol.
+    /// </summary>
+    /// <param name="protocol">The protocol to initialize the button with.</param>
     public void Initialize(ProcedureDescriptor protocol)
     {
         this.protocol = protocol;
@@ -19,7 +26,6 @@ public class ProtocolMenuButton : MonoBehaviour
             ServiceRegistry.GetService<IProcedureDataProvider>().GetOrCreateProcedureDefinition(protocol.title).First().Subscribe(protocol =>
             {
                 Debug.Log(protocol.title + " loaded");
-                //ServiceRegistry.Logger.Log("Select procedure " + protocol.title);
                 SessionState.Instance.activeProtocol = protocol;
                 SceneLoader.Instance.LoadNewScene("Protocol");
             }, (e) =>
