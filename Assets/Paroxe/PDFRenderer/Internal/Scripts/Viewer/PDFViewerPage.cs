@@ -3,30 +3,15 @@ using UnityEngine.EventSystems;
 
 namespace Paroxe.PdfRenderer.Internal.Viewer
 {
-#if UNITY_WEBGL
-    public class PDFViewerPage : UIBehaviour
-    {
-		[SerializeField]
-        private Texture2D m_HandCursor;
-
-		public void ClearCache() {}
-    }
-#endif
-
-#if !UNITY_WEBGL
     public class PDFViewerPage : UIBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN|| UNITY_STANDALONE_OSX
         , IPointerEnterHandler, IPointerExitHandler
-#endif
     {
         [SerializeField]
         private Texture2D m_HandCursor;
 
         private PDFViewer m_Viewer;
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN|| UNITY_STANDALONE_OSX
         private bool m_PointerInside;
         private bool m_HandCursorSettedByMe;
-#endif
         private bool m_CanvasCameraCached;
         private Camera m_CanvasCamera;
         private int? m_PageIndex;
@@ -56,11 +41,8 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
 
         void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
         {
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN|| UNITY_STANDALONE_OSX
 	        if (!m_PointerInside)
 		        return;
-#endif
-
             if (m_Viewer == null)
                 m_Viewer = GetComponentInParent<PDFViewer>();
 
@@ -165,8 +147,6 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
         {
             return textPage.GetBoundedText(left, top, right, bottom, 4096);
         }
-
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN|| UNITY_STANDALONE_OSX
         void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
         {
             if (m_Page == null)
@@ -188,7 +168,6 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
             if (m_HandCursorSettedByMe)
                 Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
         }
-#endif
         protected override void OnEnable()
         {
             if (m_Viewer == null)
@@ -207,9 +186,7 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
                 m_Page = null;
             }
 
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN|| UNITY_STANDALONE_OSX
             m_PointerInside = false;
-#endif
         }
 
         private Camera FindCanvasCamera(RectTransform rt)
@@ -243,8 +220,6 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
             m_CanvasCameraCached = false;
             m_CanvasCamera = null;
 		}
-
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN|| UNITY_STANDALONE_OSX
         private void Update()
         {
             if (m_Viewer == null)
@@ -278,7 +253,6 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
 				}
 			}
 		}
-#endif
 
         void IPointerDownHandler.OnPointerDown(PointerEventData eventData) { }
 
@@ -312,5 +286,4 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
 	        return null;
         }
     }
-#endif
 }

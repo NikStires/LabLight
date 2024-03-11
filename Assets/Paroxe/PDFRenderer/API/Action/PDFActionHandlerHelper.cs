@@ -3,7 +3,6 @@ using System.IO;
 
 namespace Paroxe.PdfRenderer
 {
-#if !UNITY_WEBGL
     /// <summary>
     /// Provides default action handling implementation.
     /// </summary>
@@ -116,5 +115,4 @@ namespace Paroxe.PdfRenderer
             }
         }
     }
-#endif
 }

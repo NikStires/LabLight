@@ -144,7 +144,6 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
 
                 if (fileSourceType != PDFViewer.FileSourceType.Bytes && fileSourceType != PDFViewer.FileSourceType.None)
                 {
-#if UNITY_IOS
                     if (fileSourceType == PDFViewer.FileSourceType.Web)
                     {
                         EditorGUILayout.BeginHorizontal();
@@ -158,7 +157,6 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
                             "</dict>", MessageType.Info);
                         EditorGUILayout.EndHorizontal();
                     }
-#endif
                     if (fileSourceType == PDFViewer.FileSourceType.StreamingAssets
                         || fileSourceType == PDFViewer.FileSourceType.PersistentData
                         || fileSourceType == PDFViewer.FileSourceType.Resources
@@ -224,67 +222,6 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
 
                         EditorGUILayout.EndHorizontal();
                     }
-
-#if UNITY_EDITOR_WIN
-                    if (fileSourceType != PDFViewer.FileSourceType.Asset && fileSourceType != PDFViewer.FileSourceType.DocumentObject)
-                    {
-                        EditorGUILayout.BeginHorizontal();
-                        EditorGUILayout.PrefixLabel(" ");
-
-                        using (new EditorGUI.DisabledGroupScope(string.IsNullOrEmpty(m_FileName.stringValue.Trim())))
-                        {
-                            if (GUILayout.Button("Reveal File"))
-                            {
-                                string filePath = "";
-
-                                if (fileSourceType == PDFViewer.FileSourceType.Resources)
-                                {
-                                    filePath = Application.dataPath + "/Resources/" + viewer.GetFileLocation();
-                                }
-                                else
-                                {
-                                    filePath = viewer.GetFileLocation();
-                                }
-
-                                if (fileSourceType != PDFViewer.FileSourceType.Web)
-                                {
-                                    if (!File.Exists(filePath))
-                                    {
-                                        if (fileSourceType == PDFViewer.FileSourceType.Resources &&
-                                            File.Exists(filePath + ".bytes"))
-                                        {
-                                            ShowInExplorer(filePath + ".bytes");
-                                        }
-                                        else
-                                        {
-                                            EditorUtility.DisplayDialog("Error",
-                                                "The file path is badly formed, contains invalid characters or doesn't exists:\r\n\r\n" +
-                                                filePath, "Ok");
-                                        }
-                                    }
-                                    else
-                                    {
-                                        ShowInExplorer(filePath);
-                                    }
-                                }
-                                else
-                                {
-                                    try
-                                    {
-                                        System.Diagnostics.Process.Start(filePath);
-                                    }
-                                    catch
-                                    {
-                                        EditorUtility.DisplayDialog("Error",
-                                            "The URL is badly formed or contains invalid characters:\r\n\r\n" + filePath, "Ok");
-                                    }
-                                }
-                            }
-                        }
-
-                        EditorGUILayout.EndHorizontal();
-                    }
-#endif
                 }
 
                 if (fileSourceType == PDFViewer.FileSourceType.Bytes)

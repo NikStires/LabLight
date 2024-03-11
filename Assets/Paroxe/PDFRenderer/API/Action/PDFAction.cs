@@ -4,7 +4,6 @@ using System.Text;
 
 namespace Paroxe.PdfRenderer
 {
-#if !UNITY_WEBGL
     /// <summary>
     /// Represents the PDF action into a PDF document.
     /// </summary>
@@ -152,5 +151,4 @@ namespace Paroxe.PdfRenderer
             return m_URIPath;
         }
     }
-#endif
 }

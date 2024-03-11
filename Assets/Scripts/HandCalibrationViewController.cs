@@ -12,6 +12,7 @@ using System;
 using UniRx;
 using TMPro;
 using UnityEngine.PlayerLoop;
+using UnityEngine.SceneManagement;
 
 public class HandCalibrationViewController : MonoBehaviour
 {
@@ -85,6 +86,15 @@ public class HandCalibrationViewController : MonoBehaviour
     private void OnEnable() 
     {
         RequestCalibration();
+#if UNITY_EDITOR
+        StartCoroutine(UnloadCalibration());
+#endif
+    }
+
+    private IEnumerator UnloadCalibration()
+    {
+        yield return new WaitForSeconds(5f);
+        SceneLoader.Instance.UnloadScene("Calibration");
     }
 
     public void RequestCalibration()
@@ -140,7 +150,8 @@ public class HandCalibrationViewController : MonoBehaviour
             planeManager.planesChanged -= OnPlanesChanged;
         }
         planeSelected = null;
-
+ 
+        SceneLoader.Instance.UnloadScene("Calibration");
     }
 
     void OnPlanesChanged(ARPlanesChangedEventArgs args)

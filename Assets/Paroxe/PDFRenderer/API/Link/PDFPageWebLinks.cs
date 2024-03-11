@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace Paroxe.PdfRenderer
 {
-#if !UNITY_WEBGL
 	public class PDFPageWebLinks : IDisposable, ICoordinatedNativeDisposable
 	{
 		private PDFTextPage m_TextPage;
@@ -130,6 +129,5 @@ namespace Paroxe.PdfRenderer
 			return NativeMethods.FPDFLink_CloseWebLinks;
 		}
 	}
-#endif
 }
 

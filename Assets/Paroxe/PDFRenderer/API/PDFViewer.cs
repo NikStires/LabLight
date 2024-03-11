@@ -25,18 +25,14 @@ namespace Paroxe.PdfRenderer
         private PDFPageRange m_CurrentPageRange;
         private PDFSearchResult m_CurrentSearchResult;
         private PDFDocument m_Document;
-#pragma warning disable 414
         private PDFDocument m_SuppliedDocument;
-#pragma warning restore 414
         private PDFPageTextureHolder[] m_PageTextureHolders;
         private int m_CurrentSearchResultIndex;
         private int m_CurrentSearchResultIndexWithinCurrentPage;
         private bool m_DelayedOnEnable;
         private float m_InvalidPasswordMessageDelay;
-#if !UNITY_WEBGL || UNITY_EDITOR
         private float m_InvalidPasswordMessageDelayBeforeFade = 0.5f;
         private bool m_DownloadCanceled = false;
-#endif
         private bool m_InvalidPasswordMessageVisisble;
         private bool m_IsLoaded;
         private int m_LoadAtPageIndex;
@@ -496,9 +492,7 @@ namespace Paroxe.PdfRenderer
         {
             if (visible && m_IsLoaded)
             {
-#if !UNITY_WEBGL
                 if (m_BookmarksViewer.RootBookmark == null || m_BookmarksViewer.RootBookmark.ChildCount == 0)
-#endif
                     visible = false;
             }
 
@@ -1125,7 +1119,6 @@ namespace Paroxe.PdfRenderer
 
         public void CancelDownload()
         {
-#if !UNITY_WEBGL || UNITY_EDITOR
             StopCoroutine(DownloadFileFromWWW());
 
             m_Internal.DownloadDialog.gameObject.SetActive(false);
@@ -1133,7 +1126,6 @@ namespace Paroxe.PdfRenderer
             m_DownloadCanceled = true;
 
             NotifyDownloadCancelled();
-#endif
         }
 
         public void OnPageEditEnd()
@@ -1162,7 +1154,6 @@ namespace Paroxe.PdfRenderer
 
         public void OnPasswordDialogOkButtonClicked()
         {
-#if !UNITY_WEBGL || UNITY_EDITOR
             m_Password = m_Internal.PasswordInputField.text;
 
             if (TryLoadDocumentWithBuffer(m_PendingDocumentBuffer, m_Password))
@@ -1184,7 +1175,6 @@ namespace Paroxe.PdfRenderer
 
                 m_Internal.PasswordInputField.Select();
             }
-#endif
         }
 
         public void ReloadDocument(int pageIndex = 0)
@@ -1391,9 +1381,7 @@ namespace Paroxe.PdfRenderer
                 }
             }
 
-#if !UNITY_WEBGL
             m_Internal.SearchPanel.GetComponent<PDFSearchPanel>().Close();
-#endif
 
             m_IsLoaded = false;
 
@@ -1443,11 +1431,6 @@ namespace Paroxe.PdfRenderer
             if (m_FileSource != FileSourceType.DocumentObject)
 	            m_SuppliedDocument = null;
 
-#if UNITY_WEBGL && !UNITY_EDITOR
-			StartCoroutine(LoadDocument_WebGL(specifiedBuffer));
-
-			return;
-#else
             byte[] buffer = specifiedBuffer;
 
             if (m_FileSource == FileSourceType.DocumentObject)
@@ -1466,15 +1449,10 @@ namespace Paroxe.PdfRenderer
             }
             else if (m_FileSource == FileSourceType.StreamingAssets)
             {
-
-#if UNITY_ANDROID && !UNITY_EDITOR
-                StartCoroutine(DownloadFileFromWWW());
-#else
                 string location = GetFileLocation();
                 if (File.Exists(location))
                     buffer = File.ReadAllBytes(location);
                 OnLoadingBufferFinished(buffer);
-#endif
             }
             else if (m_FileSource == FileSourceType.PersistentData)
             {
@@ -1524,7 +1502,6 @@ namespace Paroxe.PdfRenderer
                     NotifyDocumentLoadFailed();
                 }
             }
-#endif
         }
 
         private void ComputePageOffsets()
@@ -1549,143 +1526,13 @@ namespace Paroxe.PdfRenderer
 
             for (int i = 0; i < m_PageCount; ++i)
             {
-#if UNITY_WEBGL && !UNITY_EDITOR
-                m_PageSizes[i] = m_NormalPageSizes[i] * m_ZoomFactor;
-#else
                 float w = m_Document.GetPageWidth(i) * m_ZoomFactor;
                 float h = m_Document.GetPageHeight(i) * m_ZoomFactor;
 
                 m_PageSizes[i] = new Vector2(w, h);
-#endif
             }
         }
 
-#if UNITY_WEBGL && !UNITY_EDITOR
-        IEnumerator LoadDocument_WebGL(byte[] specifiedBuffer = null)
-        {
-            PDFJS_Promise<PDFDocument> documentPromise = null;
-
-            byte[] buffer = specifiedBuffer;
-
-            bool fromUrl = false;
-            
-            switch (m_FileSource)
-            {
-                case FileSourceType.DocumentObject:
-	                StartCoroutine(LoadWithDocument(m_SuppliedDocument));
-                    yield break;
-                case FileSourceType.Asset:
-                    if (m_PDFAsset.m_FileContent == null || m_PDFAsset.m_FileContent.Length == 0)
-                        yield break;
-
-                    documentPromise = PDFDocument.LoadDocumentFromBytesAsync(m_PDFAsset.m_FileContent);
-                    break;
-                case FileSourceType.Bytes:
-                    if (buffer != null)
-                    {
-                        documentPromise = PDFDocument.LoadDocumentFromBytesAsync(buffer);
-                    }
-                    else if (BytesSupplierComponent != null)
-                    {
-                        MethodInfo methodInfo = BytesSupplierComponent.GetType().GetMethod(BytesSupplierFunctionName);
-                        
-                        if (methodInfo != null)
-                            buffer = (byte[])methodInfo.Invoke(BytesSupplierComponent, null);
-
-                        if (buffer != null)
-                            documentPromise = PDFDocument.LoadDocumentFromBytesAsync(buffer);
-                    }
-
-                    if (buffer == null)
-                        yield break;
-                    break;
-                case FileSourceType.Resources:
-                    buffer = LoadAssetBytesFromResources(GetFileLocation());
-
-                    if (buffer != null)
-                        documentPromise = PDFDocument.LoadDocumentFromBytesAsync(buffer);
-                    else
-                        yield break;
-                    break;
-                case FileSourceType.Web:
-                case FileSourceType.FilePath:
-                case FileSourceType.StreamingAssets:
-                case FileSourceType.PersistentData:
-                    documentPromise = PDFDocument.LoadDocumentFromUrlAsync(GetFileLocation());
-                    fromUrl = true;
-                    
-                    break;
-            }
-             
-            if (!fromUrl)
-            {
-                while (!documentPromise.HasFinished)
-                    yield return null;
-            }
-            else
-            {
-                OverlayVisible = true;
-                m_Internal.Overlay.gameObject.SetActive(true);
-                m_Internal.Overlay.GetComponent<CanvasGroup>().alpha = 0.0f;
-
-                m_Internal.DownloadDialog.gameObject.SetActive(true);
-
-                m_Internal.DownloadSourceLabel.text = GetFileLocation();
-
-                m_Internal.ProgressRect.sizeDelta = new Vector2(0.0f, m_Internal.ProgressRect.sizeDelta.y);
-                m_Internal.ProgressLabel.text = "0%";
-
-                while (!documentPromise.HasFinished)
-                {
-                    SetProgress(documentPromise.Progress);
-
-                    yield return null;
-                }
-
-                m_Internal.DownloadDialog.gameObject.SetActive(false);
-            }
-
-            if (documentPromise.HasSucceeded)
-            {
-	            StartCoroutine(LoadWithDocument(documentPromise.Result));
-            }
-            else
-            {
-                NotifyDocumentLoadFailed();
-            }
-        }
-
-        private IEnumerator LoadWithDocument(PDFDocument document)
-        {
-	        m_Document = document;
-
-	        m_NormalPageSizes = new Vector2[m_Document.GetPageCount()];
-
-	        for (int i = 0; i < m_NormalPageSizes.Length; ++i)
-	        {
-		        PDFJS_Promise<PDFPage> pagePromise = m_Document.GetPageAsync(i);
-
-		        while (!pagePromise.HasFinished)
-			        yield return null;
-
-		        if (pagePromise.HasSucceeded)
-		        {
-			        PDFPage page = pagePromise.Result;
-
-			        m_NormalPageSizes[i] = page.GetPageSize(1.0f);
-		        }
-		        else
-		        {
-			        NotifyDocumentLoadFailed();
-			        yield break;
-		        }
-	        }
-
-	        TryLoadWithSpecifiedDocument(m_Document);
-        }
-#endif
-
-#if !UNITY_WEBGL || UNITY_EDITOR
         private IEnumerator DownloadFileFromWWW()
         {
             OverlayVisible = true;
@@ -1733,7 +1580,6 @@ namespace Paroxe.PdfRenderer
 
             m_Internal.DownloadDialog.gameObject.SetActive(false);
         }
-#endif
 
         private void EnsureValidPageContainerPosition()
         {
@@ -2094,21 +1940,8 @@ namespace Paroxe.PdfRenderer
 
             m_ThumbnailsViewer.DoOnEnable();
             m_BookmarksViewer.DoOnEnable();
-
-#if UNITY_WEBGL
-            m_Internal.SearchPanel.gameObject.SetActive(false);
-
-            int c = m_Internal.TopPanel.childCount;
-            for (int i = 0; i < c; ++i)
-            {
-                Transform t = m_Internal.TopPanel.GetChild(i);
-                if (t.name == "SearchButton")
-                    t.gameObject.SetActive(false);
-            }
-#endif
         }
 
-#if !UNITY_WEBGL || UNITY_EDITOR
         private void OnLoadingBufferFinished(byte[] buffer)
         {
             m_PendingDocumentBuffer = buffer;
@@ -2135,7 +1968,6 @@ namespace Paroxe.PdfRenderer
                 m_Internal.Overlay.alpha = OverlayAlpha;
             }
         }
-#endif
 
         private void SetPageCountLabel(int pageIndex, int pageCount)
         {
@@ -2182,14 +2014,12 @@ namespace Paroxe.PdfRenderer
             m_BookmarksActionHandler = m_BookmarksActionHandler ?? new PDFViewerDefaultActionHandler();
         }
 
-#if !UNITY_WEBGL || UNITY_EDITOR
         private bool TryLoadDocumentWithBuffer(byte[] buffer, string password)
         {
             m_Document = new PDFDocument(buffer, password);
 
             return TryLoadWithSpecifiedDocument(m_Document);
         }
-#endif
 
         private bool TryLoadWithSpecifiedDocument(PDFDocument document)
         {
@@ -2201,12 +2031,10 @@ namespace Paroxe.PdfRenderer
 
                 m_PageCount = m_Document.GetPageCount();
 
-#if !UNITY_WEBGL || UNITY_EDITOR
                 m_NormalPageSizes = new Vector2[m_PageCount];
 
                 for (int i = 0; i < m_NormalPageSizes.Length; ++i)
                     m_NormalPageSizes[i] = m_Document.GetPageSize(i);
-#endif
 
                 m_Internal.ScrollRect.scrollSensitivity = m_ScrollSensitivity;
 
@@ -2414,19 +2242,6 @@ namespace Paroxe.PdfRenderer
 
                     for (int i = m_CurrentPageRange.m_From; i < m_CurrentPageRange.m_To; ++i)
                     {
-#if UNITY_WEBGL
-                        m_PageTextureHolders[i].Visible = true;
-
-                        if (m_PageTextureHolders[i].RenderingStarted)
-                            continue;
-
-                        int w = (int)(m_NormalPageSizes[i].x * Mathf.Min(m_ZoomToGo, m_MaxZoomFactorTextureQuality));
-                        int h = (int)(m_NormalPageSizes[i].y * Mathf.Min(m_ZoomToGo, m_MaxZoomFactorTextureQuality));
-
-                        m_PageTextureHolders[i].RenderingStarted = true;
-
-                        StartCoroutine(UpdatePageRangeTextures(i, w, h));
-#else
                         if (m_PageTextureHolders[i].Texture != null)
                         {
                             Texture2D tex = m_PageTextureHolders[i].Texture;
@@ -2447,7 +2262,6 @@ namespace Paroxe.PdfRenderer
 
 	                        m_PageTextureHolders[i].Texture = newTex;
                         }
-#endif
                     }
                 }
             }
@@ -2462,53 +2276,6 @@ namespace Paroxe.PdfRenderer
             if (m_BookmarksViewer.gameObject.activeInHierarchy)
                 m_BookmarksViewer.DoUpdate();
         }
-
-#if UNITY_WEBGL
-        private IEnumerator UpdatePageRangeTextures(int pageIndex, int w, int h)
-        {
-            PDFJS_Promise<PDFPage> pagePromise = m_Document.GetPageAsync(pageIndex);
-
-            while (!pagePromise.HasFinished)
-                yield return null;
-
-            if (pagePromise.HasSucceeded)
-            {
-                PDFJS_Promise<Texture2D> renderPromise = PDFRenderer.RenderPageToTextureAsync(pagePromise.Result, w, h);
-
-                m_PageTextureHolders[pageIndex].RenderingPromise = renderPromise;
-
-                while (!renderPromise.HasFinished)
-                    yield return null;
-
-                m_PageTextureHolders[pageIndex].RenderingPromise = null;
-                m_PageTextureHolders[pageIndex].RenderingStarted = false;
-
-                if (renderPromise.HasSucceeded)
-                {
-                    if (m_PageTextureHolders[pageIndex].Texture != null && m_PageTextureHolders[pageIndex].Texture != renderPromise.Result)
-                    {
-                        Destroy(m_PageTextureHolders[pageIndex].Texture);
-                        m_PageTextureHolders[pageIndex].Texture = null;
-                    }
-
-                    if (m_PageTextureHolders[pageIndex].Visible)
-                    {
-                        m_PageTextureHolders[pageIndex].Texture = renderPromise.Result;
-                    }
-                    else
-                    {
-                        Destroy(renderPromise.Result);
-                        renderPromise.Result = null;
-                    }
-                }
-            }
-            else
-            {
-                m_PageTextureHolders[pageIndex].RenderingPromise = null;
-                m_PageTextureHolders[pageIndex].RenderingStarted = false;
-            }
-        }
-#endif
 
         public Vector2[] GetCachedNormalPageSizes()
         {
@@ -2682,25 +2449,16 @@ namespace Paroxe.PdfRenderer
 
         public IPDFDeviceActionHandler GetBookmarksActionHandler()
         {
-#if UNITY_WEBGL && !UNITY_EDITOR
             return null;
-#else
-            return m_BookmarksActionHandler;
-#endif
         }
 
         public IPDFDeviceActionHandler GetLinksActionHandler()
         {
-#if UNITY_WEBGL && !UNITY_EDITOR
             return null;
-#else
-            return m_LinksActionHandler;
-#endif
         }
 
         public IList<PDFColoredRect> GetBackgroundColoredRectList(PDFPage page)
         {
-#if !UNITY_WEBGL
             if (m_SearchResults != null && m_SearchResults[page.PageIndex] != null &&
                 m_SearchResults[page.PageIndex].Count > 0)
             {
@@ -2727,7 +2485,6 @@ namespace Paroxe.PdfRenderer
                     return coloredRectList;
                 }
             }
-#endif
 
             return null;
         }
@@ -2737,7 +2494,6 @@ namespace Paroxe.PdfRenderer
             if (m_Document == null || !m_Document.IsValid)
                 return;
 
-#if !UNITY_WEBGL
             Vector3[] pageCorners = new Vector3[4];
 
             RectTransform viewerPageTransform = (RectTransform)viewerPage.transform;
@@ -2775,7 +2531,6 @@ namespace Paroxe.PdfRenderer
 
             if (m_ZoomToGo < m_ParagraphZoomFactor)
                 ZoomCommon(new Vector2(0.0f, m_Internal.Viewport.rect.size.y * 0.5f), true, true, m_ParagraphZoomFactor);
-#endif
         }
 
         protected override void OnTransformParentChanged()

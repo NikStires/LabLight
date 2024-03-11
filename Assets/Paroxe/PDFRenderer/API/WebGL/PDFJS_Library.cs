@@ -122,16 +122,12 @@ namespace Paroxe.PdfRenderer.WebGL
 
         public void OnLibraryInitialized(string message)
         {
-#if UNITY_WEBGL && !UNITY_EDITOR
-            PDFLibrary.Instance.IsInitialized = true;
-#endif
+            return;
         }
 
         public void TryTerminateRenderingWorker(string promiseHandle)
         {
-#if UNITY_WEBGL && !UNITY_EDITOR
-            NativeMethods.PDFJS_TryTerminateRenderWorker(promiseHandle);
-#endif
+            return;
         }
     }
 }

@@ -45,10 +45,6 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
         private CanvasGroup m_ThumbnailsCanvasGroup;
         private PDFViewer m_Viewer;
 
-#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
-        private bool m_PointerIn;
-#endif
-
         public RectTransform Bookmarks { get { return m_Bookmarks; } }
         public Image BookmarksTab { get { return m_BookmarksTab; } }
         public PDFThumbnailsViewer ThumbnailsViewer { get { return m_ThumbnailsViewer; } }
@@ -93,10 +89,6 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
                 return;
 
             m_Drag = true;
-
-#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
-            Cursor.SetCursor(m_ResizeCursor, new Vector2(16.0f, 16.0f), CursorMode.Auto);
-#endif
         }
 
         public void OnDrag(BaseEventData eventData)
@@ -121,33 +113,18 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
                 return;
 
             m_Drag = false;
-
-#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
-            if (!m_PointerIn)
-	            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
-#endif
         }
 
         public void OnPointerEnter()
         {
             if (!m_Opened)
 	            return;
-
-#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
-            Cursor.SetCursor(m_ResizeCursor, new Vector2(16.0f, 16.0f), CursorMode.Auto);
-            m_PointerIn = true;
-#endif
         }
 
         public void OnPointerExit()
         {
             if (!m_Opened)
 	            return;
-#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
-            if (!m_Drag)
-	            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
-            m_PointerIn = false;
-#endif
         }
 
         public void OnBookmarksTabClicked()
@@ -235,12 +212,6 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
             {
 	            RectTransform.sizeDelta = new Vector2(24.0f, RectTransform.sizeDelta.y);
             }
-#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
-            if (m_Opened)
-            {
-                Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
-            }
-#endif
         }
 
         private void UpdateViewport()

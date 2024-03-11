@@ -3,7 +3,6 @@ using Paroxe.PdfRenderer.Internal;
 
 namespace Paroxe.PdfRenderer
 {
-#if !UNITY_WEBGL
     /// <summary>
     /// Represents a destination into a PDF document.
     /// </summary>
@@ -75,5 +74,4 @@ namespace Paroxe.PdfRenderer
             }
         }
     }
-#endif
 }

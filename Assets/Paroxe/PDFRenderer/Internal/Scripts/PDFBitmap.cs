@@ -2,7 +2,6 @@
 
 namespace Paroxe.PdfRenderer.Internal
 {
-#if !UNITY_WEBGL || UNITY_EDITOR
     public sealed class PDFBitmap : IDisposable
     {
 	    public enum BitmapFormat
@@ -100,5 +99,4 @@ namespace Paroxe.PdfRenderer.Internal
             return NativeMethods.FPDFBitmap_GetStride(m_NativePointer);
         }
     }
-#endif
 }

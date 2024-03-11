@@ -23,7 +23,6 @@ public class ChecklistPanelViewController : MonoBehaviour
 
         closeProtocolButton.onSelectEntered.AddListener((XRBaseInteractor interactor) =>
         {
-            //ServiceRegistry.Logger.Log("Close protocol");
             SessionState.Instance.activeProtocol = null;
             SceneLoader.Instance.LoadNewScene("ProtocolMenu");
         });

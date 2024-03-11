@@ -17,11 +17,17 @@ public class ProtocolMenuViewController : MonoBehaviour
     List<ProcedureDescriptor> protocols;
     List<ProtocolMenuButton> buttons = new List<ProtocolMenuButton>();
 
+    /// <summary>
+    /// Called when the script instance is being loaded.
+    /// </summary>
     private void Start()
     {
         LoadProtocols();
     }
 
+    /// <summary>
+    /// Called when the behaviour becomes disabled or inactive.
+    /// </summary>
     private void OnDisable()
     {
         foreach (var button in buttons)
@@ -34,12 +40,17 @@ public class ProtocolMenuViewController : MonoBehaviour
         buttons.Clear();
     }
 
+    /// <summary>
+    /// Called when the MonoBehaviour will be destroyed.
+    /// </summary>
     private void OnDestroy() 
     {
         Debug.Log("ProtocolMenuViewController destroyed");
-
     }
 
+    /// <summary>
+    /// Moves to the next page of protocols.
+    /// </summary>
     public void NextPage()
     {
         if (currentPage < maxPage - 1)
@@ -49,6 +60,9 @@ public class ProtocolMenuViewController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Moves to the previous page of protocols.
+    /// </summary>
     public void PreviousPage()
     {
         if (currentPage > 0)
@@ -58,17 +72,20 @@ public class ProtocolMenuViewController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Builds the specified page of protocols.
+    /// </summary>
+    /// <param name="pageNum">The page number to build.</param>
     void Build(int pageNum)
     {
-        //Destroy current page
+        // Destroy current page
         for (int i = 0; i < buttonGrid.transform.childCount; i++)
         {
             buttonGrid.transform.GetChild(i).gameObject.SetActive(false);
             Destroy(buttonGrid.transform.GetChild(i).gameObject);
         }
 
-
-        //build the requested page
+        // Build the requested page
         for (int i = currentPage * 8; i < Math.Min((currentPage + 1) * 8, protocols.Count); i++)
         {
             var protocol = protocols[i];
@@ -79,6 +96,9 @@ public class ProtocolMenuViewController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Loads the list of protocols asynchronously.
+    /// </summary>
     async void LoadProtocols()
     {
         // Load procedure list
@@ -97,6 +117,10 @@ public class ProtocolMenuViewController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Deletes the specified protocol.
+    /// </summary>
+    /// <param name="protocolTitle">The title of the protocol to delete.</param>
     void deleteProtocol(string protocolTitle)
     {
         ServiceRegistry.Logger.Log("Delete protocol " + protocolTitle);

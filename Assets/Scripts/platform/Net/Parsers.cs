@@ -57,7 +57,7 @@ public class Parsers
         }
         catch (System.Exception e)
         {
-//            ServiceRegistry.Logger.LogError("Error parsing workspace: " + e.ToString());
+            ServiceRegistry.Logger.LogError("Error parsing workspace: " + e.ToString());
             throw;
         }
     }

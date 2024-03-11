@@ -2,8 +2,6 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-#pragma warning disable 649
-
 namespace Paroxe.PdfRenderer.Internal.Viewer
 {
     public class PDFViewerInternal : UIBehaviour

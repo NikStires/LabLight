@@ -29,7 +29,6 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
         [SerializeField]
         private RectTransform m_VerticalLine2;
 
-#if !UNITY_WEBGL
         private CanvasGroup m_CanvasGroup;
         private List<PDFBookmarkListItem> m_ChildrenItems;
         private bool m_Expanded;
@@ -262,6 +261,5 @@ namespace Paroxe.PdfRenderer.Internal.Viewer
 	                m_SizeAdjusted = -2;
             }
         }
-#endif
     }
 }

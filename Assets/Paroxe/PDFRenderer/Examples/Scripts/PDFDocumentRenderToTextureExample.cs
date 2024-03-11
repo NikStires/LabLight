@@ -6,8 +6,6 @@ namespace Paroxe.PdfRenderer.Examples
     {
         public int m_Page = 0;
 
-#if !UNITY_WEBGL
-
         void Start()
         {
             PDFDocument pdfDocument = new PDFDocument(PDFBytesSupplierExample.PDFSampleByteArray, "");
@@ -25,6 +23,5 @@ namespace Paroxe.PdfRenderer.Examples
                 GetComponent<MeshRenderer>().material.mainTexture = tex;
             }
         }
-#endif
     }
 }

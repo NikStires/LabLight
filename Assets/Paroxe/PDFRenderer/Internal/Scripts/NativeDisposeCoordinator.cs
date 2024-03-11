@@ -12,7 +12,6 @@ namespace Paroxe.PdfRenderer.Internal
         Action<IntPtr> GetDisposeMethod();
     }
 
-#if !UNITY_WEBGL || UNITY_EDITOR
     public struct NativePointerrWithType
     {
         public Type ManagedType;
@@ -237,6 +236,5 @@ namespace Paroxe.PdfRenderer.Internal
             m_Children.Remove(node);
         }
     }
-#endif
 }
 

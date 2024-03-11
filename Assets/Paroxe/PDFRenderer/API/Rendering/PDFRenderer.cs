@@ -13,60 +13,33 @@ namespace Paroxe.PdfRenderer
 	/// </summary>
 	public sealed class PDFRenderer : IDisposable
 	{
-#if !UNITY_WEBGL || UNITY_EDITOR
 		private PDFBitmap m_Bitmap;
 		private byte[] m_IntermediateBuffer;
-#endif
 
-#if !UNITY_WEBGL || UNITY_EDITOR
 		~PDFRenderer()
 		{
 			Close();
 		}
-#endif
 
 		public void Dispose()
 		{
-#if !UNITY_WEBGL || UNITY_EDITOR
 			Close();
 
 			GC.SuppressFinalize(this);
-#endif
 		}
 
 		private void Close()
 		{
-#if !UNITY_WEBGL || UNITY_EDITOR
 			if (m_Bitmap == null)
 				return;
 
 			m_Bitmap.Dispose();
 			m_Bitmap = null;
-#endif
 		}
-
-#if UNITY_WEBGL
-		public class RenderPageParameters
-        {
-            public IntPtr pageHandle;
-            public Texture2D existingTexture;
-            public Vector2 newTextureSize;
-
-
-            public RenderPageParameters(IntPtr pageHandle, Texture2D existingTexture, Vector2 newTextureSize)
-            {
-                this.pageHandle = pageHandle;
-                this.existingTexture = existingTexture;
-                this.newTextureSize = newTextureSize;
-            }
-        }
-#endif
 
 		public static PDFJS_Promise<Texture2D> RenderPageToExistingTextureAsync(PDFPage page, Texture2D tex)
 		{
 			PDFJS_Promise<Texture2D> renderPromise = new PDFJS_Promise<Texture2D>();
-
-#if !UNITY_WEBGL || UNITY_EDITOR
 			using (PDFRenderer renderer = new PDFRenderer())
 			{
 				renderPromise.HasFinished = true;
@@ -75,13 +48,6 @@ namespace Paroxe.PdfRenderer
 				renderer.RenderPageToExistingTexture(page, tex);
 				renderPromise.Result = tex;
 			}
-#else
-
-            RenderPageParameters parameters = new RenderPageParameters(page.NativePointer, tex, new Vector2(tex.width, tex.height));
-
-            PDFJS_Library.Instance.PreparePromiseCoroutine(RenderPageCoroutine, renderPromise, parameters).Start();
-#endif
-
 			return renderPromise;
 		}
 
@@ -93,8 +59,6 @@ namespace Paroxe.PdfRenderer
 		public static PDFJS_Promise<Texture2D> RenderPageToTextureAsync(PDFPage page, Vector2 size)
 		{
 			PDFJS_Promise<Texture2D> renderPromise = new PDFJS_Promise<Texture2D>();
-
-#if !UNITY_WEBGL || UNITY_EDITOR
 			using (PDFRenderer renderer = new PDFRenderer())
 			{
 				renderPromise.HasFinished = true;
@@ -102,12 +66,6 @@ namespace Paroxe.PdfRenderer
 				renderPromise.HasReceivedJSResponse = true;
 				renderPromise.Result = renderer.RenderPageToTexture(page, (int)size.x, (int)size.y);
 			}
-#else
-            RenderPageParameters parameters = new RenderPageParameters(page.NativePointer, null, size);
-
-            PDFJS_Library.Instance.PreparePromiseCoroutine(RenderPageCoroutine, renderPromise, parameters).Start();
-
-#endif
 			return renderPromise;
 		}
 
@@ -115,7 +73,6 @@ namespace Paroxe.PdfRenderer
 		{
 			PDFJS_Promise<Texture2D> renderPromise = new PDFJS_Promise<Texture2D>();
 
-#if !UNITY_WEBGL || UNITY_EDITOR
 			using (PDFRenderer renderer = new PDFRenderer())
 			{
 				renderPromise.HasFinished = true;
@@ -124,108 +81,16 @@ namespace Paroxe.PdfRenderer
 				Vector2 size = page.GetPageSize(scale);
 				renderPromise.Result = renderer.RenderPageToTexture(page, (int)size.x, (int)size.y);
 			}
-#else
-
-            RenderPageParameters parameters = new RenderPageParameters(page.NativePointer, null, page.GetPageSize(scale));
-
-            PDFJS_Library.Instance.PreparePromiseCoroutine(RenderPageCoroutine, renderPromise, parameters).Start();
-#endif
 
 			return renderPromise;
 		}
 
-#if UNITY_WEBGL && !UNITY_EDITOR
-        private static IEnumerator RenderPageCoroutine(PDFJS_PromiseCoroutine promiseCoroutine, IPDFJS_Promise promise, object parameters)
-        {
-            PDFJS_Promise<PDFJS_WebGLCanvas> renderToCanvasPromise = new PDFJS_Promise<PDFJS_WebGLCanvas>();
-
-            PDFJS_Library.Instance.PreparePromiseCoroutine(null, renderToCanvasPromise, null);
-
-            IntPtr pageHandle = ((RenderPageParameters)parameters).pageHandle;
-            Texture2D texture = ((RenderPageParameters)parameters).existingTexture;
-            Vector2 newtextureSize = ((RenderPageParameters)parameters).newTextureSize;
-
-            Vector2 pageSize = PDFPage.GetPageSize(pageHandle, 1.0f);
-
-            float scale = 1.0f;
-            float width = 0.0f;
-            float height = 0.0f;
-
-            if (texture != null)
-            {
-                float wf = pageSize.x / texture.width;
-                float hf = pageSize.y / texture.height;
-
-                width = texture.width;
-                height = texture.height;
-
-                scale = 1.0f / Mathf.Max(wf, hf);
-            }
-            else
-            {
-                float wf = pageSize.x / newtextureSize.x;
-                float hf = pageSize.y / newtextureSize.y;
-
-                width = newtextureSize.x;
-                height = newtextureSize.y;
-
-                scale = 1.0f / Mathf.Max(wf, hf);
-            }
-
-            NativeMethods.PDFJS_RenderPageIntoCanvas(renderToCanvasPromise.PromiseHandle, pageHandle.ToInt32(), scale, width, height);
-
-            while (!renderToCanvasPromise.HasReceivedJSResponse)
-                yield return null;
-
-            if (renderToCanvasPromise.HasSucceeded)
-            {
-                int canvasHandle = int.Parse(renderToCanvasPromise.JSObjectHandle);
-
-                using (PDFJS_WebGLCanvas canvas = new PDFJS_WebGLCanvas(new IntPtr(canvasHandle)))
-                {
-                    PDFJS_Promise<Texture2D> renderToTexturePromise = promise as PDFJS_Promise<Texture2D>;
-
-                    if (texture == null)
-                    {
-                        texture = new Texture2D((int)newtextureSize.x, (int)newtextureSize.y, TextureFormat.ARGB32, false);
-                        texture.filterMode = FilterMode.Bilinear;
-                        texture.Apply();
-                    }
-
-                    NativeMethods.PDFJS_RenderCanvasIntoTexture(canvasHandle, texture.GetNativeTexturePtr().ToInt32());
-
-                    renderToTexturePromise.Result = texture;
-                    renderToTexturePromise.HasSucceeded = true;
-                    renderToTexturePromise.HasFinished = true;
-
-                    promiseCoroutine.ExecuteThenAction(true, texture);
-                }
-            }
-            else
-            {
-                PDFJS_Promise<Texture2D> renderToTexturePromise = promise as PDFJS_Promise<Texture2D>;
-
-                renderToTexturePromise.Result = null;
-                renderToTexturePromise.HasSucceeded = false;
-                renderToTexturePromise.HasFinished = true;
-
-                promiseCoroutine.ExecuteThenAction(false, null);
-            }
-        }
-#endif
-
-#if !UNITY_WEBGL || UNITY_EDITOR
         /// <summary>
         /// Render page into a new byte array.
         /// </summary>
         /// <param name="page"></param>
         /// <returns></returns>
-#if !UNITY_WEBGL
-		public
-#else
-        private
-#endif
-        byte[] RenderPageToByteArray(PDFPage page)
+		public byte[] RenderPageToByteArray(PDFPage page)
 		{
 			return RenderPageToByteArray(page, (int)page.GetPageSize().x, (int)page.GetPageSize().y, null,
 				RenderSettings.defaultRenderSettings);
@@ -238,12 +103,7 @@ namespace Paroxe.PdfRenderer
 		/// <param name="width"></param>
 		/// <param name="height"></param>
 		/// <returns></returns>
-#if !UNITY_WEBGL
-		public
-#else
-        private
-#endif
-		byte[] RenderPageToByteArray(PDFPage page, int width, int height)
+		public byte[] RenderPageToByteArray(PDFPage page, int width, int height)
 		{
 			return RenderPageToByteArray(page, width, height, null, RenderSettings.defaultRenderSettings);
 		}
@@ -256,12 +116,7 @@ namespace Paroxe.PdfRenderer
 		/// <param name="height"></param>
 		/// <param name="rectsProvider"></param>
 		/// <returns></returns>
-#if !UNITY_WEBGL
-		public
-#else
-        private
-#endif
-		byte[] RenderPageToByteArray(PDFPage page, int width, int height,
+		public byte[] RenderPageToByteArray(PDFPage page, int width, int height,
 			IPDFColoredRectListProvider rectsProvider)
 		{
 			return RenderPageToByteArray(page, width, height, rectsProvider, RenderSettings.defaultRenderSettings);
@@ -276,12 +131,7 @@ namespace Paroxe.PdfRenderer
 		/// <param name="rectsProvider"></param>
 		/// <param name="settings"></param>
 		/// <returns></returns>
-#if !UNITY_WEBGL
-		public
-#else
-        private
-#endif
-		byte[] RenderPageToByteArray(PDFPage page, int width, int height,
+		public byte[] RenderPageToByteArray(PDFPage page, int width, int height,
 			IPDFColoredRectListProvider rectsProvider, RenderSettings settings)
 		{
 			if (settings == null)
@@ -321,8 +171,6 @@ namespace Paroxe.PdfRenderer
 				m_IntermediateBuffer = new byte[width * height * 4];
 
 			Marshal.Copy(bufferPtr, m_IntermediateBuffer, 0, width * height * 4);
-
-#if !UNITY_WEBGL
 
 			IList<PDFColoredRect> coloredRects = rectsProvider != null
 				? rectsProvider.GetBackgroundColoredRectList(page)
@@ -366,7 +214,6 @@ namespace Paroxe.PdfRenderer
 					}
 				}
 			}
-#endif
 			return m_IntermediateBuffer;
 		}
 
@@ -659,13 +506,8 @@ namespace Paroxe.PdfRenderer
 		/// Render page into a new Texture2D.
 		/// </summary>
 		/// <param name="page"></param>
-		/// <returns></returns>
-#if !UNITY_WEBGL
-		public
-#else
-        private
-#endif
-		Texture2D RenderPageToTexture(PDFPage page)
+		/// <returns></returns>]
+		public Texture2D RenderPageToTexture(PDFPage page)
 		{
 			return RenderPageToTexture(page, (int)page.GetPageSize().x, (int)page.GetPageSize().y, null,
 				RenderSettings.defaultRenderSettings);
@@ -678,12 +520,7 @@ namespace Paroxe.PdfRenderer
 		/// <param name="width"></param>
 		/// <param name="height"></param>
 		/// <returns></returns>
-#if !UNITY_WEBGL
-		public
-#else
-        private
-#endif
-		Texture2D RenderPageToTexture(PDFPage page, int width, int height)
+		public Texture2D RenderPageToTexture(PDFPage page, int width, int height)
 		{
 			return RenderPageToTexture(page, width, height, null, RenderSettings.defaultRenderSettings);
 		}
@@ -696,12 +533,7 @@ namespace Paroxe.PdfRenderer
 		/// <param name="height"></param>
 		/// <param name="rectsProvider"></param>
 		/// <returns></returns>
-#if !UNITY_WEBGL
-		public
-#else
-        private
-#endif
-		Texture2D RenderPageToTexture(PDFPage page, int width, int height,
+		public Texture2D RenderPageToTexture(PDFPage page, int width, int height,
 			IPDFColoredRectListProvider rectsProvider)
 		{
 			return RenderPageToTexture(page, width, height, rectsProvider, RenderSettings.defaultRenderSettings);
@@ -716,12 +548,7 @@ namespace Paroxe.PdfRenderer
 		/// <param name="rectsProvider"></param>
 		/// <param name="settings"></param>
 		/// <returns></returns>
-#if !UNITY_WEBGL
-		public
-#else
-        private
-#endif
-		Texture2D RenderPageToTexture(PDFPage page, int width, int height,
+		public Texture2D RenderPageToTexture(PDFPage page, int width, int height,
 			IPDFColoredRectListProvider rectsProvider, RenderSettings settings)
 		{
 			Texture2D newTex = new Texture2D(width, height, TextureFormat.RGBA32, false);
@@ -736,12 +563,7 @@ namespace Paroxe.PdfRenderer
 		/// </summary>
 		/// <param name="page"></param>
 		/// <param name="texture"></param>
-#if !UNITY_WEBGL
-		public
-#else
-        private
-#endif
-		void RenderPageToExistingTexture(PDFPage page, Texture2D texture)
+		public void RenderPageToExistingTexture(PDFPage page, Texture2D texture)
 		{
 			RenderPageToExistingTexture(page, texture, null, RenderSettings.defaultRenderSettings);
 		}
@@ -752,12 +574,7 @@ namespace Paroxe.PdfRenderer
 		/// <param name="page"></param>
 		/// <param name="texture"></param>
 		/// <param name="rectsProvider"></param>
-#if !UNITY_WEBGL
-		public
-#else
-        private
-#endif
-		void RenderPageToExistingTexture(PDFPage page, Texture2D texture,
+		public void RenderPageToExistingTexture(PDFPage page, Texture2D texture,
 			IPDFColoredRectListProvider rectsProvider)
 		{
 			RenderPageToExistingTexture(page, texture, rectsProvider, RenderSettings.defaultRenderSettings);
@@ -770,12 +587,7 @@ namespace Paroxe.PdfRenderer
 		/// <param name="texture"></param>
 		/// <param name="rectsProvider"></param>
 		/// <param name="settings"></param>
-#if !UNITY_WEBGL
-		public
-#else
-        private
-#endif
-		void RenderPageToExistingTexture(PDFPage page, Texture2D texture,
+		public void RenderPageToExistingTexture(PDFPage page, Texture2D texture,
 			IPDFColoredRectListProvider rectsProvider, RenderSettings settings)
 		{
 			byte[] byteArray = RenderPageToByteArray(page, texture.width, texture.height, rectsProvider, settings);
@@ -808,8 +620,6 @@ namespace Paroxe.PdfRenderer
 				}
 			}
 		}
-
-#endif
 
 		/// <summary>
 		/// Allows the application to specify render settings.

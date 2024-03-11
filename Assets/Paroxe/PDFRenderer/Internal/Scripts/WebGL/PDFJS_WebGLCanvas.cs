@@ -24,9 +24,6 @@ namespace Paroxe.PdfRenderer.WebGL
             {
                 if (m_NativePointer != IntPtr.Zero)
                 {
-#if UNITY_WEBGL && !UNITY_EDITOR
-                    NativeMethods.PDFJS_DestroyCanvas(m_NativePointer.ToInt32());
-#endif
                     m_NativePointer = IntPtr.Zero;
                 }
 
