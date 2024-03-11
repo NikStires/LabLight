@@ -59,7 +59,7 @@ public class ArObjectManager : MonoBehaviour
 
     private void InitializeArObjects()
     {
-        workspaceTransform = SessionManager.instance.WorkspaceTransform;
+        workspaceTransform = SessionManager.instance.CharucoTransform;
         if(ProtocolState.procedureDef != null)
         {
             var currentProcedure = ProtocolState.procedureDef;
@@ -109,7 +109,7 @@ public class ArObjectManager : MonoBehaviour
 
     private void processAddedGenericObject(TrackedObject trackedObject)
     {
-        Transform parent = SessionManager.instance.WorkspaceTransform;
+        Transform parent = SessionManager.instance.CharucoTransform;
 
         // Apply generic definitions
         Debug.Log(genericArDefinitions.Count);
