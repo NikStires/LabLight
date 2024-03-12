@@ -3478,6 +3478,7 @@ MonoBehaviour:
     - {fileID: 2032047400912281504}
   sphere: {fileID: 3893869629590341445}
   ModelName: {fileID: 4764666697387905150}
+  debugeEnableAllSettings: 0
   modelActive: 0
   nameTags: {fileID: 6168936106343387364}
   Sources: {fileID: 5250952026491475252}
@@ -8665,7 +8666,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6555194795480067951
 Transform:
   m_ObjectHideFlags: 0

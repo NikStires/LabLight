@@ -15,7 +15,7 @@ using TMPro;
 [RequireComponent(typeof(CapsuleCollider))]
 public class SourceElementViewController : ModelElementViewController
 {
-    public bool debugeEnableAllSettings = true;
+    public bool debugeEnableAllSettings = false;
 
     public bool modelActive;
 

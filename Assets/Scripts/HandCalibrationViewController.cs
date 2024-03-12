@@ -145,6 +145,11 @@ public class HandCalibrationViewController : MonoBehaviour
 
         //planeManager.requestedDetectionMode = UnityEngine.XR.ARSubsystems.PlaneDetectionMode.None;
 
+        foreach(var plane in planeManager.trackables)
+        {
+            plane.gameObject.SetActive(false);
+        }
+
         if(planeManager != null)
         {
             planeManager.planesChanged -= OnPlanesChanged;

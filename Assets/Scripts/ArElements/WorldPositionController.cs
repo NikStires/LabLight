@@ -16,7 +16,6 @@ public class WorldPositionController : ArElementViewController
 
     protected Transform _defaultSlot;
     protected Vector3 _defaultPosition = Vector3.zero;
-    protected Quaternion _defaultOrientation = Quaternion.identity;
 
     public bool selectedForLocking = false;
     public bool positionLocked = false;
@@ -44,7 +43,7 @@ public class WorldPositionController : ArElementViewController
                     if (!positionLocked)
                     {
                         transform.localPosition = this.TrackedObjects[0].position;
-                        transform.localRotation = this.TrackedObjects[0].rotation;
+                        //transform.localRotation = this.TrackedObjects[0].rotation;
                     }
                 }
                 else
@@ -56,15 +55,25 @@ public class WorldPositionController : ArElementViewController
             {
 
                 //transform.position = _defaultPosition;
-                transform.position = ((ModelArDefinition)this.arDefinition).position;
-                transform.localRotation = _defaultOrientation;
+                if(SessionManager.instance.CharucoTransform != null)
+                {
+                    transform.position = SessionManager.instance.CharucoTransform.position;
+                }else
+                {
+                    transform.position = ((ModelArDefinition)this.arDefinition).position;
+                }
             }
         }
         else
         {
             //transform.position = ((ModelArDefinition)this.arDefinition).position; removed for debugging purposes
-            transform.position = Vector3.zero;
-            transform.localRotation = _defaultOrientation;
+            if(SessionManager.instance.CharucoTransform != null)
+            {
+                transform.position = SessionManager.instance.CharucoTransform.position;
+            }else
+            {
+                transform.position = Vector3.zero;
+            }
         }
     }
 
@@ -92,7 +101,7 @@ public class WorldPositionController : ArElementViewController
             }
         }
         positionOnLock = transform.localPosition;
-        transform.localRotation = Quaternion.identity;
+        //transform.localRotation = Quaternion.identity;
     }
 
     // public void SetPosition(Vector3 pos)
