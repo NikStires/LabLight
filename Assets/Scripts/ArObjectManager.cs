@@ -59,8 +59,8 @@ public class ArObjectManager : MonoBehaviour
 
     private void InitializeArObjects()
     {
-        workspaceTransform = SessionManager.instance.CharucoTransform;
-        workspaceTransform.position = new Vector3(workspaceTransform.position.x, workspaceTransform.position.y + 0.04f, workspaceTransform.position.z);
+        workspaceTransform = SessionManager.instance.WorkspaceTransform;
+        //workspaceTransform.position = new Vector3(workspaceTransform.position.x, workspaceTransform.position.y + 0.04f, workspaceTransform.position.z);
         if(ProtocolState.procedureDef != null)
         {
             var currentProcedure = ProtocolState.procedureDef;

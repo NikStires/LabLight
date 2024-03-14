@@ -166,8 +166,8 @@ public class SessionManager : MonoBehaviour
         // Set the stage coordinate frame
         CharucoTransform.FromMatrix(pose);
 
-        Quaternion rotation = Quaternion.Euler(0f, 90f, 0f);
-        CharucoTransform.rotation *= rotation;
+        // Quaternion rotation = Quaternion.Euler(0f, 90f, 0f);
+        // CharucoTransform.rotation *= rotation;
         SessionState.onCalibrationUpdated.Invoke();
 
         // TODO: World lock the charuco transform
