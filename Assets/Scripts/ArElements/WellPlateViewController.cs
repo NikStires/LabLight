@@ -404,6 +404,10 @@ public class WellPlateViewController : ModelElementViewController
 
     void OnCheckItemChanged()
     {
+        if(ProtocolState.procedureDef.steps[ProtocolState.Step].checklist == null)
+        {
+            return;
+        }
         if (!disableComponents && ProtocolState.CheckItem == ProtocolState.Steps[ProtocolState.Step].Checklist.Count() - 1 && ProtocolState.Steps[ProtocolState.Step].Checklist[ProtocolState.CheckItem].IsChecked.Value) //if on last checked item disable all active components
         {
             //play audio for check item completed

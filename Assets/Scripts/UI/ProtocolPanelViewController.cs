@@ -23,6 +23,7 @@ public class ProtocolPanelViewController : MonoBehaviour
     [SerializeField] SoundController SoundItem;
 
     private List<MonoBehaviour> contentItemInstances = new List<MonoBehaviour>();
+    private List<ContentItem> currentContentItems = new List<ContentItem>();
 
     private void Awake()
     {
@@ -40,45 +41,47 @@ public class ProtocolPanelViewController : MonoBehaviour
 
     private void UpdateContentItems()
     {
-        //remove all content item views
-        foreach (Transform child in contentFrame)
+        var currentStep = ProtocolState.procedureDef.steps[ProtocolState.Step];
+
+        //Get new content items
+        var newContentItems = new List<ContentItem>();
+        if(currentStep.checklist != null && currentStep.checklist[ProtocolState.CheckItem].contentItems.Count > 0)
         {
-            var imageController = child.GetComponent<ImageController>();
-            if (imageController)
-            {
-                contentItemInstances.Remove(imageController);
-                Destroy(imageController.gameObject);
-                Destroy(child);
-                continue;
-            }
-            var textController = child.GetComponent<TextController>();
-            if (textController)
-            {
-                contentItemInstances.Remove(textController);
-                Destroy(textController.gameObject);
-                Destroy(child);
-            }
+            newContentItems.AddRange(currentStep.contentItems);
+            newContentItems.AddRange(currentStep.checklist[ProtocolState.CheckItem].contentItems);
+        }
+        else
+        {
+            newContentItems.AddRange(currentStep.contentItems);
         }
 
-        if (ProtocolState.procedureDef != null)
+        if(newContentItems.Count == 0)
         {
-            //create content items for this step
-            var currentStep = ProtocolState.procedureDef.steps[ProtocolState.Step];
-
-            //create content items for current check item, if no content items for check item show step content items
-            if (currentStep.checklist != null && currentStep.checklist[ProtocolState.CheckItem].contentItems.Count > 0)
+            //if there are no content items disable view
+            foreach(Transform child in transform)
             {
-                CreateContentItem(currentStep.contentItems, contentFrame.GetComponent<LayoutGroup>(), null);
-                CreateContentItem(currentStep.checklist[ProtocolState.CheckItem].contentItems, contentFrame.GetComponent<LayoutGroup>(), null);
+                child.gameObject.SetActive(false);
             }
-            else
+        }
+        else if(currentContentItems != null && currentContentItems == newContentItems)
+        {
+            //if content items are the same as the previous content items do nothing
+            currentContentItems = newContentItems;
+        }
+        else
+        {
+            //if we have new items then clear the old ones and create new ones
+            ClearContentItems();
+            CreateContentItems(newContentItems, contentFrame.GetComponent<LayoutGroup>(), null);  
+            currentContentItems = newContentItems; 
+            foreach(Transform child in transform)
             {
-                CreateContentItem(currentStep.contentItems, contentFrame.GetComponent<LayoutGroup>(), null);
+                child.gameObject.SetActive(true);
             }
         }
     }
 
-    private void CreateContentItem(List<ContentItem> contentItems, LayoutGroup container, ContainerElementViewController containerController, bool store = true)
+    private void CreateContentItems(List<ContentItem> contentItems, LayoutGroup container, ContainerElementViewController containerController, bool store = true)
     {
         foreach (var contentItem in contentItems)
         {
@@ -140,13 +143,13 @@ public class ProtocolPanelViewController : MonoBehaviour
                     {
                         contentItemInstances.Add(layoutController);
                     }
-                    CreateContentItem(layoutItem.contentItems, layoutController.LayoutGroup, containerController);
+                    CreateContentItems(layoutItem.contentItems, layoutController.LayoutGroup, containerController);
                     break;
             }
         }
     }
 
-    private void clearContentItems()
+    private void ClearContentItems()
     {
         foreach (var contentItem in contentItemInstances)
         {

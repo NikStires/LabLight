@@ -13,6 +13,8 @@ public class ChecklistPanelViewController : MonoBehaviour
     [SerializeField] GameObject unlockedIcon;
     [SerializeField] GameObject lockedIcon;
 
+    [SerializeField] GameObject noChecklistText;
+
     [SerializeField] XRSimpleInteractable closeProtocolButton;
 
     private List<ProtocolState.CheckItemState> prevChecklist;
@@ -39,9 +41,11 @@ public class ChecklistPanelViewController : MonoBehaviour
     /// </summary>
     public void CheckItem()
     {
-        if (!ProtocolState.Steps[ProtocolState.Step].SignedOff)
+        if (ProtocolState.Steps[ProtocolState.Step].Checklist != null && !ProtocolState.Steps[ProtocolState.Step].SignedOff)
         {
-
+            Debug.Log("Step: " + ProtocolState.Step);
+            Debug.Log("Num Steps: " + ProtocolState.Steps.Count);
+            Debug.Log("Has Checklist: " + ProtocolState.Steps[ProtocolState.Step].Checklist != null);
             var firstUncheckedItem = (from item in ProtocolState.Steps[ProtocolState.Step].Checklist
                                       where !item.IsChecked.Value
                                       select item).FirstOrDefault();
@@ -69,7 +73,7 @@ public class ChecklistPanelViewController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Already signed off");
+            Debug.LogWarning("Already signed off or no item to check");
         }
     }
 
@@ -78,7 +82,7 @@ public class ChecklistPanelViewController : MonoBehaviour
     /// </summary>
     public void UnCheckItem()
     {
-        if (!ProtocolState.Steps[ProtocolState.Step].SignedOff)
+        if (ProtocolState.Steps[ProtocolState.Step].Checklist != null && !ProtocolState.Steps[ProtocolState.Step].SignedOff)
         {
 
             var lastCheckedItem = (from item in ProtocolState.Steps[ProtocolState.Step].Checklist
@@ -98,7 +102,7 @@ public class ChecklistPanelViewController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Already signed off");
+            Debug.LogWarning("Already signed off or no item to uncheck");
         }
     }
 
@@ -107,7 +111,7 @@ public class ChecklistPanelViewController : MonoBehaviour
     /// </summary>
     public void SignOff()
     {
-        if (!ProtocolState.Steps[ProtocolState.Step].SignedOff)
+        if (ProtocolState.Steps[ProtocolState.Step].Checklist != null && !ProtocolState.Steps[ProtocolState.Step].SignedOff)
         {
 
             var uncheckedItemsCount = (from item in ProtocolState.Steps[ProtocolState.Step].Checklist
@@ -131,14 +135,14 @@ public class ChecklistPanelViewController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Already signed off");
+            Debug.LogWarning("Already signed off or no checklist for this step");
         }
     }
 
 
-/// <summary>
-/// Migrating step control to checklist panel...
-/// </summary>
+    /// <summary>
+    /// Migrating step control to checklist panel...
+    /// </summary>
     public void PreviousStep()
     {
         if (ProtocolState.LockingTriggered.Value)
@@ -190,9 +194,8 @@ public class ChecklistPanelViewController : MonoBehaviour
                 Debug.LogWarning("cannot navigate to next step: locking in progress");
                 return;
             }
-
-            ProtocolState.SetStep(ProtocolState.Step + 1);
         }
+        ProtocolState.SetStep(ProtocolState.Step + 1);
     }
 
     /// <summary>
@@ -206,10 +209,17 @@ public class ChecklistPanelViewController : MonoBehaviour
         {
             prevChecklist = null;
 
-            //TODO: Deactivate View here
+            foreach(var view in checkitemViews)
+            {
+                view.gameObject.SetActive(false);
+            }
+
+            noChecklistText.SetActive(true);
 
             return;
         }
+        
+        noChecklistText.SetActive(false);
 
         //Update views to display the 5 most relevant items
 

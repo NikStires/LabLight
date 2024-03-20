@@ -243,6 +243,10 @@ public class SourceElementViewController : ModelElementViewController
 
     void OnCheckItemChanged()
     {
+        if(ProtocolState.procedureDef.steps[ProtocolState.Step].checklist == null)
+        {
+            return;
+        }
         if (!disableComponents && ProtocolState.CheckItem == ProtocolState.procedureDef.steps[ProtocolState.Step].checklist.Count()) //if on last checked item disable all active components
         {
             //play audio for last event completed
