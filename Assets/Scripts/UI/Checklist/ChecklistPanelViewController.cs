@@ -6,6 +6,7 @@ using UnityEngine;
 using UniRx;
 using System.Linq;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.SceneManagement;
 
 public class ChecklistPanelViewController : MonoBehaviour
 {
@@ -24,7 +25,7 @@ public class ChecklistPanelViewController : MonoBehaviour
         closeProtocolButton.onSelectEntered.AddListener((XRBaseInteractor interactor) =>
         {
             SessionState.Instance.activeProtocol = null;
-            SceneLoader.Instance.LoadNewScene("ProtocolMenu");
+            SceneLoader.Instance.LoadSceneClean("ProtocolMenu");
         });
     }
 

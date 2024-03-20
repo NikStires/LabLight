@@ -27,7 +27,7 @@ public class ProtocolMenuButton : MonoBehaviour
             {
                 Debug.Log(protocol.title + " loaded");
                 SessionState.Instance.activeProtocol = protocol;
-                SceneLoader.Instance.LoadNewScene("Protocol");
+                SceneLoader.Instance.LoadSceneClean("Protocol");
             }, (e) =>
             {
                 Debug.Log("Error fetching procedure");

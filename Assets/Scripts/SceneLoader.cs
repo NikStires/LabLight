@@ -96,6 +96,21 @@ public class SceneLoader : MonoBehaviour
         }
     }
 
+    public void LoadSceneClean(string sceneName)
+    {
+        //unload all scenes but persistent
+        foreach(var scene in SceneManager.GetAllScenes())
+        {
+            if(scene.name != "Persistent")
+            {
+                SceneManager.UnloadSceneAsync(scene);
+            }
+        }
+
+        //load new scene
+        StartCoroutine(LoadNew(sceneName));
+    }
+
     private IEnumerator LoadScene(string sceneName)
     {
         isLoading = true;
