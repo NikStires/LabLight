@@ -43,9 +43,6 @@ public class ChecklistPanelViewController : MonoBehaviour
     {
         if (ProtocolState.Steps[ProtocolState.Step].Checklist != null && !ProtocolState.Steps[ProtocolState.Step].SignedOff)
         {
-            Debug.Log("Step: " + ProtocolState.Step);
-            Debug.Log("Num Steps: " + ProtocolState.Steps.Count);
-            Debug.Log("Has Checklist: " + ProtocolState.Steps[ProtocolState.Step].Checklist != null);
             var firstUncheckedItem = (from item in ProtocolState.Steps[ProtocolState.Step].Checklist
                                       where !item.IsChecked.Value
                                       select item).FirstOrDefault();
