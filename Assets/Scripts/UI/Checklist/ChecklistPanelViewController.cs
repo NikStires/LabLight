@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using System.Linq;
-using UnityEngine.XR.Interaction.Toolkit;
+
 using UnityEngine.SceneManagement;
 
 public class ChecklistPanelViewController : MonoBehaviour
@@ -15,7 +15,7 @@ public class ChecklistPanelViewController : MonoBehaviour
 
     [SerializeField] GameObject noChecklistText;
 
-    [SerializeField] XRSimpleInteractable closeProtocolButton;
+    [SerializeField] UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable closeProtocolButton;
 
     private List<ProtocolState.CheckItemState> prevChecklist;
     public List<CheckitemView> checkitemViews;
@@ -24,7 +24,7 @@ public class ChecklistPanelViewController : MonoBehaviour
     {
         ProtocolState.checklistStream.Subscribe(_ => UpdateVisualState()).AddTo(this);
 
-        closeProtocolButton.onSelectEntered.AddListener((XRBaseInteractor interactor) =>
+        closeProtocolButton.selectEntered.AddListener(_ =>
         {
             SessionState.Instance.activeProtocol = null;
             SceneLoader.Instance.LoadSceneClean("ProtocolMenu");

@@ -1,10 +1,10 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-#if UNITY_INCLUDE_XR_HANDS
+// Requires hands package and VisionOSHandExtensions which is only compiled for visionOS and Editor
+#if UNITY_INCLUDE_XR_HANDS && (UNITY_VISIONOS || UNITY_EDITOR)
+using System.Collections.Generic;
 using UnityEngine.XR.Hands;
+using UnityEngine.XR.VisionOS;
 #endif
 
 namespace PolySpatial.Samples
@@ -14,12 +14,12 @@ namespace PolySpatial.Samples
         [SerializeField]
         GameObject m_JointPrefab;
 
-#if UNITY_INCLUDE_XR_HANDS
+#if UNITY_INCLUDE_XR_HANDS && (UNITY_VISIONOS || UNITY_EDITOR)
         XRHandSubsystem m_Subsystem;
         HandGameObjects m_LeftHandGameObjects;
         HandGameObjects m_RightHandGameObjects;
 
-        static readonly List<XRHandSubsystem> s_SubsystemsReuse = new List<XRHandSubsystem>();
+        static readonly List<XRHandSubsystem> k_SubsystemsReuse = new();
 
         protected void OnEnable()
         {
@@ -33,15 +33,18 @@ namespace PolySpatial.Samples
         protected void OnDisable()
         {
             if (m_Subsystem != null)
-            {
-                m_Subsystem.trackingAcquired -= OnTrackingAcquired;
-                m_Subsystem.trackingLost -= OnTrackingLost;
-                m_Subsystem.updatedHands -= OnUpdatedHands;
-                m_Subsystem = null;
-            }
+                UnsubscribeSubsystem();
 
             UpdateRenderingVisibility(m_LeftHandGameObjects, false);
             UpdateRenderingVisibility(m_RightHandGameObjects, false);
+        }
+
+        void UnsubscribeSubsystem()
+        {
+            m_Subsystem.trackingAcquired -= OnTrackingAcquired;
+            m_Subsystem.trackingLost -= OnTrackingLost;
+            m_Subsystem.updatedHands -= OnUpdatedHands;
+            m_Subsystem = null;
         }
 
         protected void OnDestroy()
@@ -61,24 +64,30 @@ namespace PolySpatial.Samples
 
         protected void Update()
         {
-            if (m_Subsystem != null && m_Subsystem.running)
-                return;
-
-            SubsystemManager.GetSubsystems(s_SubsystemsReuse);
-            var foundRunningHandSubsystem = false;
-            for (var i = 0; i < s_SubsystemsReuse.Count; ++i)
+            if (m_Subsystem != null)
             {
-                var handSubsystem = s_SubsystemsReuse[i];
+                if (m_Subsystem.running)
+                    return;
+
+                UnsubscribeSubsystem();
+                UpdateRenderingVisibility(m_LeftHandGameObjects, false);
+                UpdateRenderingVisibility(m_RightHandGameObjects, false);
+                return;
+            }
+
+            SubsystemManager.GetSubsystems(k_SubsystemsReuse);
+            for (var i = 0; i < k_SubsystemsReuse.Count; ++i)
+            {
+                var handSubsystem = k_SubsystemsReuse[i];
                 if (handSubsystem.running)
                 {
                     UnsubscribeHandSubsystem();
                     m_Subsystem = handSubsystem;
-                    foundRunningHandSubsystem = true;
                     break;
                 }
             }
 
-            if (!foundRunningHandSubsystem)
+            if (m_Subsystem == null)
                 return;
 
             if (m_LeftHandGameObjects == null)
@@ -179,9 +188,10 @@ namespace PolySpatial.Samples
         class HandGameObjects
         {
             GameObject m_DrawJointsParent;
+            const int k_NumVisionOSJoints = 2;
 
-            readonly GameObject[] m_DrawJoints = new GameObject[XRHandJointID.EndMarker.ToIndex()];
-            readonly LineRenderer[] m_Lines = new LineRenderer[XRHandJointID.EndMarker.ToIndex()];
+            readonly GameObject[] m_DrawJoints = new GameObject[XRHandJointID.EndMarker.ToIndex() + k_NumVisionOSJoints];
+            readonly LineRenderer[] m_Lines = new LineRenderer[XRHandJointID.EndMarker.ToIndex() + k_NumVisionOSJoints];
 
             static Vector3[] s_LinePointsReuse = new Vector3[2];
             const float k_LineWidth = 0.005f;
@@ -192,14 +202,14 @@ namespace PolySpatial.Samples
                 GameObject debugDrawPrefab)
             {
                 void AssignJoint(
-                    XRHandJointID jointId,
+                    XRHandJointID jointID,
                     Transform drawJointsParent)
                 {
-                    var jointIndex = jointId.ToIndex();
+                    var jointIndex = jointID.ToIndex();
                     var joint = Instantiate(debugDrawPrefab);
                     var jointTransform = joint.transform;
                     jointTransform.parent = drawJointsParent;
-                    joint.name = jointId.ToString();
+                    joint.name = jointID < XRHandJointID.EndMarker ? jointID.ToString() : ((VisionOSHandJointID)jointID).ToString();
                     m_DrawJoints[jointIndex] = joint;
 
                     m_Lines[jointIndex] = m_DrawJoints[jointIndex].GetComponent<LineRenderer>();
@@ -231,6 +241,9 @@ namespace PolySpatial.Samples
                         AssignJoint(XRHandJointIDUtility.FromIndex(jointIndex), parentTransform);
                     }
                 }
+
+                AssignJoint((XRHandJointID)VisionOSHandJointID.ForearmWrist, parentTransform);
+                AssignJoint((XRHandJointID)VisionOSHandJointID.ForearmArm, parentTransform);
             }
 
             public void OnDestroy()
@@ -284,6 +297,10 @@ namespace PolySpatial.Samples
                         UpdateJoint(hand.GetJoint(XRHandJointIDUtility.FromIndex(jointIndex)), ref parentPose, ref parentIndex);
                     }
                 }
+
+                parentIndex = XRHandJointID.Wrist.ToIndex();
+                UpdateJoint(hand.GetVisionOSJoint(VisionOSHandJointID.ForearmWrist), ref wristPose, ref parentIndex);
+                UpdateJoint(hand.GetVisionOSJoint(VisionOSHandJointID.ForearmArm), ref wristPose, ref parentIndex);
             }
 
             void UpdateJoint(
