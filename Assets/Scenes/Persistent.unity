@@ -2407,6 +2407,7 @@ GameObject:
   - component: {fileID: 2115460897}
   - component: {fileID: 2115460899}
   - component: {fileID: 2115460898}
+  - component: {fileID: 2115460900}
   m_Layer: 0
   m_Name: XR Origin
   m_TagString: Untagged
@@ -2492,6 +2493,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AnchorPrefab: {fileID: 3125165527598978782, guid: 78be84f5d3a3c41f9ab0093b3f712a4e, type: 3}
+--- !u!114 &2115460900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2115460893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a118ca633d547598e7be279daba0862, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Button: {fileID: 2141983053}
+  m_ObjectsToSpawn: []
+  m_SpawnPosition: {fileID: 1254687816}
 --- !u!1 &2121586913
 GameObject:
   m_ObjectHideFlags: 0
@@ -2768,6 +2784,17 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &2141983053 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7182426023415192798, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
+  m_PrefabInstance: {fileID: 8537630422445180475}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &126066215434072072
 Transform:
   m_ObjectHideFlags: 0

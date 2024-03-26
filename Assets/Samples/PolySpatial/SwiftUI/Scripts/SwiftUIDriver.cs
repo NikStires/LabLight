@@ -4,6 +4,7 @@ using AOT;
 using PolySpatial.Samples;
 using UnityEngine;
 
+
 namespace Samples.PolySpatial.SwiftUI.Scripts
 {
     // This is a driver MonoBehaviour that connects to SwiftUISamplePlugin.swift via
@@ -11,7 +12,7 @@ namespace Samples.PolySpatial.SwiftUI.Scripts
     public class SwiftUIDriver : MonoBehaviour
     {
         [SerializeField]
-        SpatialUIButton m_Button;
+        UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable m_Button;
 
         [SerializeField]
         List<GameObject> m_ObjectsToSpawn;
@@ -23,26 +24,26 @@ namespace Samples.PolySpatial.SwiftUI.Scripts
 
         void OnEnable()
         {
-            m_Button.WasPressed += WasPressed;
+            m_Button.selectEntered.AddListener(_ => WasPressed());
             SetNativeCallback(CallbackFromNative);
         }
 
         void OnDisable()
         {
             SetNativeCallback(null);
-            CloseSwiftUIWindow("HelloWorld");
+            CloseSwiftUIWindow("PDF");
         }
 
-        void WasPressed(string buttonText, MeshRenderer meshrenderer)
+        void WasPressed()
         {
             if (m_SwiftUIWindowOpen)
             {
-                CloseSwiftUIWindow("HelloWorld");
+                CloseSwiftUIWindow("PDF");
                 m_SwiftUIWindowOpen = false;
             }
             else
             {
-                OpenSwiftUIWindow("HelloWorld");
+                OpenSwiftUIWindow("PDF");
                 m_SwiftUIWindowOpen = true;
             }
         }

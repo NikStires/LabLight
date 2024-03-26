@@ -8,17 +8,17 @@ import SwiftUI
 struct SwiftUISampleInjectedScene {
     @SceneBuilder
     static var scene: some Scene {
-        WindowGroup(id: "HelloWorld") {
+        WindowGroup(id: "PDF") {
             // The sample defines a custom view, but you can also put your entire window's
             // structure here as you can with SwiftUI.
-            HelloWorldContentView()
+            PDFContentView()
         }.defaultSize(width: 400.0, height: 400.0)
 
         // You can create multiple WindowGroups here for different wnidows;
         // they need a distinct id. If you include multiple items,
         // the scene property must be decorated with "@SceneBuilder" as above.
         WindowGroup(id: "SimpleText") {
-            Text("Hello World")
+            Text("PDF Window")
         }
     }
 }
