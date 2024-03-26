@@ -5,11 +5,11 @@
 import Foundation
 import SwiftUI
 
-struct SwiftUISampleInjectedScene {
+struct SwiftUIInjectedScene {
     @SceneBuilder
     static var scene: some Scene {
         WindowGroup(id: "PDF") {
-            // The sample defines a custom view, but you can also put your entire window's
+            // Defines a custom view, but you can also put your entire window's
             // structure here as you can with SwiftUI.
             PDFContentView()
         }.defaultSize(width: 400.0, height: 400.0)

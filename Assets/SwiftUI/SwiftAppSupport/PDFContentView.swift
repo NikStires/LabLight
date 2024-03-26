@@ -1,5 +1,5 @@
 //
-// This custom View is referenced by SwiftUISampleInjectedScene
+// This custom View is referenced by SwiftUIInjectedScene
 // to provide the body of a WindowGroup. It's part of the Unity-VisionOS
 // target because it lives inside a "SwiftAppSupport" directory (and Unity
 // will move it to that target).

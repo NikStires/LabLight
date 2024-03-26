@@ -1,6 +1,6 @@
 //
-// This is a sample Swift plugin that provides an interface for
-// the SwiftUI sample to interact with. It must be linked into
+// This is a Swift plugin that provides an interface for
+// SwiftUI to interact with. It must be linked into
 // UnityFramework, which is what the default Swift file plugin
 // importer will place it into.
 //
@@ -16,16 +16,16 @@
 // but we don't have a view at this point, and it's expected that these
 // actions will be global (and not view-specific) anyway.
 //
-// There are two additional files that complete this example:
-// SwiftUISampleInjectedScene.swift and HelloWorldConventView.swift.
+// There are two additional files that complete this operation:
+// SwiftUIInjectedScene.swift and PDFConventView.swift.
 //
 // Any file named "...InjectedScene.swift" will be moved to the Unity-VisionOS
 // Xcode target (as it must be there in order to be referenced by the App), and
 // its static ".scene" member will be added to the App's main Scene. See
-// the comments in SwiftUISampleInjectedScene.swift for more information.
+// the comments in SwiftUIInjectedScene.swift for more information.
 //
 // Any file that's inside of a "SwiftAppSupport" directory anywhere in its path
-// will also be moved to the Unity-VisionOS Xcode target. HelloWorldContentView.swift
+// will also be moved to the Unity-VisionOS Xcode target. PDFContentView.swift
 // is inside SwiftAppSupport beceause it's needed by the WindowGroup this sample
 // adds to provide its content.
 //
