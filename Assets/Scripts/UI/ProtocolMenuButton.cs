@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit;
+
 using UnityEngine.SceneManagement;
 using TMPro;
 using UniRx;
@@ -9,7 +9,7 @@ using UniRx;
 /// <summary>
 /// Represents a button in the protocol menu.
 /// </summary>
-[RequireComponent(typeof(XRSimpleInteractable))]
+[RequireComponent(typeof(UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable))]
 public class ProtocolMenuButton : MonoBehaviour
 {
     /// <summary>
@@ -22,12 +22,12 @@ public class ProtocolMenuButton : MonoBehaviour
         title.text = protocol.title;
         description.text = protocol.description;
 
-        GetComponent<XRSimpleInteractable>().onSelectEntered.AddListener((XRBaseInteractor interactor) => {
+        GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable>().selectEntered.AddListener(_ => {
             ServiceRegistry.GetService<IProcedureDataProvider>().GetOrCreateProcedureDefinition(protocol.title).First().Subscribe(protocol =>
             {
                 Debug.Log(protocol.title + " loaded");
                 SessionState.Instance.activeProtocol = protocol;
-                SceneLoader.Instance.LoadNewScene("Protocol");
+                SceneLoader.Instance.LoadSceneClean("Protocol");
             }, (e) =>
             {
                 Debug.Log("Error fetching procedure");

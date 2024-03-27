@@ -12,7 +12,8 @@ namespace PolySpatial.Samples
             ObjectManipulation,
             SpatialUI,
             InputDebug,
-            MixedReality
+            MixedReality,
+            SwiftUI
         }
 
         const string CharacterNavigationTitle = "Character Navigation";
@@ -22,6 +23,7 @@ namespace PolySpatial.Samples
         const string SpatialUITitle = "Spatial UI";
         const string InputDebugTitle = "Input Debug";
         const string MixedRealityTitle = "Mixed Reality";
+        const string SwiftUITitle = "Swift UI";
 
         const string CharacterNavigationDescription = "Scene demonstrating a character navigating around with a dynamic camera in a bounded volume.";
 
@@ -33,6 +35,7 @@ namespace PolySpatial.Samples
         const string SpatialUIDescription = "Scene demonstrating interactions with common spatial UI elements within a bounded volume.";
         const string InputDebugDescription = "Scene displaying input data generated from direct and indirect touches within a bounded volume.";
         const string MixedRealityDescription = "Scene demonstrating an unbounded app that displays AR Plane data and uses a custom ARKit hand gesture.";
+        const string SwiftUIDescription = "Scene demonstrating interop with SwiftUI.";
 
         public string GetLevelTitle(LevelTypes levelType)
         {
@@ -52,6 +55,8 @@ namespace PolySpatial.Samples
                     return InputDebugTitle;
                 case LevelTypes.MixedReality:
                     return MixedRealityTitle;
+                case LevelTypes.SwiftUI:
+                    return SwiftUITitle;
                 default:
                     return "";
             }
@@ -75,6 +80,8 @@ namespace PolySpatial.Samples
                     return InputDebugDescription;
                 case LevelTypes.MixedReality:
                     return MixedRealityDescription;
+                case LevelTypes.SwiftUI:
+                    return SwiftUIDescription;
                 default:
                     return "";
             }

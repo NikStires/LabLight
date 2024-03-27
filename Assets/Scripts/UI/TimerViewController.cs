@@ -48,11 +48,6 @@ public class TimerViewController : MonoBehaviour
             TimeLeft -= Time.deltaTime;
             TimeDisplay.text = GetTimeString();
         }
-        //if timer is about to finish play sound effect (takes a second to start playing)
-        if(TimeLeft < 1 & timerRunning)
-        {
-            audioPlayer.Play();
-        }
         if(TimeLeft < 0 & timerRunning)
         {
             StopTimer();
@@ -183,6 +178,10 @@ public class TimerViewController : MonoBehaviour
 
     private void OnCheckItemChange()
     {
+        if(timerRunning)
+        {
+            return;
+        }
         if(ProtocolState.Steps[ProtocolState.Step].Checklist != null)
         {
             var currentCheckItem = ProtocolState.procedureDef.steps[ProtocolState.Step].checklist[ProtocolState.CheckItem];
@@ -200,6 +199,7 @@ public class TimerViewController : MonoBehaviour
         while(TimeLeft < 0 & !timerRunning)
         {
             backplateMesh.material = timerFlashMaterial;
+            audioPlayer.Play();
             yield return new WaitForSeconds(0.5f);
             backplateMesh.material = defaultMaterial;
             yield return new WaitForSeconds(0.5f);

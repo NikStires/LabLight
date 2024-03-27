@@ -104,6 +104,7 @@ public class ProtocolState : MonoBehaviour
             else if (Steps[Step].Checklist == null)
             {
                 CheckItem = 0;
+                checklistStream.OnNext(0);
             }
             ServiceRegistry.GetService<ILighthouseControl>()?.SetProtocolStatus();
         }
