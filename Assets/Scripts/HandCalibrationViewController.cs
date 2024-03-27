@@ -45,6 +45,8 @@ public class HandCalibrationViewController : MonoBehaviour
         PlaneClassification.None
     }; 
 
+    public Material planeMaterial;
+
     public Dictionary<XRHandJointID, Pose> calibrationJointsPoseDict = new Dictionary<XRHandJointID, Pose>();
 
     List<ARPlane> calibrationPlanes = new List<ARPlane>();
@@ -145,11 +147,13 @@ public class HandCalibrationViewController : MonoBehaviour
                                         {
                                             planeSelected = hitPlane;
                                             //planeSelected.transform.Find("Cube").gameObject.SetActive(true);
-                                            planeSelected.GetComponent<ARPlaneMeshVisualizer>().enabled = true;
+                                            //planeSelected.GetComponent<ARPlaneMeshVisualizer>().enabled = true;
+                                            planeSelected.GetComponent<MeshRenderer>().SetMaterials(new List<Material> {planeMaterial});
                                         }else if(planeSelected != hitPlane)
                                         {
-                                        //     planeSelected.transform.Find("Cube").gameObject.SetActive(false);
-                                            planeSelected.GetComponent<ARPlaneMeshVisualizer>().enabled = false;
+                                            //planeSelected.transform.Find("Cube").gameObject.SetActive(false);
+                                            planeSelected.GetComponent<MeshRenderer>().SetMaterials(null);
+                                            //planeSelected.GetComponent<ARPlaneMeshVisualizer>().enabled = false;
                                             planeSelected = hitPlane;
                                         }
                                     }
@@ -159,7 +163,8 @@ public class HandCalibrationViewController : MonoBehaviour
                                 if(planeSelected != null && !inCalibration)
                                 {
                                     //planeSelected.transform.Find("Cube").gameObject.SetActive(false);
-                                    planeSelected.GetComponent<ARPlaneMeshVisualizer>().enabled = false;
+                                    //planeSelected.GetComponent<ARPlaneMeshVisualizer>().enabled = false;
+                                    planeSelected.GetComponent<MeshRenderer>().SetMaterials(null);
                                     planeSelected = null;
                                 }
                             }
