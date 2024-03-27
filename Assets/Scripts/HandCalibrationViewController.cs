@@ -113,10 +113,6 @@ public class HandCalibrationViewController : MonoBehaviour
         //start calibration
         calibrationManager.UpdateCalibrationStatus("Looking for planes");
         calibrationPlanes = ARPlaneViewController.instance.GetPlanesByClassification(calibrationPlanesClassification);
-        // foreach(var plane in calibrationPlanes)
-        // {
-        //     plane.GetComponent<ARPlaneMeshVisualizer>().enabled = true;
-        // }
         //if calibration completed successfully, send calibration data to lighthouse and exit calibration mode
         //store started lighthouse origin and current plane in session manager
     }
@@ -146,14 +142,10 @@ public class HandCalibrationViewController : MonoBehaviour
                                         if(planeSelected == null)
                                         {
                                             planeSelected = hitPlane;
-                                            //planeSelected.transform.Find("Cube").gameObject.SetActive(true);
-                                            //planeSelected.GetComponent<ARPlaneMeshVisualizer>().enabled = true;
                                             planeSelected.GetComponent<MeshRenderer>().SetMaterials(new List<Material> {planeMaterial});
                                         }else if(planeSelected != hitPlane)
                                         {
-                                            //planeSelected.transform.Find("Cube").gameObject.SetActive(false);
                                             planeSelected.GetComponent<MeshRenderer>().SetMaterials(null);
-                                            //planeSelected.GetComponent<ARPlaneMeshVisualizer>().enabled = false;
                                             planeSelected = hitPlane;
                                         }
                                     }
@@ -162,8 +154,6 @@ public class HandCalibrationViewController : MonoBehaviour
                             {
                                 if(planeSelected != null && !inCalibration)
                                 {
-                                    //planeSelected.transform.Find("Cube").gameObject.SetActive(false);
-                                    //planeSelected.GetComponent<ARPlaneMeshVisualizer>().enabled = false;
                                     planeSelected.GetComponent<MeshRenderer>().SetMaterials(null);
                                     planeSelected = null;
                                 }
@@ -269,8 +259,6 @@ public class HandCalibrationViewController : MonoBehaviour
         inCalibration = false;
         calibrationManager.UpdateCalibrationStatus("Calibration complete");
         calibrationManager.CalibrationStarted(false);
-        //planeSelected.transform.Find("Cube").gameObject.SetActive(false);
-        //planeSelected.gameObject.SetActive(false);
         //ARAnchor anchor = anchorManager.AttachAnchor(planeSelected, calibrationPose);
         var originInstance = Instantiate(originPrefab, SessionManager.instance.CharucoTransform.position, SessionManager.instance.CharucoTransform.rotation);
 
@@ -280,8 +268,7 @@ public class HandCalibrationViewController : MonoBehaviour
         {
             m_HandSubsystem.updatedHands -= OnUpdatedHands;
         }
-
-        planeSelected.GetComponent<ARPlaneMeshVisualizer>().enabled = false;
+        planeSelected.GetComponent<MeshRenderer>().SetMaterials(null);
         planeSelected = null;
  
         StartCoroutine(UnloadCalibration());
