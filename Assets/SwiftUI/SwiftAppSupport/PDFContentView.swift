@@ -11,9 +11,14 @@ import UnityFramework
 import PDFKit
 
 struct PDFContentView: View {
-    let pdfURL = URL(string: "https://giraffeconservation.org/wp-content/uploads/2016/02/GCF-Giraffe-booklet-2017-LR-spreads-c-GCF.compressed.pdf")!
+    let pdfUrlString: String
+    
+    init(_ pdfUrlString: String) {
+        self.pdfUrlString = pdfUrlString
+    }
+    
     var body: some View {
-        PDFKitView(url: pdfURL)
+        PDFKitView(url: URL(string: pdfUrlString)!)
         .onAppear {
             // Call the public function that was defined in SwiftUISamplePlugin
             // inside UnityFramework
@@ -39,6 +44,5 @@ struct PDFKitView: UIViewRepresentable {
 }
 
 #Preview(windowStyle: .automatic) {
-    PDFContentView()
+    PDFContentView("")
 }
-
