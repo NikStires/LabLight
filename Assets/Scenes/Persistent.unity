@@ -743,6 +743,7 @@ GameObject:
   - component: {fileID: 248604193}
   - component: {fileID: 248604197}
   - component: {fileID: 248604196}
+  - component: {fileID: 248604199}
   m_Layer: 0
   m_Name: AR Session
   m_TagString: Untagged
@@ -826,6 +827,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anchorManager: {fileID: 0}
   planeManager: {fileID: 0}
+  planeViewManager: {fileID: 0}
   loadProcedure: 0
   TrackedObjectsDebug: []
 --- !u!114 &248604198
@@ -840,6 +842,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23dd9f2672b2e6644a83e39dffaf0268, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &248604199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248604192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4cda5e0a8dbb426f9dd5f19a8df7c58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  planes: []
 --- !u!1 &540428249
 GameObject:
   m_ObjectHideFlags: 0

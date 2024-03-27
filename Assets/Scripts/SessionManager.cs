@@ -14,6 +14,8 @@ public class SessionManager : MonoBehaviour
 
     public ARPlaneManager planeManager;
 
+    public ARPlaneViewController planeViewManager;
+
     //audio manager
 
     public bool loadProcedure = true;
@@ -68,7 +70,9 @@ public class SessionManager : MonoBehaviour
         }
 
         anchorManager = this.transform.parent.GetComponent<ARAnchorManager>();
-        planeManager = this.transform.parent.GetComponent<ARPlaneManager>();
+        //planeManager = this.transform.parent.GetComponent<ARPlaneManager>();
+
+        //planeViewManager = this.transform.GetComponent<ARPlaneViewController>();
 
         //anchorManager.enabled = false;
         //planeManager.requestedDetectionMode = UnityEngine.XR.ARSubsystems.PlaneDetectionMode.None;
