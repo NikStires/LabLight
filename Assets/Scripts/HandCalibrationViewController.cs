@@ -96,7 +96,7 @@ public class HandCalibrationViewController : MonoBehaviour
 
     private IEnumerator UnloadCalibration()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(.5f);
         SceneLoader.Instance.UnloadScene("Calibration");
     }
 
@@ -250,6 +250,7 @@ public class HandCalibrationViewController : MonoBehaviour
         );
         SessionManager.instance.UpdateCalibration(calibrationMatrix);
         matrixCoroutine = null;
+        DeactivateFingerPoints(fingerPoints);
         CompleteCalibration();
         yield return null;
     }
@@ -268,9 +269,10 @@ public class HandCalibrationViewController : MonoBehaviour
         {
             m_HandSubsystem.updatedHands -= OnUpdatedHands;
         }
+
+        calibrationPlanes = null;
         planeSelected.GetComponent<MeshRenderer>().SetMaterials(null);
         planeSelected = null;
- 
         StartCoroutine(UnloadCalibration());
     }
 
