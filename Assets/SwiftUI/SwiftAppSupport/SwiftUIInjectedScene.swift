@@ -8,15 +8,14 @@ import SwiftUI
 struct SwiftUIInjectedScene {
     @SceneBuilder
     static var scene: some Scene {
-        WindowGroup(id: "PDF") {
-            // Defines a custom view, but you can also put your entire window's
-            // structure here as you can with SwiftUI.
-            PDFContentView()
-        }.defaultSize(width: 400.0, height: 400.0)
-
         // You can create multiple WindowGroups here for different wnidows;
         // they need a distinct id. If you include multiple items,
         // the scene property must be decorated with "@SceneBuilder" as above.
+        WindowGroup(id: "PDF", for: String.self) { $pdfUrl in
+            PDFContentView(pdfUrl!)
+        }
+        .defaultSize(width: 500.0, height: 800.0)
+        
         WindowGroup(id: "SimpleText") {
             Text("PDF Window")
         }

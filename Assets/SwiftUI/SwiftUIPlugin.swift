@@ -32,6 +32,7 @@
 
 import Foundation
 import SwiftUI
+import PDFKit
 
 // These methods are exported from Swift with an explicit C-style name using @_cdecl,
 // to match what DllImport expects. You will need to do appropriate conversion from
@@ -90,3 +91,13 @@ func closeSwiftUIWindow(_ cname: UnsafePointer<CChar>)
     dismissWindow(id: name)
 }
 
+// Declared in C# as: static extern void OpenSwiftPdfWindow(string urlString);
+@_cdecl("OpenSwiftPdfWindow")
+func openSwiftPdfWindow(_ cname: UnsafePointer<CChar>)
+{
+    let pdfString = String(cString: cname)
+    print("############ OPEN PDF \(pdfString)")
+
+    let openWindow = EnvironmentValues().openWindow
+    openWindow(id: "PDF", value: pdfString)
+}
