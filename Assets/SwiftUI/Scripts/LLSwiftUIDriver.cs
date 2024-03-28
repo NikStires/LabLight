@@ -35,7 +35,8 @@ public class LLSwiftUIDriver : MonoBehaviour
         }
         else
         {
-            OpenSwiftPdfWindow("https://giraffeconservation.org/wp-content/uploads/2016/02/GCF-Giraffe-booklet-2017-LR-spreads-c-GCF.compressed.pdf");
+            //OpenSwiftPdfWindow("https://giraffeconservation.org/wp-content/uploads/2016/02/GCF-Giraffe-booklet-2017-LR-spreads-c-GCF.compressed.pdf");
+            OpenSwiftPdfWindow("giraffe");
             m_SwiftUIWindowOpen = true;
         }
     }
