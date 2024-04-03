@@ -14,32 +14,6 @@ public class LLSwiftUIDriver : MonoBehaviour
 
     bool m_SwiftUIWindowOpen = false;
 
-    void OnEnable()
-    {
-        m_Button.selectEntered.AddListener(_ => TogglePDFWindow());
-        SetNativeCallback(CallbackFromNative);
-    }
-
-    void OnDisable()
-    {
-        SetNativeCallback(null);
-        CloseSwiftUIWindow("PDF");
-    }
-
-    void TogglePDFWindow()
-    {
-        if (m_SwiftUIWindowOpen)
-        {
-            CloseSwiftUIWindow("PDF");
-            m_SwiftUIWindowOpen = false;
-        }
-        else
-        {
-            OpenSwiftPdfWindow("https://giraffeconservation.org/wp-content/uploads/2016/02/GCF-Giraffe-booklet-2017-LR-spreads-c-GCF.compressed.pdf");
-            m_SwiftUIWindowOpen = true;
-        }
-    }
-
     delegate void CallbackDelegate(string command);
 
     // This attribute is required for methods that are going to be called from native code
@@ -63,14 +37,10 @@ public class LLSwiftUIDriver : MonoBehaviour
 
     [DllImport("__Internal")]
     static extern void CloseSwiftUIWindow(string name);
-
-    [DllImport("__Internal")]
-    static extern void OpenSwiftPdfWindow(string pdfUrlString);
     #else
     static void SetNativeCallback(CallbackDelegate callback) {}
     static void OpenSwiftUIWindow(string name) {}
     static void CloseSwiftUIWindow(string name) {}
-    static void OpenSwiftPdfWindow(string pdfUrlString) {}
     #endif
 
 }

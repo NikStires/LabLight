@@ -16,9 +16,19 @@ struct PDFContentView: View {
     init(_ pdfUrlString: String) {
         self.pdfUrlString = pdfUrlString
     }
+
+    var pdfURL: URL {
+        if pdfUrlString.hasPrefix("http") {
+            return URL(string: pdfUrlString)!
+        } else {
+            return Bundle.main.url(forResource: pdfUrlString, withExtension: "pdf")!
+        }
+    }
     
     var body: some View {
-        PDFKitView(url: URL(string: pdfUrlString)!)
+
+        
+        PDFKitView(url: pdfURL)
         .onAppear {
             // Call the public function that was defined in SwiftUISamplePlugin
             // inside UnityFramework
