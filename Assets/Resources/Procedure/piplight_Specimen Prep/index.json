@@ -2,6 +2,7 @@
   "$id": "1",
   "version": 9,
   "title": "Flourometric Quantification of Double-Stranded DNA",
+  "pdfPath": "Procedure/Novel COVID-19 real-time RT-PCR/COVID-RT-PCR.pdf",
   "globalArElements": [
     {
       "$id": "2",
@@ -375,9 +376,7 @@
                   "$id": "46",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "0"
-                  ],
+                  "chainIDs": ["0"],
                   "colorInfo": {
                     "$id": "47",
                     "Item1": "#FF66B2",
@@ -407,16 +406,7 @@
                   "$id": "51",
                   "actionName": "pipette",
                   "isSource": false,
-                  "chainIDs": [
-                    "A1",
-                    "B1",
-                    "C1",
-                    "D1",
-                    "E1",
-                    "F1",
-                    "G1",
-                    "H1"
-                  ],
+                  "chainIDs": ["A1", "B1", "C1", "D1", "E1", "F1", "G1", "H1"],
                   "colorInfo": {
                     "$id": "52",
                     "Item1": "#FF8000",
@@ -457,9 +447,7 @@
                   "$id": "57",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "0"
-                  ],
+                  "chainIDs": ["0"],
                   "colorInfo": {
                     "$id": "58",
                     "Item1": "#FF66B2",
@@ -489,16 +477,7 @@
                   "$id": "62",
                   "actionName": "pipette",
                   "isSource": false,
-                  "chainIDs": [
-                    "A2",
-                    "B2",
-                    "C2",
-                    "D2",
-                    "E2",
-                    "F2",
-                    "G2",
-                    "H2"
-                  ],
+                  "chainIDs": ["A2", "B2", "C2", "D2", "E2", "F2", "G2", "H2"],
                   "colorInfo": {
                     "$id": "63",
                     "Item1": "#FF8000",
@@ -552,9 +531,7 @@
                   "$id": "70",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "0"
-                  ],
+                  "chainIDs": ["0"],
                   "colorInfo": {
                     "$id": "71",
                     "Item1": "#FF66B2",
@@ -584,16 +561,7 @@
                   "$id": "75",
                   "actionName": "pipette",
                   "isSource": false,
-                  "chainIDs": [
-                    "A3",
-                    "B3",
-                    "C3",
-                    "D3",
-                    "E3",
-                    "F3",
-                    "G3",
-                    "H3"
-                  ],
+                  "chainIDs": ["A3", "B3", "C3", "D3", "E3", "F3", "G3", "H3"],
                   "colorInfo": {
                     "$id": "76",
                     "Item1": "#FF8000",
@@ -634,9 +602,7 @@
                   "$id": "81",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "0"
-                  ],
+                  "chainIDs": ["0"],
                   "colorInfo": {
                     "$id": "82",
                     "Item1": "#FF66B2",
@@ -666,16 +632,7 @@
                   "$id": "86",
                   "actionName": "pipette",
                   "isSource": false,
-                  "chainIDs": [
-                    "A4",
-                    "B4",
-                    "C4",
-                    "D4",
-                    "E4",
-                    "F4",
-                    "G4",
-                    "H4"
-                  ],
+                  "chainIDs": ["A4", "B4", "C4", "D4", "E4", "F4", "G4", "H4"],
                   "colorInfo": {
                     "$id": "87",
                     "Item1": "#FF8000",
@@ -716,9 +673,7 @@
                   "$id": "92",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "0"
-                  ],
+                  "chainIDs": ["0"],
                   "colorInfo": {
                     "$id": "93",
                     "Item1": "#FF66B2",
@@ -748,16 +703,7 @@
                   "$id": "97",
                   "actionName": "pipette",
                   "isSource": false,
-                  "chainIDs": [
-                    "A5",
-                    "B5",
-                    "C5",
-                    "D5",
-                    "E5",
-                    "F5",
-                    "G5",
-                    "H5"
-                  ],
+                  "chainIDs": ["A5", "B5", "C5", "D5", "E5", "F5", "G5", "H5"],
                   "colorInfo": {
                     "$id": "98",
                     "Item1": "#FF8000",
@@ -798,9 +744,7 @@
                   "$id": "103",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "0"
-                  ],
+                  "chainIDs": ["0"],
                   "colorInfo": {
                     "$id": "104",
                     "Item1": "#FF66B2",
@@ -830,16 +774,7 @@
                   "$id": "108",
                   "actionName": "pipette",
                   "isSource": false,
-                  "chainIDs": [
-                    "A6",
-                    "B6",
-                    "C6",
-                    "D6",
-                    "E6",
-                    "F6",
-                    "G6",
-                    "H6"
-                  ],
+                  "chainIDs": ["A6", "B6", "C6", "D6", "E6", "F6", "G6", "H6"],
                   "colorInfo": {
                     "$id": "109",
                     "Item1": "#FF8000",
@@ -880,9 +815,7 @@
                   "$id": "114",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "0"
-                  ],
+                  "chainIDs": ["0"],
                   "colorInfo": {
                     "$id": "115",
                     "Item1": "#FF66B2",
@@ -912,16 +845,7 @@
                   "$id": "119",
                   "actionName": "pipette",
                   "isSource": false,
-                  "chainIDs": [
-                    "A7",
-                    "B7",
-                    "C7",
-                    "D7",
-                    "E7",
-                    "F7",
-                    "G7",
-                    "H7"
-                  ],
+                  "chainIDs": ["A7", "B7", "C7", "D7", "E7", "F7", "G7", "H7"],
                   "colorInfo": {
                     "$id": "120",
                     "Item1": "#FF8000",
@@ -962,9 +886,7 @@
                   "$id": "125",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "0"
-                  ],
+                  "chainIDs": ["0"],
                   "colorInfo": {
                     "$id": "126",
                     "Item1": "#FF66B2",
@@ -994,16 +916,7 @@
                   "$id": "130",
                   "actionName": "pipette",
                   "isSource": false,
-                  "chainIDs": [
-                    "A8",
-                    "B8",
-                    "C8",
-                    "D8",
-                    "E8",
-                    "F8",
-                    "G8",
-                    "H8"
-                  ],
+                  "chainIDs": ["A8", "B8", "C8", "D8", "E8", "F8", "G8", "H8"],
                   "colorInfo": {
                     "$id": "131",
                     "Item1": "#FF8000",
@@ -1044,9 +957,7 @@
                   "$id": "136",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "0"
-                  ],
+                  "chainIDs": ["0"],
                   "colorInfo": {
                     "$id": "137",
                     "Item1": "#FF66B2",
@@ -1076,16 +987,7 @@
                   "$id": "141",
                   "actionName": "pipette",
                   "isSource": false,
-                  "chainIDs": [
-                    "A9",
-                    "B9",
-                    "C9",
-                    "D9",
-                    "E9",
-                    "F9",
-                    "G9",
-                    "H9"
-                  ],
+                  "chainIDs": ["A9", "B9", "C9", "D9", "E9", "F9", "G9", "H9"],
                   "colorInfo": {
                     "$id": "142",
                     "Item1": "#FF8000",
@@ -1126,9 +1028,7 @@
                   "$id": "147",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "0"
-                  ],
+                  "chainIDs": ["0"],
                   "colorInfo": {
                     "$id": "148",
                     "Item1": "#FF66B2",
@@ -1208,9 +1108,7 @@
                   "$id": "158",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "0"
-                  ],
+                  "chainIDs": ["0"],
                   "colorInfo": {
                     "$id": "159",
                     "Item1": "#FF66B2",
@@ -1290,9 +1188,7 @@
                   "$id": "169",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "0"
-                  ],
+                  "chainIDs": ["0"],
                   "colorInfo": {
                     "$id": "170",
                     "Item1": "#FF66B2",
@@ -1385,9 +1281,7 @@
                   "$id": "182",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "0"
-                  ],
+                  "chainIDs": ["0"],
                   "colorInfo": {
                     "$id": "183",
                     "Item1": "#00FFFF",
@@ -1417,9 +1311,7 @@
                   "$id": "187",
                   "actionName": "pipette",
                   "isSource": false,
-                  "chainIDs": [
-                    "A2"
-                  ],
+                  "chainIDs": ["A2"],
                   "colorInfo": {
                     "$id": "188",
                     "Item1": "#00FFFF",
@@ -1460,9 +1352,7 @@
                   "$id": "193",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "1"
-                  ],
+                  "chainIDs": ["1"],
                   "colorInfo": {
                     "$id": "194",
                     "Item1": "#00FF00",
@@ -1492,9 +1382,7 @@
                   "$id": "198",
                   "actionName": "pipette",
                   "isSource": false,
-                  "chainIDs": [
-                    "B1"
-                  ],
+                  "chainIDs": ["B1"],
                   "colorInfo": {
                     "$id": "199",
                     "Item1": "#00FF00",
@@ -1535,9 +1423,7 @@
                   "$id": "204",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "1"
-                  ],
+                  "chainIDs": ["1"],
                   "colorInfo": {
                     "$id": "205",
                     "Item1": "#00FF00",
@@ -1567,9 +1453,7 @@
                   "$id": "209",
                   "actionName": "pipette",
                   "isSource": false,
-                  "chainIDs": [
-                    "B2"
-                  ],
+                  "chainIDs": ["B2"],
                   "colorInfo": {
                     "$id": "210",
                     "Item1": "#00FF00",
@@ -1610,9 +1494,7 @@
                   "$id": "215",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "2"
-                  ],
+                  "chainIDs": ["2"],
                   "colorInfo": {
                     "$id": "216",
                     "Item1": "#0000FF",
@@ -1642,9 +1524,7 @@
                   "$id": "220",
                   "actionName": "pipette",
                   "isSource": false,
-                  "chainIDs": [
-                    "C1"
-                  ],
+                  "chainIDs": ["C1"],
                   "colorInfo": {
                     "$id": "221",
                     "Item1": "#0000FF",
@@ -1685,9 +1565,7 @@
                   "$id": "226",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "2"
-                  ],
+                  "chainIDs": ["2"],
                   "colorInfo": {
                     "$id": "227",
                     "Item1": "#0000FF",
@@ -1717,9 +1595,7 @@
                   "$id": "231",
                   "actionName": "pipette",
                   "isSource": false,
-                  "chainIDs": [
-                    "C2"
-                  ],
+                  "chainIDs": ["C2"],
                   "colorInfo": {
                     "$id": "232",
                     "Item1": "#0000FF",
@@ -1760,9 +1636,7 @@
                   "$id": "237",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "3"
-                  ],
+                  "chainIDs": ["3"],
                   "colorInfo": {
                     "$id": "238",
                     "Item1": "#8000FF",
@@ -1792,9 +1666,7 @@
                   "$id": "242",
                   "actionName": "pipette",
                   "isSource": false,
-                  "chainIDs": [
-                    "D1"
-                  ],
+                  "chainIDs": ["D1"],
                   "colorInfo": {
                     "$id": "243",
                     "Item1": "#8000FF",
@@ -1835,9 +1707,7 @@
                   "$id": "248",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "3"
-                  ],
+                  "chainIDs": ["3"],
                   "colorInfo": {
                     "$id": "249",
                     "Item1": "#8000FF",
@@ -1867,9 +1737,7 @@
                   "$id": "253",
                   "actionName": "pipette",
                   "isSource": false,
-                  "chainIDs": [
-                    "D2"
-                  ],
+                  "chainIDs": ["D2"],
                   "colorInfo": {
                     "$id": "254",
                     "Item1": "#8000FF",
@@ -1910,9 +1778,7 @@
                   "$id": "259",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "4"
-                  ],
+                  "chainIDs": ["4"],
                   "colorInfo": {
                     "$id": "260",
                     "Item1": "#FF0000",
@@ -1942,9 +1808,7 @@
                   "$id": "264",
                   "actionName": "pipette",
                   "isSource": false,
-                  "chainIDs": [
-                    "E1"
-                  ],
+                  "chainIDs": ["E1"],
                   "colorInfo": {
                     "$id": "265",
                     "Item1": "#FF0000",
@@ -1985,9 +1849,7 @@
                   "$id": "270",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "4"
-                  ],
+                  "chainIDs": ["4"],
                   "colorInfo": {
                     "$id": "271",
                     "Item1": "#FF0000",
@@ -2017,9 +1879,7 @@
                   "$id": "275",
                   "actionName": "pipette",
                   "isSource": false,
-                  "chainIDs": [
-                    "E2"
-                  ],
+                  "chainIDs": ["E2"],
                   "colorInfo": {
                     "$id": "276",
                     "Item1": "#FF0000",
@@ -2060,9 +1920,7 @@
                   "$id": "281",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "5"
-                  ],
+                  "chainIDs": ["5"],
                   "colorInfo": {
                     "$id": "282",
                     "Item1": "#FF8000",
@@ -2092,9 +1950,7 @@
                   "$id": "286",
                   "actionName": "pipette",
                   "isSource": false,
-                  "chainIDs": [
-                    "F1"
-                  ],
+                  "chainIDs": ["F1"],
                   "colorInfo": {
                     "$id": "287",
                     "Item1": "#FF8000",
@@ -2135,9 +1991,7 @@
                   "$id": "292",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "5"
-                  ],
+                  "chainIDs": ["5"],
                   "colorInfo": {
                     "$id": "293",
                     "Item1": "#FF8000",
@@ -2167,9 +2021,7 @@
                   "$id": "297",
                   "actionName": "pipette",
                   "isSource": false,
-                  "chainIDs": [
-                    "F2"
-                  ],
+                  "chainIDs": ["F2"],
                   "colorInfo": {
                     "$id": "298",
                     "Item1": "#FF8000",
@@ -2210,9 +2062,7 @@
                   "$id": "303",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "5"
-                  ],
+                  "chainIDs": ["5"],
                   "colorInfo": {
                     "$id": "304",
                     "Item1": "#A52A2A",
@@ -2242,9 +2092,7 @@
                   "$id": "308",
                   "actionName": "pipette",
                   "isSource": false,
-                  "chainIDs": [
-                    "G1"
-                  ],
+                  "chainIDs": ["G1"],
                   "colorInfo": {
                     "$id": "309",
                     "Item1": "#A52A2A",
@@ -2285,9 +2133,7 @@
                   "$id": "314",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "5"
-                  ],
+                  "chainIDs": ["5"],
                   "colorInfo": {
                     "$id": "315",
                     "Item1": "#A52A2A",
@@ -2317,9 +2163,7 @@
                   "$id": "319",
                   "actionName": "pipette",
                   "isSource": false,
-                  "chainIDs": [
-                    "G2"
-                  ],
+                  "chainIDs": ["G2"],
                   "colorInfo": {
                     "$id": "320",
                     "Item1": "#A52A2A",
@@ -2360,9 +2204,7 @@
                   "$id": "325",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "7"
-                  ],
+                  "chainIDs": ["7"],
                   "colorInfo": {
                     "$id": "326",
                     "Item1": "#FFFF00",
@@ -2392,9 +2234,7 @@
                   "$id": "330",
                   "actionName": "pipette",
                   "isSource": false,
-                  "chainIDs": [
-                    "H1"
-                  ],
+                  "chainIDs": ["H1"],
                   "colorInfo": {
                     "$id": "331",
                     "Item1": "#FFFF00",
@@ -2435,9 +2275,7 @@
                   "$id": "336",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "7"
-                  ],
+                  "chainIDs": ["7"],
                   "colorInfo": {
                     "$id": "337",
                     "Item1": "#FFFF00",
@@ -2467,9 +2305,7 @@
                   "$id": "341",
                   "actionName": "pipette",
                   "isSource": false,
-                  "chainIDs": [
-                    "H2"
-                  ],
+                  "chainIDs": ["H2"],
                   "colorInfo": {
                     "$id": "342",
                     "Item1": "#FFFF00",
