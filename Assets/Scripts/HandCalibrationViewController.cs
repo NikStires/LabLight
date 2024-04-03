@@ -49,7 +49,7 @@ public class HandCalibrationViewController : MonoBehaviour
 
     public Dictionary<XRHandJointID, Pose> calibrationJointsPoseDict = new Dictionary<XRHandJointID, Pose>();
 
-    List<ARPlane> calibrationPlanes = new List<ARPlane>();
+    List<ARPlane> calibrationPlanes;
 
     ARPlane planeSelected = null;
 
@@ -96,7 +96,7 @@ public class HandCalibrationViewController : MonoBehaviour
 
     private IEnumerator UnloadCalibration()
     {
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(1f);
         SceneLoader.Instance.UnloadScene("Calibration");
     }
 
@@ -142,7 +142,7 @@ public class HandCalibrationViewController : MonoBehaviour
                                         if(planeSelected == null)
                                         {
                                             planeSelected = hitPlane;
-                                            planeSelected.GetComponent<MeshRenderer>().SetMaterials(new List<Material> {planeMaterial});
+                                            planeSelected.GetComponent<MeshRenderer>().SetMaterials(new List<Material>(){ planeMaterial });
                                         }else if(planeSelected != hitPlane)
                                         {
                                             planeSelected.GetComponent<MeshRenderer>().SetMaterials(null);
@@ -249,7 +249,6 @@ public class HandCalibrationViewController : MonoBehaviour
             calibrationJointsPoseDict[XRHandJointID.LittleTip].position.x, planeSelected.transform.position.y, calibrationJointsPoseDict[XRHandJointID.LittleTip].position.z
         );
         SessionManager.instance.UpdateCalibration(calibrationMatrix);
-        matrixCoroutine = null;
         DeactivateFingerPoints(fingerPoints);
         CompleteCalibration();
         yield return null;
