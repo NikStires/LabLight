@@ -1,0 +1,120 @@
+{
+    "name": "LablightARControls",
+    "maps": [
+        {
+            "name": "Player",
+            "id": "c6589f3e-d5d3-4c29-b1b7-acf335e47c3d",
+            "actions": [
+                {
+                    "name": "Progress Backward",
+                    "type": "Button",
+                    "id": "92668fdd-4fa1-4972-a8ba-7b6e3311c6e9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Progress Forward",
+                    "type": "Button",
+                    "id": "7c3725ba-50f4-421c-a13a-db285f3ac85c",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "52f77725-c2bc-4203-bc9e-23a77b37914e",
+                    "path": "<PolySpatialKeyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Progress Backward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cd06db25-c2d6-4e5c-a4c4-828327327b49",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Progress Backward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e4272882-b42b-4890-a15d-5af756b7edd3",
+                    "path": "<PolySpatialKeyboard>/pageUp",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Progress Backward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "13dee7e6-fded-47e4-a9bc-392d7e8a2655",
+                    "path": "<Keyboard>/pageUp",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Progress Backward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6c2178fc-2790-4e24-b1ce-c816bab536bf",
+                    "path": "<PolySpatialKeyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Progress Forward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "27bd0f0d-7a8b-4565-8b37-4d6013536a8f",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Progress Forward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ae7292f0-f27d-4316-92d2-51c0fda52524",
+                    "path": "<PolySpatialKeyboard>/pageDown",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Progress Forward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "19e7e255-ac71-47c9-bb91-4a6013eed473",
+                    "path": "<Keyboard>/pageDown",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Progress Forward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

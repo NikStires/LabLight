@@ -23,7 +23,6 @@ public class ProtocolManager : MonoBehaviour
     {
         ProtocolState.SetStartTime(DateTime.Now);
         //InitCSV();
-
     }
 
     private void OnDisable()

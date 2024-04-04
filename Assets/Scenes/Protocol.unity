@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 75180033}
   - component: {fileID: 75180036}
   - component: {fileID: 75180037}
+  - component: {fileID: 75180038}
   m_Layer: 0
   m_Name: ProtocolManager
   m_TagString: Untagged
@@ -200,6 +201,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4d428a578bddde4087d43e0eee3f89b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &75180038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 75180032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcc080f0a90b14fcd9a1c2951744af9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  checklist: {fileID: 458353524}
 --- !u!43 &178555657
 Mesh:
   m_ObjectHideFlags: 0
@@ -1165,6 +1179,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 655c7e5182b2d48bcbb3bf8a139e214b, type: 3}
+--- !u!114 &458353524 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3933781548795774706, guid: 655c7e5182b2d48bcbb3bf8a139e214b, type: 3}
+  m_PrefabInstance: {fileID: 458353523}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e879d096ba1a4bc5aa936a65b0c88ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!43 &929190869
 Mesh:
   m_ObjectHideFlags: 0
