@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.XR.Hands;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
+using UnityEngine.Rendering;
 using UnityEngine.XR;
 using UnityEngine.UIElements;
 using Unity.VisualScripting;
@@ -13,6 +14,7 @@ using UniRx;
 using TMPro;
 using UnityEngine.PlayerLoop;
 using UnityEngine.SceneManagement;
+using Unity.PolySpatial;
 
 public class HandCalibrationViewController : MonoBehaviour
 {
@@ -46,6 +48,7 @@ public class HandCalibrationViewController : MonoBehaviour
     }; 
 
     public Material planeMaterial;
+    public Material removePlaneMaterial;
 
     public Dictionary<XRHandJointID, Pose> calibrationJointsPoseDict = new Dictionary<XRHandJointID, Pose>();
 
@@ -104,8 +107,9 @@ public class HandCalibrationViewController : MonoBehaviour
     {
         //planeManager.requestedDetectionMode = UnityEngine.XR.ARSubsystems.PlaneDetectionMode.Horizontal;
         //anchorManager.enabled = true;
-
         Debug.Log("calibration requested");
+
+        //planeSelected.GetComponent<MeshRenderer>().SetMaterials(new List<Material> { removePlaneMaterial });
         if(m_HandSubsystem != null)
         {
             m_HandSubsystem.updatedHands += OnUpdatedHands;
@@ -145,7 +149,7 @@ public class HandCalibrationViewController : MonoBehaviour
                                             planeSelected.GetComponent<MeshRenderer>().SetMaterials(new List<Material>(){ planeMaterial });
                                         }else if(planeSelected != hitPlane)
                                         {
-                                            planeSelected.GetComponent<MeshRenderer>().SetMaterials(null);
+                                            planeSelected.GetComponent<MeshRenderer>().SetMaterials(new List<Material> { removePlaneMaterial });
                                             planeSelected = hitPlane;
                                         }
                                     }
@@ -154,7 +158,7 @@ public class HandCalibrationViewController : MonoBehaviour
                             {
                                 if(planeSelected != null && !inCalibration)
                                 {
-                                    planeSelected.GetComponent<MeshRenderer>().SetMaterials(null);
+                                    planeSelected.GetComponent<MeshRenderer>().SetMaterials(new List<Material> { removePlaneMaterial });
                                     planeSelected = null;
                                 }
                             }
@@ -206,10 +210,9 @@ public class HandCalibrationViewController : MonoBehaviour
         //progressRing.gameObject.SetActive(false);
         foreach(GameObject fingerPoint in fingerPoints)
         {
-            fingerPoint.SetActive(false);
             Destroy(fingerPoint);
         }
-        fingerPoints.Clear();
+        //fingerPoints.Clear();
     }
 
     private IEnumerator getMatrixFromHandPosition()
@@ -250,6 +253,7 @@ public class HandCalibrationViewController : MonoBehaviour
         );
         SessionManager.instance.UpdateCalibration(calibrationMatrix);
         DeactivateFingerPoints(fingerPoints);
+        yield return new WaitForSeconds(2f);
         CompleteCalibration();
         yield return null;
     }
@@ -270,7 +274,7 @@ public class HandCalibrationViewController : MonoBehaviour
         }
 
         calibrationPlanes = null;
-        planeSelected.GetComponent<MeshRenderer>().SetMaterials(null);
+        planeSelected.GetComponent<MeshRenderer>().SetMaterials(new List<Material> { removePlaneMaterial });
         planeSelected = null;
         StartCoroutine(UnloadCalibration());
     }

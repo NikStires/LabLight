@@ -175,6 +175,7 @@ MonoBehaviour:
   tapToPlacePrefab: {fileID: 5772616215907034111, guid: e8a05466d444b4f18bd9f9c894337036, type: 3}
   calibrationManager: {fileID: 11400000, guid: e994e283a5b104d668e7d8427359ef92, type: 2}
   planeMaterial: {fileID: 2100000, guid: b1ccd6a99de414581bbb6d79175e053d, type: 2}
+  removePlaneMaterial: {fileID: 2100000, guid: 87958dc6dbfa54b249afdbad19b47976, type: 2}
   calibrationCountdownStarted: 0
   distanceThreshold: 0.1
   calibrationDistanceThreshold: 0.03
