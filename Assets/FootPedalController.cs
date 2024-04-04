@@ -13,8 +13,8 @@ public class FootPedalController : MonoBehaviour
 
     private static float PEDALDELAY;
 
-    private InputAction nextProcedureAction;
-    private InputAction previousProcedureAction;
+    // private InputAction nextProcedureAction;
+    // private InputAction previousProcedureAction;
 
     void Start()
     {
