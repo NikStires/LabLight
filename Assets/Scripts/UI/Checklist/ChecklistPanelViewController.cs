@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using System.Linq;
-
 using UnityEngine.SceneManagement;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class ChecklistPanelViewController : MonoBehaviour
 {
@@ -15,7 +15,7 @@ public class ChecklistPanelViewController : MonoBehaviour
 
     [SerializeField] GameObject noChecklistText;
 
-    [SerializeField] UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable closeProtocolButton;
+    [SerializeField] XRSimpleInteractable closeProtocolButton;
 
     private List<ProtocolState.CheckItemState> prevChecklist;
     public List<CheckitemView> checkitemViews;
@@ -23,6 +23,7 @@ public class ChecklistPanelViewController : MonoBehaviour
     //popups
     [SerializeField] PopupEventSO signOffPopupEventSO;
     [SerializeField] PopupEventSO checklistIncompletePopupEventSO;
+    [SerializeField] PopupEventSO closeProtocolPopupEventSO;
 
     private void Awake()
     {
@@ -30,8 +31,19 @@ public class ChecklistPanelViewController : MonoBehaviour
 
         closeProtocolButton.selectEntered.AddListener(_ =>
         {
-            SessionState.Instance.activeProtocol = null;
-            SceneLoader.Instance.LoadSceneClean("ProtocolMenu");
+            var lastStepWithChecklist = ProtocolState.Steps.Where(step => step.Checklist != null).LastOrDefault();
+            
+            //if we are on the last step and the last checklist has been signed off close the protocol
+            if(ProtocolState.Step == (ProtocolState.Steps.Count - 1) && lastStepWithChecklist != null && lastStepWithChecklist.SignedOff)
+            {
+                SessionState.Instance.activeProtocol = null;
+                SceneLoader.Instance.LoadSceneClean("ProtocolMenu");   
+            }
+            //open a popup to confirm closing the protocol
+            else
+            {
+                closeProtocolPopupEventSO.Open();
+            }
         });
     }
 
@@ -48,6 +60,12 @@ public class ChecklistPanelViewController : MonoBehaviour
         checklistIncompletePopupEventSO.OnYesButtonPressed.AddListener(() =>
         {
             ProtocolState.SetStep(ProtocolState.Step + 1);
+        });
+
+        closeProtocolPopupEventSO.OnYesButtonPressed.AddListener(() =>
+        {
+            SessionState.Instance.activeProtocol = null;
+            SceneLoader.Instance.LoadSceneClean("ProtocolMenu");
         });
     }
 
