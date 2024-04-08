@@ -22,6 +22,7 @@ public class ChecklistPanelViewController : MonoBehaviour
 
     //popups
     [SerializeField] PopupEventSO signOffPopupEventSO;
+    [SerializeField] PopupEventSO checklistIncompletePopupEventSO;
 
     private void Awake()
     {
@@ -42,6 +43,11 @@ public class ChecklistPanelViewController : MonoBehaviour
         {
             SignOff(); 
             NextStep();
+        });
+
+        checklistIncompletePopupEventSO.OnYesButtonPressed.AddListener(() =>
+        {
+            ProtocolState.SetStep(ProtocolState.Step + 1);
         });
     }
 
@@ -189,7 +195,7 @@ public class ChecklistPanelViewController : MonoBehaviour
                 {
                     //update confirmation panel UI and button controls
                     Debug.LogWarning("trying to go to the next step without checking all items");
-                    //confirmationPanelVC.ChecklistIncompleteMessage();
+                    checklistIncompletePopupEventSO.Open();
                     return;
                 }
             }
