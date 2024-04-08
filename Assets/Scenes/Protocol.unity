@@ -2416,7 +2416,7 @@ PrefabInstance:
     - target: {fileID: 3705565816299427009, guid: 30dbc2f9680c94f3eb08e9cb52f913f1, type: 3}
       propertyPath: m_text
       value: You are trying to close the protocol but it has not been completed.
-        Would you like to continue?
+        Are you sure you would like to close the protocol?
       objectReference: {fileID: 0}
     - target: {fileID: 3705565816299427009, guid: 30dbc2f9680c94f3eb08e9cb52f913f1, type: 3}
       propertyPath: m_VerticalAlignment
