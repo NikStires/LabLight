@@ -20,6 +20,9 @@ public class ChecklistPanelViewController : MonoBehaviour
     private List<ProtocolState.CheckItemState> prevChecklist;
     public List<CheckitemView> checkitemViews;
 
+    //popups
+    [SerializeField] PopupEventSO signOffPopupEventSO;
+
     private void Awake()
     {
         ProtocolState.checklistStream.Subscribe(_ => UpdateVisualState()).AddTo(this);
@@ -34,6 +37,12 @@ public class ChecklistPanelViewController : MonoBehaviour
     void Start()
     {
         UpdateVisualState();
+
+        signOffPopupEventSO.OnYesButtonPressed.AddListener(() =>
+        {
+            SignOff(); 
+            NextStep();
+        });
     }
 
     /// <summary>
@@ -173,7 +182,7 @@ public class ChecklistPanelViewController : MonoBehaviour
                 {
                     //update confirmation panel UI and button controls
                     Debug.LogWarning("trying to go to next step without signing off");
-                    //confirmationPanelVC.SignOffMessage();
+                    signOffPopupEventSO.Open();
                     return;
                 }
                 else

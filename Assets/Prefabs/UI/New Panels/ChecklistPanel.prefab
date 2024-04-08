@@ -1511,6 +1511,7 @@ MonoBehaviour:
   - {fileID: 3359189415310922410}
   - {fileID: 8790214111480007171}
   - {fileID: 364112757612405196}
+  signOffPopupEventSO: {fileID: 11400000, guid: e42dfa01e0563481482cfcd443cdfc8d, type: 2}
 --- !u!114 &510952946158330145
 MonoBehaviour:
   m_ObjectHideFlags: 0
