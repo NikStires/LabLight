@@ -121,18 +121,4 @@ public class ProtocolMenuViewController : MonoBehaviour
             Debug.LogWarning("Cannot load protocols, protocol data provider service NULL");
         }
     }
-
-    /// <summary>
-    /// Deletes the specified protocol.
-    /// </summary>
-    /// <param name="protocolTitle">The title of the protocol to delete.</param>
-    void deleteProtocol(string protocolTitle)
-    {
-        ServiceRegistry.Logger.Log("Delete protocol " + protocolTitle);
-
-        // Save the .csv
-        var lfdp = new LocalFileDataProvider();
-
-        lfdp.DeleteProcedureDefinition(protocolTitle);
-    }
 }

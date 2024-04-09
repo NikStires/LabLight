@@ -13,9 +13,12 @@ using UnityEngine;
 /// </summary>
 public class LocalFileDataProvider : IProcedureDataProvider, ITextDataProvider
 {
+    bool hasLoadedResources = false;
+
     public async Task<List<ProcedureDescriptor>> GetProcedureList()
     {
         var list = new List<ProcedureDescriptor>();
+  
         if (Directory.Exists(Application.persistentDataPath))
         {
             DirectoryInfo directoryInfo = new DirectoryInfo(Application.persistentDataPath);
@@ -57,7 +60,7 @@ public class LocalFileDataProvider : IProcedureDataProvider, ITextDataProvider
             // Create empty definition
             procedure = new ProcedureDefinition()
             {
-                version = 8
+                version = 9
             };
         }
 
