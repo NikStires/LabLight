@@ -13,6 +13,8 @@ public class PopupPanelViewController : MonoBehaviour
 
     [SerializeField] XRSimpleInteractable yesButton;
     [SerializeField] XRSimpleInteractable noButton;
+
+    [SerializeField] AudioSource audioSource;
     
     // Start is called before the first frame update
     void Start()
@@ -29,6 +31,10 @@ public class PopupPanelViewController : MonoBehaviour
             popupEventSO.No();
         });
 
-        popupEventSO.OpenPopup.AddListener(() => transform.GetChild(0).transform.gameObject.SetActive(true));
+        popupEventSO.OpenPopup.AddListener(() => 
+        {
+            transform.GetChild(0).transform.gameObject.SetActive(true);
+            audioSource.Play();
+        });
     }
 }
