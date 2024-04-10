@@ -17,6 +17,8 @@ public class ChecklistPanelViewController : MonoBehaviour
 
     [SerializeField] XRSimpleInteractable closeProtocolButton;
 
+    [SerializeField] AudioSource audioPlayer;
+
     private List<ProtocolState.CheckItemState> prevChecklist;
     public List<CheckitemView> checkitemViews;
 
@@ -150,6 +152,7 @@ public class ChecklistPanelViewController : MonoBehaviour
 
             if (uncheckedItemsCount == 0)
             {
+                audioPlayer.Play();
                 //update protocol state
                 ProtocolState.SignOff();
                 //lock sign off indicator in UI
