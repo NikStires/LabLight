@@ -136,17 +136,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1738462026209365673}
   m_SourcePrefab: {fileID: 100100000, guid: dd216cbce70c340968d5d438f8592667, type: 3}
---- !u!114 &6177861722706078628 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2433060009738984077, guid: dd216cbce70c340968d5d438f8592667, type: 3}
-  m_PrefabInstance: {fileID: 8394669785053638953}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7508697972642443165 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2038893357050093236, guid: dd216cbce70c340968d5d438f8592667, type: 3}
@@ -168,7 +157,6 @@ MonoBehaviour:
   buttonPrefab: {fileID: 5827233944868290495, guid: a0fe3e35f0bae45dcbbef5b10c3db539, type: 3}
   previousButton: {fileID: 9141439557743031184}
   nextButton: {fileID: 7651464341026961291}
-  closeAppButton: {fileID: 6177861722706078628}
 --- !u!1 &7651464341026961291 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2184437092332422818, guid: dd216cbce70c340968d5d438f8592667, type: 3}

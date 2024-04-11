@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using System.Linq;
+
 using UnityEngine.SceneManagement;
-using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class ChecklistPanelViewController : MonoBehaviour
 {
@@ -15,17 +15,10 @@ public class ChecklistPanelViewController : MonoBehaviour
 
     [SerializeField] GameObject noChecklistText;
 
-    [SerializeField] XRSimpleInteractable closeProtocolButton;
-
-    [SerializeField] AudioSource audioPlayer;
+    [SerializeField] UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable closeProtocolButton;
 
     private List<ProtocolState.CheckItemState> prevChecklist;
     public List<CheckitemView> checkitemViews;
-
-    //popups
-    [SerializeField] PopupEventSO signOffPopupEventSO;
-    [SerializeField] PopupEventSO checklistIncompletePopupEventSO;
-    [SerializeField] PopupEventSO closeProtocolPopupEventSO;
 
     private void Awake()
     {
@@ -33,42 +26,14 @@ public class ChecklistPanelViewController : MonoBehaviour
 
         closeProtocolButton.selectEntered.AddListener(_ =>
         {
-            var lastStepWithChecklist = ProtocolState.Steps.Where(step => step.Checklist != null).LastOrDefault();
-            
-            //if we are on the last step and the last checklist has been signed off close the protocol
-            if(ProtocolState.Step == (ProtocolState.Steps.Count - 1) && lastStepWithChecklist != null && lastStepWithChecklist.SignedOff)
-            {
-                SessionState.Instance.activeProtocol = null;
-                SceneLoader.Instance.LoadSceneClean("ProtocolMenu");   
-            }
-            //open a popup to confirm closing the protocol
-            else
-            {
-                closeProtocolPopupEventSO.Open();
-            }
+            SessionState.Instance.activeProtocol = null;
+            SceneLoader.Instance.LoadSceneClean("ProtocolMenu");
         });
     }
 
     void Start()
     {
         UpdateVisualState();
-
-        signOffPopupEventSO.OnYesButtonPressed.AddListener(() =>
-        {
-            SignOff(); 
-            NextStep();
-        });
-
-        checklistIncompletePopupEventSO.OnYesButtonPressed.AddListener(() =>
-        {
-            ProtocolState.SetStep(ProtocolState.Step + 1);
-        });
-
-        closeProtocolPopupEventSO.OnYesButtonPressed.AddListener(() =>
-        {
-            SessionState.Instance.activeProtocol = null;
-            SceneLoader.Instance.LoadSceneClean("ProtocolMenu");
-        });
     }
 
     /// <summary>
@@ -152,7 +117,6 @@ public class ChecklistPanelViewController : MonoBehaviour
 
             if (uncheckedItemsCount == 0)
             {
-                audioPlayer.Play();
                 //update protocol state
                 ProtocolState.SignOff();
                 //lock sign off indicator in UI
@@ -209,14 +173,14 @@ public class ChecklistPanelViewController : MonoBehaviour
                 {
                     //update confirmation panel UI and button controls
                     Debug.LogWarning("trying to go to next step without signing off");
-                    signOffPopupEventSO.Open();
+                    //confirmationPanelVC.SignOffMessage();
                     return;
                 }
                 else
                 {
                     //update confirmation panel UI and button controls
                     Debug.LogWarning("trying to go to the next step without checking all items");
-                    checklistIncompletePopupEventSO.Open();
+                    //confirmationPanelVC.ChecklistIncompleteMessage();
                     return;
                 }
             }

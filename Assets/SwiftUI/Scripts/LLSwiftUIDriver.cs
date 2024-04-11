@@ -12,6 +12,8 @@ public class LLSwiftUIDriver : MonoBehaviour
     [SerializeField]
     UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable m_Button;
 
+    bool m_SwiftUIWindowOpen = false;
+
     delegate void CallbackDelegate(string command);
 
     // This attribute is required for methods that are going to be called from native code

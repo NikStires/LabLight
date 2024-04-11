@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using UniRx;
-using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class ProtocolMenuViewController : MonoBehaviour
 {
@@ -12,8 +11,6 @@ public class ProtocolMenuViewController : MonoBehaviour
     [SerializeField] GameObject buttonPrefab;
     [SerializeField] GameObject previousButton;
     [SerializeField] GameObject nextButton;
-
-    [SerializeField] XRSimpleInteractable closeAppButton;
 
     private int currentPage = 0;
     private int maxPage = 0;
@@ -26,8 +23,6 @@ public class ProtocolMenuViewController : MonoBehaviour
     private void Start()
     {
         LoadProtocols();
-
-        closeAppButton.selectEntered.AddListener(_ => Application.Quit());
     }
 
     /// <summary>
@@ -120,5 +115,19 @@ public class ProtocolMenuViewController : MonoBehaviour
         {
             Debug.LogWarning("Cannot load protocols, protocol data provider service NULL");
         }
+    }
+
+    /// <summary>
+    /// Deletes the specified protocol.
+    /// </summary>
+    /// <param name="protocolTitle">The title of the protocol to delete.</param>
+    void deleteProtocol(string protocolTitle)
+    {
+        ServiceRegistry.Logger.Log("Delete protocol " + protocolTitle);
+
+        // Save the .csv
+        var lfdp = new LocalFileDataProvider();
+
+        lfdp.DeleteProcedureDefinition(protocolTitle);
     }
 }

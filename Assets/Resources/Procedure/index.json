@@ -1,12 +1,78 @@
 [
   {
     "$id": "1",
+    "title": "Generic Visualizations",
+    "name": "visualizations",
+    "description": "Different neural network visualizations per step (Lighthouse connection required)"
+  },
+  {
+    "$id": "2",
+    "title": "Viral RNA Target Capture Kit ML5000",
+    "name": "Viral RNA Target Capture Kit ML5000",
+    "description": ""
+  },
+  {
+    "$id": "3",
+    "title": "Novel COVID-19 real-time RT-PCR",
+    "name": "Novel COVID-19 real-time RT-PCR",
+    "description": ""
+  },
+  {
+    "$id": "4",
+    "title": "RT + Probe Hybridization",
+    "name": "RT + Probe Hybridization",
+    "description": ""
+  },
+  {
+    "$id": "5",
+    "title": "Fill Reaction",
+    "name": "Fill Reaction",
+    "description": ""
+  },
+  {
+    "$id": "6",
+    "title": "Cleanup + PCR Reaction",
+    "name": "Cleanup + PCR Reaction",
+    "description": ""
+  },
+  {
+    "$id": "7",
+    "title": "RT + Probe Hybridization 2x",
+    "name": "RT + Probe Hybridization 2x",
+    "description": ""
+  },
+  {
+    "$id": "8",
+    "title": "Fill Reaction 2x",
+    "name": "Fill Reaction 2x",
+    "description": ""
+  },
+  {
+    "$id": "9",
+    "title": "Cleanup + PCR Reaction 2x",
+    "name": "Cleanup + PCR Reaction 2x",
+    "description": ""
+  },
+  {
+    "$id": "10",
+    "title": "TestUpload",
+    "name": "TestUpload",
+    "description": "Minimal procedure to test checklist, image and video upload"
+  },
+  {
+    "$id": "11",
     "title": "piplight_H551",
     "name": "piplight_H551",
     "description": ""
   },
   {
-    "$id": "2",
+    "$id": "12",
+    "title": "Test version 9",
+    "name": "Test version 9",
+    "description": ""
+  },
+  {
+    "$id": "13",
     "title": "piplight_Specimen Prep",
     "name": "piplight_Specimen Prep",
     "description": ""

@@ -24,7 +24,6 @@ public class ResourceFileDataProvider : IProcedureDataProvider, IMediaProvider
     {
         return LoadTextAsset("Procedure/index").Select(jsonString =>
         {
-            Debug.Log(jsonString);
             try
             {
                 return Parsers.ParseProcedures(jsonString);
@@ -65,25 +64,6 @@ public class ResourceFileDataProvider : IProcedureDataProvider, IMediaProvider
             }
         });
     }
-
-    // public void DeleteProcedureDefinition(string procedureName)
-    // {
-    //     string indexPath;
-    //     #if UNITY_EDITOR
-    //         indexPath = Application.dataPath + "/Resources/Procedure/index.json";
-    //     #else
-    //         indexPath = Application.persistentDataPath + "/Resources/Procedure/index.json";
-    //     #endif
-
-    //     string jsonString = File.ReadAllText(indexPath);
-    //     Debug.Log(jsonString);
-    //     var procedures = JsonConvert.DeserializeObject<List<ProcedureDescriptor>>(jsonString);
-    //     var procedureToDelete = procedures.Find(p => p.title == procedureName);
-    //     procedures.Remove(procedureToDelete);
-    //     string updatedIndex = JsonConvert.SerializeObject(procedures, Formatting.Indented);
-    //     Debug.Log(updatedIndex);
-    //     File.WriteAllText(indexPath, updatedIndex);
-    // }
 
     /// <summary>
     /// Version 1 switched to automatic serialization/deserialization withouth manual parsing

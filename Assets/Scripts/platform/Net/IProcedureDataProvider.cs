@@ -26,6 +26,4 @@ public interface IProcedureDataProvider
     /// <param name="procedureName"></param>
     /// <param name="procedure"></param>
     void SaveProcedureDefinition(string procedureName, ProcedureDefinition procedure);
-
-    //void DeleteProcedureDefinition(string procedureName);
 }

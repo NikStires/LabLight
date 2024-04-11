@@ -94,6 +94,11 @@ public class SessionManager : MonoBehaviour
 
         charucoTransform = Instantiate(new GameObject("CharucoTransform"), transform.parent.transform).transform;
 
+        //var producer = new StubbedNetworkFrameProducer();
+        //ServiceRegistry.RegisterService<ISharedStateController>(producer);
+        //ServiceRegistry.RegisterService<INetworkFrameProducer>(producer);
+        //http file provider ?
+
         //Setup logger
         /* Add service 
          * debug
@@ -102,6 +107,11 @@ public class SessionManager : MonoBehaviour
          * well plate csv provider
          * file upload handler
          */
+
+        // charucoTransform.position = new Vector3(0, 0, 0);
+        // workspaceTransform.position = new Vector3(0, 0, 0);
+
+        //add grid?
     }
 
     public void OnEnable()
@@ -130,6 +140,7 @@ public class SessionManager : MonoBehaviour
         {
             Debug.Log("Procedure Data provider null");
         }
+
     }
 
     public void Update()
