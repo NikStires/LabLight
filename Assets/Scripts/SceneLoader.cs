@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 /// <summary>
 /// A singleton class for loading and unloading scenes in Unity.
@@ -135,6 +136,12 @@ public class SceneLoader : MonoBehaviour
 
     private IEnumerator LoadNew(string sceneName)
     {
+        if(SceneManager.GetAllScenes().Contains(SceneManager.GetSceneByName(sceneName)))
+        {
+            Debug.LogWarning("Scene " + sceneName + " is already loaded.");
+            yield break;
+        }
+
         AsyncOperation loadOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
 
         while(!loadOperation.isDone)

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UniRx;
@@ -12,6 +12,24 @@ using UniRx;
 [RequireComponent(typeof(UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable))]
 public class ProtocolMenuButton : MonoBehaviour
 {
+
+    private ProcedureDescriptor protocol;
+    public TextMeshProUGUI title;
+    public TextMeshProUGUI description;
+
+    XRSimpleInteractable interactable;
+    Renderer renderer;
+    Material defaultMaterial;
+    [SerializeField] Material redFillShader;
+    float progress = -0.09f;
+
+    void Awake()
+    {
+        interactable = GetComponent<XRSimpleInteractable>();
+        renderer = GetComponent<Renderer>();
+        defaultMaterial = renderer.material;
+    }
+
     /// <summary>
     /// Initializes the protocol menu button with the specified protocol.
     /// </summary>
@@ -22,9 +40,16 @@ public class ProtocolMenuButton : MonoBehaviour
         title.text = protocol.title;
         description.text = protocol.description;
 
-        GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable>().selectEntered.AddListener(_ => {
+        interactable.selectEntered.AddListener(_ => {
+            StartCoroutine(ChangeMaterialAfterDelay(1f));
+            InvokeRepeating("incrementShaderFill", 1.1f, 0.05f);
+        });
+
+        interactable.selectExited.AddListener(_ => {
             ServiceRegistry.GetService<IProcedureDataProvider>().GetOrCreateProcedureDefinition(protocol.title).First().Subscribe(protocol =>
             {
+                CancelInvoke();
+                renderer.material = defaultMaterial;
                 Debug.Log(protocol.title + " loaded");
                 SessionState.Instance.activeProtocol = protocol;
                 SceneLoader.Instance.LoadSceneClean("Protocol");
@@ -36,7 +61,24 @@ public class ProtocolMenuButton : MonoBehaviour
         });
     }
 
-    private ProcedureDescriptor protocol;
-    public TextMeshProUGUI title;
-    public TextMeshProUGUI description;
+    private IEnumerator ChangeMaterialAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        renderer.material = redFillShader;
+        progress = -0.09f;
+        renderer.material.SetFloat("_FillRate", progress);
+    }
+
+    private void incrementShaderFill()
+    {
+        renderer.material.SetFloat("_FillRate", progress += 0.0075f);
+        if(progress >= 0.09f)
+        {
+            interactable.selectExited.RemoveAllListeners();
+            var lfdp = new LocalFileDataProvider();
+            lfdp.DeleteProcedureDefinition(title.text);
+            //ServiceRegistry.GetService<IProcedureDataProvider>().DeleteProcedureDefinition(title.text);
+            Destroy(gameObject);
+        }
+    }
 }
