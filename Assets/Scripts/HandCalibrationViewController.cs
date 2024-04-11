@@ -29,6 +29,10 @@ public class HandCalibrationViewController : MonoBehaviour
 
     [SerializeField] public CalibrationManagerScriptableObject calibrationManager;
 
+
+    public Material planeMaterial;
+    public Material removePlaneMaterial;
+
     public static XRHandJointID[] calibrationJoints = new XRHandJointID[]
     {
         XRHandJointID.IndexTip,
@@ -47,22 +51,17 @@ public class HandCalibrationViewController : MonoBehaviour
         PlaneClassification.None
     }; 
 
-    public Material planeMaterial;
-    public Material removePlaneMaterial;
+    List<ARPlane> availableCalibrationPlanes;
 
     public Dictionary<XRHandJointID, Pose> calibrationJointsPoseDict = new Dictionary<XRHandJointID, Pose>();
-
-    List<ARPlane> calibrationPlanes;
 
     ARPlane planeSelected = null;
 
     XRHandSubsystem m_HandSubsystem;
 
     private Coroutine matrixCoroutine = null;
-
-    public bool calibrationCountdownStarted = false;
     
-    public float distanceThreshold = 0.02f;
+    public float distanceToPlaneThreshold = 0.02f;
 
     public float calibrationDistanceThreshold = 0.03f;
 
@@ -70,6 +69,8 @@ public class HandCalibrationViewController : MonoBehaviour
     private float lerpDuration = 3f;
 
     private bool inCalibration = false;
+
+    private bool usingLeftHand = false;
 
     private void Awake()
     {
@@ -116,7 +117,7 @@ public class HandCalibrationViewController : MonoBehaviour
         }
         //start calibration
         calibrationManager.UpdateCalibrationStatus("Looking for planes");
-        calibrationPlanes = ARPlaneViewController.instance.GetPlanesByClassification(calibrationPlanesClassification);
+        availableCalibrationPlanes = ARPlaneViewController.instance.GetPlanesByClassification(calibrationPlanesClassification);
         //if calibration completed successfully, send calibration data to lighthouse and exit calibration mode
         //store started lighthouse origin and current plane in session manager
     }
@@ -126,53 +127,81 @@ public class HandCalibrationViewController : MonoBehaviour
         switch(updateType)
         {
             case XRHandSubsystem.UpdateType.Dynamic:
-                for (var i = XRHandJointID.BeginMarker.ToIndex(); i < XRHandJointID.EndMarker.ToIndex();  i++)
+                //initially just check middle finger position
+                var trackingDataRightMiddleProximal = m_HandSubsystem.rightHand.GetJoint(XRHandJointID.MiddleProximal);
+                //var trackingDataLeftMiddleProximal = m_HandSubsystem.leftHand.GetJoint(XRHandJointID.MiddleProximal);
+                if(!inCalibration)
                 {
-                    XRHandJointID jointID = XRHandJointIDUtility.FromIndex(i);
+                    Pose rightMiddleProximalPose;
+                    //Pose leftMiddleProximalPose;
+                    //check if middle finger of either hand is above plane to determine which hand operator is using. If both hands are above plane do not enter calibration
+                    if(trackingDataRightMiddleProximal.TryGetPose(out Pose poseRight))
+                    {
+                        rightMiddleProximalPose = poseRight;
+                        if(Physics.Raycast(rightMiddleProximalPose.position, Vector3.down, out RaycastHit hit, 1f))
+                        {
+                            if(hit.collider.TryGetComponent<ARPlane>(out ARPlane hitPlane))
+                            {
+                                if(availableCalibrationPlanes.Contains(hitPlane))
+                                {
+                                    if(planeSelected == null)
+                                    {
+                                        planeSelected = hitPlane;
+                                        planeSelected.GetComponent<MeshRenderer>().SetMaterials(new List<Material>(){ planeMaterial });
+                                    }else if(planeSelected != hitPlane)
+                                    {
+                                        planeSelected.GetComponent<MeshRenderer>().SetMaterials(new List<Material>() { removePlaneMaterial });
+                                        planeSelected = hitPlane;
+                                    }
+                                }
+                            }
+                        }else if(planeSelected != null)//not above a plane and not in calibration
+                        {
+                            planeSelected.GetComponent<MeshRenderer>().SetMaterials(new List<Material>(){ removePlaneMaterial });
+                            planeSelected = null;
+                        }
+                    }
+                    // if(trackingDataLeftMiddleProximal.TryGetPose(out Pose poseLeft))
+                    // {
+                    //     leftMiddleProximalPose = poseLeft;
+                    //     if(Physics.Raycast(leftMiddleProximalPose.position, Vector3.down, out RaycastHit hit, 1f))
+                    //     {
+                    //         if(hit.collider.TryGetComponent<ARPlane>(out ARPlane hitPlane))
+                    //         {
+                    //             if(availableCalibrationPlanes.Contains(hitPlane))
+                    //             {
+                    //                 usingLeftHand = true;
+                    //             }
+                    //         }
+                    //     }
+                    // }
+
+                }
+                foreach(XRHandJointID jointID in calibrationJoints) // only want joints we care about
+                {
 
                     var trackingDataRight = m_HandSubsystem.rightHand.GetJoint(jointID);
                     //var trackingDataLeft = m_HandSubsystem.leftHand.GetJoint(jointID);
 
                     if (trackingDataRight.TryGetPose(out Pose poseRight))
                     {
-                        if(jointID == XRHandJointID.MiddleProximal)
-                        {
-                            if(Physics.Raycast(poseRight.position, Vector3.down, out RaycastHit hit, 1f))
-                            {
-                                if(hit.collider.TryGetComponent<ARPlane>(out ARPlane hitPlane))
-                                {
-                                    if(calibrationPlanes.Contains(hitPlane))
-                                    {
-                                        if(planeSelected == null)
-                                        {
-                                            planeSelected = hitPlane;
-                                            planeSelected.GetComponent<MeshRenderer>().SetMaterials(new List<Material>(){ planeMaterial });
-                                        }else if(planeSelected != hitPlane)
-                                        {
-                                            planeSelected.GetComponent<MeshRenderer>().SetMaterials(new List<Material> { removePlaneMaterial });
-                                            planeSelected = hitPlane;
-                                        }
-                                    }
-                                }
-                            }else //not above a plane and not in calibration
-                            {
-                                if(planeSelected != null && !inCalibration)
-                                {
-                                    planeSelected.GetComponent<MeshRenderer>().SetMaterials(new List<Material> { removePlaneMaterial });
-                                    planeSelected = null;
-                                }
-                            }
-                        }
-                        //only check if calibration joints are above plane
-                        if(calibrationJoints.Contains(jointID))
-                        {
-                            calibrationJointsPoseDict[jointID] = poseRight;
-                        }
+                        calibrationJointsPoseDict[jointID] = poseRight;
                     }
+
+                    // if(trackingDataLeft.TryGetPose(out Pose poseLeft))
+                    // {
+
+                    // }
                 }
                 if(planeSelected != null && calibrationJointsPoseDict.Count == calibrationJoints.Length && !inCalibration)
                 {
-                    inCalibration = true;
+                    foreach(KeyValuePair<XRHandJointID, Pose> joint in calibrationJointsPoseDict)
+                    {
+                        if(Math.Abs(joint.Value.position.y - planeSelected.center.y) > distanceToPlaneThreshold)
+                        {
+                            return;
+                        }
+                    }
                     StartCalibrationOnPlane();
                 }
             break;
@@ -182,18 +211,11 @@ public class HandCalibrationViewController : MonoBehaviour
     private void StartCalibrationOnPlane()
     {
         calibrationManager.UpdateCalibrationStatus("Plane selected, awaiting hand placement");
-        calibrationManager.CalibrationStarted(inCalibration);
 
         //if calibration joints are within distance threshold y of plane, start calibration
         //check if all calibration joints are within distance threshold y of plane
-        foreach(KeyValuePair<XRHandJointID, Pose> joint in calibrationJointsPoseDict)
-        {
-            if(Mathf.Abs(joint.Value.position.y - planeSelected.center.y) > distanceThreshold)
-            {
-                inCalibration = false;
-                return;
-            }   
-        }
+        inCalibration = true; //only start calibration process if all joints are within distance threshold y of plane
+        calibrationManager.CalibrationStarted(inCalibration);
         calibrationManager.UpdateCalibrationStatus("Starting calibration");
 
         if(matrixCoroutine == null)
@@ -207,12 +229,10 @@ public class HandCalibrationViewController : MonoBehaviour
 
     private void DeactivateFingerPoints(List<GameObject> fingerPoints)
     {
-        //progressRing.gameObject.SetActive(false);
         foreach(GameObject fingerPoint in fingerPoints)
         {
             Destroy(fingerPoint);
         }
-        //fingerPoints.Clear();
     }
 
     private IEnumerator getMatrixFromHandPosition()
@@ -238,7 +258,7 @@ public class HandCalibrationViewController : MonoBehaviour
             }
             fingerPoints.Append(Instantiate(jointPrefab, calibrationJointsPoseDict[joint].position, calibrationJointsPoseDict[joint].rotation));
             calibrationManager.UpdateCalibrationStatus("getMatrixFromHandPosition: Instantiating joint " + joint);
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.25f); //reducing time to 0.25f from 0.5f AM
         }
         Debug.Log("getMatrixFromHandPosition: instantiated all joints");
         Matrix4x4 calibrationMatrix = CalibrationFromMatrix.Calculate_Hand_Coordinate_System_Transform(true, 
@@ -251,9 +271,10 @@ public class HandCalibrationViewController : MonoBehaviour
             calibrationJointsPoseDict[XRHandJointID.RingTip].position.x, planeSelected.transform.position.y, calibrationJointsPoseDict[XRHandJointID.RingTip].position.z,
             calibrationJointsPoseDict[XRHandJointID.LittleTip].position.x, planeSelected.transform.position.y, calibrationJointsPoseDict[XRHandJointID.LittleTip].position.z
         );
+        ServiceRegistry.GetService<ILighthouseControl>()?.RequestLighthouseCalibration(2, 0);
         SessionManager.instance.UpdateCalibration(calibrationMatrix);
         DeactivateFingerPoints(fingerPoints);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f); //wait for finger points to deactivate
         CompleteCalibration();
         yield return null;
     }
@@ -262,7 +283,7 @@ public class HandCalibrationViewController : MonoBehaviour
     {
         inCalibration = false;
         calibrationManager.UpdateCalibrationStatus("Calibration complete");
-        calibrationManager.CalibrationStarted(false);
+        calibrationManager.CalibrationStarted(inCalibration);
         //ARAnchor anchor = anchorManager.AttachAnchor(planeSelected, calibrationPose);
         var originInstance = Instantiate(originPrefab, SessionManager.instance.CharucoTransform.position, SessionManager.instance.CharucoTransform.rotation);
 
@@ -273,8 +294,7 @@ public class HandCalibrationViewController : MonoBehaviour
             m_HandSubsystem.updatedHands -= OnUpdatedHands;
         }
 
-        calibrationPlanes = null;
-        planeSelected.GetComponent<MeshRenderer>().SetMaterials(new List<Material> { removePlaneMaterial });
+        planeSelected.GetComponent<MeshRenderer>().SetMaterials(new List<Material> () { removePlaneMaterial });
         planeSelected = null;
         StartCoroutine(UnloadCalibration());
     }

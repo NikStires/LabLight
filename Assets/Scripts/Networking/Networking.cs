@@ -52,7 +52,7 @@ public partial class Networking : MonoBehaviour
     protected int _directPort = 8888;
     protected int _fileServerPort = 8080;
     protected string _directIpAddress = "";
-    private int _targetPacketVersionNumber = 13;
+    private int _targetPacketVersionNumber = 14;
 
     /// <summary>Occurs when [a data packet is received].</summary>
     public event EventHandler<(byte, object[])> ReceivePacket;

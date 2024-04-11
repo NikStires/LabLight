@@ -127,19 +127,6 @@ public partial class Networking : MonoBehaviour, ILighthouseControl
     //     }
     // }
 
-    // void ILighthouseControl.RequestLighthouseHandCalibration()
-    // {
-    //     if(!string.IsNullOrEmpty(_directIpAddress))
-    //     {
-    //         Debug.Log("Requesting hand calibration");
-    //         PingServer(packet_type.packet_client_request_alignment, 2);
-    //     }
-    //     else
-    //     {
-    //         Debug.LogWarning("Not connected yet");
-    //     }
-    // }
-
     void ILighthouseControl.RequestArucoSettings()
     {
         if (!string.IsNullOrEmpty(_directIpAddress))
