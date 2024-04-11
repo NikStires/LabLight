@@ -76,5 +76,11 @@
     "title": "piplight_Specimen Prep",
     "name": "piplight_Specimen Prep",
     "description": ""
+  },
+  {
+      "$id": "3",
+      "title": "DNA Purification",
+      "name": "DNA Purification",
+      "description": ""
   }
 ]

@@ -61,7 +61,7 @@ public class HandCalibrationViewController : MonoBehaviour
 
     private Coroutine matrixCoroutine = null;
     
-    public float distanceToPlaneThreshold = 0.02f;
+    public float distanceToPlaneThreshold = 0.05f;
 
     public float calibrationDistanceThreshold = 0.03f;
 
@@ -195,13 +195,7 @@ public class HandCalibrationViewController : MonoBehaviour
                 }
                 if(planeSelected != null && calibrationJointsPoseDict.Count == calibrationJoints.Length && !inCalibration)
                 {
-                    foreach(KeyValuePair<XRHandJointID, Pose> joint in calibrationJointsPoseDict)
-                    {
-                        if(Math.Abs(joint.Value.position.y - planeSelected.center.y) > distanceToPlaneThreshold)
-                        {
-                            return;
-                        }
-                    }
+                    inCalibration = true;
                     StartCalibrationOnPlane();
                 }
             break;
@@ -212,12 +206,21 @@ public class HandCalibrationViewController : MonoBehaviour
     {
         calibrationManager.UpdateCalibrationStatus("Plane selected, awaiting hand placement");
 
+
+        foreach(KeyValuePair<XRHandJointID, Pose> joint in calibrationJointsPoseDict)
+        {
+            if(Math.Abs(joint.Value.position.y - planeSelected.center.y) > distanceToPlaneThreshold)
+            {
+                inCalibration = false;
+                return;
+            }
+        }
+
         //if calibration joints are within distance threshold y of plane, start calibration
         //check if all calibration joints are within distance threshold y of plane
-        inCalibration = true; //only start calibration process if all joints are within distance threshold y of plane
+        //only start calibration process if all joints are within distance threshold y of plane
         calibrationManager.CalibrationStarted(inCalibration);
         calibrationManager.UpdateCalibrationStatus("Starting calibration");
-
         if(matrixCoroutine == null)
         {
             matrixCoroutine = StartCoroutine(getMatrixFromHandPosition());
@@ -251,6 +254,7 @@ public class HandCalibrationViewController : MonoBehaviour
             if(HasMovedOutOfDistance(initialJointPositions, calibrationJointsPoseDict.Values.ToArray())) //wait 2 seconds for hand position to stabalize 
             {
                 calibrationManager.UpdateCalibrationStatus("Calibration failed please place hands on plane");
+                inCalibration = false;
                 DeactivateFingerPoints(fingerPoints);
                 matrixCoroutine = null;
                 StartCalibrationOnPlane();
@@ -274,7 +278,7 @@ public class HandCalibrationViewController : MonoBehaviour
         ServiceRegistry.GetService<ILighthouseControl>()?.RequestLighthouseCalibration(2, 0);
         SessionManager.instance.UpdateCalibration(calibrationMatrix);
         DeactivateFingerPoints(fingerPoints);
-        yield return new WaitForSeconds(1f); //wait for finger points to deactivate
+        yield return new WaitForSeconds(2.5f); //wait for finger points to deactivate
         CompleteCalibration();
         yield return null;
     }

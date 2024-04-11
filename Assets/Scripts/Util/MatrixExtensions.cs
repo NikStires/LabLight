@@ -9,16 +9,16 @@ public static class MatrixExtensions
         // forward.y = matrix.m12;
         // forward.z = matrix.m22;
         forward.x = matrix.m00;
-        forward.y = matrix.m01;
-        forward.z = matrix.m02;
+        forward.y = matrix.m10;
+        forward.z = matrix.m20;
  
         Vector3 upwards;
         // upwards.x = matrix.m01;
         // upwards.y = matrix.m11;
         // upwards.z = matrix.m21;
-        upwards.x = matrix.m10;
+        upwards.x = matrix.m01;
         upwards.y = matrix.m11;
-        upwards.z = matrix.m12;
+        upwards.z = matrix.m21;
  
         return Quaternion.LookRotation(forward, upwards);
     }
@@ -26,12 +26,12 @@ public static class MatrixExtensions
     public static Vector3 ExtractPosition(this Matrix4x4 matrix)
     {
         Vector3 position;
-        // position.x = matrix.m03;
-        // position.y = matrix.m13;
-        // position.z = matrix.m23;
-        position.x = matrix.m30;
-        position.y = matrix.m31;
-        position.z = matrix.m32;
+        position.x = matrix.m03;
+        position.y = matrix.m13;
+        position.z = matrix.m23;
+        // position.x = matrix.m30;
+        // position.y = matrix.m31;
+        // position.z = matrix.m32;
         return position;
     }
  
