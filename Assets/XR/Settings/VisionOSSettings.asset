@@ -16,6 +16,6 @@ MonoBehaviour:
   m_HandsTrackingUsageDescription: Hand tracking demo
   m_WorldSensingUsageDescription: World sensing demo
   m_RuntimeSettings: {fileID: 11400000, guid: 9299eaad8fe3b4acbbd96c89dd791bab, type: 2}
-  m_UpperLimbVisibility: 0
+  m_UpperLimbVisibility: 1
   m_FoveatedRendering: 1
   m_IL2CPPLargeExeWorkaround: 1
