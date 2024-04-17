@@ -4,6 +4,7 @@
 
 import Foundation
 import SwiftUI
+import SafariServices
 
 struct SwiftUIInjectedScene {
     @SceneBuilder
@@ -15,6 +16,10 @@ struct SwiftUIInjectedScene {
             PDFContentView(pdfUrl!)
         }
         .defaultSize(width: 500.0, height: 800.0)
+        
+        WindowGroup(id: "Safari", for: String.self) { $urlString in
+            SafariContentView(urlString!)
+        }
         
         WindowGroup(id: "SimpleText") {
             Text("PDF Window")
