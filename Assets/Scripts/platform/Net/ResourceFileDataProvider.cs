@@ -24,7 +24,6 @@ public class ResourceFileDataProvider : IProcedureDataProvider, IMediaProvider
     {
         return LoadTextAsset("Procedure/index").Select(jsonString =>
         {
-            Debug.Log(jsonString);
             try
             {
                 return Parsers.ParseProcedures(jsonString);

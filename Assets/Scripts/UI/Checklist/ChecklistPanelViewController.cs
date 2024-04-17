@@ -8,7 +8,7 @@ using System.Linq;
 using UnityEngine.SceneManagement;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
-public class ChecklistPanelViewController : MonoBehaviour
+public class ChecklistPanelViewController : LLBasePanel
 {
     [SerializeField] GameObject unlockedIcon;
     [SerializeField] GameObject lockedIcon;
@@ -29,6 +29,7 @@ public class ChecklistPanelViewController : MonoBehaviour
 
     private void Awake()
     {
+        base.Awake();
         ProtocolState.checklistStream.Subscribe(_ => UpdateVisualState()).AddTo(this);
 
         closeProtocolButton.selectEntered.AddListener(_ =>
