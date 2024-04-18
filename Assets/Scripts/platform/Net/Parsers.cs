@@ -109,7 +109,7 @@ public class Parsers
         }
         catch (System.Exception e)
         {
-   //         ServiceRegistry.Logger.LogError("Parsing protocol index: " + e.ToString());
+            ServiceRegistry.Logger.LogError("Parsing protocol index: " + e.ToString());
             throw;
         }
     }

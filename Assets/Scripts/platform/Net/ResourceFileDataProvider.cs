@@ -30,7 +30,7 @@ public class ResourceFileDataProvider : IProcedureDataProvider, IMediaProvider
             }
             catch (Exception e)
             {
-                //ServiceRegistry.Logger.LogError("Could not create procedures " + e.ToString());
+                ServiceRegistry.Logger.LogError("Could not create procedures " + e.ToString());
                 throw;
             }
         }).ToTask();
@@ -59,7 +59,7 @@ public class ResourceFileDataProvider : IProcedureDataProvider, IMediaProvider
             }
             catch (Exception e)
             {
-                //ServiceRegistry.Logger.LogError("Parsing protocol definition " + e.ToString());
+                ServiceRegistry.Logger.LogError("Parsing protocol definition " + e.ToString());
                 throw;
             }
         });
