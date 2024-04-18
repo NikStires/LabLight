@@ -70,12 +70,11 @@ public class SceneLoader : MonoBehaviour
             SceneManager.UnloadSceneAsync(sceneName);
 
             // Set the first loaded scene that is not named "Persistent" as the active scene
-            Scene[] loadedScenes = SceneManager.GetAllScenes();
-            foreach (Scene scene in loadedScenes)
+            for(int i = 0; i < SceneManager.sceneCount; i++)
             {
-                if (scene.name != "Persistent")
+                if (SceneManager.GetSceneAt(i).name != "Persistent")
                 {
-                    SceneManager.SetActiveScene(scene);
+                    SceneManager.SetActiveScene(SceneManager.GetSceneAt(i));
                     break;
                 }
             }
