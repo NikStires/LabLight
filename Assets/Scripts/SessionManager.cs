@@ -10,15 +10,11 @@ public class SessionManager : MonoBehaviour
 {
     public static SessionManager instance;
 
-    public ARAnchorManager anchorManager;
-
-    public ARPlaneManager planeManager;
-
-    public ARPlaneViewController planeViewManager;
+    private ARAnchorManager anchorManager;
 
     //audio manager
 
-    public bool loadProcedure = true;
+    //public bool loadProcedure = true;
 
     private static Transform workspaceTransform;
 
@@ -70,12 +66,10 @@ public class SessionManager : MonoBehaviour
         }
 
         anchorManager = this.transform.parent.GetComponent<ARAnchorManager>();
-        //planeManager = this.transform.parent.GetComponent<ARPlaneManager>();
 
         //planeViewManager = this.transform.GetComponent<ARPlaneViewController>();
 
         //anchorManager.enabled = false;
-        //planeManager.requestedDetectionMode = UnityEngine.XR.ARSubsystems.PlaneDetectionMode.None;
 
         var resourceFileDataProvider = new ResourceFileDataProvider();
 
@@ -104,33 +98,33 @@ public class SessionManager : MonoBehaviour
          */
     }
 
-    public void OnEnable()
-    {
-        if (loadProcedure)
-        {
-            LoadProcedure();
-        }
-    }
+    // public void OnEnable()
+    // {
+    //     if (loadProcedure)
+    //     {
+    //         LoadProcedure();
+    //     }
+    // }
 
-    public void LoadProcedure()
-    {
-        var procedureDataProvider = ServiceRegistry.GetService<IProcedureDataProvider>();
-        if(procedureDataProvider != null)
-        {
-            procedureDataProvider.GetOrCreateProcedureDefinition("piplight_H551").Subscribe(procedure => 
-            {
-                Debug.Log(procedure.title + " loaded");
-                ProtocolState.SetProcedureDefinition(procedure);
-            }, (e) =>
-            {
-                Debug.Log("Error fetching procedure");
-            });
-        }
-        else
-        {
-            Debug.Log("Procedure Data provider null");
-        }
-    }
+    // public void LoadProcedure()
+    // {
+    //     var procedureDataProvider = ServiceRegistry.GetService<IProcedureDataProvider>();
+    //     if(procedureDataProvider != null)
+    //     {
+    //         procedureDataProvider.GetOrCreateProcedureDefinition("piplight_H551").Subscribe(procedure => 
+    //         {
+    //             Debug.Log(procedure.title + " loaded");
+    //             ProtocolState.SetProcedureDefinition(procedure);
+    //         }, (e) =>
+    //         {
+    //             Debug.Log("Error fetching procedure");
+    //         });
+    //     }
+    //     else
+    //     {
+    //         Debug.Log("Procedure Data provider null");
+    //     }
+    // }
 
     public void Update()
     {

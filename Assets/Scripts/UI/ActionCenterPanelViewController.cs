@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class ActionCenterPanelViewController : MonoBehaviour
 {
+    [SerializeField] private PlaneInteractionManagerScriptableObject planeManager;
     [SerializeField] GameObject timerPrefab;
     [SerializeField] UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable recordingButton;
     bool isRecording = false;
@@ -19,6 +20,11 @@ public class ActionCenterPanelViewController : MonoBehaviour
     {
         recordingButton.selectEntered.AddListener(_ => ToggleLighthouseRecoding());
         replayButton.selectEntered.AddListener(_ => ToggleLighthouseReplay());
+    }
+
+    void Update()
+    {
+        Debug.Log(planeManager);
     }
 
     /// <summary>
@@ -74,4 +80,15 @@ public class ActionCenterPanelViewController : MonoBehaviour
         }
         isReplaying = !isReplaying;
     }
+
+    public void EnableHeadPlacement()
+    {
+        PlaneInteractionManager.instance.OnEnableHeadPlacement();
+    }
+
+    public void EnableTapToPlace()
+    {
+        PlaneInteractionManager.instance.OnEnableTapToPlace();
+    }
+
 }

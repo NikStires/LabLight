@@ -10,7 +10,7 @@ public class ARPlaneViewController : MonoBehaviour
     public static ARPlaneViewController instance;
     private ARPlaneManager planeManager = null;
 
-    public List<ARPlane> planes = new List<ARPlane>();
+    private List<ARPlane> planes = new List<ARPlane>();
 
     void Awake()
     {

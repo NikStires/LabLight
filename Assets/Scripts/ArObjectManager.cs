@@ -1,4 +1,4 @@
-using System;
+  using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 public class ArObjectManager : MonoBehaviour
 {
     //public LockingDisplayController lockingDisplayController;
+
+    public PlaneInteractionManagerScriptableObject planeInteractionManager;
 
     [Header("World Container Prefabs")]
     public ContainerElementViewController WorldContainerHorizontal;
@@ -36,7 +38,11 @@ public class ArObjectManager : MonoBehaviour
 
     private List<MonoBehaviour> contentItemInstances = new List<MonoBehaviour>();
     private List<ArDefinition> anchorDefs = new List<ArDefinition>();
+
+    private List<GameObject> anchorPrefabs = new List<GameObject>();
     private Transform workspaceTransform;
+
+    private Coroutine enqueueObjectsCoroutine;
 
     void Awake()
     {
@@ -209,16 +215,23 @@ public class ArObjectManager : MonoBehaviour
         }
 
         //apply locking if needed
-        if (anchorDefs.Count > 0)
+        // if (anchorDefs.Count > 0)
+        // {
+        //     //reassign tracked objects on locking start
+        //     foreach (var of in SessionState.TrackedObjects)
+        //     {
+        //         processAddedObject(of);
+        //     }
+        //     //lockingDisplayController.TriggerLocking(new List<ArDefinition>(anchorDefs), specificArViews);
+        // }
+        // anchorDefs.Clear();
+        if(enqueueObjectsCoroutine == null)
         {
-            //reassign tracked objects on locking start
-            foreach (var of in SessionState.TrackedObjects)
-            {
-                processAddedObject(of);
-            }
-            //lockingDisplayController.TriggerLocking(new List<ArDefinition>(anchorDefs), specificArViews);
+            enqueueObjectsCoroutine = StartCoroutine(enqueueObjects(anchorPrefabs));
+        }else
+        {
+            Debug.Log("courtine already started for requesting object placement");
         }
-        anchorDefs.Clear();
     }
 
     // private void UpdateGenericDefinitions()
@@ -395,13 +408,17 @@ public class ArObjectManager : MonoBehaviour
                 specificArViews[modelArDefinition] = prefabInstance;
 
                 //if we are creating an unlocked model with an anchor condition deactivate it until locking starts
-                if(modelArDefinition.condition.conditionType == ConditionType.Anchor && !((WorldPositionController)specificArViews[modelArDefinition]).positionLocked)
-                {
-                    specificArViews[modelArDefinition].transform.gameObject.SetActive(false);
-                }
+                // if(modelArDefinition.condition.conditionType == ConditionType.Anchor && !((WorldPositionController)specificArViews[modelArDefinition]).positionLocked)
+                // {
+                //     specificArViews[modelArDefinition].transform.gameObject.SetActive(false);
+                // }
+                specificArViews[modelArDefinition].transform.gameObject.SetActive(false); //current all game objects start turned off AM 
 
                 // Check if we need to perform operations on this view
                 // might not be relevant anymore AM
+                anchorPrefabs.Add(specificArViews[modelArDefinition].transform.gameObject);
+
+
                 ApplyOperations(modelArDefinition, prefabInstance);
             }
             else
@@ -638,6 +655,20 @@ public class ArObjectManager : MonoBehaviour
                     arView.gameObject.SetActive(false);
                 }
             }
+        }
+    }
+
+    private IEnumerator enqueueObjects(List<GameObject> objects)
+    {
+        Debug.Log("Requesting tap to placement");
+        //planeInteractionManager.OnEnableHeadPlacement();
+        planeInteractionManager.OnEnableTapToPlace();
+        yield return new WaitForSeconds(5);
+        if(anchorPrefabs.Count > 0)
+        {
+            Debug.Log("Detected new models, sending to plane mananager");
+            planeInteractionManager.OnRequestObjectPlacement(anchorPrefabs);
+            anchorPrefabs.Clear();
         }
     }
 }

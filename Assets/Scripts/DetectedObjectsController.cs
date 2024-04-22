@@ -24,7 +24,7 @@ public class DetectedObjectsController : MonoBehaviour
         Transform parent = SessionManager.instance.CharucoTransform;
         foreach(TrackedObject to in trackedObjectLabels.Keys)
         {
-            if(Vector3.Distance(new Vector3(to.position.x, 0, to.position.z), new Vector3(trackedObject.position.x, 0, trackedObject.position.y)) < duplicateDetectionThreshold)
+            if(Vector3.Distance(new Vector3(to.position.x, to.position.y, to.position.z), new Vector3(trackedObject.position.x, to.position.y, trackedObject.position.y)) < duplicateDetectionThreshold)
             {
                 Debug.Log("DetectedobjectsController: not generating model of label " + trackedObject.label + " because it is too close to tracked object " + to.id);
                 return;

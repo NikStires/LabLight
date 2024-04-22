@@ -155,6 +155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc7e2c14d85048f438b179584ae5e8a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  planeInteractionManager: {fileID: 11400000, guid: 0e4c22905642e492a9c661e3e6ed89b8, type: 2}
   WorldContainerHorizontal: {fileID: 5704896419545166956, guid: 88fc549ff68b3be4597fec95b61ad576, type: 3}
   WorldContainerVertical: {fileID: 5233765809608049017, guid: ca74c74e3aab67e4d8711a9b3964be9e, type: 3}
   ContainerHorizontalItem: {fileID: 3878928379086764969, guid: ccf739193bf7f554283cf751e86d02e1, type: 3}
