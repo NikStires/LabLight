@@ -50,6 +50,16 @@ public class ChecklistPanelViewController : LLBasePanel
         });
     }
 
+    void OnEnable()
+    {
+        SetupVoiceCommands();
+    }
+
+    void OnDisable()
+    {
+        DisposeVoice?.Invoke();
+    }
+
     void Start()
     {
         UpdateVisualState();
@@ -367,5 +377,19 @@ public class ChecklistPanelViewController : LLBasePanel
             }
             tw.Close();
         }
+    }
+
+    Action DisposeVoice;
+
+    void SetupVoiceCommands()
+    {
+        DisposeVoice = SpeechRecognizer.Instance.Listen(new Dictionary<string, Action>()
+        {
+            {"check", () => CheckItem()},
+            {"uncheck", () => UnCheckItem()},
+            {"sign", () => SignOff()},
+            {"next", () => NextStep()},
+            {"previous", () => PreviousStep()},
+        });
     }
 }

@@ -18,6 +18,7 @@
     "com.unity.xr.core-utils": "2.4.0-exp.3",
     "com.unity.xr.interaction.toolkit": "3.0.1",
     "com.unity.xr.visionos": "1.1.6",
+    "com.whisper.unity": "https://github.com/Macoron/whisper.unity.git?path=/Packages/com.whisper.unity",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.animation": "1.0.0",

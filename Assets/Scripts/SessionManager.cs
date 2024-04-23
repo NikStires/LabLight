@@ -83,7 +83,6 @@ public class SessionManager : MonoBehaviour
 
         ServiceRegistry.RegisterService<IMediaProvider>(resourceFileDataProvider);
 
-
         //Set up default state
         SessionState.deviceId = SystemInfo.deviceName;
         SessionState.Connected = false;
