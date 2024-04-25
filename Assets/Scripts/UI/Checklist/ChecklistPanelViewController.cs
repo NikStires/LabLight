@@ -8,7 +8,7 @@ using System.Linq;
 using UnityEngine.SceneManagement;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
-public class ChecklistPanelViewController : MonoBehaviour
+public class ChecklistPanelViewController : LLBasePanel
 {
     [SerializeField] GameObject unlockedIcon;
     [SerializeField] GameObject lockedIcon;
@@ -29,6 +29,7 @@ public class ChecklistPanelViewController : MonoBehaviour
 
     private void Awake()
     {
+        base.Awake();
         ProtocolState.checklistStream.Subscribe(_ => UpdateVisualState()).AddTo(this);
 
         closeProtocolButton.selectEntered.AddListener(_ =>
@@ -47,6 +48,16 @@ public class ChecklistPanelViewController : MonoBehaviour
                 closeProtocolPopupEventSO.Open();
             }
         });
+    }
+
+    void OnEnable()
+    {
+        SetupVoiceCommands();
+    }
+
+    void OnDisable()
+    {
+        DisposeVoice?.Invoke();
     }
 
     void Start()
@@ -366,5 +377,19 @@ public class ChecklistPanelViewController : MonoBehaviour
             }
             tw.Close();
         }
+    }
+
+    Action DisposeVoice;
+
+    void SetupVoiceCommands()
+    {
+        DisposeVoice = SpeechRecognizer.Instance.Listen(new Dictionary<string, Action>()
+        {
+            {"check", () => CheckItem()},
+            {"uncheck", () => UnCheckItem()},
+            {"sign", () => SignOff()},
+            {"next", () => NextStep()},
+            {"previous", () => PreviousStep()},
+        });
     }
 }

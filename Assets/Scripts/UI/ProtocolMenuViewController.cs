@@ -6,7 +6,7 @@ using System;
 using UniRx;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
-public class ProtocolMenuViewController : MonoBehaviour
+public class ProtocolMenuViewController : LLBasePanel
 {
     [SerializeField] GridLayoutGroup buttonGrid;
     [SerializeField] GameObject buttonPrefab;
@@ -19,6 +19,11 @@ public class ProtocolMenuViewController : MonoBehaviour
     private int maxPage = 0;
     List<ProcedureDescriptor> protocols;
     List<ProtocolMenuButton> buttons = new List<ProtocolMenuButton>();
+
+    void Awake()
+    {
+        base.Awake();
+    }
 
     /// <summary>
     /// Called when the script instance is being loaded.

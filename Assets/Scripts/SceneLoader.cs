@@ -70,12 +70,11 @@ public class SceneLoader : MonoBehaviour
             SceneManager.UnloadSceneAsync(sceneName);
 
             // Set the first loaded scene that is not named "Persistent" as the active scene
-            Scene[] loadedScenes = SceneManager.GetAllScenes();
-            foreach (Scene scene in loadedScenes)
+            for(int i = 0; i < SceneManager.sceneCount; i++)
             {
-                if (scene.name != "Persistent")
+                if (SceneManager.GetSceneAt(i).name != "Persistent")
                 {
-                    SceneManager.SetActiveScene(scene);
+                    SceneManager.SetActiveScene(SceneManager.GetSceneAt(i));
                     break;
                 }
             }
@@ -99,12 +98,11 @@ public class SceneLoader : MonoBehaviour
 
     public void LoadSceneClean(string sceneName)
     {
-        //unload all scenes but persistent
-        foreach(var scene in SceneManager.GetAllScenes())
+        for(int i = 0; i < SceneManager.sceneCount; i++)
         {
-            if(scene.name != "Persistent")
+            if (SceneManager.GetSceneAt(i).name != "Persistent")
             {
-                SceneManager.UnloadSceneAsync(scene);
+                SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(i));
             }
         }
 
@@ -136,10 +134,14 @@ public class SceneLoader : MonoBehaviour
 
     private IEnumerator LoadNew(string sceneName)
     {
-        if(SceneManager.GetAllScenes().Contains(SceneManager.GetSceneByName(sceneName)))
+        //unload all scenes but persistent
+        for(int i = 0; i < SceneManager.sceneCount; i++)
         {
-            Debug.LogWarning("Scene " + sceneName + " is already loaded.");
-            yield break;
+            if(SceneManager.GetSceneAt(i).name == sceneName)
+            {
+                Debug.LogWarning("Scene " + sceneName + " is already loaded.");
+                yield break;
+            }
         }
 
         AsyncOperation loadOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);

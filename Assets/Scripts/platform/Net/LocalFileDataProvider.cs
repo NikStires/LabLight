@@ -13,8 +13,6 @@ using UnityEngine;
 /// </summary>
 public class LocalFileDataProvider : IProcedureDataProvider, ITextDataProvider
 {
-    bool hasLoadedResources = false;
-
     public async Task<List<ProcedureDescriptor>> GetProcedureList()
     {
         var list = new List<ProcedureDescriptor>();
