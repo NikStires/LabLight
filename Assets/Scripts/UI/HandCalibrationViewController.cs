@@ -4,18 +4,9 @@ using UnityEngine;
 using UnityEngine.XR.Hands;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
-using UnityEngine.Rendering;
-using UnityEngine.XR;
-using UnityEngine.UIElements;
-using Unity.VisualScripting;
 using System.Linq;
 using System;
 using UniRx;
-using TMPro;
-using UnityEngine.PlayerLoop;
-using UnityEngine.SceneManagement;
-using Unity.PolySpatial;
-using JetBrains.Annotations;
 
 public class HandCalibrationViewController : MonoBehaviour
 {

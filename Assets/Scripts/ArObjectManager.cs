@@ -662,7 +662,7 @@ public class ArObjectManager : MonoBehaviour
         //Debug.Log("Requesting tap to placement");
         //planeInteractionManager.OnEnableHeadPlacement();
         //planeInteractionManager.OnEnableTapToPlace();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.5f);
         if(anchorPrefabs.Count > 0)
         {
             Debug.Log("Detected new models, sending to plane mananager");
