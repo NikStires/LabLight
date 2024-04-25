@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 
-public class DetectedObjectsController : MonoBehaviour
+public class DetectedObjectsManager : MonoBehaviour
 {
 
     [SerializeField]
@@ -26,7 +26,7 @@ public class DetectedObjectsController : MonoBehaviour
         {
             if(Vector3.Distance(new Vector3(to.position.x, to.position.y, to.position.z), new Vector3(trackedObject.position.x, to.position.y, trackedObject.position.y)) < duplicateDetectionThreshold)
             {
-                Debug.Log("DetectedobjectsController: not generating model of label " + trackedObject.label + " because it is too close to tracked object " + to.id);
+                Debug.Log("Manager: not generating model of label " + trackedObject.label + " because it is too close to tracked object " + to.id);
                 return;
             }
         }
@@ -40,7 +40,7 @@ public class DetectedObjectsController : MonoBehaviour
         trackedObjectLabels.Remove(trackedObject);
     }
 
-    private void instantiateLabel(Transform parent, TrackedObject trackedObject)
+    private void instantiateLabel(Transform parent, TrackedObject trackedObject) //worldpositioncontroller still manages the labels position based on data from networking
     {
         GameObject newLabelPrefab = Instantiate(labelPrefab, parent);
 

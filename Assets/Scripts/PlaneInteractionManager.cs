@@ -259,10 +259,10 @@ public class PlaneInteractionManager : MonoBehaviour
                         //reticle.transform.SetPositionAndRotation(new Vector3(hit.point.x, currentPlane.center.y, hit.point.z), Quaternion.FromToRotation(reticle.transform.up, currentPlane.normal));
                     }
                 }
-            }else
-            {
-                Debug.Log("PlaneInteractionManager: No planes hit!");
-            }
+            }//else
+            // {
+            //     Debug.Log("PlaneInteractionManager: No planes hit!");
+            // }
             
             // // Check if the raycast hits any AR planes in the availablePlanes list, sends ray forward from camera 6 feet or 2 meter
             // if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit, 2f))

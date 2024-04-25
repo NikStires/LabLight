@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 46269582}
   - component: {fileID: 46269581}
   m_Layer: 0
-  m_Name: DetectedObjectsController
+  m_Name: DetectedObjectsManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -891,7 +891,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jointPrefab: {fileID: 3711863763955802890, guid: 921c6c06d6cdf42ecb9fd8f08c097ff2, type: 3}
   planeManager: {fileID: 11400000, guid: 0e4c22905642e492a9c661e3e6ed89b8, type: 2}
-  testFingerJoint: 1
+  testFingerJoint: 0
   currentTest: 3
 --- !u!4 &357135071
 Transform:
