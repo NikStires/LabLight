@@ -58,7 +58,7 @@ public class SpeechRecognizer : MonoBehaviour
                 Action action;
                 if(Keywords.TryGetValue(word, out action))
                 {
-                    Debug.Log("Voice recognized \"" + word);
+                    Debug.Log("Keyword recognized: " + word);
                     action.Invoke();
                 }
             }
