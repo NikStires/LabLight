@@ -884,14 +884,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 357135069}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b03b4b93f0c7248bca8ad07109e2cd8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   jointPrefab: {fileID: 3711863763955802890, guid: 921c6c06d6cdf42ecb9fd8f08c097ff2, type: 3}
   planeManager: {fileID: 11400000, guid: 0e4c22905642e492a9c661e3e6ed89b8, type: 2}
-  testFingerJoint: 0
+  testFingerJoint: 1
   currentTest: 3
 --- !u!4 &357135071
 Transform:

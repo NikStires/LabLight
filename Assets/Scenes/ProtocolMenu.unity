@@ -329,6 +329,18 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 900117891}
+    - target: {fileID: 1735417969816916653, guid: e16be1529729f40ed8d0a89850266400, type: 3}
+      propertyPath: m_Mass
+      value: 0.0000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 1735417969816916653, guid: e16be1529729f40ed8d0a89850266400, type: 3}
+      propertyPath: m_AngularDrag
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1735417969816916653, guid: e16be1529729f40ed8d0a89850266400, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1771109768754643810, guid: e16be1529729f40ed8d0a89850266400, type: 3}
       propertyPath: m_Mesh
       value: 

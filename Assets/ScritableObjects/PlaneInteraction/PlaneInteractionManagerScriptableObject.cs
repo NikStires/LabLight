@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.XR.ARFoundation;
 
 [CreateAssetMenu(fileName = "PlaneInteractionManager", menuName = "ScriptableObjects/PlaneInteractionManager", order = 2)]
 public class PlaneInteractionManagerScriptableObject : ScriptableObject
@@ -19,6 +20,9 @@ public class PlaneInteractionManagerScriptableObject : ScriptableObject
     public UnityEvent DisableHeadPlacement = new UnityEvent();
     [SerializeField]
     public UnityEvent<List<GameObject>> RequestObjectPlacement = new UnityEvent<List<GameObject>>();
+
+    [SerializeField]
+    public UnityEvent<ARPlane> PlanePlacementRequested = new UnityEvent<ARPlane>();
     // Start is called before the first frame update
     private void Awake()
     {
@@ -45,6 +49,10 @@ public class PlaneInteractionManagerScriptableObject : ScriptableObject
         if(RequestObjectPlacement == null)
         {
             RequestObjectPlacement = new UnityEvent<List<GameObject>>();
+        }
+        if(PlanePlacementRequested == null)
+        {
+            PlanePlacementRequested = new UnityEvent<ARPlane>();
         }
     }
 
@@ -79,4 +87,8 @@ public class PlaneInteractionManagerScriptableObject : ScriptableObject
         RequestObjectPlacement.Invoke(objects);
     }
     
+    public void OnPlanePlacementRequested(ARPlane plane)
+    {
+        PlanePlacementRequested.Invoke(plane);
+    }
 }

@@ -15,15 +15,21 @@ public class TapToPlaceObject : MonoBehaviour
 
     // Start is called before the first frame update
 
-    public void OnCollisionEnter(Collision collision)
+    public void OnTriggerEnter(Collider collider)
     {
         Debug.Log("Collision detected");
-        Debug.Log(collision.transform.name);
-        if(collision.transform.parent.name == "HandJointPrefab(Clone)")
+        Debug.Log(collider.transform.name);
+        if(collider.transform.parent != null && collider.transform.parent.name == "HandJointPrefab(Clone)")
         {
             Debug.Log("PlaneInteractionMananger: collision with hand joint");
-            planeInteractionManager.OnFingerTipPlaneCollision(collision.transform.position);
+            planeInteractionManager.OnFingerTipPlaneCollision(collider.transform.position);
         }
+    }
+
+    public void PlaneSelected()
+    {
+        planeInteractionManager.OnPlanePlacementRequested(this.GetComponent<ARPlane>());
+        Debug.Log("Plane placement requested");
     }
 
 }

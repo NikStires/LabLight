@@ -1,3 +1,4 @@
+using UniRx;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -98,8 +99,6 @@ public class PlaneInteractionManager : MonoBehaviour
             m_HandSubsystem.updatedHands += OnUpdatedHands;
         }
 
-        availablePlanes = ARPlaneViewController.instance.GetPlanesByClassification(planeClassifications);
-
         AddSubscriptions();
     }
 
@@ -120,6 +119,8 @@ public class PlaneInteractionManager : MonoBehaviour
         planeInteractionManager.FingerTipPlaneCollision.AddListener(obj => OnCollisionEntry(obj));
         planeInteractionManager.EnableHeadPlacement.AddListener(EnableHeadPlacement);
         planeInteractionManager.DisableHeadPlacement.AddListener(DisableHeadPlacement);
+        planeInteractionManager.PlanePlacementRequested.AddListener(obj => OnPlanePlacementRequested(obj));
+        ProtocolState.procedureStream.Subscribe(_ => ResetObjects()).AddTo(this);
     }
 
     private void RemoveSubscriptions()
@@ -130,6 +131,8 @@ public class PlaneInteractionManager : MonoBehaviour
         planeInteractionManager.FingerTipPlaneCollision.RemoveListener(OnCollisionEntry);
         planeInteractionManager.EnableHeadPlacement.RemoveListener(EnableHeadPlacement);
         planeInteractionManager.DisableHeadPlacement.RemoveListener(DisableHeadPlacement);
+        planeInteractionManager.PlanePlacementRequested.RemoveListener(OnPlanePlacementRequested);
+        ProtocolState.procedureStream.Subscribe(_ => ResetObjects()).Dispose();
     }
     
     void OnUpdatedHands(XRHandSubsystem subsystem, XRHandSubsystem.UpdateSuccessFlags updateSuccessFlags, XRHandSubsystem.UpdateType updateType)
@@ -187,31 +190,49 @@ public class PlaneInteractionManager : MonoBehaviour
             //         LockObjectAndProgressQueue();
             //     }
             // }
-            if(!delayEnabled)
-            {
-                XRHandJoint leftMiddleTip = m_HandSubsystem.leftHand.GetJoint(XRHandJointID.IndexTip);
-                XRHandJoint leftThumbTip = m_HandSubsystem.leftHand.GetJoint(XRHandJointID.ThumbTip);
-                if(leftMiddleTip.TryGetPose(out Pose leftMiddlePose) && leftThumbTip.TryGetPose(out Pose leftThumbPose))
-                {
-                    if(DetectPinch(leftMiddleTip, leftThumbTip))
-                    {
-                        if(currentPrefab != null)
-                        {
-                            Debug.Log("PlaneInteractionManager: Pinch detected on left hand, placing object");
-                            LockObjectAndProgressQueue();
-                            StartCoroutine(DelayNextPlacement());
-                        }else
-                        {
-                            Debug.Log("PlaneInteractionManager: No object to place");
-                        }
-                    }
-                }
-            }else
-            {
-                Debug.Log("PlaneInteractionManager: Delay enabled, waiting to place next object");
-            }
+            // if(!delayEnabled)
+            // {
+            //     XRHandJoint leftMiddleTip = m_HandSubsystem.leftHand.GetJoint(XRHandJointID.IndexTip);
+            //     XRHandJoint leftThumbTip = m_HandSubsystem.leftHand.GetJoint(XRHandJointID.ThumbTip);
+            //     if(leftMiddleTip.TryGetPose(out Pose leftMiddlePose) && leftThumbTip.TryGetPose(out Pose leftThumbPose))
+            //     {
+            //         if(DetectPinch(leftMiddleTip, leftThumbTip))
+            //         {
+            //             if(currentPrefab != null)
+            //             {
+            //                 Debug.Log("PlaneInteractionManager: Pinch detected on left hand, placing object");
+            //                 LockObjectAndProgressQueue();
+            //                 StartCoroutine(DelayNextPlacement());
+            //             }else
+            //             {
+            //                 Debug.Log("PlaneInteractionManager: No object to place");
+            //             }
+            //         }
+            //     }
+            // }else
+            // {
+            //     Debug.Log("PlaneInteractionManager: Delay enabled, waiting to place next object");
+            // }
 
             break;
+        }
+    }
+
+    private void OnPlanePlacementRequested(ARPlane plane)
+    {
+        if(!delayEnabled && currentPlane != null && currentPlane == plane)
+        {
+            if(currentPrefab != null)
+            {
+                Debug.Log("PlaneInteractionManager: Placing object on plane");
+                currentPrefab.transform.SetPositionAndRotation(new Vector3(currentPrefab.transform.position.x, plane.center.y, currentPrefab.transform.position.z), Quaternion.LookRotation(new Vector3(-currentPrefab.transform.position.x, currentPlane.center.y, -currentPrefab.transform.position.z) - new Vector3(-Camera.main.transform.position.x, currentPlane.center.y, -Camera.main.transform.position.z)));
+                //currentPrefab.transform.SetPositionAndRotation(new Vector3(plane.center.x, plane.center.y, plane.center.z), Quaternion.FromToRotation(currentPrefab.transform.up, plane.normal));
+                LockObjectAndProgressQueue();
+                StartCoroutine(DelayNextPlacement());
+            }else
+            {
+                Debug.Log("PlaneInteractionManager: No object to place");
+            }
         }
     }
 
@@ -227,10 +248,10 @@ public class PlaneInteractionManager : MonoBehaviour
                 }
             }
         #endif            
-        if(objectsQueue.Count > 0 || currentPrefab != null || reticle != null)
+        if((headPlacementEnabled || enableTapToPlace) && availablePlanes != null && availablePlanes.Count > 0)
         {
             RaycastHit [] hits;
-            hits = Physics.RaycastAll(Camera.main.transform.position, Camera.main.transform.forward, 2f);
+            hits = Physics.RaycastAll(Camera.main.transform.position, Camera.main.transform.forward, 2f, 1); //1 = ignore triggers
             ARPlane plane = hits.Where(hit => hit.transform.TryGetComponent(out ARPlane plane)).Select(hit => hit.transform.GetComponent<ARPlane>()).FirstOrDefault();
             if(plane != null && availablePlanes.Contains(plane))
             {
@@ -248,12 +269,10 @@ public class PlaneInteractionManager : MonoBehaviour
                     {
                         Debug.Log("PlaneInteractionManager: Updating current prefab position to " + hit.point);
                         currentPrefab.transform.SetPositionAndRotation(new Vector3(hit.point.x, currentPlane.center.y, hit.point.z), Quaternion.LookRotation(new Vector3(-hit.point.x, currentPlane.center.y, -hit.point.z) - new Vector3(-Camera.main.transform.position.x, currentPlane.center.y, -Camera.main.transform.position.z)));
-                        //currentPrefab.transform.SetPositionAndRotation(new Vector3(hit.point.x, currentPlane.center.y, hit.point.z), Quaternion.FromToRotation(currentPrefab.transform.up, currentPlane.normal));
                     }else if(reticle != null)
                     {
                         Debug.Log("PlaneInteractionManager: Updating reticle position to " + hit.point);
                         reticle.transform.SetPositionAndRotation(new Vector3(hit.point.x, currentPlane.center.y, hit.point.z), Quaternion.LookRotation(new Vector3(-hit.point.x, currentPlane.center.y, -hit.point.z) - new Vector3(-Camera.main.transform.position.x, currentPlane.center.y, -Camera.main.transform.position.z)));
-                        //reticle.transform.SetPositionAndRotation(new Vector3(hit.point.x, currentPlane.center.y, hit.point.z), Quaternion.FromToRotation(reticle.transform.up, currentPlane.normal));
                     }
                 }
             }//else
@@ -292,6 +311,9 @@ public class PlaneInteractionManager : MonoBehaviour
             //         Debug.Log("PlaneInteractionManager: Hit this instead: " + hit.transform.gameObject.name);
             //     }
             // }
+        }else if((enableTapToPlace || headPlacementEnabled) && (availablePlanes == null || availablePlanes.Count == 0)) //attempt to get list of planes if we don't have one already
+        {
+            availablePlanes = ARPlaneViewController.instance.GetPlanesByClassification(planeClassifications);
         }
     }
 
@@ -329,7 +351,6 @@ public class PlaneInteractionManager : MonoBehaviour
     {
         if(!headPlacementEnabled)
         {
-            availablePlanes = ARPlaneViewController.instance.GetPlanesByClassification(planeClassifications);
             Debug.Log("PlaneInteractionManager: Enabling head placement");
             headPlacementEnabled = true;
             if(currentPrefab == null && reticle == null)
@@ -357,7 +378,6 @@ public class PlaneInteractionManager : MonoBehaviour
     {
         if(!enableTapToPlace)
         {
-            availablePlanes = ARPlaneViewController.instance.GetPlanesByClassification(planeClassifications);
             Debug.Log("PlaneInteractionManager: Enabling tap to place");
             enableTapToPlace = true;
             if(currentPrefab == null && reticle == null)
@@ -430,46 +450,99 @@ public class PlaneInteractionManager : MonoBehaviour
             {
                 currentPlane.GetComponent<MeshRenderer>().SetMaterials(new List<Material>() {invisiblePlaneMaterial});
             }
+            currentPlane = null;
+            availablePlanes = null;
         }
     }
 
     //if object is placed we want to either cycle to next object or if there are no objects left disable tap to place and head placement
 
     
-    private bool DetectPinch(XRHandJoint middle, XRHandJoint thumb)
+    // private bool DetectPinch(XRHandJoint middle, XRHandJoint thumb)
+    // {
+
+    //     if (middle.trackingState != XRHandJointTrackingState.None &&
+    //         thumb.trackingState != XRHandJointTrackingState.None)
+    //     {
+    //         Vector3 indexPOS = Vector3.zero;
+    //         Vector3 thumbPOS = Vector3.zero;
+
+    //         if (middle.TryGetPose(out Pose indexPose))
+    //         {
+    //             // adjust transform relative to the PolySpatial Camera transform
+    //             indexPOS = Camera.main.transform.InverseTransformPoint(indexPose.position);
+    //         }
+
+    //         if (thumb.TryGetPose(out Pose thumbPose))
+    //         {
+    //             // adjust transform relative to the PolySpatial Camera adjustments
+    //             thumbPOS = Camera.main.transform.InverseTransformPoint(thumbPose.position);
+    //         }
+
+    //         var pinchDistance = Vector3.Distance(indexPOS, thumbPOS);
+
+    //         if (pinchDistance <= scaledThreshold)
+    //         {
+    //             return true;
+    //         }
+    //         else
+    //         {
+    //             return false;
+    //         }
+    //     }else
+    //     {
+    //         return false;
+    //     }
+    // }
+
+    private IEnumerator DelayNextPlacement()
     {
+        delayEnabled = true;
+        yield return new WaitForSeconds(2f);
+        delayEnabled = false;
+        yield break;
+    }
 
-        if (middle.trackingState != XRHandJointTrackingState.None &&
-            thumb.trackingState != XRHandJointTrackingState.None)
+    public void OnEnableHeadPlacement()
+    {
+        EnableHeadPlacement();
+    }
+
+    public void OnEnableTapToPlace()
+    {
+        EnableTapToPlace();
+    }
+
+    private void ResetObjects()
+    {
+        if(ProtocolState.procedureDef == null)
         {
-            Vector3 indexPOS = Vector3.zero;
-            Vector3 thumbPOS = Vector3.zero;
-
-            if (middle.TryGetPose(out Pose indexPose))
+            if(headPlacementEnabled)
             {
-                // adjust transform relative to the PolySpatial Camera transform
-                indexPOS = Camera.main.transform.InverseTransformPoint(indexPose.position);
+                DisableHeadPlacement();
             }
-
-            if (thumb.TryGetPose(out Pose thumbPose))
+            if(enableTapToPlace)
             {
-                // adjust transform relative to the PolySpatial Camera adjustments
-                thumbPOS = Camera.main.transform.InverseTransformPoint(thumbPose.position);
+                DisableTapToPlace();
             }
-
-            var pinchDistance = Vector3.Distance(indexPOS, thumbPOS);
-
-            if (pinchDistance <= scaledThreshold)
+            if(currentPrefab != null)
             {
-                return true;
+                Destroy(currentPrefab);
+                currentPrefab = null;
             }
-            else
+            if(reticle != null)
             {
-                return false;
+                Destroy(reticle);
+                reticle = null;
             }
-        }else
-        {
-            return false;
+            if(currentPlane != null)
+            {
+                currentPlane.GetComponent<MeshRenderer>().SetMaterials(new List<Material>() {invisiblePlaneMaterial});
+                currentPlane = null;
+            }
+            availablePlanes = null; 
+
+            objectsQueue.Clear();
         }
     }
 
@@ -499,22 +572,6 @@ public class PlaneInteractionManager : MonoBehaviour
     //     TestLockObjectAndProgressQueue();
     // }
 
-    private IEnumerator DelayNextPlacement()
-    {
-        delayEnabled = true;
-        yield return new WaitForSeconds(2f);
-        delayEnabled = false;
-        yield break;
-    }
 
-    public void OnEnableHeadPlacement()
-    {
-        EnableHeadPlacement();
-    }
-
-    public void OnEnableTapToPlace()
-    {
-        EnableTapToPlace();
-    }
     
 }
