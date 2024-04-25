@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 using UnityEngine.XR.Hands;
+using System;
 
 public class PlaneInteractionManager : MonoBehaviour
 {
@@ -24,15 +26,15 @@ public class PlaneInteractionManager : MonoBehaviour
 
     [SerializeField] public Dictionary<XRHandJointID, GameObject> leftTips = new Dictionary<XRHandJointID, GameObject>();
 
-    [SerializeField] public float scaledThreshold = 0.1f; //scaled threshold for pinch detection
+    [SerializeField] public float scaledThreshold = 0.04f; //scaled threshold for pinch detection
 
     [SerializeField] public Queue<GameObject> objectsQueue = new Queue<GameObject>(); //queue of objects to be placed on plane
 
     public static XRHandJointID[] tipIDs = new XRHandJointID [] //for now only account for 3 finger tips, no little or thumb
     {
-        XRHandJointID.IndexTip,
-        XRHandJointID.MiddleTip,
-        XRHandJointID.RingTip
+        XRHandJointID.IndexTip
+        // XRHandJointID.MiddleTip,
+        // XRHandJointID.RingTip
     };
 
 
@@ -57,6 +59,8 @@ public class PlaneInteractionManager : MonoBehaviour
 
     private bool enableTapToPlace = false;
 
+    private bool delayEnabled = false;
+
     // Start is called before the first frame update
     //tips for each finger so that we can detect position of 
 
@@ -69,13 +73,12 @@ public class PlaneInteractionManager : MonoBehaviour
     // when pinching the object will be placed on the plane
     private void Awake()
     {
-        if(instance == null)
+        if(instance == null || instance == this)
         {
             instance = this;
         }
         else
         {
-            Debug.LogWarning("PlaneInteractionManager already exists, destroying new instance");
             DestroyImmediate(gameObject);
         }
         var handSubsystems = new List<XRHandSubsystem>();
@@ -150,11 +153,11 @@ public class PlaneInteractionManager : MonoBehaviour
                         if(!rightTips.ContainsKey(jointID))
                         {
                             rightTips[jointID] = Instantiate(jointTipPrefab, poseRight.position, poseRight.rotation);
-                            rightTips[jointID].transform.localScale = new Vector3(2f, 2f, 2f);
+                            rightTips[jointID].transform.GetChild(0).localScale = new Vector3(3f, 3f, 3f);
                         }
                         else
                         {
-                            rightTips[jointID].transform.SetPositionAndRotation(poseRight.position, poseRight.rotation);
+                            rightTips[jointID].transform.GetChild(0).SetPositionAndRotation(poseRight.position, poseRight.rotation);
                         }
                     }
 
@@ -163,11 +166,11 @@ public class PlaneInteractionManager : MonoBehaviour
                         if(!leftTips.ContainsKey(jointID))
                         {
                             leftTips[jointID] = Instantiate(jointTipPrefab, poseLeft.position, poseLeft.rotation);
-                            leftTips[jointID].transform.localScale = new Vector3(2f, 2f, 2f);
+                            leftTips[jointID].transform.GetChild(0).localScale = new Vector3(3f, 3f, 3f);
                         }
                         else
                         {
-                            leftTips[jointID].transform.SetPositionAndRotation(poseLeft.position, poseLeft.rotation);
+                            leftTips[jointID].transform.GetChild(0).SetPositionAndRotation(poseLeft.position, poseLeft.rotation);
                         }
                     }
                 }
@@ -179,37 +182,54 @@ public class PlaneInteractionManager : MonoBehaviour
             // XRHandJoint rightMiddleTipJoint = m_HandSubsystem.rightHand.GetJoint(XRHandJointID.IndexTip);
             // XRHandJoint rightThumbTipJoint = m_HandSubsystem.rightHand.GetJoint(XRHandJointID.ThumbTip);
 
-            XRHandJoint leftMiddleTip = m_HandSubsystem.leftHand.GetJoint(XRHandJointID.IndexTip);
-            XRHandJoint leftThumbTip = m_HandSubsystem.leftHand.GetJoint(XRHandJointID.ThumbTip);
             // if((rightMiddleTipJoint.TryGetPose(out Pose rightMiddlePose) && rightThumbTipJoint.TryGetPose(out Pose rightThumbPose)))
             // {
             //     if(DetectPinch(rightMiddleTipJoint, rightThumbTipJoint) && currentPrefab != null)
             //     {
-            //         Debug.Log("Pinch detected");
+            //         Debug.Log("PlaneInteractionManager: Pinch detected");
             //         LockObjectAndProgressQueue();
             //     }
             // }
-
-            if(leftMiddleTip.TryGetPose(out Pose leftMiddlePose) && leftThumbTip.TryGetPose(out Pose leftThumbPose))
+            if(!delayEnabled)
             {
-                if(DetectPinch(leftMiddleTip, leftThumbTip))
+                XRHandJoint leftMiddleTip = m_HandSubsystem.leftHand.GetJoint(XRHandJointID.IndexTip);
+                XRHandJoint leftThumbTip = m_HandSubsystem.leftHand.GetJoint(XRHandJointID.ThumbTip);
+                if(leftMiddleTip.TryGetPose(out Pose leftMiddlePose) && leftThumbTip.TryGetPose(out Pose leftThumbPose))
                 {
-                    if(currentPrefab != null)
+                    if(DetectPinch(leftMiddleTip, leftThumbTip))
                     {
-                        Debug.Log("Pinch detected on left hand, placing object");
-                        LockObjectAndProgressQueue();
-                    }else
-                    {
-                        Debug.Log("No object to place");
+                        if(currentPrefab != null)
+                        {
+                            Debug.Log("PlaneInteractionManager: Pinch detected on left hand, placing object");
+                            LockObjectAndProgressQueue();
+                            StartCoroutine(DelayNextPlacement());
+                        }else
+                        {
+                            Debug.Log("PlaneInteractionManager: No object to place");
+                        }
                     }
                 }
+            }else
+            {
+                Debug.Log("PlaneInteractionManager: Delay enabled, waiting to place next object");
             }
+
             break;
         }
     }
 
     private void Update()
     {
+        #if UNITY_EDITOR
+        
+            if(Input.GetKeyDown(KeyCode.L))
+            {
+                if(currentPrefab != null)
+                {
+                    LockObjectAndProgressQueue();
+                }
+            }
+        #endif            
         if(objectsQueue.Count > 0 || currentPrefab != null || reticle != null)
         {
             RaycastHit [] hits;
@@ -229,17 +249,19 @@ public class PlaneInteractionManager : MonoBehaviour
                 {
                     if(currentPrefab != null)
                     {
-                        Debug.Log("Updating current prefab position to " + hit.point);
-                        currentPrefab.transform.SetPositionAndRotation(new Vector3(hit.point.x, currentPlane.center.y, hit.point.z), Quaternion.FromToRotation(currentPrefab.transform.up, currentPlane.normal));
+                        Debug.Log("PlaneInteractionManager: Updating current prefab position to " + hit.point);
+                        currentPrefab.transform.SetPositionAndRotation(new Vector3(hit.point.x, currentPlane.center.y, hit.point.z), Quaternion.LookRotation(new Vector3(-hit.point.x, currentPlane.center.y, -hit.point.z) - new Vector3(-Camera.main.transform.position.x, currentPlane.center.y, -Camera.main.transform.position.z)));
+                        //currentPrefab.transform.SetPositionAndRotation(new Vector3(hit.point.x, currentPlane.center.y, hit.point.z), Quaternion.FromToRotation(currentPrefab.transform.up, currentPlane.normal));
                     }else if(reticle != null)
                     {
-                        Debug.Log("Updating reticle position to " + hit.point);
-                        reticle.transform.SetPositionAndRotation(new Vector3(hit.point.x, currentPlane.center.y, hit.point.z), Quaternion.FromToRotation(reticle.transform.up, currentPlane.normal));
+                        Debug.Log("PlaneInteractionManager: Updating reticle position to " + hit.point);
+                        reticle.transform.SetPositionAndRotation(new Vector3(hit.point.x, currentPlane.center.y, hit.point.z), Quaternion.LookRotation(new Vector3(-hit.point.x, currentPlane.center.y, -hit.point.z) - new Vector3(-Camera.main.transform.position.x, currentPlane.center.y, -Camera.main.transform.position.z)));
+                        //reticle.transform.SetPositionAndRotation(new Vector3(hit.point.x, currentPlane.center.y, hit.point.z), Quaternion.FromToRotation(reticle.transform.up, currentPlane.normal));
                     }
                 }
             }else
             {
-                Debug.Log("No planes hit!");
+                Debug.Log("PlaneInteractionManager: No planes hit!");
             }
             
             // // Check if the raycast hits any AR planes in the availablePlanes list, sends ray forward from camera 6 feet or 2 meter
@@ -259,18 +281,18 @@ public class PlaneInteractionManager : MonoBehaviour
             //         {
             //             if(currentPrefab != null)
             //             {
-            //                 Debug.Log("Updating current prefab position to " + hit.point);
+            //                 Debug.Log("PlaneInteractionManager: Updating current prefab position to " + hit.point);
             //                 currentPrefab.transform.SetPositionAndRotation(new Vector3(hit.point.x, currentPlane.center.y, hit.point.z), Quaternion.FromToRotation(currentPrefab.transform.up, currentPlane.normal));
             //             }else if(reticle != null)
             //             {
-            //                 Debug.Log("Updating reticle position to " + hit.point);
+            //                 Debug.Log("PlaneInteractionManager: Updating reticle position to " + hit.point);
             //                 reticle.transform.SetPositionAndRotation(new Vector3(hit.point.x, currentPlane.center.y, hit.point.z), Quaternion.FromToRotation(reticle.transform.up, currentPlane.normal));
             //             }
             //         }
             //     }else
             //     {
-            //         Debug.Log("No plane hit!");
-            //         Debug.Log("Hit this instead: " + hit.transform.gameObject.name);
+            //         Debug.Log("PlaneInteractionManager: No plane hit!");
+            //         Debug.Log("PlaneInteractionManager: Hit this instead: " + hit.transform.gameObject.name);
             //     }
             // }
         }
@@ -311,21 +333,21 @@ public class PlaneInteractionManager : MonoBehaviour
         if(!headPlacementEnabled)
         {
             availablePlanes = ARPlaneViewController.instance.GetPlanesByClassification(planeClassifications);
-            Debug.Log("Enabling head placement");
+            Debug.Log("PlaneInteractionManager: Enabling head placement");
             headPlacementEnabled = true;
             if(currentPrefab == null && reticle == null)
             {
-                Debug.Log("current prefab is null, spawning default reticle"); 
+                Debug.Log("PlaneInteractionManager: current prefab is null, spawning default reticle"); 
                 reticle = Instantiate(defaultReticlePrefab, Vector3.zero, Quaternion.identity);
             }
             if(enableTapToPlace)
             {
-                Debug.Log("Disabling tap to place, can only enable one at a time");
+                Debug.Log("PlaneInteractionManager: Disabling tap to place, can only enable one at a time");
                 DisableTapToPlace();
             }
         }else
         {
-            Debug.Log("Head placement already enabled");
+            Debug.Log("PlaneInteractionManager: Head placement already enabled");
         }
     }
 
@@ -339,21 +361,21 @@ public class PlaneInteractionManager : MonoBehaviour
         if(!enableTapToPlace)
         {
             availablePlanes = ARPlaneViewController.instance.GetPlanesByClassification(planeClassifications);
-            Debug.Log("Enabling tap to place");
+            Debug.Log("PlaneInteractionManager: Enabling tap to place");
             enableTapToPlace = true;
             if(currentPrefab == null && reticle == null)
             {
-                Debug.Log("current prefab is null, spawning default reticle");
+                Debug.Log("PlaneInteractionManager: current prefab is null, spawning default reticle");
                 reticle = Instantiate(defaultReticlePrefab, Vector3.zero, Quaternion.identity);
             }
             if(headPlacementEnabled)
             {
-                Debug.Log("Disabling head placement, can only enable one at a time");
+                Debug.Log("PlaneInteractionManager: Disabling head placement, can only enable one at a time");
                 DisableHeadPlacement();
             }
         }else
         {
-            Debug.Log("Tap to place already enabled");
+            Debug.Log("PlaneInteractionManager: Tap to place already enabled");
         }
     }
 
@@ -378,17 +400,18 @@ public class PlaneInteractionManager : MonoBehaviour
         }
     }
 
-    public void OnCollisionEntry(Vector3 position)
+    public void OnCollisionEntry(Vector3 pos)
     {
         if(enableTapToPlace && currentPlane != null)
         {
-            Debug.Log("Collision entry");
+            Debug.Log("planeinteractionmananger: Collision entry");
             if(currentPrefab != null)
             {
-                currentPrefab.transform.SetPositionAndRotation(position, Quaternion.FromToRotation(currentPrefab.transform.up, currentPlane.normal));
+                currentPrefab.transform.SetPositionAndRotation(new Vector3(pos.x, currentPlane.center.y, pos.z), Quaternion.LookRotation(new Vector3(-pos.x, currentPlane.center.y, -pos.z) - new Vector3(-Camera.main.transform.position.x, currentPlane.center.y, -Camera.main.transform.position.z)));
+                //currentPrefab.transform.SetPositionAndRotation(pos, Quaternion.FromToRotation(currentPrefab.transform.up, currentPlane.normal));
             }else if(reticle != null)
             {
-                reticle.transform.SetPositionAndRotation(position, Quaternion.FromToRotation(reticle.transform.up, currentPlane.normal));
+                reticle.transform.SetPositionAndRotation(new Vector3(pos.x, currentPlane.center.y, pos.z), Quaternion.LookRotation(new Vector3(-pos.x, currentPlane.center.y, -pos.z) - new Vector3(-Camera.main.transform.position.x, currentPlane.center.y, -Camera.main.transform.position.z)));
             }
         }
     }
@@ -397,11 +420,12 @@ public class PlaneInteractionManager : MonoBehaviour
     {
         if(objectsQueue.Count > 0)
         {
-            Debug.Log("Locked object, getting next object in queue");
+            Debug.Log("planeinteractionmananger: Locked object, getting next object in queue");
             currentPrefab = Instantiate(objectsQueue.Dequeue(), currentPrefab.transform.position, currentPrefab.transform.rotation);
+            currentPrefab.SetActive(true);
         }else
         {
-            Debug.Log("No more objects to place, disabling tap to place and head placement");
+            Debug.Log("planeinteractionmananger: No more objects to place, disabling tap to place and head placement");
             currentPrefab = null;
             DisableTapToPlace();
             DisableHeadPlacement();
@@ -477,6 +501,14 @@ public class PlaneInteractionManager : MonoBehaviour
     //     yield return new WaitForSeconds(delay);
     //     TestLockObjectAndProgressQueue();
     // }
+
+    private IEnumerator DelayNextPlacement()
+    {
+        delayEnabled = true;
+        yield return new WaitForSeconds(2f);
+        delayEnabled = false;
+        yield break;
+    }
 
     public void OnEnableHeadPlacement()
     {

@@ -22,11 +22,6 @@ public class ActionCenterPanelViewController : MonoBehaviour
         replayButton.selectEntered.AddListener(_ => ToggleLighthouseReplay());
     }
 
-    void Update()
-    {
-        Debug.Log(planeManager);
-    }
-
     /// <summary>
     /// Spawns a timer object at the same position and rotation as the action center panel, and deactivates the panel.
     /// </summary>

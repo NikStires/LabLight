@@ -80,7 +80,7 @@ public class ModelElementViewController : WorldPositionController
     public override void Update()
     {
         // Use smooth positioning only when targeted (* or specific id)
-        if (this.arDefinition.condition != null)
+        if (arDefinition != null && arDefinition.condition != null)
         {
             base.Update();
         }

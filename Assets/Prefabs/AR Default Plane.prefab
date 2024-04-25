@@ -189,7 +189,7 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
@@ -271,6 +271,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 311feaf6a99314dcba3c8991eabf2a35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  planeInteractionManager: {fileID: 11400000, guid: 0e4c22905642e492a9c661e3e6ed89b8, type: 2}
   tapToPlacePrefab: {fileID: 5772616215907034111, guid: e8a05466d444b4f18bd9f9c894337036, type: 3}
 --- !u!114 &3100132456532249414
 MonoBehaviour:

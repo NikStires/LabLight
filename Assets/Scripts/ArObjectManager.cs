@@ -76,7 +76,6 @@ public class ArObjectManager : MonoBehaviour
                 
                 foreach(var arDefinition in specificArDefinitions)
                 {
-                    Debug.Log("Adding specific definition");
                     SpecificArDefinitionAdded(arDefinition);
                 }
             }
@@ -660,10 +659,10 @@ public class ArObjectManager : MonoBehaviour
 
     private IEnumerator enqueueObjects(List<GameObject> objects)
     {
-        Debug.Log("Requesting tap to placement");
+        //Debug.Log("Requesting tap to placement");
         //planeInteractionManager.OnEnableHeadPlacement();
-        planeInteractionManager.OnEnableTapToPlace();
-        yield return new WaitForSeconds(5);
+        //planeInteractionManager.OnEnableTapToPlace();
+        yield return new WaitForSeconds(2f);
         if(anchorPrefabs.Count > 0)
         {
             Debug.Log("Detected new models, sending to plane mananager");
