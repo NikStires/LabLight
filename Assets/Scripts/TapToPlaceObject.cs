@@ -17,8 +17,6 @@ public class TapToPlaceObject : MonoBehaviour
 
     public void OnTriggerEnter(Collider collider)
     {
-        Debug.Log("Collision detected");
-        Debug.Log(collider.transform.name);
         if(collider.transform.parent != null && collider.transform.parent.name == "HandJointPrefab(Clone)")
         {
             Debug.Log("PlaneInteractionMananger: collision with hand joint");

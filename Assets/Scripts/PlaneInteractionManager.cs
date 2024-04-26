@@ -55,7 +55,7 @@ public class PlaneInteractionManager : MonoBehaviour
 
     private bool headPlacementEnabled = false;
 
-    private bool enableTapToPlace = false;
+    private bool tapToPlaceEnabled = false;
 
     private bool delayEnabled = false;
 
@@ -140,7 +140,7 @@ public class PlaneInteractionManager : MonoBehaviour
         switch(updateType)
         {
             case XRHandSubsystem.UpdateType.Dynamic:
-            if(enableTapToPlace)
+            if(tapToPlaceEnabled)
             {
                 //check current plane by raycasting from camera
                 foreach(XRHandJointID jointID in tipIDs)
@@ -248,7 +248,7 @@ public class PlaneInteractionManager : MonoBehaviour
                 }
             }
         #endif            
-        if((headPlacementEnabled || enableTapToPlace) && availablePlanes != null && availablePlanes.Count > 0)
+        if((headPlacementEnabled || tapToPlaceEnabled) && availablePlanes != null && availablePlanes.Count > 0)
         {
             RaycastHit [] hits;
             hits = Physics.RaycastAll(Camera.main.transform.position, Camera.main.transform.forward, 2f, 1); //1 = ignore triggers
@@ -275,43 +275,8 @@ public class PlaneInteractionManager : MonoBehaviour
                         reticle.transform.SetPositionAndRotation(new Vector3(hit.point.x, currentPlane.center.y, hit.point.z), Quaternion.LookRotation(new Vector3(-hit.point.x, currentPlane.center.y, -hit.point.z) - new Vector3(-Camera.main.transform.position.x, currentPlane.center.y, -Camera.main.transform.position.z)));
                     }
                 }
-            }//else
-            // {
-            //     Debug.Log("PlaneInteractionManager: No planes hit!");
-            // }
-            
-            // // Check if the raycast hits any AR planes in the availablePlanes list, sends ray forward from camera 6 feet or 2 meter
-            // if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit, 2f))
-            // {
-
-            //     if(hit.transform.TryGetComponent(out ARPlane plane) && availablePlanes.Contains(plane)) //if plane is one we wish to place on, set reticle to hit point
-            //     {
-            //         if(currentPlane != null && currentPlane != plane)
-            //         {
-            //             currentPlane.GetComponent<MeshRenderer>().SetMaterials(new List<Material>() {invisiblePlaneMaterial});
-            //         }
-
-            //         currentPlane = plane;
-            //         currentPlane.GetComponent<MeshRenderer>().SetMaterials(new List<Material>() {planeMaterial});
-            //         if(headPlacementEnabled)
-            //         {
-            //             if(currentPrefab != null)
-            //             {
-            //                 Debug.Log("PlaneInteractionManager: Updating current prefab position to " + hit.point);
-            //                 currentPrefab.transform.SetPositionAndRotation(new Vector3(hit.point.x, currentPlane.center.y, hit.point.z), Quaternion.FromToRotation(currentPrefab.transform.up, currentPlane.normal));
-            //             }else if(reticle != null)
-            //             {
-            //                 Debug.Log("PlaneInteractionManager: Updating reticle position to " + hit.point);
-            //                 reticle.transform.SetPositionAndRotation(new Vector3(hit.point.x, currentPlane.center.y, hit.point.z), Quaternion.FromToRotation(reticle.transform.up, currentPlane.normal));
-            //             }
-            //         }
-            //     }else
-            //     {
-            //         Debug.Log("PlaneInteractionManager: No plane hit!");
-            //         Debug.Log("PlaneInteractionManager: Hit this instead: " + hit.transform.gameObject.name);
-            //     }
-            // }
-        }else if((enableTapToPlace || headPlacementEnabled) && (availablePlanes == null || availablePlanes.Count == 0)) //attempt to get list of planes if we don't have one already
+            }
+        }else if((tapToPlaceEnabled || headPlacementEnabled) && (availablePlanes == null || availablePlanes.Count == 0)) //attempt to get list of planes if we don't have one already
         {
             availablePlanes = ARPlaneViewController.instance.GetPlanesByClassification(planeClassifications);
         }
@@ -353,19 +318,12 @@ public class PlaneInteractionManager : MonoBehaviour
         {
             Debug.Log("PlaneInteractionManager: Enabling head placement");
             headPlacementEnabled = true;
-            if(currentPrefab == null && reticle == null)
-            {
-                Debug.Log("PlaneInteractionManager: current prefab is null, spawning default reticle"); 
-                reticle = Instantiate(defaultReticlePrefab, Vector3.zero, Quaternion.identity);
-            }
-            if(enableTapToPlace)
+            reticle = (currentPrefab == null && reticle == null) ? Instantiate(defaultReticlePrefab, Vector3.zero, Quaternion.identity) : null;
+            if(tapToPlaceEnabled)
             {
                 Debug.Log("PlaneInteractionManager: Disabling tap to place, can only enable one at a time");
                 DisableTapToPlace();
             }
-        }else
-        {
-            Debug.Log("PlaneInteractionManager: Head placement already enabled");
         }
     }
 
@@ -376,29 +334,22 @@ public class PlaneInteractionManager : MonoBehaviour
 
     public void EnableTapToPlace() //enables finger placement and destroys current tips
     {
-        if(!enableTapToPlace)
+        if(!tapToPlaceEnabled)
         {
             Debug.Log("PlaneInteractionManager: Enabling tap to place");
-            enableTapToPlace = true;
-            if(currentPrefab == null && reticle == null)
-            {
-                Debug.Log("PlaneInteractionManager: current prefab is null, spawning default reticle");
-                reticle = Instantiate(defaultReticlePrefab, Vector3.zero, Quaternion.identity);
-            }
+            tapToPlaceEnabled = true;
+            reticle = (currentPrefab == null && reticle == null) ? Instantiate(defaultReticlePrefab, Vector3.zero, Quaternion.identity) : null;
             if(headPlacementEnabled)
             {
                 Debug.Log("PlaneInteractionManager: Disabling head placement, can only enable one at a time");
                 DisableHeadPlacement();
             }
-        }else
-        {
-            Debug.Log("PlaneInteractionManager: Tap to place already enabled");
         }
     }
 
     public void DisableTapToPlace() //disables finger placement and destroys current tips
     {
-        enableTapToPlace = false;
+        tapToPlaceEnabled = false;
         if(leftTips.Values.Count > 0)
         {
             foreach(var jointTip in leftTips.Values)
@@ -419,7 +370,7 @@ public class PlaneInteractionManager : MonoBehaviour
 
     public void OnCollisionEntry(Vector3 pos)
     {
-        if(enableTapToPlace && currentPlane != null)
+        if(tapToPlaceEnabled && currentPlane != null)
         {
             Debug.Log("planeinteractionmananger: Collision entry");
             if(currentPrefab != null)
@@ -521,7 +472,7 @@ public class PlaneInteractionManager : MonoBehaviour
             {
                 DisableHeadPlacement();
             }
-            if(enableTapToPlace)
+            if(tapToPlaceEnabled)
             {
                 DisableTapToPlace();
             }
