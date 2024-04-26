@@ -272,7 +272,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   planeInteractionManager: {fileID: 11400000, guid: 0e4c22905642e492a9c661e3e6ed89b8, type: 2}
-  tapToPlacePrefab: {fileID: 5772616215907034111, guid: e8a05466d444b4f18bd9f9c894337036, type: 3}
 --- !u!114 &3100132456532249414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -321,19 +320,7 @@ MonoBehaviour:
       m_Calls: []
   m_SelectEntered:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1606432260869165167}
-        m_TargetAssemblyTypeName: TapToPlaceObject, Assembly-CSharp
-        m_MethodName: PlaneSelected
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_SelectExited:
     m_PersistentCalls:
       m_Calls: []

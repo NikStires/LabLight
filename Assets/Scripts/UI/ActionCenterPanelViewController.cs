@@ -76,14 +76,4 @@ public class ActionCenterPanelViewController : MonoBehaviour
         isReplaying = !isReplaying;
     }
 
-    public void EnableHeadPlacement()
-    {
-        PlaneInteractionManager.instance.OnEnableHeadPlacement();
-    }
-
-    public void EnableTapToPlace()
-    {
-        PlaneInteractionManager.instance.OnEnableTapToPlace();
-    }
-
 }

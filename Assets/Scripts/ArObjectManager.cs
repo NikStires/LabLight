@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 
 public class ArObjectManager : MonoBehaviour
 {
-    //public LockingDisplayController lockingDisplayController;
+
+    public ProtocolItemLockingManager lockingManager;
 
     public PlaneInteractionManagerScriptableObject planeInteractionManager;
 
@@ -55,6 +56,11 @@ public class ArObjectManager : MonoBehaviour
         SessionState.TrackedObjects.ObserveRemove().Subscribe(x => processRemovedObject(x.Value)).AddTo(this);
 
         SessionState.enableGenericVisualizations.Subscribe(_ => ToggleGenericViews()).AddTo(this);
+    }
+
+    void Start()
+    {
+        lockingManager = this.GetComponent<ProtocolItemLockingManager>();
     }
 
     void OnDisable()
@@ -666,7 +672,7 @@ public class ArObjectManager : MonoBehaviour
         if(anchorPrefabs.Count > 0)
         {
             Debug.Log("Detected new models, sending to plane mananager");
-            planeInteractionManager.OnRequestObjectPlacement(anchorPrefabs);
+            lockingManager.EnqueueObjects(anchorPrefabs);
             anchorPrefabs.Clear();
         }
     }

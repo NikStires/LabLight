@@ -37,7 +37,6 @@ public class ARPlaneViewController : MonoBehaviour
         foreach(var plane in args.added)
         {
             planes.Add(plane);
-            //plane.gameObject.SetActive(false);
         }
 
         foreach(var plane in args.updated)      //planes should only be disabled once when added, otherwise up to other components disgression
@@ -45,7 +44,6 @@ public class ARPlaneViewController : MonoBehaviour
             if(!planes.Contains(plane))
             {
                 planes.Add(plane);
-                //plane.gameObject.SetActive(false);
             }
         }
 
@@ -56,17 +54,6 @@ public class ARPlaneViewController : MonoBehaviour
                 planes.Remove(plane);
             }
         }
-    }
-
-    public void disableAllPlanes()
-    {
-        foreach(var plane in planes)
-        {
-            if(plane.gameObject.activeSelf)
-            {
-                plane.gameObject.SetActive(false);
-            }
-        }   
     }
 
     public List<ARPlane> GetPlanesByClassification(List<PlaneClassification> classifications)

@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 75180036}
   - component: {fileID: 75180037}
   - component: {fileID: 75180038}
+  - component: {fileID: 75180039}
   m_Layer: 0
   m_Name: ProtocolManager
   m_TagString: Untagged
@@ -155,6 +156,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc7e2c14d85048f438b179584ae5e8a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lockingManager: {fileID: 0}
   planeInteractionManager: {fileID: 11400000, guid: 0e4c22905642e492a9c661e3e6ed89b8, type: 2}
   WorldContainerHorizontal: {fileID: 5704896419545166956, guid: 88fc549ff68b3be4597fec95b61ad576, type: 3}
   WorldContainerVertical: {fileID: 5233765809608049017, guid: ca74c74e3aab67e4d8711a9b3964be9e, type: 3}
@@ -215,6 +217,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   checklist: {fileID: 458353524}
+--- !u!114 &75180039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 75180032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 845d3dd83c07f4e29a2c290c15de4192, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  planeInteractionManagerSO: {fileID: 11400000, guid: 0e4c22905642e492a9c661e3e6ed89b8, type: 2}
 --- !u!43 &141705454
 Mesh:
   m_ObjectHideFlags: 0

@@ -860,54 +860,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4cda5e0a8dbb426f9dd5f19a8df7c58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &357135069
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 357135071}
-  - component: {fileID: 357135070}
-  m_Layer: 0
-  m_Name: TestPlaneInteraction
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &357135070
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 357135069}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b03b4b93f0c7248bca8ad07109e2cd8c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  jointPrefab: {fileID: 3711863763955802890, guid: 921c6c06d6cdf42ecb9fd8f08c097ff2, type: 3}
-  planeManager: {fileID: 11400000, guid: 0e4c22905642e492a9c661e3e6ed89b8, type: 2}
-  testFingerJoint: 1
-  currentTest: 3
---- !u!4 &357135071
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 357135069}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 659763373}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &393150066
 Mesh:
   m_ObjectHideFlags: 0
@@ -1424,7 +1376,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 357135071}
   - {fileID: 560777840}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4637,7 +4588,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9370225a2ca94276b870d5f87b0db55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  logLevel: 1
+  logLevel: 3
   modelPath: Whisper/ggml-tiny.bin
   isModelPathInStreamingAssets: 1
   initOnAwake: 1
@@ -4784,10 +4735,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe5ffff45d72144f187376254d3c6ae8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  planeInteractionManager: {fileID: 11400000, guid: 0e4c22905642e492a9c661e3e6ed89b8, type: 2}
-  defaultReticlePrefab: {fileID: 8218513764086100890, guid: ed5f72ea840e348e3b1cc5ffba28da0c, type: 3}
-  jointTipPrefab: {fileID: 3711863763955802890, guid: 921c6c06d6cdf42ecb9fd8f08c097ff2, type: 3}
-  scaledThreshold: 0.05
+  planeInteractionManagerSO: {fileID: 11400000, guid: 0e4c22905642e492a9c661e3e6ed89b8, type: 2}
   planeMaterial: {fileID: 2100000, guid: b1ccd6a99de414581bbb6d79175e053d, type: 2}
   invisiblePlaneMaterial: {fileID: 2100000, guid: 724796ad3c56b4e45be235310ad79b02, type: 2}
 --- !u!1 &2116642285 stripped
@@ -6170,9 +6118,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1126609148}
     m_Modifications:
+    - target: {fileID: 125016323980110734, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: bf42d76697a5a4679af59212f0c8f6fa, type: 3}
     - target: {fileID: 169140558275923322, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 169140558275923322, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
@@ -6456,7 +6408,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 0e4c22905642e492a9c661e3e6ed89b8, type: 2}
     - target: {fileID: 4584628207581659008, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4584628207581659008, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
@@ -6468,11 +6420,11 @@ PrefabInstance:
       objectReference: {fileID: 9004432171206761412}
     - target: {fileID: 4584628207581659008, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4584628207581659008, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
-      value: EnableHeadPlacement
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4584628207581659008, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
@@ -6485,7 +6437,7 @@ PrefabInstance:
     - target: {fileID: 5197751294760802456, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 4f3c828288437234f81ae1a8f1c12046, type: 3}
+      objectReference: {fileID: 21300000, guid: a46aa01af58904210b73d086bc4f8205, type: 3}
     - target: {fileID: 5360583803481970582, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -6537,7 +6489,7 @@ PrefabInstance:
     - target: {fileID: 5828065188735896369, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: b398f58ecc9d0ac4c8de2c6e007b5c95, type: 3}
+      objectReference: {fileID: 21300000, guid: bf42d76697a5a4679af59212f0c8f6fa, type: 3}
     - target: {fileID: 5974050742793267528, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_Name
       value: ActionCenterPanel
@@ -6617,6 +6569,10 @@ PrefabInstance:
     - target: {fileID: 8670379057471206798, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -0.79499996
+      objectReference: {fileID: 0}
+    - target: {fileID: 9032183474924271185, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.size
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9032183474924271185, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[2].m_Target
