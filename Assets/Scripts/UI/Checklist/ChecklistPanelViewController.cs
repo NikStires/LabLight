@@ -246,29 +246,7 @@ public class ChecklistPanelViewController : LLBasePanel
             for (int i = 0; i < 5; i++)
             {
                 CheckitemView checkitemView = checkitemViews[i];
-                if (ProtocolState.Steps[ProtocolState.Step].Checklist.Count > i)
-                {
-                    checkitemView.InitalizeCheckItem(ProtocolState.Steps[ProtocolState.Step].Checklist[i]);
-
-                    //scale the item based on its position relative to the active item
-                    float scaleFactor = (float)Math.Pow(1.3, Math.Abs(i - ProtocolState.CheckItem));
-                    checkitemView.transform.localScale = new Vector3(7.5f / scaleFactor, 7.5f / scaleFactor, 0.075f);
-
-                    checkitemView.gameObject.SetActive(true);
-
-                    if (i == ProtocolState.CheckItem)
-                    {
-                        checkitemView.SetAsActiveItem();
-                    }
-                    else
-                    {
-                        checkitemView.SetAsInactiveItem();
-                    }
-                }
-                else
-                {
-                    checkitemView.gameObject.SetActive(false);
-                }
+                UpdateCheckItemVisualState(i, checkitemView);
             }
         }
         //default case
@@ -277,29 +255,7 @@ public class ChecklistPanelViewController : LLBasePanel
             for(int i = ProtocolState.CheckItem - 2; i < ProtocolState.CheckItem + 3; i++)
             {
                 CheckitemView checkitemView = checkitemViews[i - (ProtocolState.CheckItem - 2)];
-                if (ProtocolState.Steps[ProtocolState.Step].Checklist.Count > i)
-                {
-                    checkitemView.InitalizeCheckItem(ProtocolState.Steps[ProtocolState.Step].Checklist[i]);
-
-                    //scale the item based on its position relative to the active item
-                    float scaleFactor = (float)Math.Pow(1.3, Math.Abs(i - ProtocolState.CheckItem));
-                    checkitemView.transform.localScale = new Vector3(7.5f / scaleFactor, 7.5f / scaleFactor, 0.075f);
-
-                    checkitemView.gameObject.SetActive(true);
-
-                    if (i == ProtocolState.CheckItem)
-                    {
-                        checkitemView.SetAsActiveItem();
-                    }
-                    else
-                    {
-                        checkitemView.SetAsInactiveItem();
-                    }
-                }
-                else
-                {
-                    checkitemView.gameObject.SetActive(false);
-                }
+                UpdateCheckItemVisualState(i, checkitemView);
             }
         }
 
@@ -320,6 +276,33 @@ public class ChecklistPanelViewController : LLBasePanel
         {
             lockedIcon.SetActive(false);
             unlockedIcon.SetActive(true);
+        }
+    }
+
+    private void UpdateCheckItemVisualState(int index, CheckitemView view)
+    {
+        if (ProtocolState.Steps[ProtocolState.Step].Checklist.Count > index)
+        {
+            view.InitalizeCheckItem(ProtocolState.Steps[ProtocolState.Step].Checklist[index]);
+
+            //scale the item based on its position relative to the active item
+            float scaleFactor = (float)Math.Pow(1.3, Math.Abs(index - ProtocolState.CheckItem));
+            view.transform.localScale = new Vector3(7.5f / scaleFactor, 7.5f / scaleFactor, 0.075f);
+
+            view.gameObject.SetActive(true);
+
+            if (index == ProtocolState.CheckItem)
+            {
+                view.SetAsActiveItem();
+            }
+            else
+            {
+                view.SetAsInactiveItem();
+            }
+        }
+        else
+        {
+            view.gameObject.SetActive(false);
         }
     }
 
