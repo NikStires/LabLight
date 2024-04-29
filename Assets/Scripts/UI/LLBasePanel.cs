@@ -11,6 +11,7 @@ public class LLBasePanel : MonoBehaviour
     XRSimpleInteractable _pinButtonInteractable;
     MeshRenderer _pinButtonMeshRenderer;
 
+    [Header("Materials")]
     [SerializeField] Material _pinnedMaterial;
     [SerializeField] Material _unpinnedMaterial;
 
