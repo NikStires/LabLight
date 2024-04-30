@@ -192,7 +192,6 @@ public class ChecklistPanelViewController : LLBasePanel
         {
             if (ProtocolState.LockingTriggered.Value)
             {
-                //audioPlayer?.Play(AudioEventEnum.Error);
                 Debug.LogWarning("cannot navigate to next step: locking in progress");
                 return;
             }
@@ -220,7 +219,6 @@ public class ChecklistPanelViewController : LLBasePanel
     /// </summary>
     private void UpdateVisualState()
     {
-        Debug.Log("Updating checklist panel visual state");
         // if the procedure, step or checklist is null exit
         if (ProtocolState.procedureDef == null || ProtocolState.Steps[ProtocolState.Step] == null || ProtocolState.Steps[ProtocolState.Step].Checklist == null)
         {
