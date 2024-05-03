@@ -15,6 +15,7 @@ using TMPro;
 [RequireComponent(typeof(CapsuleCollider))]
 public class WellPlateViewController : ModelElementViewController
 {
+    public SettingsManagerScriptableObject settingsManagerSO;
     public bool debugEnableAllSettings = true;
     
     public bool modelActive;
@@ -167,10 +168,10 @@ public class WellPlateViewController : ModelElementViewController
             }
             else
             {
-                toggleIndicators(SessionState.ShowRowColIndicators.Value);
+                toggleIndicators(settingsManagerSO.GetSettingValue(LablightSettings.RCMarkersEnabledSetting));
                 if (actions[0].chainIDs.Count() > 0)
                 {
-                    toggleInfoPanel(SessionState.ShowInformationPanel.Value, actions);
+                    toggleInfoPanel(settingsManagerSO.GetSettingValue(LablightSettings.InfoPanelEnabledSetting), actions);
                 }
             }
         }
@@ -219,11 +220,11 @@ public class WellPlateViewController : ModelElementViewController
             }
             else
             {
-                toggleTransform(Markers, SessionState.ShowMarker.Value, id, parsedColor);
-                toggleTransform(rowIndicators, SessionState.ShowRowColIndicatorHighlight.Value, id.Substring(0, 1), parsedColor);
-                toggleTransform(colIndicators, SessionState.ShowRowColIndicatorHighlight.Value, id.Substring(1), parsedColor);
-                //toggleTransform(rowHighlights, SessionState.ShowRowColHighlights.Value, id.Substring(0, 1));
-                //toggleTransform(colHighlights, SessionState.ShowRowColHighlights.Value, id.Substring(1));
+                toggleTransform(Markers, settingsManagerSO.GetSettingValue(LablightSettings.WellIndicatorsEnabledSetting), id, parsedColor);
+                toggleTransform(rowIndicators, settingsManagerSO.GetSettingValue(LablightSettings.RelevantRConlyEnabledSetting), id.Substring(0, 1), parsedColor);
+                toggleTransform(colIndicators, settingsManagerSO.GetSettingValue(LablightSettings.RelevantRConlyEnabledSetting), id.Substring(1), parsedColor);
+                //toggleTransform(rowHighlights, settingsManagerSO.GetSettingValue(LablightSettings.RCHighlightEnabledSetting), id.Substring(0, 1));
+                //toggleTransform(colHighlights, settingsManagerSO.GetSettingValue(LablightSettings.RCHighlightEnabledSetting), id.Substring(1));
             }
         }
     }
@@ -289,7 +290,7 @@ public class WellPlateViewController : ModelElementViewController
                 {
                     obj.GetComponent<TextMeshProUGUI>().color = defaultIndicatorColor;
                 }
-                else if(!SessionState.ShowRowColIndicatorHighlight.Value && SessionState.ShowRowColIndicators.Value)
+                else if(!settingsManagerSO.GetSettingValue(LablightSettings.RelevantRConlyEnabledSetting) && settingsManagerSO.GetSettingValue(LablightSettings.RCMarkersEnabledSetting))
                 {
                     obj.GetComponent<TextMeshProUGUI>().color = defaultIndicatorColor;
                 }
@@ -305,7 +306,7 @@ public class WellPlateViewController : ModelElementViewController
                 {
                     obj.GetComponent<TextMeshProUGUI>().color = defaultIndicatorColor;
                 }
-                else if (!SessionState.ShowRowColIndicatorHighlight.Value && SessionState.ShowRowColIndicators.Value)
+                else if (!settingsManagerSO.GetSettingValue(LablightSettings.RelevantRConlyEnabledSetting) && settingsManagerSO.GetSettingValue(LablightSettings.RCMarkersEnabledSetting))
                 {
                     obj.GetComponent<TextMeshProUGUI>().color = defaultIndicatorColor;
                 }
@@ -380,11 +381,11 @@ public class WellPlateViewController : ModelElementViewController
                     }
                     else
                     {
-                        toggleTransform(rowIndicators, (SessionState.ShowRowColIndicatorHighlight.Value && value), id.Substring(0, 1));
-                        toggleTransform(colIndicators, (SessionState.ShowRowColIndicatorHighlight.Value && value), id.Substring(1));
-                        //toggleTransform(rowHighlights, (SessionState.ShowRowColHighlights.Value && value), id.Substring(0, 1));
-                        //toggleTransform(colHighlights, (SessionState.ShowRowColHighlights.Value && value), id.Substring(1));
-                        toggleTransform(Markers, (SessionState.ShowMarker.Value && value), id);
+                        toggleTransform(rowIndicators, settingsManagerSO.GetSettingValue(LablightSettings.RelevantRConlyEnabledSetting) && value, id.Substring(0, 1));
+                        toggleTransform(colIndicators, settingsManagerSO.GetSettingValue(LablightSettings.RelevantRConlyEnabledSetting) && value, id.Substring(1));
+                        //toggleTransform(rowHighlights, settingsManagerSO.GetSettingValue(LablightSettings.RCHighlightEnabledSetting) && value, id.Substring(0, 1));
+                        //toggleTransform(colHighlights, settingsManagerSO.GetSettingValue(LablightSettings.RCHighlightEnabledSetting) && value, id.Substring(1));
+                        toggleTransform(Markers, settingsManagerSO.GetSettingValue(LablightSettings.WellIndicatorsEnabledSetting) && value, id);
                     }
                 }
             }
@@ -397,8 +398,8 @@ public class WellPlateViewController : ModelElementViewController
         }
         else
         {
-            toggleInfoPanel((SessionState.ShowInformationPanel.Value && value), currActions);
-            toggleIndicators((SessionState.ShowRowColIndicators.Value && value));
+            toggleInfoPanel(settingsManagerSO.GetSettingValue(LablightSettings.InfoPanelEnabledSetting) && value, currActions);
+            toggleIndicators(settingsManagerSO.GetSettingValue(LablightSettings.RCMarkersEnabledSetting) && value);
         }
     }
 
@@ -430,77 +431,145 @@ public class WellPlateViewController : ModelElementViewController
     }
     private void AddSubscriptions()
     {
-        SessionState.ShowRowColIndicators.Subscribe(value =>
+        settingsManagerSO.settingChanged.AddListener(settingChanged =>
         {
-            toggleIndicators(value);
-        }).AddTo(this);
-
-        SessionState.ShowRowColIndicatorHighlight.Subscribe(value =>
-        {
-            if(currActions != null)
+            switch(settingChanged.Item1)
             {
-                Color parsedColor;
+                case LablightSettings.RCMarkersEnabledSetting:
+                    toggleIndicators(settingChanged.Item2);
+                    break;
+                case LablightSettings.RelevantRConlyEnabledSetting:
+                    if(currActions != null)
+                    {
+                        Color parsedColor;
 
-                foreach(HighlightAction action in currActions)
-                {
-                    if(ColorUtility.TryParseHtmlString(action.colorInfo.Item1, out parsedColor))
-                    {
-                        parsedColor.a = 255;
-                    }
-                    foreach(string id in action.chainIDs)
-                    {
-                        if(!value && SessionState.ShowRowColIndicators.Value) //if indicators should be changed to default color and stay enabled if indicators are enabled
+                        foreach(HighlightAction action in currActions)
                         {
-                            toggleTransform(rowIndicators, true, id.Substring(0,1), defaultIndicatorColor); 
-                            toggleTransform(colIndicators, true, id.Substring(1), defaultIndicatorColor);
-                        }else
-                        {
-                            toggleTransform(rowIndicators, value, id.Substring(0,1), parsedColor);
-                            toggleTransform(colIndicators, value, id.Substring(1), parsedColor);
+                            if(ColorUtility.TryParseHtmlString(action.colorInfo.Item1, out parsedColor))
+                            {
+                                parsedColor.a = 255;
+                            }
+                            foreach(string id in action.chainIDs)
+                            {
+                                if(!settingChanged.Item2 && settingsManagerSO.GetSettingValue(LablightSettings.RCMarkersEnabledSetting)) //if indicators should be changed to default color and stay enabled if indicators are enabled
+                                {
+                                    toggleTransform(rowIndicators, true, id.Substring(0,1), defaultIndicatorColor); 
+                                    toggleTransform(colIndicators, true, id.Substring(1), defaultIndicatorColor);
+                                }else
+                                {
+                                    toggleTransform(rowIndicators, settingChanged.Item2, id.Substring(0,1), parsedColor);
+                                    toggleTransform(colIndicators, settingChanged.Item2, id.Substring(1), parsedColor);
+                                }
+                            }
                         }
                     }
-                }
-            }
-        }).AddTo(this);
-
-        SessionState.ShowRowColHighlights.Subscribe(value =>
-        {
-            if(currActions != null)
-            {
-                foreach(HighlightAction action in currActions)
-                {
-                    foreach(string id in action.chainIDs)
+                    break;
+                case LablightSettings.RCHighlightEnabledSetting:
+                    if(currActions != null)
                     {
-                        toggleTransform(rowHighlights, value, id.Substring(0,1));
-                        toggleTransform(colHighlights, value, id.Substring(1));
+                        foreach(HighlightAction action in currActions)
+                        {
+                            foreach(string id in action.chainIDs)
+                            {
+                                toggleTransform(rowHighlights, settingChanged.Item2, id.Substring(0,1));
+                                toggleTransform(colHighlights, settingChanged.Item2, id.Substring(1));
+                            }
+                        }
                     }
-                }
-            }
-        }).AddTo(this);
-
-        SessionState.ShowInformationPanel.Subscribe(value =>
-        {
-            toggleInfoPanel(value, currActions);
-        }).AddTo(this);
-
-        SessionState.ShowMarker.Subscribe(value =>
-        {
-            if(currActions != null)
-            {
-                Debug.Log("Enabling bbs");
-                foreach(HighlightAction action in currActions)
-                {
-                    Color parsedColor;
-                    if(ColorUtility.TryParseHtmlString(action.colorInfo.Item1, out parsedColor))
+                    break;
+                case LablightSettings.InfoPanelEnabledSetting:
+                    toggleInfoPanel(settingChanged.Item2, currActions);
+                    break;
+                case LablightSettings.WellIndicatorsEnabledSetting:
+                    if(currActions != null)
                     {
-                        parsedColor.a = 255;
+                        foreach(HighlightAction action in currActions)
+                        {
+                            Color parsedColor;
+                            if(ColorUtility.TryParseHtmlString(action.colorInfo.Item1, out parsedColor))
+                            {
+                                parsedColor.a = 255;
+                            }
+                            foreach(string id in action.chainIDs)
+                            {
+                                toggleTransform(Markers, settingChanged.Item2, id, parsedColor);
+                            }
+                        }
                     }
-                    foreach(string id in action.chainIDs)
-                    {
-                        toggleTransform(Markers, value, id, parsedColor);
-                    }
-                }
+                    break;
             }
-        }).AddTo(this);
+        });
+        // SessionState.ShowRowColIndicators.Subscribe(value =>
+        // {
+        //     toggleIndicators(value);
+        // }).AddTo(this);
+
+        // SessionState.ShowRowColIndicatorHighlight.Subscribe(value =>
+        // {
+        //     if(currActions != null)
+        //     {
+        //         Color parsedColor;
+
+        //         foreach(HighlightAction action in currActions)
+        //         {
+        //             if(ColorUtility.TryParseHtmlString(action.colorInfo.Item1, out parsedColor))
+        //             {
+        //                 parsedColor.a = 255;
+        //             }
+        //             foreach(string id in action.chainIDs)
+        //             {
+        //                 if(!value && SessionState.ShowRowColIndicators.Value) //if indicators should be changed to default color and stay enabled if indicators are enabled
+        //                 {
+        //                     toggleTransform(rowIndicators, true, id.Substring(0,1), defaultIndicatorColor); 
+        //                     toggleTransform(colIndicators, true, id.Substring(1), defaultIndicatorColor);
+        //                 }else
+        //                 {
+        //                     toggleTransform(rowIndicators, value, id.Substring(0,1), parsedColor);
+        //                     toggleTransform(colIndicators, value, id.Substring(1), parsedColor);
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }).AddTo(this);
+
+        // SessionState.ShowRowColHighlights.Subscribe(value =>
+        // {
+        //     if(currActions != null)
+        //     {
+        //         foreach(HighlightAction action in currActions)
+        //         {
+        //             foreach(string id in action.chainIDs)
+        //             {
+        //                 toggleTransform(rowHighlights, value, id.Substring(0,1));
+        //                 toggleTransform(colHighlights, value, id.Substring(1));
+        //             }
+        //         }
+        //     }
+        // }).AddTo(this);
+
+        // SessionState.ShowInformationPanel.Subscribe(value =>
+        // {
+        //     toggleInfoPanel(value, currActions);
+        // }).AddTo(this);
+
+        // SessionState.ShowMarker.Subscribe(value =>
+        // {
+        //     if(currActions != null)
+        //     {
+        //         Debug.Log("Enabling bbs");
+        //         foreach(HighlightAction action in currActions)
+        //         {
+        //             Color parsedColor;
+        //             if(ColorUtility.TryParseHtmlString(action.colorInfo.Item1, out parsedColor))
+        //             {
+        //                 parsedColor.a = 255;
+        //             }
+        //             foreach(string id in action.chainIDs)
+        //             {
+        //                 toggleTransform(Markers, value, id, parsedColor);
+        //             }
+        //         }
+        //     }
+        // }).AddTo(this);
     }
 }

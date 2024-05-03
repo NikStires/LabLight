@@ -595,6 +595,7 @@ GameObject:
   - component: {fileID: 248604197}
   - component: {fileID: 248604196}
   - component: {fileID: 248604199}
+  - component: {fileID: 248604200}
   m_Layer: 0
   m_Name: AR Session
   m_TagString: Untagged
@@ -701,6 +702,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4cda5e0a8dbb426f9dd5f19a8df7c58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &248604200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248604192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e474f3ed687867d42be9b68ec551af34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settingsManagerSO: {fileID: 11400000, guid: a020f9263ca8e48c7bf4ff404ec90866, type: 2}
 --- !u!43 &393150066
 Mesh:
   m_ObjectHideFlags: 0
