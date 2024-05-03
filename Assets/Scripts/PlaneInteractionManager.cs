@@ -113,7 +113,7 @@ public class PlaneInteractionManager : MonoBehaviour
                     currentPlane.GetComponent<MeshRenderer>().SetMaterials(new List<Material>() {planeMaterial});
                 }
 
-                Debug.Log("PlaneInteractionManager: Updating current prefab position to " + hit.point);
+                //Debug.Log("PlaneInteractionManager: Updating current prefab position to " + hit.point);
                 Vector3 inverseCameraPosition = new Vector3(-Camera.main.transform.position.x, currentPlane.center.y, -Camera.main.transform.position.z);
                 Vector3 inverseHitPoint = new Vector3(-hit.point.x, currentPlane.center.y, -hit.point.z);
                 currentPrefab.transform.SetPositionAndRotation(new Vector3(hit.point.x, currentPlane.center.y, hit.point.z), Quaternion.LookRotation(inverseHitPoint - inverseCameraPosition));
