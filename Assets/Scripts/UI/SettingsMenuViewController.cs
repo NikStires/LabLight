@@ -96,4 +96,9 @@ public class SettingsMenuViewController : LLBasePanel
         maxPage = (int)Math.Ceiling((double)settings.Count / 8);
         Build(currentPage);
     }
+
+    public void CloseSettingsMenu()
+    {
+        SceneLoader.Instance.UnloadScene("Settings");
+    }
 }

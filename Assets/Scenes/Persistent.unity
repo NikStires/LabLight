@@ -5946,7 +5946,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 0e4c22905642e492a9c661e3e6ed89b8, type: 2}
     - target: {fileID: 4584628207581659008, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4584628207581659008, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
@@ -5958,11 +5958,11 @@ PrefabInstance:
       objectReference: {fileID: 9004432171206761412}
     - target: {fileID: 4584628207581659008, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4584628207581659008, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
-      value: 
+      value: OpenSettings
       objectReference: {fileID: 0}
     - target: {fileID: 4584628207581659008, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
@@ -6027,7 +6027,7 @@ PrefabInstance:
     - target: {fileID: 5828065188735896369, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: bf42d76697a5a4679af59212f0c8f6fa, type: 3}
+      objectReference: {fileID: 21300000, guid: 0252d5926265942f492dc19e95ebb9e2, type: 3}
     - target: {fileID: 5974050742793267528, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_Name
       value: ActionCenterPanel

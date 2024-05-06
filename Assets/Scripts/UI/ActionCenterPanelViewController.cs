@@ -42,6 +42,12 @@ public class ActionCenterPanelViewController : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
+    public void OpenSettings()
+    {
+        SceneLoader.Instance.LoadSceneAdditive("Settings");
+        this.gameObject.SetActive(false);
+    }
+
     /// <summary>
     /// Toggles the visibility of generic visualizations for AR objects.
     /// </summary>

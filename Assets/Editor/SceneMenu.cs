@@ -21,6 +21,11 @@ public static class SceneMenu
         OpenScene("Calibration");
     }
 
+    [MenuItem("Scenes/Settings")]
+    public static void OpenSettings()
+    {
+        OpenScene("Settings");
+    }
 
     private static void OpenScene(string sceneName)
     {
