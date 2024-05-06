@@ -1430,7 +1430,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7523280146200201388, guid: 93a4e1b898a2e4be5ba46bcde7b51fa8, type: 3}
       propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7523280146200201388, guid: 93a4e1b898a2e4be5ba46bcde7b51fa8, type: 3}
       propertyPath: m_SelectExited.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
@@ -1685,10 +1685,7 @@ MonoBehaviour:
   _pinButton: {fileID: 280494185292516560}
   _pinnedMaterial: {fileID: 2100000, guid: d25001eecceb3274280b0b6d696415d3, type: 2}
   _unpinnedMaterial: {fileID: 2100000, guid: 782c923da94417a4e9f49e50fca0f183, type: 2}
-  unlockedIcon: {fileID: 2288806689446469770}
-  lockedIcon: {fileID: 1094005940724882508}
   noChecklistText: {fileID: 8613265750271414373}
-  closeProtocolButton: {fileID: 3583659729038618169}
   audioPlayer: {fileID: 6612728165382532219}
   checkitemViews:
   - {fileID: 7218075351534765720}
@@ -1696,6 +1693,9 @@ MonoBehaviour:
   - {fileID: 3359189415310922410}
   - {fileID: 8790214111480007171}
   - {fileID: 364112757612405196}
+  unlockedIcon: {fileID: 2288806689446469770}
+  lockedIcon: {fileID: 1094005940724882508}
+  closeProtocolButton: {fileID: 3583659729038618169}
   checkItemButton: {fileID: 3033978895854163054}
   unCheckItemButton: {fileID: 2862646720495406531}
   signOffButton: {fileID: 6680613243319414833}
