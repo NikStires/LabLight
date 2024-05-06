@@ -22,6 +22,7 @@ public class HighlightGroup
 }
 
 [RequireComponent(typeof(CapsuleCollider))]
+[RequireComponent(typeof(AudioSource))]
 public class ModelElementViewController : WorldPositionController
 {
     public string ObjectName;

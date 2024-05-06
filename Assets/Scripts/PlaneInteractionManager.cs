@@ -139,6 +139,11 @@ public class PlaneInteractionManager : MonoBehaviour
             }
             return;
         }
+        var audioSource = currentPrefab.GetComponent<AudioSource>();
+        if(audioSource != null)
+        {
+            audioSource.Play();
+        }
         Debug.Log("PlaneInteractionManager: Placing object on plane");
         StartCoroutine(DelayNextPlacement());
         currentPrefab = null;
