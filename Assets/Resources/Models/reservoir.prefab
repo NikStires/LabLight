@@ -905,6 +905,7 @@ MonoBehaviour:
     - {fileID: 8428204376124714075}
   sphere: {fileID: 7302190271474844005}
   ModelName: {fileID: 6466629191655340772}
+  settingsManagerSO: {fileID: 11400000, guid: a020f9263ca8e48c7bf4ff404ec90866, type: 2}
   debugeEnableAllSettings: 0
   modelActive: 0
   nameTags: {fileID: 4841286306786178919}

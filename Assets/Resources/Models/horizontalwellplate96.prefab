@@ -22325,6 +22325,7 @@ MonoBehaviour:
     - {fileID: 8302441278286427596, guid: 9a66e8d39ba95534abcb85b978174bd1, type: 3}
   sphere: {fileID: 8235806581421537449}
   ModelName: {fileID: 673294289673024374}
+  settingsManagerSO: {fileID: 11400000, guid: a020f9263ca8e48c7bf4ff404ec90866, type: 2}
   debugEnableAllSettings: 1
   modelActive: 0
   wellPlateAlignmentGroup:

@@ -3479,6 +3479,7 @@ MonoBehaviour:
     - {fileID: 2032047400912281504}
   sphere: {fileID: 3893869629590341445}
   ModelName: {fileID: 4764666697387905150}
+  settingsManagerSO: {fileID: 11400000, guid: a020f9263ca8e48c7bf4ff404ec90866, type: 2}
   debugeEnableAllSettings: 0
   modelActive: 0
   nameTags: {fileID: 6168936106343387364}
