@@ -6027,7 +6027,7 @@ PrefabInstance:
     - target: {fileID: 5828065188735896369, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 0252d5926265942f492dc19e95ebb9e2, type: 3}
+      objectReference: {fileID: 21300000, guid: 0546d3c01dab945feb8c887e1c00003d, type: 3}
     - target: {fileID: 5974050742793267528, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_Name
       value: ActionCenterPanel
