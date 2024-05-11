@@ -58,5 +58,9 @@ public class ProtocolItemLockingManager : MonoBehaviour
         {
             planeInteractionManagerSO.SetHeadtrackedObject.Invoke(objectsQueue.Dequeue());
         }
+        if(objectsQueue.Count == 0)
+        {
+            planeInteractionManagerSO.RequestDisablePlaneInteractionManager.Invoke();
+        }
     }
 }
