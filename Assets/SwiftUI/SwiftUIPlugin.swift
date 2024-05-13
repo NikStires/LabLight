@@ -104,6 +104,20 @@ func openSwiftPdfWindow(_ cname: UnsafePointer<CChar>)
     openWindow(id: "PDF", value: pdfString)
 }
 
+// Declared in C# as: static extern void OpenSwiftVidoWindow(string videoTitle);
+@_cdecl("OpenSwiftPdfWindow")
+func openSwiftPdfWindow(_ cname: UnsafePointer<CChar>)
+{
+    testBundle()
+    
+    let  videoTitle = String(cString: cname)
+    print("############ OPEN VIDEO \(videoTitle)")
+
+    let openWindow = EnvironmentValues().openWindow
+    openWindow(id: "Video", value: videoTitle)
+}
+
+
 func testBundle() {
     if let fileURL = Bundle.main.url(forResource: "giraffe", withExtension: "pdf") {
         print("############ FOUND PDF")

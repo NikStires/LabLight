@@ -12,9 +12,15 @@
     "description": ""
   },
   {
-      "$id": "3",
-      "title": "DNA Purification",
-      "name": "DNA Purification",
-      "description": ""
+    "$id": "3",
+    "title": "DNA Purification",
+    "name": "DNA Purification",
+    "description": ""
+  },
+  {
+    "$id": "4",
+    "title": "TestProtocol",
+    "name": "TestProtocol",
+    "description": ""
   }
 ]
