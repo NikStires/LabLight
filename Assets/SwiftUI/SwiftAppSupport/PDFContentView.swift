@@ -21,7 +21,7 @@ struct PDFContentView: View {
         if pdfUrlString.hasPrefix("http") {
             return URL(string: pdfUrlString)!
         } else {
-            return Bundle.main.url(forResource: pdfUrlString, withExtension: "pdf")!
+            return Bundle.main.url(forResource: "Data/Raw/pdf/" + pdfUrlString, withExtension: "pdf")!
         }
     }
     
