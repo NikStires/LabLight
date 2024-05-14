@@ -18,7 +18,7 @@ struct VideoContentView: View {
     }
     
     var videoURL: URL {
-        return Bundle.main.url(forResource: videoUrlString, withExtension: "m4v")!
+        return Bundle.main.url(forResource: "Data/Raw/videos/" + videoUrlString, withExtension: "MOV")!
     }
     
     @State var isPlaying: Bool = false
@@ -27,17 +27,7 @@ struct VideoContentView: View {
         var player = AVPlayer(url: videoURL)
         VStack {
             VideoPlayer(player: player)
-                .frame(width: 320, height: 180, alignment: .center)
-            
-            
-            Button {
-                isPlaying ? player.pause() : player.play()
-                isPlaying.toggle()
-                player.seek(to: .zero)
-            } label: {
-                Image(systemName: isPlaying ? "stop" : "play")
-                    .padding()
-            }
+                .frame(width: 1600, height: 900, alignment: .center)
         }
     }
 }
