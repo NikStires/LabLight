@@ -24,14 +24,26 @@ struct VideoContentView: View {
     @State var isPlaying: Bool = false
     
     var body: some View {
-        var player = AVPlayer(url: videoURL)
-        VStack {
-            VideoPlayer(player: player)
-                .frame(width: 1600, height: 900, alignment: .center)
-        }
+        
+        VideoPlayerView(url: videoURL)
     }
 }
 
 #Preview(windowStyle: .automatic) {
     VideoContentView("")
+}
+
+struct VideoPlayerView: UIViewControllerRepresentable {
+    let url: URL
+
+    func makeUIViewController(context: Context) -> AVPlayerViewController {
+        let player = AVPlayer(url: url)
+        let vc = AVPlayerViewController()
+        vc.player = player
+
+        return vc
+    }
+    
+    func updateUIViewController(_ uiViewController: AVPlayerViewController, context: Context) {
+    }
 }
