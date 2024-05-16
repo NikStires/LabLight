@@ -12,7 +12,7 @@ public class ArObjectManager : MonoBehaviour
 
     public ProtocolItemLockingManager lockingManager;
 
-    public PlaneInteractionManagerScriptableObject planeInteractionManager;
+    public PlaneInteractionManagerScriptableObject planeInteractionManagerSO;
 
     [Header("World Container Prefabs")]
     public ContainerElementViewController WorldContainerHorizontal;
@@ -38,9 +38,8 @@ public class ArObjectManager : MonoBehaviour
     private Dictionary<ArDefinition, ArElementViewController> specificArViews = new Dictionary<ArDefinition, ArElementViewController>();
 
     private List<MonoBehaviour> contentItemInstances = new List<MonoBehaviour>();
-    private List<ArDefinition> anchorDefs = new List<ArDefinition>();
 
-    private List<GameObject> anchorPrefabs = new List<GameObject>();
+    private Dictionary<ModelArDefinition, GameObject> anchorPrefabsDict = new Dictionary<ModelArDefinition, GameObject>();
     private Transform workspaceTransform;
 
     private Coroutine enqueueObjectsCoroutine;
@@ -230,13 +229,13 @@ public class ArObjectManager : MonoBehaviour
         //     //lockingDisplayController.TriggerLocking(new List<ArDefinition>(anchorDefs), specificArViews);
         // }
         // anchorDefs.Clear();
-        if(enqueueObjectsCoroutine == null)
-        {
-            enqueueObjectsCoroutine = StartCoroutine(enqueueObjects(anchorPrefabs));
-        }else
-        {
-            Debug.Log("courtine already started for requesting object placement");
-        }
+        // if(enqueueObjectsCoroutine == null)
+        // {
+        //     enqueueObjectsCoroutine = StartCoroutine(enqueueObjects(anchorPrefabs));
+        // }else
+        // {
+        //     Debug.Log("courtine already started for requesting object placement");
+        // }
     }
 
     // private void UpdateGenericDefinitions()
@@ -372,9 +371,17 @@ public class ArObjectManager : MonoBehaviour
                         {
                             if (operation.arDefinition == arDefinition)
                             {
-                                if (operation.arOperationType == ArOperationType.Anchor)
+                                if (operation.arOperationType == ArOperationType.Anchor && arDefinition.arDefinitionType == ArDefinitionType.Model && anchorPrefabsDict.ContainsKey((ModelArDefinition)arDefinition))
                                 {
-                                    anchorDefs.Add(arDefinition);
+                                    //anchorDefs.Add(arDefinition);
+                                    //anchorPrefabs.Add(arViewController.gameObject);
+                                    if(enqueueObjectsCoroutine == null)
+                                    {
+                                        enqueueObjectsCoroutine = StartCoroutine(startNextObjectPlacement(anchorPrefabsDict[(ModelArDefinition)arDefinition]));
+                                    }else
+                                    {
+                                        Debug.Log("courtine already started for requesting object placement");
+                                    }
                                 }
                                 else
                                 {
@@ -403,6 +410,7 @@ public class ArObjectManager : MonoBehaviour
                 Debug.Log("creating model - " + modelArDefinition.name);
                 prefabInstance.Initialize(modelArDefinition, trackedObjects);
 
+
                 // RS Quick fix to prevent overwriting models that were late loaded
                 // Check if this can be done better
                 if (specificArViews.ContainsKey(modelArDefinition))
@@ -420,8 +428,8 @@ public class ArObjectManager : MonoBehaviour
                 specificArViews[modelArDefinition].transform.gameObject.SetActive(false); //current all game objects start turned off AM 
 
                 // Check if we need to perform operations on this view
-                // might not be relevant anymore AM
-                anchorPrefabs.Add(specificArViews[modelArDefinition].transform.gameObject);
+                anchorPrefabsDict[modelArDefinition] = prefabInstance.gameObject;
+
 
 
                 ApplyOperations(modelArDefinition, prefabInstance);
@@ -663,17 +671,13 @@ public class ArObjectManager : MonoBehaviour
         }
     }
 
-    private IEnumerator enqueueObjects(List<GameObject> objects)
+    private IEnumerator startNextObjectPlacement(GameObject model)
     {
-        //Debug.Log("Requesting tap to placement");
-        //planeInteractionManager.OnEnableHeadPlacement();
-        //planeInteractionManager.OnEnableTapToPlace();
-        yield return new WaitForSeconds(0.5f);
-        if(anchorPrefabs.Count > 0)
+        yield return new WaitForSeconds(0.36f);
+        if(model != null)
         {
-            Debug.Log("Detected new models, sending to plane mananager");
-            lockingManager.EnqueueObjects(anchorPrefabs);
-            anchorPrefabs.Clear();
+            planeInteractionManagerSO.SetHeadtrackedObject.Invoke(model);
         }
+        enqueueObjectsCoroutine = null;
     }
 }
