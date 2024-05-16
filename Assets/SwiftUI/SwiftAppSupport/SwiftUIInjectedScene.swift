@@ -19,7 +19,7 @@ struct SwiftUIInjectedScene {
         WindowGroup(id: "Video", for: String.self) { $videoUrl in
             VideoContentView(videoUrl!)
         }
-        .defaultSize(width: 500.0, height: 800.0)
+        .defaultSize(width: 900.0, height: 700.0)
 
         
         WindowGroup(id: "SimpleText") {
