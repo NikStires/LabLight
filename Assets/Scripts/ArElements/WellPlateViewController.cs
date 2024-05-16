@@ -58,6 +58,17 @@ public class WellPlateViewController : ModelElementViewController
 
     private int prevCheckItem = 0;
 
+    private List<LablightSettings> wellPlateSettings = new List<LablightSettings>
+    {
+        LablightSettings.RCMarkersEnabledSetting,
+        LablightSettings.RelevantRConlyEnabledSetting,
+        LablightSettings.RCHighlightEnabledSetting,
+        LablightSettings.InfoPanelEnabledSetting,
+        LablightSettings.WellIndicatorsEnabledSetting
+    };
+
+    private Dictionary<LablightSettings, bool> storedSettings = new Dictionary<LablightSettings, bool>();
+
     void Awake()
     {
         ProtocolState.stepStream.Subscribe(Step => OnStepChanged(Step)).AddTo(this);
@@ -72,6 +83,11 @@ public class WellPlateViewController : ModelElementViewController
         {
             ModelName.GetComponent<TextMeshProUGUI>().text = ((ModelArDefinition)arDefinition).name;
             ModelName.gameObject.SetActive(true);
+        }
+
+        foreach(LablightSettings setting in wellPlateSettings)
+        {
+            storedSettings.Add(setting, settingsManagerSO.GetSettingValue(setting));
         }
         AddSubscriptions();
     }
@@ -168,10 +184,10 @@ public class WellPlateViewController : ModelElementViewController
             }
             else
             {
-                toggleIndicators(settingsManagerSO.GetSettingValue(LablightSettings.RCMarkersEnabledSetting));
+                toggleIndicators(storedSettings[LablightSettings.RCMarkersEnabledSetting]);
                 if (actions[0].chainIDs.Count() > 0)
                 {
-                    toggleInfoPanel(settingsManagerSO.GetSettingValue(LablightSettings.InfoPanelEnabledSetting), actions);
+                    toggleInfoPanel(storedSettings[LablightSettings.InfoPanelEnabledSetting], actions);
                 }
             }
         }
@@ -220,9 +236,9 @@ public class WellPlateViewController : ModelElementViewController
             }
             else
             {
-                toggleTransform(Markers, settingsManagerSO.GetSettingValue(LablightSettings.WellIndicatorsEnabledSetting), id, parsedColor);
-                toggleTransform(rowIndicators, settingsManagerSO.GetSettingValue(LablightSettings.RelevantRConlyEnabledSetting), id.Substring(0, 1), parsedColor);
-                toggleTransform(colIndicators, settingsManagerSO.GetSettingValue(LablightSettings.RelevantRConlyEnabledSetting), id.Substring(1), parsedColor);
+                toggleTransform(Markers, storedSettings[LablightSettings.WellIndicatorsEnabledSetting], id, parsedColor);
+                toggleTransform(rowIndicators, storedSettings[LablightSettings.RelevantRConlyEnabledSetting], id.Substring(0, 1), parsedColor);
+                toggleTransform(colIndicators, storedSettings[LablightSettings.RelevantRConlyEnabledSetting], id.Substring(1), parsedColor);
                 //toggleTransform(rowHighlights, settingsManagerSO.GetSettingValue(LablightSettings.RCHighlightEnabledSetting), id.Substring(0, 1));
                 //toggleTransform(colHighlights, settingsManagerSO.GetSettingValue(LablightSettings.RCHighlightEnabledSetting), id.Substring(1));
             }
@@ -290,7 +306,7 @@ public class WellPlateViewController : ModelElementViewController
                 {
                     obj.GetComponent<TextMeshProUGUI>().color = defaultIndicatorColor;
                 }
-                else if(!settingsManagerSO.GetSettingValue(LablightSettings.RelevantRConlyEnabledSetting) && settingsManagerSO.GetSettingValue(LablightSettings.RCMarkersEnabledSetting))
+                else if(!storedSettings[LablightSettings.RelevantRConlyEnabledSetting] && storedSettings[LablightSettings.RCMarkersEnabledSetting])
                 {
                     obj.GetComponent<TextMeshProUGUI>().color = defaultIndicatorColor;
                 }
@@ -306,7 +322,7 @@ public class WellPlateViewController : ModelElementViewController
                 {
                     obj.GetComponent<TextMeshProUGUI>().color = defaultIndicatorColor;
                 }
-                else if (!settingsManagerSO.GetSettingValue(LablightSettings.RelevantRConlyEnabledSetting) && settingsManagerSO.GetSettingValue(LablightSettings.RCMarkersEnabledSetting))
+                else if (!storedSettings[LablightSettings.RelevantRConlyEnabledSetting] && storedSettings[LablightSettings.RCMarkersEnabledSetting])
                 {
                     obj.GetComponent<TextMeshProUGUI>().color = defaultIndicatorColor;
                 }
@@ -381,11 +397,11 @@ public class WellPlateViewController : ModelElementViewController
                     }
                     else
                     {
-                        toggleTransform(rowIndicators, settingsManagerSO.GetSettingValue(LablightSettings.RelevantRConlyEnabledSetting) && value, id.Substring(0, 1));
-                        toggleTransform(colIndicators, settingsManagerSO.GetSettingValue(LablightSettings.RelevantRConlyEnabledSetting) && value, id.Substring(1));
+                        toggleTransform(rowIndicators, storedSettings[LablightSettings.RelevantRConlyEnabledSetting] && value, id.Substring(0, 1));
+                        toggleTransform(colIndicators, storedSettings[LablightSettings.RelevantRConlyEnabledSetting] && value, id.Substring(1));
                         //toggleTransform(rowHighlights, settingsManagerSO.GetSettingValue(LablightSettings.RCHighlightEnabledSetting) && value, id.Substring(0, 1));
                         //toggleTransform(colHighlights, settingsManagerSO.GetSettingValue(LablightSettings.RCHighlightEnabledSetting) && value, id.Substring(1));
-                        toggleTransform(Markers, settingsManagerSO.GetSettingValue(LablightSettings.WellIndicatorsEnabledSetting) && value, id);
+                        toggleTransform(Markers, storedSettings[LablightSettings.WellIndicatorsEnabledSetting] && value, id);
                     }
                 }
             }
@@ -398,8 +414,8 @@ public class WellPlateViewController : ModelElementViewController
         }
         else
         {
-            toggleInfoPanel(settingsManagerSO.GetSettingValue(LablightSettings.InfoPanelEnabledSetting) && value, currActions);
-            toggleIndicators(settingsManagerSO.GetSettingValue(LablightSettings.RCMarkersEnabledSetting) && value);
+            toggleInfoPanel(storedSettings[LablightSettings.InfoPanelEnabledSetting] && value, currActions);
+            toggleIndicators(storedSettings[LablightSettings.RCMarkersEnabledSetting] && value);
         }
     }
 
@@ -431,74 +447,75 @@ public class WellPlateViewController : ModelElementViewController
     }
     private void AddSubscriptions()
     {
-        settingsManagerSO.settingChanged.AddListener(settingChanged =>
-        {
-            switch(settingChanged.Item1)
-            {
-                case LablightSettings.RCMarkersEnabledSetting:
-                    toggleIndicators(settingChanged.Item2);
-                    break;
-                case LablightSettings.RelevantRConlyEnabledSetting:
-                    if(currActions != null)
-                    {
-                        Color parsedColor;
+        // -> 
+        // settingsManagerSO.settingChanged.AddListener(settingChanged =>
+        // {
+        //     switch(settingChanged.Item1)
+        //     {
+        //         case LablightSettings.RCMarkersEnabledSetting:
+        //             toggleIndicators(settingChanged.Item2);
+        //             break;
+        //         case LablightSettings.RelevantRConlyEnabledSetting:
+        //             if(currActions != null)
+        //             {
+        //                 Color parsedColor;
 
-                        foreach(HighlightAction action in currActions)
-                        {
-                            if(ColorUtility.TryParseHtmlString(action.colorInfo.Item1, out parsedColor))
-                            {
-                                parsedColor.a = 255;
-                            }
-                            foreach(string id in action.chainIDs)
-                            {
-                                if(!settingChanged.Item2 && settingsManagerSO.GetSettingValue(LablightSettings.RCMarkersEnabledSetting)) //if indicators should be changed to default color and stay enabled if indicators are enabled
-                                {
-                                    toggleTransform(rowIndicators, true, id.Substring(0,1), defaultIndicatorColor); 
-                                    toggleTransform(colIndicators, true, id.Substring(1), defaultIndicatorColor);
-                                }else
-                                {
-                                    toggleTransform(rowIndicators, settingChanged.Item2, id.Substring(0,1), parsedColor);
-                                    toggleTransform(colIndicators, settingChanged.Item2, id.Substring(1), parsedColor);
-                                }
-                            }
-                        }
-                    }
-                    break;
-                case LablightSettings.RCHighlightEnabledSetting:
-                    if(currActions != null)
-                    {
-                        foreach(HighlightAction action in currActions)
-                        {
-                            foreach(string id in action.chainIDs)
-                            {
-                                toggleTransform(rowHighlights, settingChanged.Item2, id.Substring(0,1));
-                                toggleTransform(colHighlights, settingChanged.Item2, id.Substring(1));
-                            }
-                        }
-                    }
-                    break;
-                case LablightSettings.InfoPanelEnabledSetting:
-                    toggleInfoPanel(settingChanged.Item2, currActions);
-                    break;
-                case LablightSettings.WellIndicatorsEnabledSetting:
-                    if(currActions != null)
-                    {
-                        foreach(HighlightAction action in currActions)
-                        {
-                            Color parsedColor;
-                            if(ColorUtility.TryParseHtmlString(action.colorInfo.Item1, out parsedColor))
-                            {
-                                parsedColor.a = 255;
-                            }
-                            foreach(string id in action.chainIDs)
-                            {
-                                toggleTransform(Markers, settingChanged.Item2, id, parsedColor);
-                            }
-                        }
-                    }
-                    break;
-            }
-        });
+        //                 foreach(HighlightAction action in currActions)
+        //                 {
+        //                     if(ColorUtility.TryParseHtmlString(action.colorInfo.Item1, out parsedColor))
+        //                     {
+        //                         parsedColor.a = 255;
+        //                     }
+        //                     foreach(string id in action.chainIDs)
+        //                     {
+        //                         if(!settingChanged.Item2 && storedSettings[LablightSettings.RCMarkersEnabledSetting]) //if indicators should be changed to default color and stay enabled if indicators are enabled
+        //                         {
+        //                             toggleTransform(rowIndicators, true, id.Substring(0,1), defaultIndicatorColor); 
+        //                             toggleTransform(colIndicators, true, id.Substring(1), defaultIndicatorColor);
+        //                         }else
+        //                         {
+        //                             toggleTransform(rowIndicators, settingChanged.Item2, id.Substring(0,1), parsedColor);
+        //                             toggleTransform(colIndicators, settingChanged.Item2, id.Substring(1), parsedColor);
+        //                         }
+        //                     }
+        //                 }
+        //             }
+        //             break;
+        //         case LablightSettings.RCHighlightEnabledSetting:
+        //             if(currActions != null)
+        //             {
+        //                 foreach(HighlightAction action in currActions)
+        //                 {
+        //                     foreach(string id in action.chainIDs)
+        //                     {
+        //                         toggleTransform(rowHighlights, settingChanged.Item2, id.Substring(0,1));
+        //                         toggleTransform(colHighlights, settingChanged.Item2, id.Substring(1));
+        //                     }
+        //                 }
+        //             }
+        //             break;
+        //         case LablightSettings.InfoPanelEnabledSetting:
+        //             toggleInfoPanel(settingChanged.Item2, currActions);
+        //             break;
+        //         case LablightSettings.WellIndicatorsEnabledSetting:
+        //             if(currActions != null)
+        //             {
+        //                 foreach(HighlightAction action in currActions)
+        //                 {
+        //                     Color parsedColor;
+        //                     if(ColorUtility.TryParseHtmlString(action.colorInfo.Item1, out parsedColor))
+        //                     {
+        //                         parsedColor.a = 255;
+        //                     }
+        //                     foreach(string id in action.chainIDs)
+        //                     {
+        //                         toggleTransform(Markers, settingChanged.Item2, id, parsedColor);
+        //                     }
+        //                 }
+        //             }
+        //             break;
+        //     }
+        // });
         // SessionState.ShowRowColIndicators.Subscribe(value =>
         // {
         //     toggleIndicators(value);

@@ -29,7 +29,8 @@ public class PlaneInteractionManager : MonoBehaviour
         PlaneClassification.Seat,
         PlaneClassification.None
     };
-    private bool delayEnabled = false;
+    private bool delayOn = false;
+    private bool prefabTemporarilyLocked = false; //use to track whether the focused prefab should be tracked to the position of the head. This is used to prevent the prefab from being placed on the plane when the user is not ready to place it
 
     // Start is called before the first frame update
     //tips for each finger so that we can detect position of 
@@ -69,6 +70,7 @@ public class PlaneInteractionManager : MonoBehaviour
         planeInteractionManagerSO.PlanePlacementRequested.AddListener(obj => OnPlanePlacementRequested(obj));
         planeInteractionManagerSO.RequestDisablePlaneInteractionManager.AddListener(ResetObjects);
         ProtocolState.procedureStream.Subscribe(_ => OnProtocolExit()).AddTo(this);
+        ProtocolState.checklistStream.Subscribe(_ => OnNextCheckItem()).AddTo(this);
     }
 
     private void RemoveSubscriptions()
@@ -77,6 +79,8 @@ public class PlaneInteractionManager : MonoBehaviour
         planeInteractionManagerSO.PlanePlacementRequested.RemoveListener(OnPlanePlacementRequested);
         planeInteractionManagerSO.RequestDisablePlaneInteractionManager.RemoveListener(ResetObjects);
         ProtocolState.procedureStream.Subscribe(_ => OnProtocolExit()).Dispose();
+
+        ProtocolState.checklistStream.Subscribe(_ => OnNextCheckItem()).Dispose();
     }
     
 
@@ -89,7 +93,7 @@ public class PlaneInteractionManager : MonoBehaviour
                 TestObjectPlacement();
             }
         #endif   
-        if(currentPrefab == null)
+        if(currentPrefab == null || prefabTemporarilyLocked)
         {
             return;
         }
@@ -131,7 +135,7 @@ public class PlaneInteractionManager : MonoBehaviour
 
     private void OnPlanePlacementRequested(ARPlane plane)
     {
-        if(delayEnabled || currentPlane == null || currentPlane != plane || currentPrefab == null)
+        if(delayOn || currentPlane == null || currentPlane != plane || currentPrefab == null)
         {
             if(currentPrefab == null)
             {
@@ -144,17 +148,37 @@ public class PlaneInteractionManager : MonoBehaviour
         {
             audioSource.Play();
         }
-        Debug.Log("PlaneInteractionManager: Placing object on plane");
-        StartCoroutine(DelayNextPlacement());
-        currentPrefab = null;
-        planeInteractionManagerSO.CurrentPrefabLocked.Invoke();
-        currentPlane.GetComponent<MeshRenderer>().SetMaterials(new List<Material>() {invisiblePlaneMaterial});
-        currentPlane = null;
+        prefabTemporarilyLocked = !prefabTemporarilyLocked;
+        if(prefabTemporarilyLocked)
+        {
+            currentPlane.GetComponent<MeshRenderer>().SetMaterials(new List<Material>() {invisiblePlaneMaterial});
+        }else
+        {
+            currentPlane.GetComponent<MeshRenderer>().SetMaterials(new List<Material>() {planeMaterial});
+        }
+        Debug.Log("PlaneInteractionManager: Object locked = " + prefabTemporarilyLocked);
+
+    }
+
+    private void OnNextCheckItem()
+    {
+        if(currentPrefab != null)
+        {
+            currentPrefab = null;
+            StartCoroutine(DelayNextPlacement());
+            planeInteractionManagerSO.CurrentPrefabLocked.Invoke();
+            if(currentPlane != null)
+            {
+                currentPlane.GetComponent<MeshRenderer>().SetMaterials(new List<Material>() {invisiblePlaneMaterial});
+                currentPlane = null;
+            }
+            prefabTemporarilyLocked = false;
+        }
     }
 
     private void TestObjectPlacement()
     {
-        if(delayEnabled || currentPlane == null || currentPrefab == null)
+        if(delayOn || currentPlane == null || currentPrefab == null)
         {
             if(currentPrefab == null)
             {
@@ -188,7 +212,7 @@ public class PlaneInteractionManager : MonoBehaviour
             currentPlane.GetComponent<MeshRenderer>().SetMaterials(new List<Material>() {invisiblePlaneMaterial});
             currentPlane = null;
         }
-        availablePlanes = null; 
+        //availablePlanes = null; 
     }
 
     private void OnProtocolExit()
@@ -200,9 +224,9 @@ public class PlaneInteractionManager : MonoBehaviour
     }
     private IEnumerator DelayNextPlacement()
     {
-        delayEnabled = true;
+        delayOn = true;
         yield return new WaitForSeconds(1f);
-        delayEnabled = false;
+        delayOn = false;
         yield break;
     }
 }

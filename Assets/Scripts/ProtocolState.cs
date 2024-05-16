@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UniRx;
+using Unity.VisualScripting;
 
 public class ProtocolState : MonoBehaviour
 {
@@ -58,6 +59,11 @@ public class ProtocolState : MonoBehaviour
         //create a fresh state for the selected protocol
         if (procedureDefinition != null && procedureDefinition.steps.Count > 0)
         {
+            List<ModelArDefinition> arModels = procedureDefinition.globalArElements.Where(x => x.arDefinitionType == ArDefinitionType.Model).Cast<ModelArDefinition>().ToList();
+            if(arModels.Count > 0)
+            {   
+                procedureDefinition.steps.Insert(0, instance.createLockingStep(arModels));
+            }
             for (int i = 0; i < procedureDefinition.steps.Count; i++)
             {
                 Steps.Add(new StepState());
@@ -72,9 +78,20 @@ public class ProtocolState : MonoBehaviour
             }
             procedureDef = procedureDefinition;
             ProcedureTitle = procedureDefinition.title;
-            Step = 0;
             ServiceRegistry.GetService<ILighthouseControl>()?.SetProtocolStatus();
         }
+    }
+
+    private StepDefinition createLockingStep(List<ModelArDefinition> arModels)
+    {
+        StepDefinition step = new StepDefinition();
+        step.checklist = new List<CheckItemDefinition>();
+        step.checklist.Add(new CheckItemDefinition() {Text = "Place the items listed below on your workspace"});
+        foreach(ModelArDefinition arModel in arModels)
+        {
+            step.checklist.Add(new CheckItemDefinition() { Text = arModel.name, operations = new List<ArOperation>() { new AnchorArOperation() { arDefinition = arModel } } });
+        }
+        return step;
     }
 
     public static int Step
