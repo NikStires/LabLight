@@ -42,12 +42,12 @@ public class LLSwiftUiVideoDriver : MonoBehaviour
         if(newVideoItem == null && _swiftUIWindowOpen)
         {
             //if there are no video items disable view
+            Debug.Log("######LABLIGHT Requesting CLOSE swift video window");
             CloseSwiftUIWindow("Video");
             _swiftUIWindowOpen = false;
         }
-        else if(newVideoItem != null && _currentVideoItem == newVideoItem.url)
+        else if(newVideoItem == null || (newVideoItem != null && _currentVideoItem == newVideoItem.url))
         {
-            //if video item is the same as the previous video item do nothing
             return;
         }
         else
@@ -55,16 +55,8 @@ public class LLSwiftUiVideoDriver : MonoBehaviour
             Debug.Log("######LABLIGHT Requesting swift video window open: " + newVideoItem.url);
             _currentVideoItem = newVideoItem.url;
             //if we have a new video item then load the video
-            if(!_swiftUIWindowOpen)
-            {
-                OpenSwiftVideoWindow(newVideoItem.url);
-                _swiftUIWindowOpen = true;
-            }
-            else
-            {
-                Debug.Log("######LABLIGHT Requesting swift video swap: " + newVideoItem.url);
-                //SwapVideo(newVideoItem.url);
-            }
+            OpenSwiftVideoWindow(newVideoItem.url);
+            _swiftUIWindowOpen = true;
         }
     }
 
