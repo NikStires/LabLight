@@ -40,7 +40,7 @@ import SwiftUI
 
 // Declared in C# as: static extern void OpenSwiftPdfWindow(string urlString);
 @_cdecl("OpenSwiftSafariWindow")
-func openSwiftPdfWindow(_ cname: UnsafePointer<CChar>)
+func openSwiftSafariWindow(_ cname: UnsafePointer<CChar>)
 {
     let urlString = String(cString: cname)
     print("############ OPEN Safari \(urlString)")

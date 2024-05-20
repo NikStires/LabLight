@@ -14,7 +14,7 @@ public class LLSwiftUiSafariDriver : MonoBehaviour
 
     void ToggleSafariWindow()
     {
-        OpenSwiftSafariWindow("http://172.16.0.134:8080/");
+        OpenSwiftSafariWindow("https://en.wikipedia.org/wiki/Potato");
     }
 
     #if UNITY_VISIONOS && !UNITY_EDITOR
