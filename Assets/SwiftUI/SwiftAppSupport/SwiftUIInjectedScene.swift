@@ -15,11 +15,12 @@ struct SwiftUIInjectedScene {
         WindowGroup(id: "PDF", for: String.self) { $pdfUrl in
             PDFContentView(pdfUrl!)
         }
-        .defaultSize(width: 800.0, height: 800.0)
+        .defaultSize(width: 500.0, height: 800.0)
         
         WindowGroup(id: "Safari", for: String.self) { $urlString in
             SafariContentView(defaultUrlString: urlString!)
         }
+        .defaultSize(width: 800.0, height: 800.0)
         
         WindowGroup(id: "Video", for: String.self) { $videoUrl in
             VideoContentView(videoUrl!)
