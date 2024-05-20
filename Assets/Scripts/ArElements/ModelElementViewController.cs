@@ -22,6 +22,7 @@ public class HighlightGroup
 }
 
 [RequireComponent(typeof(CapsuleCollider))]
+[RequireComponent(typeof(AudioSource))]
 public class ModelElementViewController : WorldPositionController
 {
     public string ObjectName;
@@ -80,7 +81,7 @@ public class ModelElementViewController : WorldPositionController
     public override void Update()
     {
         // Use smooth positioning only when targeted (* or specific id)
-        if (this.arDefinition.condition != null)
+        if (arDefinition != null && arDefinition.condition != null)
         {
             base.Update();
         }

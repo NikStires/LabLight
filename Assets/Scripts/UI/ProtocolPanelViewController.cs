@@ -115,15 +115,6 @@ public class ProtocolPanelViewController : MonoBehaviour
                         contentItemInstances.Add(imageController);
                     }
                     break;
-                case ContentType.Video:
-                    var videoController = Instantiate(VideoItem, container.transform);
-                    videoController.ContentItem = contentItem as VideoItem;
-
-                    if (store)
-                    {
-                        contentItemInstances.Add(videoController);
-                    }
-                    break;
                 case ContentType.Sound:
                     var soundController = Instantiate(SoundItem, container.transform);
                     soundController.ContentItem = contentItem as SoundItem;
@@ -144,6 +135,8 @@ public class ProtocolPanelViewController : MonoBehaviour
                         contentItemInstances.Add(layoutController);
                     }
                     CreateContentItems(layoutItem.contentItems, layoutController.LayoutGroup, containerController);
+                    break;
+                default:
                     break;
             }
         }

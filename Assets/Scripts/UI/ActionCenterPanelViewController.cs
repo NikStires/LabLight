@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class ActionCenterPanelViewController : MonoBehaviour
 {
+    [SerializeField] private PlaneInteractionManagerScriptableObject planeManager;
     [SerializeField] GameObject timerPrefab;
     [SerializeField] UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable recordingButton;
     bool isRecording = false;
@@ -38,6 +39,12 @@ public class ActionCenterPanelViewController : MonoBehaviour
     public void StartCalibration()
     {
         SceneLoader.Instance.LoadSceneAdditive("Calibration");
+        this.gameObject.SetActive(false);
+    }
+
+    public void OpenSettings()
+    {
+        SceneLoader.Instance.LoadSceneAdditive("Settings");
         this.gameObject.SetActive(false);
     }
 
@@ -74,4 +81,5 @@ public class ActionCenterPanelViewController : MonoBehaviour
         }
         isReplaying = !isReplaying;
     }
+
 }

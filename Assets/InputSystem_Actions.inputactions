@@ -82,6 +82,39 @@
                 },
                 {
                     "name": "",
+                    "id": "ca22b10c-0038-4ebd-a4c0-8ead36af9349",
+                    "path": "<XInputController>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Progress Forward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "48fc85ae-74eb-40b6-9322-6679d716bd29",
+                    "path": "<XboxOneGampadiOS>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Progress Forward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f23deec9-22c8-4d75-9f00-d8bd1d15fdfa",
+                    "path": "<HID::Xbox Adaptive Controller>/button5",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Progress Forward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "efa5187b-a963-4781-9bfd-a5a0d6559fdc",
                     "path": "<Keyboard>/upArrow",
                     "interactions": "",
@@ -128,6 +161,17 @@
                     "name": "",
                     "id": "f5d0cb85-4033-470d-a414-29d60f8638d9",
                     "path": "<Gamepad>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Progress Backward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a83696da-3f59-4408-b3ca-9d101deb67e0",
+                    "path": "<HID::Xbox Adaptive Controller>/button14",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",

@@ -4,17 +4,9 @@ using UnityEngine;
 using UnityEngine.XR.Hands;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
-using UnityEngine.Rendering;
-using UnityEngine.XR;
-using UnityEngine.UIElements;
-using Unity.VisualScripting;
 using System.Linq;
 using System;
 using UniRx;
-using TMPro;
-using UnityEngine.PlayerLoop;
-using UnityEngine.SceneManagement;
-using Unity.PolySpatial;
 
 public class HandCalibrationViewController : MonoBehaviour
 {
@@ -93,9 +85,9 @@ public class HandCalibrationViewController : MonoBehaviour
     private void OnEnable() 
     {
         RequestCalibration();
-#if UNITY_EDITOR
-        StartCoroutine(UnloadCalibration());
-#endif
+// #if UNITY_EDITOR
+//         StartCoroutine(UnloadCalibration());
+// #endif
     }
 
     private IEnumerator UnloadCalibration()
@@ -106,7 +98,6 @@ public class HandCalibrationViewController : MonoBehaviour
 
     public void RequestCalibration()
     {
-        //planeManager.requestedDetectionMode = UnityEngine.XR.ARSubsystems.PlaneDetectionMode.Horizontal;
         //anchorManager.enabled = true;
         Debug.Log("calibration requested");
 
@@ -120,6 +111,23 @@ public class HandCalibrationViewController : MonoBehaviour
         availableCalibrationPlanes = ARPlaneViewController.instance.GetPlanesByClassification(calibrationPlanesClassification);
         //if calibration completed successfully, send calibration data to lighthouse and exit calibration mode
         //store started lighthouse origin and current plane in session manager
+    }
+
+    public void TestCalibration()
+    {
+        Matrix4x4 calibrationMatrix = CalibrationFromMatrix.Calculate_Hand_Coordinate_System_Transform(true, 
+            -0.6664742f, 0.827593f, 0.6830118f, //manual calibration values as an example for testing
+            -0.6452482f, 0.827593f, 0.6948431f,
+            -0.6273278f, 0.827593f, 0.7039112f,
+            -0.6043002f, 0.827593f, 0.7051851f,
+            -0.7314976f, 0.827593f, 0.7608822f,
+            -0.7092083f, 0.827593f, 0.7899398f,
+            -0.6229721f, 0.827593f, 0.7843601f,
+            -0.6789629f, 0.827593f, 0.7930077f
+        );
+        SessionManager.instance.UpdateCalibration(calibrationMatrix);
+        var originInstance = Instantiate(originPrefab, SessionManager.instance.CharucoTransform.position, SessionManager.instance.CharucoTransform.rotation);
+        Debug.Log("Lablight: origin position " + originInstance.transform.position);
     }
 
     void OnUpdatedHands(XRHandSubsystem subsystem, XRHandSubsystem.UpdateSuccessFlags updateSuccessFlags, XRHandSubsystem.UpdateType updateType)
@@ -265,6 +273,15 @@ public class HandCalibrationViewController : MonoBehaviour
             yield return new WaitForSeconds(0.25f); //reducing time to 0.25f from 0.5f AM
         }
         Debug.Log("getMatrixFromHandPosition: instantiated all joints");
+        Debug.Log("Index Proximal " + calibrationJointsPoseDict[XRHandJointID.IndexProximal].position.x + "," + planeSelected.transform.position.y + "," +calibrationJointsPoseDict[XRHandJointID.IndexProximal].position.z);
+        Debug.Log("Middle Proximal " + calibrationJointsPoseDict[XRHandJointID.MiddleProximal].position.x + "," + planeSelected.transform.position.y + "," +calibrationJointsPoseDict[XRHandJointID.MiddleProximal].position.z);
+        Debug.Log("Ring Proximal " + calibrationJointsPoseDict[XRHandJointID.RingProximal].position.x + "," + planeSelected.transform.position.y + "," +calibrationJointsPoseDict[XRHandJointID.RingProximal].position.z);
+        Debug.Log("Little Proximal " + calibrationJointsPoseDict[XRHandJointID.LittleProximal].position.x + "," + planeSelected.transform.position.y + "," +calibrationJointsPoseDict[XRHandJointID.LittleProximal].position.z);
+        Debug.Log("Index Tip " + calibrationJointsPoseDict[XRHandJointID.IndexTip].position.x + "," + planeSelected.transform.position.y + "," +calibrationJointsPoseDict[XRHandJointID.IndexTip].position.z);
+        Debug.Log("Middle Tip " + calibrationJointsPoseDict[XRHandJointID.MiddleTip].position.x + "," + planeSelected.transform.position.y + "," +calibrationJointsPoseDict[XRHandJointID.MiddleTip].position.z);
+        Debug.Log("Ring Tip " + calibrationJointsPoseDict[XRHandJointID.RingTip].position.x + "," + planeSelected.transform.position.y + "," +calibrationJointsPoseDict[XRHandJointID.RingTip].position.z);
+        Debug.Log("Little Tip " + calibrationJointsPoseDict[XRHandJointID.LittleTip].position.x + "," + planeSelected.transform.position.y + "," +calibrationJointsPoseDict[XRHandJointID.LittleTip].position.z);
+
         Matrix4x4 calibrationMatrix = CalibrationFromMatrix.Calculate_Hand_Coordinate_System_Transform(true, 
             calibrationJointsPoseDict[XRHandJointID.IndexProximal].position.x, planeSelected.transform.position.y, calibrationJointsPoseDict[XRHandJointID.IndexProximal].position.z,
             calibrationJointsPoseDict[XRHandJointID.MiddleProximal].position.x, planeSelected.transform.position.y, calibrationJointsPoseDict[XRHandJointID.MiddleProximal].position.z,
@@ -278,7 +295,7 @@ public class HandCalibrationViewController : MonoBehaviour
         ServiceRegistry.GetService<ILighthouseControl>()?.RequestLighthouseCalibration(2, 0);
         SessionManager.instance.UpdateCalibration(calibrationMatrix);
         DeactivateFingerPoints(fingerPoints);
-        yield return new WaitForSeconds(2.5f); //wait for finger points to deactivate
+        yield return new WaitForSeconds(2f); //wait for finger points to deactivate
         CompleteCalibration();
         yield return null;
     }
@@ -316,7 +333,6 @@ public class HandCalibrationViewController : MonoBehaviour
         return false;
     }
 
-    
 }
 
     // private IEnumerator CalibrationAnimation()

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Utilities;
+using UnityEngine.UIElements;
 
 public class TestKeyboardInput : MonoBehaviour
 {
@@ -34,6 +36,7 @@ public class TestKeyboardInput : MonoBehaviour
     {
         InputSystem.actions.FindAction("Progress Forward").performed += TestNext;
         InputSystem.actions.FindAction("Progress Backward").performed += TestPrevious;
+        //InputSystem.onAnyButtonPress.Call(f => DebugInput(f.name));
     }
 
     void OnDisable()
@@ -41,6 +44,11 @@ public class TestKeyboardInput : MonoBehaviour
         InputSystem.actions.FindAction("Progress Forward").performed -= TestNext;
         InputSystem.actions.FindAction("Progress Backward").performed -= TestPrevious;
     }
+
+    // public void DebugInput(string name)
+    // {
+    //     Debug.Log("Button pressed: " + name);
+    // }
 
     public void TestNext(InputAction.CallbackContext context)
     {

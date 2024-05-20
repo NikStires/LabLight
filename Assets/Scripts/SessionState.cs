@@ -53,18 +53,18 @@ public class SessionState : MonoBehaviour
     /// Flag that indicates if lighthouse was calibrated with different Charuco settings than the last Charuco settings used on HoloLens
     public static ReactiveProperty<bool> CalibrationDirty = new ReactiveProperty<bool>();
 
-    /// CSV file that is marked as available for download 
+    // /// CSV file that is marked as available for download 
     public static ReactiveProperty<string> CsvFileDownloadable = new ReactiveProperty<string>();
 
-    //wellplate settings
-    public static ReactiveProperty<bool> ShowRowColIndicators = new ReactiveProperty<bool>();
-    public static ReactiveProperty<bool> ShowRowColIndicatorHighlight = new ReactiveProperty<bool>();
-    public static ReactiveProperty<bool> ShowRowColHighlights = new ReactiveProperty<bool>();
-    public static ReactiveProperty<bool> ShowInformationPanel = new ReactiveProperty<bool>();
-    public static ReactiveProperty<bool> ShowMarker = new ReactiveProperty<bool>();
-    //reactive properties for tFTubes
-    public static ReactiveProperty<bool> ShowSourceContents = new ReactiveProperty<bool>();
-    public static ReactiveProperty<bool> ShowSourceTransform = new ReactiveProperty<bool>();
+    // //wellplate settings
+    // public static ReactiveProperty<bool> ShowRowColIndicators = new ReactiveProperty<bool>();
+    // public static ReactiveProperty<bool> ShowRowColIndicatorHighlight = new ReactiveProperty<bool>();
+    // public static ReactiveProperty<bool> ShowRowColHighlights = new ReactiveProperty<bool>();
+    // public static ReactiveProperty<bool> ShowInformationPanel = new ReactiveProperty<bool>();
+    // public static ReactiveProperty<bool> ShowMarker = new ReactiveProperty<bool>();
+    // //reactive properties for tFTubes
+    // public static ReactiveProperty<bool> ShowSourceContents = new ReactiveProperty<bool>();
+    // public static ReactiveProperty<bool> ShowSourceTransform = new ReactiveProperty<bool>();
 
     void Awake()
     {

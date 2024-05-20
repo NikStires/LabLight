@@ -387,9 +387,9 @@ PlayerSettings:
   - m_BuildTarget: VisionOS
     m_Icons:
     - m_Textures:
-      - {fileID: 2800000, guid: 4806fa7f54f644baeb4450da556bfecc, type: 3}
-      - {fileID: 2800000, guid: 0620ba709ae9b48498f2b906fdf3a33f, type: 3}
-      - {fileID: 2800000, guid: 6ae2c1789fe164b94bb43738734989e1, type: 3}
+      - {fileID: 2800000, guid: c1f503d434327482fa30bd0b4c35e5d0, type: 3}
+      - {fileID: 2800000, guid: 4370a59024144472f986627033b86dc4, type: 3}
+      - {fileID: 2800000, guid: 15683c1cabb5d447e8c32e74dda87652, type: 3}
       m_Width: 1024
       m_Height: 1024
       m_Kind: 0
@@ -755,7 +755,8 @@ PlayerSettings:
   webGLMemoryGeometricGrowthStep: 0.2
   webGLMemoryGeometricGrowthCap: 96
   webGLPowerPreference: 2
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    Standalone: WHISPER_METAL;WHISPER_CUDA
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}

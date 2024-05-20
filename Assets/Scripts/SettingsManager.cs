@@ -1,144 +1,65 @@
 using UnityEngine;
 using UniRx;
 using UnityEditor;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// Load from and save settings to playerprefs
 /// </summary>
+/// 
 public class SettingsManager : MonoBehaviour
 {
-    //private const string ShowGridSetting = "ShowGridSetting";
-    private const string ShowWorkspaceOrigin = "ShowWorkspaceOrigin";
 
-    //well plate settings
-    private const string ShowRowColIndicatorsSetting = "ShowRolColIndicatorsSetting";
-    private const string ShowRowColIndicatorHighlightSetting = "ShowRowColIndicatorHighlightSetting";
-    private const string ShowRowColHighlightsSetting = "ShowRowColHighlightSetting";
-    private const string ShowInformationPanelSetting = "ShowInformationPanelSetting";
-    private const string ShowMarkerSetting = "ShowMarkerSetting";
-    private const string ShowSourceContentsSetting = "ShowSourceContentsSetting";
-    private const string ShowSourceTransformSetting = "ShowSourceContentsSetting";
+    public static SettingsManager instance;
+    public SettingsManagerScriptableObject settingsManagerSO;
 
-    public bool debugEnableAll;
+    public Dictionary<LablightSettings, string> settingKeys = new Dictionary<LablightSettings, string>(); //add to this dictionary to add new settings
 
-    void Start()
+    private Dictionary<LablightSettings, bool> settingsValues = new Dictionary<LablightSettings, bool>();
+
+    private void Awake()
     {
-        // Initialize from player preferences
-        //SessionState.ShowGrid.Value = PlayerPrefs.GetInt(ShowGridSetting) == 1;
-        SessionState.ShowWorkspaceOrigin.Value = PlayerPrefs.GetInt(ShowWorkspaceOrigin) == 1;
-
-        //initialize well plate from player preferences
-        //SessionState.ShowRowColIndicators.Value = PlayerPrefs.GetInt(ShowRowColIndicatorsSetting) == 1;
-        //SessionState.ShowRowColIndicatorHighlight.Value = PlayerPrefs.GetInt(ShowRowColIndicatorHighlightSetting) == 1;
-        //SessionState.ShowRowColHighlights.Value = PlayerPrefs.GetInt(ShowRowColHighlightsSetting) == 1;
-        //SessionState.ShowInformationPanel.Value = PlayerPrefs.GetInt(ShowInformationPanelSetting) == 1;
-        //SessionState.ShowMarker.Value = PlayerPrefs.GetInt(ShowBBSetting) == 1;
-        //SessionState.ShowSourceContents.Value = PlayerPrefs.GetInt(ShowTubeContentsSetting) == 1;
-        //SessionState.ShowSourceTransform.Value = PlayerPrefs.GetInt(ShowTubeCapsSetting) == 1;
-
-        // Setup change handler to save to preferences
-
-        //SessionState.ShowGrid.Subscribe(value =>
-        //{
-        //    PlayerPrefs.SetInt(ShowGridSetting, value ? 1 : 0);
-        //    PlayerPrefs.Save();
-        //}).AddTo(this);
-
-        if(debugEnableAll)
+        if(instance == null || instance == this)
         {
-            SessionState.ShowRowColIndicators.Subscribe(value =>
-            {
-                PlayerPrefs.SetInt(ShowRowColIndicatorsSetting, 1);
-                PlayerPrefs.Save();
-            }).AddTo(this);
-
-            SessionState.ShowRowColIndicatorHighlight.Subscribe(value =>
-            {
-                PlayerPrefs.SetInt(ShowRowColIndicatorHighlightSetting, 1);
-                PlayerPrefs.Save();
-            }).AddTo(this);
-
-            SessionState.ShowRowColHighlights.Subscribe(value =>
-            {
-                PlayerPrefs.SetInt(ShowRowColHighlightsSetting, 1);
-                PlayerPrefs.Save();
-            }).AddTo(this);
-
-            SessionState.ShowInformationPanel.Subscribe(value =>
-            {
-                PlayerPrefs.SetInt(ShowInformationPanelSetting, 1);
-                PlayerPrefs.Save();
-            }).AddTo(this);
-
-            SessionState.ShowMarker.Subscribe(value =>
-            {
-                PlayerPrefs.SetInt(ShowMarkerSetting, 1);
-                PlayerPrefs.Save();
-            }).AddTo(this);
-
-            SessionState.ShowSourceContents.Subscribe(value =>
-            {
-                PlayerPrefs.SetInt(ShowSourceContentsSetting, 1);
-                PlayerPrefs.Save();
-            }).AddTo(this);
-
-            SessionState.ShowSourceTransform.Subscribe(value =>
-            {
-                PlayerPrefs.SetInt(ShowSourceTransformSetting, 1);
-                PlayerPrefs.Save();
-            }).AddTo(this);
+            instance = this;
         }
         else
         {
-            SessionState.ShowWorkspaceOrigin.Subscribe(value =>
-            {
-                PlayerPrefs.SetInt(ShowWorkspaceOrigin, value ? 1 : 0);
-                PlayerPrefs.Save();
-            }).AddTo(this);
-
-            SessionState.ShowRowColIndicators.Subscribe(value =>
-            {
-                PlayerPrefs.SetInt(ShowRowColIndicatorsSetting, value ? 1 : 0);
-                PlayerPrefs.Save();
-            }).AddTo(this);
-
-            SessionState.ShowRowColIndicatorHighlight.Subscribe(value =>
-            {
-                PlayerPrefs.SetInt(ShowRowColIndicatorHighlightSetting, value ? 1 : 0);
-                PlayerPrefs.Save();
-            }).AddTo(this);
-
-            SessionState.ShowRowColHighlights.Subscribe(value =>
-            {
-                PlayerPrefs.SetInt(ShowRowColHighlightsSetting, value ? 1 : 0);
-                PlayerPrefs.Save();
-            }).AddTo(this);
-
-            SessionState.ShowInformationPanel.Subscribe(value =>
-            {
-                PlayerPrefs.SetInt(ShowInformationPanelSetting, value ? 1 : 0);
-                PlayerPrefs.Save();
-            }).AddTo(this);
-
-            SessionState.ShowMarker.Subscribe(value =>
-            {
-                PlayerPrefs.SetInt(ShowMarkerSetting, value ? 1 : 0);
-                PlayerPrefs.Save();
-            }).AddTo(this);
-
-            SessionState.ShowSourceContents.Subscribe(value =>
-            {
-                PlayerPrefs.SetInt(ShowSourceContentsSetting, value ? 1 : 0);
-                PlayerPrefs.Save();
-            }).AddTo(this);
-
-            SessionState.ShowSourceTransform.Subscribe(value =>
-            {
-                PlayerPrefs.SetInt(ShowSourceTransformSetting, value ? 1 : 0);
-                PlayerPrefs.Save();
-            }).AddTo(this);
+            DestroyImmediate(gameObject);
+        }
+    }
+    void Start()
+    {
+        // Initialize from player preferences
+        foreach(LablightSettings setting in LablightSettings.GetValues(typeof(LablightSettings))) //initialize dictionary with all settings in enum
+        {
+            settingKeys[setting] = setting.ToString(); //initialize string representation of settings -> used for player pref savings
+            bool value = PlayerPrefs.GetInt(setting.ToString()) == 1;
+            settingsValues[setting] = value; //initialize values from saved playerprefs
         }
 
-        
+        settingsManagerSO.settingChanged.AddListener(settingChanged =>
+        {
+            if(!settingsValues.ContainsKey(settingChanged.Item1))
+            {
+                Debug.Log("Setting not found: " + settingChanged.Item1.ToString());
+                return;
+            }
+            settingsValues[settingChanged.Item1] = settingChanged.Item2;
+            PlayerPrefs.SetInt(settingKeys[settingChanged.Item1], settingChanged.Item2 ? 1 : 0);
+            PlayerPrefs.Save();
+        });
+    }
+
+    public bool getSettingValue(LablightSettings setting)
+    {
+        if(!settingsValues.ContainsKey(setting))
+        {
+            Debug.Log("Setting not found: " + setting.ToString());
+            return false; //default return false if setting not found
+        }
+        return settingsValues[setting];
     }
 }

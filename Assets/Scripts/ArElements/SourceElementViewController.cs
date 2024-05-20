@@ -15,6 +15,7 @@ using TMPro;
 [RequireComponent(typeof(CapsuleCollider))]
 public class SourceElementViewController : ModelElementViewController
 {
+    public SettingsManagerScriptableObject settingsManagerSO;
     public bool debugeEnableAllSettings = false;
 
     public bool modelActive;
@@ -175,8 +176,8 @@ public class SourceElementViewController : ModelElementViewController
             }
             else
             {
-                toggleTransform(Sources, SessionState.ShowSourceTransform.Value, id);
-                toggleTransform(nameTags, SessionState.ShowSourceContents.Value, id);
+                toggleTransform(Sources, settingsManagerSO.GetSettingValue(LablightSettings.SourceContainerEnabledSetting), id);
+                toggleTransform(nameTags, settingsManagerSO.GetSettingValue(LablightSettings.SourceContentsEnabledSetting), id);
             }
         }
     }
@@ -232,8 +233,8 @@ public class SourceElementViewController : ModelElementViewController
                     }
                     else
                     {
-                        toggleTransform(Sources, (SessionState.ShowSourceTransform.Value && value), id);
-                        toggleTransform(nameTags, (SessionState.ShowSourceContents.Value && value), id);
+                        toggleTransform(Sources, settingsManagerSO.GetSettingValue(LablightSettings.SourceContainerEnabledSetting) && value, id);
+                        toggleTransform(nameTags, settingsManagerSO.GetSettingValue(LablightSettings.SourceContentsEnabledSetting) && value, id);
                     }
                 }
             }
@@ -267,8 +268,7 @@ public class SourceElementViewController : ModelElementViewController
 
     private void AddSubscriptions()
     {
-
-        SessionState.ShowSourceContents.Subscribe(value => 
+        settingsManagerSO.settingChanged.AddListener(settingChanged =>
         {
             if(currActions != null)
             {
@@ -276,25 +276,19 @@ public class SourceElementViewController : ModelElementViewController
                 {
                     foreach(string id in action.chainIDs)
                     {
-                        toggleTransform(nameTags, value, id);
+                        switch(settingChanged.Item1)
+                        {
+                            case LablightSettings.SourceContainerEnabledSetting:
+                                toggleTransform(Sources, settingChanged.Item2, id);
+                                break;
+                            case LablightSettings.SourceContentsEnabledSetting:
+                                toggleTransform(nameTags, settingChanged.Item2, id);
+                                break;
+                        }
                     }
                 }
             }
-        }).AddTo(this);
-
-        SessionState.ShowSourceTransform.Subscribe(value => 
-        {
-            if(currActions != null)
-            {
-                foreach(HighlightAction action in currActions)
-                {
-                    foreach(string id in action.chainIDs)
-                    {
-                        toggleTransform(nameTags, value, id);
-                    }
-                }
-            }
-        }).AddTo(this);
+        });
     }
     
 
