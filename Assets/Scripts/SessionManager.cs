@@ -77,6 +77,9 @@ public class SessionManager : MonoBehaviour
 
         ServiceRegistry.RegisterService<IMediaProvider>(resourceFileDataProvider);
 
+        var webpageProvider = new LLSwiftWebPageProviderPlugin();
+        ServiceRegistry.RegisterService<IWebPageProvider>(webpageProvider);
+
         //Set up default state
         SessionState.deviceId = SystemInfo.deviceName;
         SessionState.Connected = false;

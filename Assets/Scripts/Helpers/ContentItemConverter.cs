@@ -33,6 +33,8 @@ public class ContentItemConverter : CustomCreationConverter<ContentItem>
                 return new SoundItem();
             case ContentType.Property:
                 return new PropertyItem();
+            case ContentType.WebUrl:
+                return new WebUrlItem();
             default:
                 throw new NotImplementedException();
         }

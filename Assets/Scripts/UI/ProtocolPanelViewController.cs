@@ -136,6 +136,11 @@ public class ProtocolPanelViewController : MonoBehaviour
                     }
                     CreateContentItems(layoutItem.contentItems, layoutController.LayoutGroup, containerController);
                     break;
+                case ContentType.WebUrl:
+                    // Open a web browser
+                    WebUrlItem webUrlItem = contentItem as WebUrlItem;
+                    ServiceRegistry.GetService<IWebPageProvider>().OpenWebPage(webUrlItem.url);
+                    break;
                 default:
                     break;
             }

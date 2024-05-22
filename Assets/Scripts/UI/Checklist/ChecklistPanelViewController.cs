@@ -375,6 +375,11 @@ public class ChecklistPanelViewController : LLBasePanel
     //voice commands setup to emulate button presses
     void SetupVoiceCommands()
     {
+        if(SpeechRecognizer.Instance == null)
+        {
+            Debug.LogWarning("SpeechRecognizer not found");
+            return;
+        }
         DisposeVoice = SpeechRecognizer.Instance.Listen(new Dictionary<string, Action>()
         {
             {"check", async () => 

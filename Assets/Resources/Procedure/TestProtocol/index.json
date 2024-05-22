@@ -167,6 +167,29 @@
             }
           ],
           "operations": []
+        },
+        {
+          "$id": "21",
+          "isCritical": false,
+          "contentItems": [
+            {
+              "$id": "22",
+              "url": "https://example.com",
+              "contentType": "WebUrl"
+            }
+          ],
+          "checklist": [
+            {
+              "$id": "23",
+              "Text": "Test the WebUrl content item",
+              "activateTimer": false,
+              "hours": 0,
+              "minutes": 0,
+              "seconds": 0,
+              "contentItems": [],
+              "operations": []
+            }
+          ]
         }
       ]
     }

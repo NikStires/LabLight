@@ -8,6 +8,7 @@ public enum ContentType
     Layout = 3,             // Subcontainer that specifies layout of children
     Sound = 4,              // Sound URL
     Property = 5,            // TrackedObject property as string (only useful for containers that are attached to a trackedObject)
+    WebUrl = 6              // URL to a webpage
 }
 
 public abstract class ContentItem

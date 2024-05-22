@@ -3,18 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Runtime.InteropServices;
 
-public class LLSwiftUiSafariDriver : MonoBehaviour
+public class LLSwiftWebPageProviderPlugin : IWebPageProvider
 {
-    [SerializeField] UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable m_Button;
-
-    void OnEnable()
+    public void OpenWebPage(string url)
     {
-        m_Button.selectEntered.AddListener(_ => ToggleSafariWindow());
-    }
-
-    void ToggleSafariWindow()
-    {
-        OpenSwiftSafariWindow("https://lablightar.io");
+        Debug.Log("OpenWebPage: " + url);
+        OpenSwiftSafariWindow(url);
     }
 
     #if UNITY_VISIONOS && !UNITY_EDITOR
