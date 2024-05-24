@@ -22,5 +22,11 @@
     "title": "TestProtocol",
     "name": "TestProtocol",
     "description": ""
+  },
+  {
+    "$id": "5",
+    "title": "Gel Extraction Kit",
+    "name": "Gel Extraction Kit",
+    "description": ""
   }
 ]
