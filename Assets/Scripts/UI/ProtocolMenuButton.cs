@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.SceneManagement;
@@ -37,7 +38,7 @@ public class ProtocolMenuButton : MonoBehaviour
     public void Initialize(ProcedureDescriptor protocol)
     {
         this.protocol = protocol;
-        title.text = protocol.title;
+        title.text = Path.GetFileNameWithoutExtension(protocol.title);
         description.text = protocol.description;
 
         interactable.selectEntered.AddListener(_ => {
@@ -55,8 +56,16 @@ public class ProtocolMenuButton : MonoBehaviour
                 SceneLoader.Instance.LoadSceneClean("Protocol");
             }, (e) =>
             {
-                Debug.Log("Error fetching procedure");
-                // TODO retry?!
+                Debug.Log("Error fetching procedure from resources, checking local files");
+                var lfdp = new LocalFileDataProvider();
+                lfdp.LoadProcedureDefinitionAsync(protocol.title).ToObservable<ProcedureDefinition>().Subscribe(protocol =>
+                {
+                    SessionState.Instance.activeProtocol = protocol;
+                    SceneLoader.Instance.LoadSceneClean("Protocol");
+                }, (e) =>
+                {
+                    Debug.Log("Error fetching procedure");
+                });
             });
         });
     }

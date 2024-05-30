@@ -52,7 +52,7 @@ public partial class Networking : MonoBehaviour
     protected int _directPort = 8888;
     protected int _fileServerPort = 8080;
     protected string _directIpAddress = "";
-    private int _targetPacketVersionNumber = 14;
+    private int _targetPacketVersionNumber = 15;
 
     /// <summary>Occurs when [a data packet is received].</summary>
     public event EventHandler<(byte, object[])> ReceivePacket;
@@ -120,6 +120,7 @@ public partial class Networking : MonoBehaviour
         packet_server_hand = 60,		                    // v7 Not handled
         packet_server_contrastive = 61,                     // v8 Not handled
         packet_server_csv_file_available = 62,		        // v9 Handled
+        packet_server_json_file_available = 63,             // v15 Handled
 
         //// **** from client to server
         packet_client_ping = 100,                           // v1   Regular ping message to inform lighthouse that this client is still running
@@ -288,6 +289,10 @@ public partial class Networking : MonoBehaviour
                 Debug.Log("Recieving packet_server_csv_file_available");
                 UpdatedCsvAvailable((CsvFileInfo)data);
                 break;
+            case (byte)packet_type.packet_server_json_file_available:
+                Debug.Log("Recieving packet_server_json_file_available");
+                UpdatedJsonAvailable((JsonFileInfo)data);
+                break;
             default:
                 Debug.Log($"Lighthouse Unhandled packet type " + packetType);
                 break;
@@ -321,6 +326,15 @@ public partial class Networking : MonoBehaviour
         Dispatcher.Current.BeginInvoke(() =>
         {
             SessionState.CsvFileDownloadable.Value = fileInfo.FileName;
+        });
+    }
+
+    private void UpdatedJsonAvailable(JsonFileInfo fileInfo)
+    {
+        Debug.Log("New Json file available for download: " + fileInfo.FileName);
+        Dispatcher.Current.BeginInvoke(() =>
+        {
+            SessionState.JsonFileDownloadable.Value = fileInfo.FileName;
         });
     }
 

@@ -312,6 +312,7 @@ public class ChecklistPanelViewController : LLBasePanel
         if(ProtocolState.Step == (ProtocolState.Steps.Count - 1) && lastStepWithChecklist != null && lastStepWithChecklist.SignedOff)
         {
             SessionState.Instance.activeProtocol = null;
+            ProtocolState.procedureDef = null;
             SceneLoader.Instance.LoadSceneClean("ProtocolMenu");   
         }
         //open a popup to confirm closing the protocol

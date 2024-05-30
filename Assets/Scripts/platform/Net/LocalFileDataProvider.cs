@@ -16,12 +16,14 @@ public class LocalFileDataProvider : IProcedureDataProvider, ITextDataProvider
     public async Task<List<ProcedureDescriptor>> GetProcedureList()
     {
         var list = new List<ProcedureDescriptor>();
-  
+
         if (Directory.Exists(Application.persistentDataPath))
         {
             DirectoryInfo directoryInfo = new DirectoryInfo(Application.persistentDataPath);
+
             foreach (var file in directoryInfo.GetFiles("*.json"))
             {
+                Debug.Log("Found file: " + file.Name);
                 list.Add(new ProcedureDescriptor()
                 {
                     name = Path.GetFileNameWithoutExtension(file.Name),
@@ -46,6 +48,7 @@ public class LocalFileDataProvider : IProcedureDataProvider, ITextDataProvider
     /// <param name="procedure"></param>
     public async Task<ProcedureDefinition> LoadProcedureDefinitionAsync(string procedureFile)
     {
+        Debug.Log("Local file data provider trying to load " + Path.Combine(Application.persistentDataPath, procedureFile));
         ProcedureDefinition procedure = null;
         using (StreamReader streamReader = new StreamReader(Path.Combine(Application.persistentDataPath, procedureFile)))
         {
@@ -55,6 +58,7 @@ public class LocalFileDataProvider : IProcedureDataProvider, ITextDataProvider
 
         if (procedure == null)
         {
+            Debug.Log("protocol not found, creating empty protocol");
             // Create empty definition
             procedure = new ProcedureDefinition()
             {
@@ -133,7 +137,7 @@ public class LocalFileDataProvider : IProcedureDataProvider, ITextDataProvider
             using (TextWriter streamWriter = new StreamWriter(Path.Combine(Application.persistentDataPath, filePath), append: false))
             {
                 streamWriter.Write(contents);
-                Debug.LogFormat("Data saved to file '{0}'", filePath);
+                Debug.LogFormat("Data saved to file '{0}'", Path.Combine(Application.persistentDataPath, filePath));
             }
         }
         catch (Exception ex)

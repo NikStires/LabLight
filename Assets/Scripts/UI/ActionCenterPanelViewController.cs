@@ -15,11 +15,14 @@ public class ActionCenterPanelViewController : MonoBehaviour
     bool isRecording = false;
     [SerializeField] UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable replayButton;
     bool isReplaying = false;
+    [SerializeField] UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable internetBrowserButton;
+    bool isBrowserOpen = false;
 
     void Start()
     {
         recordingButton.selectEntered.AddListener(_ => ToggleLighthouseRecoding());
         replayButton.selectEntered.AddListener(_ => ToggleLighthouseReplay());
+        internetBrowserButton.selectEntered.AddListener(_ => OpenInternetBrowser());
     }
 
     /// <summary>
@@ -82,4 +85,8 @@ public class ActionCenterPanelViewController : MonoBehaviour
         isReplaying = !isReplaying;
     }
 
+    void OpenInternetBrowser()
+    {
+        ServiceRegistry.GetService<IWebPageProvider>().OpenWebPage("");
+    }
 }

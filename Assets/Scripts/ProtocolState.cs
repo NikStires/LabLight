@@ -9,7 +9,7 @@ using Unity.VisualScripting;
 
 public class ProtocolState : MonoBehaviour
 {
-    public static ProtocolState instance;
+    public static ProtocolState Instance;
 
     //state data
     public static ProcedureDefinition procedureDef;
@@ -31,9 +31,9 @@ public class ProtocolState : MonoBehaviour
 
     void Awake()
     {
-        if(instance == null)
+        if(Instance == null)
         {
-            instance = this;
+            Instance = this;
         }
         else
         {
@@ -62,7 +62,7 @@ public class ProtocolState : MonoBehaviour
             List<ModelArDefinition> arModels = procedureDefinition.globalArElements.Where(x => x.arDefinitionType == ArDefinitionType.Model).Cast<ModelArDefinition>().ToList();
             if(arModels.Count > 0)
             {   
-                procedureDefinition.steps.Insert(0, instance.createLockingStep(arModels));
+                procedureDefinition.steps.Insert(0, Instance.createLockingStep(arModels));
             }
             for (int i = 0; i < procedureDefinition.steps.Count; i++)
             {
@@ -77,6 +77,8 @@ public class ProtocolState : MonoBehaviour
                 }
             }
             procedureDef = procedureDefinition;
+            step = 0;
+            Debug.Log("Set procedure definition to " + procedureDefinition.title);
             ProcedureTitle = procedureDefinition.title;
             ServiceRegistry.GetService<ILighthouseControl>()?.SetProtocolStatus();
         }

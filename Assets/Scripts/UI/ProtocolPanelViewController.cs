@@ -10,7 +10,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class ProtocolPanelViewController : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI procedureTitle;
-    [SerializeField] TextMeshProUGUI stepText;
+    //[SerializeField] TextMeshProUGUI stepText;
     [SerializeField] Transform contentFrame;
 
     //content item prefabs
@@ -212,28 +212,28 @@ public class ProtocolPanelViewController : MonoBehaviour
         }
     }
 
-    void UpdateStepDisplay()
-    {
-        if (ProtocolState.procedureDef == null)
-        {
-            stepText.text = "0/0";
-            return;
-        }
+    // void UpdateStepDisplay()
+    // {
+    //     if (ProtocolState.procedureDef == null)
+    //     {
+    //         stepText.text = "0/0";
+    //         return;
+    //     }
 
-        int stepCount = (ProtocolState.procedureDef.steps != null) ? ProtocolState.procedureDef.steps.Count : 0;
+    //     int stepCount = (ProtocolState.procedureDef.steps != null) ? ProtocolState.procedureDef.steps.Count : 0;
 
-        stepText.text = string.Format("{0}/{1}", Math.Min(stepCount, ProtocolState.Step + 1), stepCount);
+    //     stepText.text = string.Format("{0}/{1}", Math.Min(stepCount, ProtocolState.Step + 1), stepCount);
 
-        if (ProtocolState.procedureDef.steps[ProtocolState.Step].isCritical || (ProtocolState.Step > 0 && ProtocolState.procedureDef.steps[ProtocolState.Step - 1].isCritical))
-        {
-            if (SessionState.Recording)
-            {
-               ServiceRegistry.GetService<ILighthouseControl>()?.StopRecordingVideo();
-            }
-            //if (ProtocolState.procedureDef.steps[ProtocolState.Step].isCritical & confirmationPanelVC != null)
-            //{
-            //    confirmationPanelVC.CriticalStepMessage();
-            //}
-        }
-    }
+    //     if (ProtocolState.procedureDef.steps[ProtocolState.Step].isCritical || (ProtocolState.Step > 0 && ProtocolState.procedureDef.steps[ProtocolState.Step - 1].isCritical))
+    //     {
+    //         if (SessionState.Recording)
+    //         {
+    //            ServiceRegistry.GetService<ILighthouseControl>()?.StopRecordingVideo();
+    //         }
+    //         //if (ProtocolState.procedureDef.steps[ProtocolState.Step].isCritical & confirmationPanelVC != null)
+    //         //{
+    //         //    confirmationPanelVC.CriticalStepMessage();
+    //         //}
+    //     }
+    // }
 }

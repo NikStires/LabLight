@@ -4373,9 +4373,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08c3ad8ae9c484195b42d73ac784c269, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  planeManager: {fileID: 11400000, guid: 0e4c22905642e492a9c661e3e6ed89b8, type: 2}
   timerPrefab: {fileID: 8865446257386590653, guid: a7d6972eb7de04e3ab65efc1613d80bf, type: 3}
   recordingButton: {fileID: 7182426023415192798}
   replayButton: {fileID: 652035448485864375}
+  internetBrowserButton: {fileID: 4194583014581430610}
 --- !u!1 &6408320339331744813
 GameObject:
   m_ObjectHideFlags: 0

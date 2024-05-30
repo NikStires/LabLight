@@ -2,7 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 using System;
+using System.Linq;
+using System.IO;
+using System.Threading.Tasks;
 using UniRx;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
@@ -12,6 +16,7 @@ public class ProtocolMenuViewController : LLBasePanel
     [SerializeField] GameObject buttonPrefab;
     [SerializeField] GameObject previousButton;
     [SerializeField] GameObject nextButton;
+    [SerializeField] GameObject downloadButton;
 
     [SerializeField] XRSimpleInteractable closeAppButton;
 
@@ -23,6 +28,26 @@ public class ProtocolMenuViewController : LLBasePanel
     void Awake()
     {
         base.Awake();
+
+        SessionState.JsonFileDownloadable.Subscribe(jsonFileInfo =>
+        {
+            if (string.IsNullOrEmpty(jsonFileInfo))
+            {
+                downloadButton.GetComponent<XRSimpleInteractable>().enabled = false;
+            }
+            else
+            {
+                downloadButton.GetComponent<XRSimpleInteractable>().enabled = true;
+                downloadButton.GetComponent<MeshRenderer>().material.color = Color.green;
+            }
+        });
+
+        downloadButton.GetComponent<XRSimpleInteractable>().selectEntered.AddListener(async _ =>
+        {
+            await DownloadJsonProtocolAsync();
+            LoadProtocols();
+            Build(currentPage);
+        });
     }
 
     /// <summary>
@@ -115,6 +140,7 @@ public class ProtocolMenuViewController : LLBasePanel
         if(ServiceRegistry.GetService<IProcedureDataProvider>() != null)
         {
             protocols = await ServiceRegistry.GetService<IProcedureDataProvider>()?.GetProcedureList();
+            protocols.AddRange(await ((LocalFileDataProvider)ServiceRegistry.GetService<ITextDataProvider>())?.GetProcedureList());
             maxPage = (int)Math.Ceiling((float)protocols.Count / 8);
             currentPage = 0;
 
@@ -125,5 +151,65 @@ public class ProtocolMenuViewController : LLBasePanel
         {
             Debug.LogWarning("Cannot load protocols, protocol data provider service NULL");
         }
+    }
+
+    public async Task<string> DownloadJsonProtocolAsync()
+    {
+        string fileServerUri = ServiceRegistry.GetService<ILighthouseControl>()?.GetFileServerUri();
+
+        if (!string.IsNullOrEmpty(fileServerUri))
+        {
+            string uri;
+
+            bool filenameKnown = !string.IsNullOrEmpty(SessionState.JsonFileDownloadable.Value);
+            if (filenameKnown)
+            {
+                uri = fileServerUri + "/GetFile?Filename=" + SessionState.JsonFileDownloadable.Value;
+            }
+            else
+            {
+                uri = fileServerUri + "/GetProtocolJson";
+            }
+
+            Debug.Log("Downloading from " + uri);
+
+            UnityWebRequest request = UnityWebRequest.Get(uri);
+            request.SendWebRequest();
+
+            while (!request.isDone)
+            {
+                await Task.Yield();
+            }
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                var fileName = filenameKnown ? SessionState.JsonFileDownloadable.Value : request.GetResponseHeader("File-Name");
+
+                if (!string.IsNullOrEmpty(fileName))
+                {
+                    var protocolName = Path.GetDirectoryName(fileName);
+
+                    var lfdp = new LocalFileDataProvider();
+                    
+                    lfdp.SaveTextFile(protocolName + ".json", request.downloadHandler.text);
+                }
+                else
+                {
+                    Debug.LogError("There is no 'File-Name' in the response header.");
+                }
+
+                SessionState.JsonFileDownloadable.Value = string.Empty;
+            }
+            else
+            {
+                Debug.LogError(request.error);
+            }
+        }
+        else
+        {
+            Debug.LogError("Could not retrieve FileServerUri from LightHouse");
+        }
+
+        return null;
     }
 }

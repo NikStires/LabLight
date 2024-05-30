@@ -71,10 +71,11 @@ public class SessionManager : MonoBehaviour
 
         //anchorManager.enabled = false;
 
+        var localFileDataProvider = new LocalFileDataProvider();
+        ServiceRegistry.RegisterService<ITextDataProvider>(localFileDataProvider);
+
         var resourceFileDataProvider = new ResourceFileDataProvider();
-
         ServiceRegistry.RegisterService<IProcedureDataProvider>(resourceFileDataProvider);
-
         ServiceRegistry.RegisterService<IMediaProvider>(resourceFileDataProvider);
 
         var webpageProvider = new LLSwiftWebPageProviderPlugin();

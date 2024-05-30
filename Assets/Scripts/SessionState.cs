@@ -56,6 +56,8 @@ public class SessionState : MonoBehaviour
     // /// CSV file that is marked as available for download 
     public static ReactiveProperty<string> CsvFileDownloadable = new ReactiveProperty<string>();
 
+    public static ReactiveProperty<string> JsonFileDownloadable = new ReactiveProperty<string>();
+
     // //wellplate settings
     // public static ReactiveProperty<bool> ShowRowColIndicators = new ReactiveProperty<bool>();
     // public static ReactiveProperty<bool> ShowRowColIndicatorHighlight = new ReactiveProperty<bool>();
