@@ -13,6 +13,8 @@ public class ModelInteractionButtonManager : MonoBehaviour
 
     public GameObject rotationButton;
 
+    public GameObject toggleOutlineButton;
+
     private bool currentState;
 
     public void Start()
@@ -36,5 +38,6 @@ public class ModelInteractionButtonManager : MonoBehaviour
         currentState = !currentState;
         relockButton.SetActive(currentState);
         rotationButton.SetActive(currentState);
+        toggleOutlineButton.SetActive(currentState);
     }
 }

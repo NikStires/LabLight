@@ -11,6 +11,8 @@ public class RotateModelButton : MonoBehaviour
 
     public GameObject negativeRotationButton;
 
+    public GameObject mainPrefab;
+
     public GameObject outlinePrefab;
 
     private GameObject duplicateOutline;
@@ -31,7 +33,8 @@ public class RotateModelButton : MonoBehaviour
     {
         if(inRotation)
         {
-            outlinePrefab.transform.rotation = duplicateOutline.transform.rotation;
+            //outlinePrefab.transform.rotation = duplicateOutline.transform.rotation;
+            mainPrefab.transform.rotation = duplicateOutline.transform.rotation;
             Destroy(duplicateOutline);
             inRotation = false;
         }
@@ -49,7 +52,8 @@ public class RotateModelButton : MonoBehaviour
     {
         if(inRotation)
         {
-            outlinePrefab.transform.rotation = duplicateOutline.transform.rotation;
+            //outlinePrefab.transform.rotation = duplicateOutline.transform.rotation;
+            mainPrefab.transform.rotation = duplicateOutline.transform.rotation;
             Destroy(duplicateOutline);
             duplicateOutline = null;
             inRotation = false;
