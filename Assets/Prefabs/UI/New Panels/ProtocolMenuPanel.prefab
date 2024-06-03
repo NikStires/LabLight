@@ -384,22 +384,6 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 78be6d93b7b1c498183072421e02d615, type: 3}
-    - target: {fileID: 8941642355252626800, guid: dd216cbce70c340968d5d438f8592667, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8941642355252626800, guid: dd216cbce70c340968d5d438f8592667, type: 3}
-      propertyPath: m_MaxDistanceAllowed
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8941642355252626800, guid: dd216cbce70c340968d5d438f8592667, type: 3}
-      propertyPath: m_MinDistanceAllowed
-      value: 0.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8941642355252626800, guid: dd216cbce70c340968d5d438f8592667, type: 3}
-      propertyPath: m_PositionFollowMode
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 9083621353382942602, guid: dd216cbce70c340968d5d438f8592667, type: 3}
       propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.size
       value: 3
@@ -495,6 +479,7 @@ MonoBehaviour:
   buttonPrefab: {fileID: 5827233944868290495, guid: a0fe3e35f0bae45dcbbef5b10c3db539, type: 3}
   previousButton: {fileID: 9141439557743031184}
   nextButton: {fileID: 7651464341026961291}
+  downloadButton: {fileID: 0}
   closeAppButton: {fileID: 6177861722706078628}
 --- !u!1 &7651464341026961291 stripped
 GameObject:

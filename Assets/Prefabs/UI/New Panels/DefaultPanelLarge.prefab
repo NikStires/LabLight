@@ -54,9 +54,6 @@ MonoBehaviour:
   m_InteractionManager: {fileID: 0}
   m_Colliders:
   - {fileID: 7654974906463842121}
-  m_InteractionLayerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
   m_InteractionLayers:
     m_Bits: 1
   m_DistanceCalculationMode: 1
@@ -187,33 +184,6 @@ MonoBehaviour:
   m_StartingHoverFilters: []
   m_StartingSelectFilters: []
   m_StartingInteractionStrengthFilters: []
-  m_OnFirstHoverEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnLastHoverExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnHoverEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnHoverExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSelectEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSelectExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSelectCanceled:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnActivate:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnDeactivate:
-    m_PersistentCalls:
-      m_Calls: []
   m_AttachTransform: {fileID: 35881918011257668}
   m_SecondaryAttachTransform: {fileID: 0}
   m_UseDynamicAttach: 0
@@ -260,10 +230,10 @@ MonoBehaviour:
   m_ThrowAngularVelocityScale: 1
   m_ForceGravityOnDetach: 0
   m_RetainTransformParent: 1
-  m_AttachPointCompatibilityMode: 0
   m_StartingSingleGrabTransformers: []
   m_StartingMultipleGrabTransformers: []
   m_AddDefaultGrabTransformers: 1
+  m_FarAttachMode: 0
 --- !u!65 &7654974906463842121
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -319,13 +289,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4040129738761332744}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1a2d7d89889b4d94fa1f8d6fe49788e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Target: {fileID: 0}
-  m_TargetOffset: {x: 0, y: 0, z: 0.5}
+  m_TargetOffset: {x: 0, y: 0, z: 0.83}
   m_FollowInLocalSpace: 0
   m_ApplyTargetInLocalSpace: 0
   m_MovementSpeed: 6
@@ -347,9 +317,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6969485603967218354}
     m_Modifications:
+    - target: {fileID: 194505590548190767, guid: e14d24e031c184cad882ff93cb8d81c1, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -16.49
+      objectReference: {fileID: 0}
+    - target: {fileID: 194505590548190767, guid: e14d24e031c184cad882ff93cb8d81c1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.54999924
+      objectReference: {fileID: 0}
     - target: {fileID: 2013842779394695791, guid: e14d24e031c184cad882ff93cb8d81c1, type: 3}
       propertyPath: m_Name
       value: PanelHeaderLarge
+      objectReference: {fileID: 0}
+    - target: {fileID: 4550886096181564008, guid: e14d24e031c184cad882ff93cb8d81c1, type: 3}
+      propertyPath: m_fontSize
+      value: 22.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4550886096181564008, guid: e14d24e031c184cad882ff93cb8d81c1, type: 3}
+      propertyPath: m_fontSizeMin
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6116162210369043818, guid: e14d24e031c184cad882ff93cb8d81c1, type: 3}
       propertyPath: m_LocalPosition.x

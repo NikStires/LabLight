@@ -21,6 +21,7 @@ public class LLSwiftUiVideoDriver : MonoBehaviour
     void Start()
     {
         ProtocolState.checklistStream.Subscribe(_ => UpdateContent()).AddTo(this);
+        ProtocolState.stepStream.Subscribe(_ => UpdateContent()).AddTo(this);
     }
 
     void UpdateContent()
