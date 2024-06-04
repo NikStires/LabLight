@@ -48,11 +48,14 @@ public class CheckitemView : MonoBehaviour
     public void InitalizeCheckItem(ProtocolState.CheckItemState checkItem)
     {
         //check puntcuation
-        var checkItemText = checkItem.Text = char.ToUpper(checkItem.Text[0]) + checkItem.Text.Substring(1);
+        if(checkItem.Text != null)
+        {
+            var checkItemText = checkItem.Text = char.ToUpper(checkItem.Text[0]) + checkItem.Text.Substring(1);
 
-        text.text = checkItemText;
-        rawText = checkItemText;
-        strikeText = "<s>" + checkItemText + "</s>";
+            text.text = checkItemText;
+            rawText = checkItemText;
+            strikeText = "<s>" + checkItemText + "</s>";
+        }
 
         if(subscription != null)
         {

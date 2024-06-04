@@ -21,23 +21,23 @@ public class LLSwiftUiVideoDriver : MonoBehaviour
     void Start()
     {
         ProtocolState.checklistStream.Subscribe(_ => UpdateContent()).AddTo(this);
-        ProtocolState.stepStream.Subscribe(_ => UpdateContent()).AddTo(this);
     }
 
     void UpdateContent()
     {
+        Debug.Log("Updating video content items");
         var currentStep = ProtocolState.procedureDef.steps[ProtocolState.Step];
 
         VideoItem newVideoItem = null;
 
-        //check the current check step for a video then checkitem, only one video will be shown at a time
-        if(currentStep.contentItems.Count > 0)
-        {
-            newVideoItem = (VideoItem)currentStep.contentItems.Where(x => x.contentType == ContentType.Video).FirstOrDefault();
-        }
+        //check the current checkItem for a video, then check the current step
         if(currentStep.checklist != null && currentStep.checklist[ProtocolState.CheckItem].contentItems.Count > 0)
         {
             newVideoItem = (VideoItem)currentStep.checklist[ProtocolState.CheckItem].contentItems.Where(x => x.contentType == ContentType.Video).FirstOrDefault();
+        }
+        if(newVideoItem == null && currentStep.contentItems.Count > 0)
+        {
+            newVideoItem = (VideoItem)currentStep.contentItems.Where(x => x.contentType == ContentType.Video).FirstOrDefault();
         }
 
         if(newVideoItem == null && _swiftUIWindowOpen)
@@ -46,13 +46,22 @@ public class LLSwiftUiVideoDriver : MonoBehaviour
             Debug.Log("######LABLIGHT Requesting CLOSE swift video window");
             CloseSwiftUIWindow("Video");
             _swiftUIWindowOpen = false;
+            _currentVideoItem = null;
         }
-        else if(newVideoItem == null || (newVideoItem != null && _currentVideoItem == newVideoItem.url))
+        else if(newVideoItem != null)
         {
-            return;
-        }
-        else
-        {
+            if(_currentVideoItem == newVideoItem.url)
+            {
+                //if the video is the same as the current video then do nothing
+                return;
+            }
+            else if(_swiftUIWindowOpen)
+            {
+                //if there are no video items disable view
+                Debug.Log("######LABLIGHT Requesting CLOSE swift video window");
+                CloseSwiftUIWindow("Video");
+                _swiftUIWindowOpen = false;
+            }
             Debug.Log("######LABLIGHT Requesting swift video window open: " + newVideoItem.url);
             _currentVideoItem = newVideoItem.url;
             //if we have a new video item then load the video
