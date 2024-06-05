@@ -283,10 +283,6 @@ public class ChecklistPanelViewController : LLBasePanel
         {
             view.InitalizeCheckItem(ProtocolState.Steps[ProtocolState.Step].Checklist[index]);
 
-            //scale the item based on its position relative to the active item
-            float scaleFactor = (float)Math.Pow(1.3, Math.Abs(index - ProtocolState.CheckItem));
-            view.transform.localScale = new Vector3(7.5f / scaleFactor, 7.5f / scaleFactor, 0.075f);
-
             view.gameObject.SetActive(true);
 
             if (index == ProtocolState.CheckItem)
