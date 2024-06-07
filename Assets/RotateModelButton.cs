@@ -39,8 +39,14 @@ public class RotateModelButton : MonoBehaviour
             inRotation = false;
         }
         buttonsEnabled = !buttonsEnabled;
-        positionRotationButton.SetActive(buttonsEnabled);
-        negativeRotationButton.SetActive(buttonsEnabled);
+        if(positionRotationButton != null && negativeRotationButton != null)
+        {
+            positionRotationButton.SetActive(buttonsEnabled);
+            negativeRotationButton.SetActive(buttonsEnabled);
+        }else
+        {
+            RotateModel(45); //if no buttons exist this button rotates the model by 90 degrees
+        }
     }
 
     public void OnDestroy()
@@ -59,8 +65,11 @@ public class RotateModelButton : MonoBehaviour
             inRotation = false;
         }
         buttonsEnabled = false;
-        positionRotationButton.SetActive(buttonsEnabled);
-        negativeRotationButton.SetActive(buttonsEnabled);
+        if(positionRotationButton != null && negativeRotationButton != null)
+        {
+            positionRotationButton.SetActive(buttonsEnabled);
+            negativeRotationButton.SetActive(buttonsEnabled);
+        }
     }
 
     public void RotateModel(int degrees)
