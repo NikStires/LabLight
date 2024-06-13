@@ -79,12 +79,18 @@ public class CheckitemView : MonoBehaviour
 
     public void SetAsActiveItem()
     {
-        m_backgroundMesh.material = activeMaterial;
+        if(m_backgroundMesh != null)
+        {
+            m_backgroundMesh.material = activeMaterial;
+        }
     }
 
     public void SetAsInactiveItem()
     {
-        m_backgroundMesh.material = defaultMaterial;
+        if(m_backgroundMesh != null)
+        {
+            m_backgroundMesh.material = defaultMaterial;
+        }
     }
 
     public void InitalizeCheckItem(ProtocolState.CheckItemState checkItem)
