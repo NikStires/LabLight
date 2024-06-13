@@ -34,5 +34,11 @@
     "title": "Checklist Test",
     "name": "Checklist Test",
     "description": ""
+  },
+  {
+    "$id": "7",
+    "title": "Demo Protocol",
+    "name" : "Demo Protocol",
+    "description": ""
   }
 ]
