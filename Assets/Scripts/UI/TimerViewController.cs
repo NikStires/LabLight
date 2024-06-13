@@ -51,7 +51,7 @@ public class TimerViewController : MonoBehaviour
         if(TimeLeft < 0 & timerRunning)
         {
             StopTimer();
-            StartCoroutine(FlashTimer());
+            InvokeRepeating("FlashTimer", 0.0f, 1f);
         }
     }
 
@@ -136,11 +136,17 @@ public class TimerViewController : MonoBehaviour
         TimeLeft = StartingTime;
         StopTimer();
         TimeDisplay.text = GetTimeString();
+        backplateMesh.material = defaultMaterial;
+        CancelInvoke("FlashTimer");
         audioPlayer.Stop();
     }
 
     public void StartTimer()
     {
+        if(StartingTime <= 0 || timerRunning || TimeLeft <= 0)
+        {
+            return;
+        }
         ServiceRegistry.GetService<ILighthouseControl>()?.StartTimer((int)StartingTime);
         timerRunning = true;
         StartButton.SetActive(false);
@@ -194,15 +200,9 @@ public class TimerViewController : MonoBehaviour
         }
     }
 
-    private IEnumerator FlashTimer()
+    private void FlashTimer()
     {
-        while(TimeLeft < 0 & !timerRunning)
-        {
-            backplateMesh.material = timerFlashMaterial;
-            audioPlayer.Play();
-            yield return new WaitForSeconds(0.5f);
-            backplateMesh.material = defaultMaterial;
-            yield return new WaitForSeconds(0.5f);
-        }
+        backplateMesh.material = backplateMesh.material == defaultMaterial ? timerFlashMaterial : defaultMaterial;
+        audioPlayer.Play();
     }
 }
