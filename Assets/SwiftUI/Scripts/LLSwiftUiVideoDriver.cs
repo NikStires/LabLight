@@ -25,7 +25,6 @@ public class LLSwiftUiVideoDriver : MonoBehaviour
 
     void UpdateContent()
     {
-        Debug.Log("Updating video content items");
         var currentStep = ProtocolState.procedureDef.steps[ProtocolState.Step];
 
         VideoItem newVideoItem = null;

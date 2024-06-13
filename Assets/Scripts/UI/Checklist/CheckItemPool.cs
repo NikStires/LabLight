@@ -22,6 +22,7 @@ public class CheckItemPool : MonoBehaviour
         for (int i = 0; i < amountToPool; i++)
         {
             tmp = Instantiate(objectToPool, Content);
+            tmp.name = "CheckItem" + i;
             tmp.SetActive(false);
             pooledObjects.Add(tmp);
         }

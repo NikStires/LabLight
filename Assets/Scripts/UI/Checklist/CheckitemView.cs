@@ -2,12 +2,16 @@ using System;
 using UnityEngine;
 using TMPro;
 using UniRx;
+using MoreMountains.Feedbacks;
+using MoreMountains.Tools;
 
 public class CheckitemView : MonoBehaviour
 {
+
+    ProtocolState.CheckItemState data;
     public bool itemChecked = false;
 
-    [SerializeField] private TextMeshProUGUI text;
+    [SerializeField] public TextMeshProUGUI text;
     string rawText;
     string strikeText;
 
@@ -15,12 +19,50 @@ public class CheckitemView : MonoBehaviour
     [SerializeField] Material defaultMaterial;
     [SerializeField] MeshRenderer m_backgroundMesh;
 
+    [SerializeField] MMF_Player scaleUpAnimation;
+    [SerializeField] MMF_Player scaleDownAnimation;
+    [SerializeField] MMF_Player moveUpAnimation;
+    [SerializeField] MMF_Player moveDownAnimation;
+
     private IDisposable subscription;
 
     void Start()
     {
         rawText = text.text;
         strikeText = "<s>" + text.text + "</s>";
+
+        ProtocolState.checklistStream.Subscribe(_ => {
+            if(ProtocolState.Steps[ProtocolState.Step].Checklist == null)
+            {
+                return;
+            }
+            {
+                SetAsActiveItem();
+            }
+            if(ProtocolState.Steps[ProtocolState.Step].Checklist[ProtocolState.CheckItem] == data)
+            {
+                SetAsActiveItem();
+            }
+            else
+            {
+                SetAsInactiveItem();
+            }
+        });
+    }
+
+    void OnEnable()
+    {
+        if(data != null)
+        {
+            if(ProtocolState.Steps[ProtocolState.Step].Checklist[ProtocolState.CheckItem] == data)
+            {
+                SetAsActiveItem();
+            }
+            else
+            {
+                SetAsInactiveItem();
+            }
+        }
     }
 
     public void Check()
@@ -47,6 +89,8 @@ public class CheckitemView : MonoBehaviour
 
     public void InitalizeCheckItem(ProtocolState.CheckItemState checkItem)
     {
+        data = checkItem;
+
         //check puntcuation
         if(checkItem.Text != null)
         {
@@ -72,5 +116,29 @@ public class CheckitemView : MonoBehaviour
                 Uncheck();
             }
         });
+    }
+
+    public void PlayScaleUpAnimation()
+    {   
+        scaleUpAnimation.PlayFeedbacks();
+    }
+
+    public void PlayScaleDownAnimation()
+    {
+        scaleDownAnimation.PlayFeedbacks();
+    }
+
+    public void PlayMoveUpAnimation(Vector3 initialPosition, Vector3 destinationPosition)
+    {
+        moveUpAnimation.GetFeedbackOfType<MMF_Position>().InitialPosition = initialPosition;
+        moveUpAnimation.GetFeedbackOfType<MMF_Position>().DestinationPosition = destinationPosition;
+        moveUpAnimation.PlayFeedbacks();
+    }
+
+    public void PlayMoveDownAnimation(Vector3 initialPosition, Vector3 destinationPosition)
+    {
+        moveDownAnimation.GetFeedbackOfType<MMF_Position>().InitialPosition = initialPosition;
+        moveDownAnimation.GetFeedbackOfType<MMF_Position>().DestinationPosition = destinationPosition;
+        moveDownAnimation.PlayFeedbacks();
     }
 }

@@ -28,5 +28,11 @@
     "title": "Gel Extraction Kit",
     "name": "Gel Extraction Kit",
     "description": ""
+  },
+  {
+    "$id": "6",
+    "title": "Checklist Test",
+    "name": "Checklist Test",
+    "description": ""
   }
 ]
