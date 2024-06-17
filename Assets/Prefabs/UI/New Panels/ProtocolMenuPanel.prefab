@@ -384,6 +384,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 78be6d93b7b1c498183072421e02d615, type: 3}
+    - target: {fileID: 8941642355252626800, guid: dd216cbce70c340968d5d438f8592667, type: 3}
+      propertyPath: m_TargetOffset.y
+      value: -0.05
+      objectReference: {fileID: 0}
     - target: {fileID: 9083621353382942602, guid: dd216cbce70c340968d5d438f8592667, type: 3}
       propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.size
       value: 3

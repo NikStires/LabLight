@@ -39,6 +39,9 @@ public class ChecklistPanelViewController : LLBasePanel
     [SerializeField] PopupEventSO checklistIncompletePopupEventSO;
     [SerializeField] PopupEventSO closeProtocolPopupEventSO;
 
+    [Header("HUD Event SO")]
+    [SerializeField] HudEventSO hudEventSO;
+
     private void Awake()
     {
         base.Awake();
@@ -96,6 +99,7 @@ public class ChecklistPanelViewController : LLBasePanel
         if (ProtocolState.Steps[ProtocolState.Step].Checklist == null || ProtocolState.Steps[ProtocolState.Step].SignedOff)
         {
             Debug.LogWarning("Already signed off or no item to check");
+            hudEventSO.DisplayHudWarning("Checklist already signed off.");
             return;
         }
 
@@ -106,6 +110,7 @@ public class ChecklistPanelViewController : LLBasePanel
         if (firstUncheckedItem == null || ProtocolState.LockingTriggered.Value)
         {
             Debug.LogWarning("No item to check or locking triggered");
+            hudEventSO.DisplayHudWarning("No item to check.");
             return;
         }
 
@@ -147,6 +152,7 @@ public class ChecklistPanelViewController : LLBasePanel
         if (ProtocolState.Steps[ProtocolState.Step].Checklist == null || ProtocolState.Steps[ProtocolState.Step].SignedOff)
         {
             Debug.LogWarning("Already signed off or no item to uncheck");
+            hudEventSO.DisplayHudWarning("Checklist already signed off.");
             return;
         }
 
@@ -157,6 +163,7 @@ public class ChecklistPanelViewController : LLBasePanel
         if (lastCheckedItem == null || ProtocolState.LockingTriggered.Value)
         {
             Debug.LogWarning("No item to uncheck or locking triggered");
+            hudEventSO.DisplayHudWarning("No item to uncheck.");
             return;
         }
 
@@ -182,6 +189,7 @@ public class ChecklistPanelViewController : LLBasePanel
         if (ProtocolState.Steps[ProtocolState.Step].Checklist == null || ProtocolState.Steps[ProtocolState.Step].SignedOff)
         {
             Debug.LogWarning("Already signed off or no checklist for this step");
+            hudEventSO.DisplayHudWarning("Checklist already signed off.");
             return;
         }
 
@@ -192,6 +200,7 @@ public class ChecklistPanelViewController : LLBasePanel
         if (uncheckedItemsCount != 0)
         {
             Debug.LogWarning("Not all items are checked");
+            hudEventSO.DisplayHudWarning("Cannot sign off, not all items are checked.");
             return;
         }
 

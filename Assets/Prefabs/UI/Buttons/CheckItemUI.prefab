@@ -1409,6 +1409,7 @@ MonoBehaviour:
   scaleDownAnimation: {fileID: 308154345360927329}
   moveUpAnimation: {fileID: 2516042829471248495}
   moveDownAnimation: {fileID: 4895590106092966271}
+  _hudEventSO: {fileID: 11400000, guid: d9705cf1816584f66a09a019652ef80d, type: 2}
 --- !u!82 &5868533081666834845
 AudioSource:
   m_ObjectHideFlags: 0

@@ -750,6 +750,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5938477245920432933, guid: 93a4e1b898a2e4be5ba46bcde7b51fa8, type: 3}
+      propertyPath: m_TargetOffset.y
+      value: -0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 5938477245920432933, guid: 93a4e1b898a2e4be5ba46bcde7b51fa8, type: 3}
       propertyPath: m_PositionFollowMode
       value: 1
       objectReference: {fileID: 0}
@@ -1240,6 +1244,7 @@ MonoBehaviour:
   signOffPopupEventSO: {fileID: 11400000, guid: e42dfa01e0563481482cfcd443cdfc8d, type: 2}
   checklistIncompletePopupEventSO: {fileID: 11400000, guid: b29dfca30d6084b04a3788c71023e423, type: 2}
   closeProtocolPopupEventSO: {fileID: 11400000, guid: cdd14e8d948e84f73ba410ad2852d726, type: 2}
+  hudEventSO: {fileID: 11400000, guid: d9705cf1816584f66a09a019652ef80d, type: 2}
 --- !u!114 &510952946158330145
 MonoBehaviour:
   m_ObjectHideFlags: 0

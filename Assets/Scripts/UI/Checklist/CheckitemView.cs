@@ -24,6 +24,8 @@ public class CheckitemView : MonoBehaviour
     [SerializeField] MMF_Player moveUpAnimation;
     [SerializeField] MMF_Player moveDownAnimation;
 
+    [SerializeField] HudEventSO _hudEventSO;
+
     private IDisposable subscription;
 
     void Start()
@@ -35,9 +37,6 @@ public class CheckitemView : MonoBehaviour
             if(ProtocolState.Steps[ProtocolState.Step].Checklist == null)
             {
                 return;
-            }
-            {
-                SetAsActiveItem();
             }
             if(ProtocolState.Steps[ProtocolState.Step].Checklist[ProtocolState.CheckItem] == data)
             {
@@ -79,9 +78,12 @@ public class CheckitemView : MonoBehaviour
 
     public void SetAsActiveItem()
     {
-        if(m_backgroundMesh != null)
+        if(m_backgroundMesh != null && m_backgroundMesh)
         {
             m_backgroundMesh.material = activeMaterial;
+        }
+        if(!data.IsChecked.Value){
+            _hudEventSO.DisplayHudMessage(data.Text);
         }
     }
 
