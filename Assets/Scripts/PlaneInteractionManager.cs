@@ -85,7 +85,7 @@ public class PlaneInteractionManager : MonoBehaviour
     
 
     private void Update()
-    {           
+    {      
         #if UNITY_EDITOR
         
             if(Input.GetKeyDown(KeyCode.L))

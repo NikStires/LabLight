@@ -2,6 +2,7 @@
   "$id": "1",
   "version": 9,
   "title": "Demo Protocol",
+  "pdfPath": "Demo_Protocol.pdf",
   "globalArElements": [
     {
       "$id": "2",
@@ -194,9 +195,7 @@
                   "$id": "24",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "0"
-                  ],
+                  "chainIDs": ["0"],
                   "colorInfo": {
                     "$id": "25",
                     "Item1": "#38CB82",
@@ -280,9 +279,7 @@
                   "$id": "38",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "0"
-                  ],
+                  "chainIDs": ["0"],
                   "colorInfo": {
                     "$id": "39",
                     "Item1": "#38CB82",
@@ -366,9 +363,7 @@
                   "$id": "55",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "0"
-                  ],
+                  "chainIDs": ["0"],
                   "colorInfo": {
                     "$id": "56",
                     "Item1": "#38CB82",
@@ -452,9 +447,7 @@
                   "$id": "72",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "0"
-                  ],
+                  "chainIDs": ["0"],
                   "colorInfo": {
                     "$id": "73",
                     "Item1": "#38CB82",
@@ -538,9 +531,7 @@
                   "$id": "89",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "0"
-                  ],
+                  "chainIDs": ["0"],
                   "colorInfo": {
                     "$id": "90",
                     "Item1": "#38CB82",
@@ -624,9 +615,7 @@
                   "$id": "106",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "0"
-                  ],
+                  "chainIDs": ["0"],
                   "colorInfo": {
                     "$id": "107",
                     "Item1": "#38CB82",
@@ -710,9 +699,7 @@
                   "$id": "123",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "0"
-                  ],
+                  "chainIDs": ["0"],
                   "colorInfo": {
                     "$id": "124",
                     "Item1": "#38CB82",
@@ -796,9 +783,7 @@
                   "$id": "140",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": [
-                    "0"
-                  ],
+                  "chainIDs": ["0"],
                   "colorInfo": {
                     "$id": "141",
                     "Item1": "#38CB82",
