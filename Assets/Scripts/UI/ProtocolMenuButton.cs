@@ -6,6 +6,7 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UniRx;
+using MoreMountains.Feedbacks;
 
 /// <summary>
 /// Represents a button in the protocol menu.
@@ -23,12 +24,19 @@ public class ProtocolMenuButton : MonoBehaviour
     Material defaultMaterial;
     [SerializeField] Material redFillShader;
     float progress = -0.09f;
+    [SerializeField] MMF_Player animationPlayer;
 
     void Awake()
     {
         interactable = GetComponent<XRSimpleInteractable>();
         renderer = GetComponent<Renderer>();
         defaultMaterial = renderer.material;
+        animationPlayer = GetComponent<MMF_Player>();
+    }
+
+    void OnEnable()
+    {
+        animationPlayer.PlayFeedbacks();
     }
 
     /// <summary>
