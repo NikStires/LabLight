@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using UniRx;
 using UnityEngine.XR.Interaction.Toolkit;
+using System.Linq;
 
 public class ProtocolPanelViewController : MonoBehaviour
 {
@@ -27,8 +28,6 @@ public class ProtocolPanelViewController : MonoBehaviour
 
     private void Awake()
     {
-        //ProtocolState.stepStream.Subscribe(_ => { UpdateStepDisplay(); }).AddTo(this);
-
         ProtocolState.checklistStream.Subscribe(_ => UpdateContentItems()).AddTo(this);
     }
 
@@ -47,12 +46,12 @@ public class ProtocolPanelViewController : MonoBehaviour
         var newContentItems = new List<ContentItem>();
         if(currentStep.checklist != null && currentStep.checklist[ProtocolState.CheckItem].contentItems.Count > 0)
         {
-            newContentItems.AddRange(currentStep.contentItems);
-            newContentItems.AddRange(currentStep.checklist[ProtocolState.CheckItem].contentItems);
+            newContentItems.AddRange(currentStep.contentItems.Where(contentItem => contentItem.contentType != ContentType.Video));
+            newContentItems.AddRange(currentStep.checklist[ProtocolState.CheckItem].contentItems.Where(contentItem => contentItem.contentType != ContentType.Video));
         }
         else
         {
-            newContentItems.AddRange(currentStep.contentItems);
+            newContentItems.AddRange(currentStep.contentItems.Where(contentItem => contentItem.contentType != ContentType.Video));
         }
 
         if(newContentItems.Count == 0)
@@ -155,85 +154,4 @@ public class ProtocolPanelViewController : MonoBehaviour
         }
         contentItemInstances.Clear();
     }
-
-    public void PreviousStep()
-    {
-        if (ProtocolState.LockingTriggered.Value)
-        {
-            //audioPlayer?.Play(AudioEventEnum.Error);
-            Debug.LogWarning("cannot navigate to previous step: locking in progress");
-            return;
-        }
-        //if (!SessionState.ConfirmationPanelVisible.Value)
-        //{
-        //    audioPlayer?.Play(AudioEventEnum.PreviousStep);
-        //    ProtocolState.SetStep(ProtocolState.Step - 1);
-        //}
-        if(ProtocolState.Step == 0)
-        {
-            return;
-        }
-        ProtocolState.SetStep(ProtocolState.Step - 1);
-    }
-
-    public void NextStep()
-    {
-        //if there is a checklist that has not been signed off verify that the operator wants to progress
-        if (ProtocolState.Steps[ProtocolState.Step].Checklist != null)
-        {
-            if(!ProtocolState.Steps[ProtocolState.Step].SignedOff)
-            {
-                //if all items are checked but checklist is not signed off
-                if (ProtocolState.CheckItem == ProtocolState.Steps[ProtocolState.Step].Checklist.Count - 1 &&
-                    ProtocolState.Steps[ProtocolState.Step].Checklist[ProtocolState.CheckItem].IsChecked.Value)
-                {
-                    //update confirmation panel UI and button controls
-                    Debug.LogWarning("trying to go to next step without signing off");
-                    //confirmationPanelVC.SignOffMessage();
-                    return;
-                }
-                else
-                {
-                    //update confirmation panel UI and button controls
-                    Debug.LogWarning("trying to go to the next step without checking all items");
-                    //confirmationPanelVC.ChecklistIncompleteMessage();
-                    return;
-                }
-            }
-
-            if (ProtocolState.LockingTriggered.Value)
-            {
-                //audioPlayer?.Play(AudioEventEnum.Error);
-                Debug.LogWarning("cannot navigate to next step: locking in progress");
-                return;
-            }
-
-            ProtocolState.SetStep(ProtocolState.Step + 1);
-        }
-    }
-
-    // void UpdateStepDisplay()
-    // {
-    //     if (ProtocolState.procedureDef == null)
-    //     {
-    //         stepText.text = "0/0";
-    //         return;
-    //     }
-
-    //     int stepCount = (ProtocolState.procedureDef.steps != null) ? ProtocolState.procedureDef.steps.Count : 0;
-
-    //     stepText.text = string.Format("{0}/{1}", Math.Min(stepCount, ProtocolState.Step + 1), stepCount);
-
-    //     if (ProtocolState.procedureDef.steps[ProtocolState.Step].isCritical || (ProtocolState.Step > 0 && ProtocolState.procedureDef.steps[ProtocolState.Step - 1].isCritical))
-    //     {
-    //         if (SessionState.Recording)
-    //         {
-    //            ServiceRegistry.GetService<ILighthouseControl>()?.StopRecordingVideo();
-    //         }
-    //         //if (ProtocolState.procedureDef.steps[ProtocolState.Step].isCritical & confirmationPanelVC != null)
-    //         //{
-    //         //    confirmationPanelVC.CriticalStepMessage();
-    //         //}
-    //     }
-    // }
 }
