@@ -977,6 +977,14 @@ PrefabInstance:
       propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 7666732496682794713, guid: 93a4e1b898a2e4be5ba46bcde7b51fa8, type: 3}
+      propertyPath: InitialDelay
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7666732496682794713, guid: 93a4e1b898a2e4be5ba46bcde7b51fa8, type: 3}
+      propertyPath: managedReferences[3157658203895889983].AnimateScaleDuration
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 7715613979921476405, guid: 93a4e1b898a2e4be5ba46bcde7b51fa8, type: 3}
       propertyPath: m_Sprite
       value: 

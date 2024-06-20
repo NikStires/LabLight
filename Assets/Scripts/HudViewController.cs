@@ -8,6 +8,7 @@ using TMPro;
 public class HudViewController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _hudText;
+    [SerializeField] private GameObject _hudTextBG;
     [SerializeField] private MMFeedbacks _hudFeedbacks;
     [SerializeField] private HudEventSO _hudEventSO;
 
