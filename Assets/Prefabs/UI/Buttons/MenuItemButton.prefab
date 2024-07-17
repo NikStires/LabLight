@@ -799,6 +799,7 @@ GameObject:
   - component: {fileID: 2178178577493868379}
   - component: {fileID: 3549809138570670057}
   - component: {fileID: 5156519998279596093}
+  - component: {fileID: 718132647214309788}
   m_Layer: 0
   m_Name: MenuItemButton
   m_TagString: Untagged
@@ -896,8 +897,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.35, y: 0.59999996, z: 0.049999997}
-  m_Center: {x: -0.000000029802322, y: 0, z: 0}
+  m_Size: {x: 2.35, y: 0.59999996, z: 0.32645887}
+  m_Center: {x: 0, y: 0, z: 0.017286755}
 --- !u!114 &8357781296959519093
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1149,3 +1150,26 @@ MonoBehaviour:
   title: {fileID: 1961300694751636724}
   description: {fileID: 1684432348959994867}
   redFillShader: {fileID: 2100000, guid: 9cee399c84de74689a3c94fdeb0831be, type: 2}
+  animationPlayer: {fileID: 0}
+--- !u!114 &718132647214309788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9183299600987292913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 115f1a2a50d85cd4b9d6dad4c95622be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Interactable: {fileID: 3549809138570670057}
+  m_PokeCollider: {fileID: 1823900557989975545}
+  m_PokeConfiguration:
+    m_UseConstant: 1
+    m_ConstantValue:
+      m_PokeDirection: 6
+      m_InteractionDepthOffset: 0
+      m_EnablePokeAngleThreshold: 0
+      m_PokeAngleThreshold: 45
+    m_Variable: {fileID: 0}

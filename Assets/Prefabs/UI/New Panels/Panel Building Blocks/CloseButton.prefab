@@ -50,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7494973040099319644, guid: 7d5fc6d1da4bd407e98ad8d14a393106, type: 3}
       propertyPath: m_Name
-      value: CloseButton Variant
+      value: CloseButton
       objectReference: {fileID: 0}
     - target: {fileID: 7822956399391991967, guid: 7d5fc6d1da4bd407e98ad8d14a393106, type: 3}
       propertyPath: m_Sprite

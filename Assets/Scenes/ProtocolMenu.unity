@@ -360,6 +360,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2127493820987489892, guid: e16be1529729f40ed8d0a89850266400, type: 3}
+      propertyPath: m_TrackScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2127493820987489892, guid: e16be1529729f40ed8d0a89850266400, type: 3}
+      propertyPath: m_TrackRotation
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2127493820987489892, guid: e16be1529729f40ed8d0a89850266400, type: 3}
+      propertyPath: m_UseDynamicAttach
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2292240275852172692, guid: e16be1529729f40ed8d0a89850266400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -404,6 +416,14 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 900117891}
+    - target: {fileID: 4140973367501478658, guid: e16be1529729f40ed8d0a89850266400, type: 3}
+      propertyPath: m_AllowOneHandedScaling
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4140973367501478658, guid: e16be1529729f40ed8d0a89850266400, type: 3}
+      propertyPath: m_AllowTwoHandedScaling
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4154426104151283700, guid: e16be1529729f40ed8d0a89850266400, type: 3}
       propertyPath: m_Mesh
       value: 
