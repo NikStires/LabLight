@@ -3429,7 +3429,8 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 3259740424094550186, guid: e5b788279635449c48dcc4354aa7ec44, type: 3}
     - {fileID: 4417838284592617274, guid: e5b788279635449c48dcc4354aa7ec44, type: 3}
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 2568803378169100184, guid: e5b788279635449c48dcc4354aa7ec44, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5b788279635449c48dcc4354aa7ec44, type: 3}
@@ -4671,18 +4672,6 @@ MonoBehaviour:
   OpenWindowOnLoad: 1
   m_ShowVolumeCameraEventsFoldout: 0
   OnWindowEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  OnWindowOpened:
-    m_PersistentCalls:
-      m_Calls: []
-  OnWindowClosed:
-    m_PersistentCalls:
-      m_Calls: []
-  OnWindowResized:
-    m_PersistentCalls:
-      m_Calls: []
-  OnWindowFocused:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &2102600992
