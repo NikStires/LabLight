@@ -1,0 +1,37 @@
+//AnchorManagerScriptableObject
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Events;
+
+[CreateAssetMenu(fileName = "AnchorManager", menuName = "ScriptableObjects/AnchorManager", order = 4)]
+public class CalibrationManagerScriptableObject : ScriptableObject
+{
+    [SerializeField]
+    public UnityEvent<GameObject> OnAnchorRequested = new UnityEvent<GameObject>();
+    // Start is called before the first frame update
+    private void Awake()
+    {
+        if(OnAnchorRequested == null)
+        {
+            OnAnchorRequested = new UnityEvent();
+        }
+    }
+
+    // Update is called once per frame
+    public void OnRequestCalibration()
+    {
+        OnCalibrationRequested.Invoke();
+    }
+
+    public void UpdateCalibrationStatus(string status)
+    {
+        OnCalibrationStatusUpdate.Invoke(status);
+    }
+
+    public void CalibrationStarted(bool started)
+    {
+        OnCalibrationStarted.Invoke(started);
+    }
+}

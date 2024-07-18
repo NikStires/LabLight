@@ -11,6 +11,7 @@ public class PlaneInteractionManager : MonoBehaviour
     public static PlaneInteractionManager instance;
     public PlaneInteractionManagerScriptableObject planeInteractionManagerSO;
 
+    [SerializeField] public CalibrationManagerScriptableObject calibrationManagerSO;
     private GameObject currentPrefab;
 
     [SerializeField] public Queue<GameObject> objectsQueue = new Queue<GameObject>(); //queue of objects to be placed on plane
@@ -128,6 +129,7 @@ public class PlaneInteractionManager : MonoBehaviour
             }
         }else if(availablePlanes == null || availablePlanes.Count == 0) //attempt to get list of planes if we don't have one already
         {
+            calibrationManagerSO.UpdateCalibrationStatus("no planes detected in scene, repinging for planes");
             availablePlanes = ARPlaneViewController.instance.GetPlanesByClassification(planeClassifications);
         }
     }
