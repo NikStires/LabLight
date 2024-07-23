@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UniRx;
@@ -81,6 +82,7 @@ public class ProtocolState : MonoBehaviour
             Debug.Log("Set procedure definition to " + procedureDefinition.title);
             ProcedureTitle = procedureDefinition.title;
             ServiceRegistry.GetService<ILighthouseControl>()?.SetProtocolStatus();
+            InitCSV();
         }
     }
 
@@ -263,6 +265,17 @@ public class ProtocolState : MonoBehaviour
     public static void SetCsvPath(string path)
     {
         CsvPath = path;
+    }
+
+    private static void InitCSV()
+    {
+        string fileName = procedureDef.title + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".csv";
+        string csvPath = Path.Combine(Application.persistentDataPath, fileName);
+        if (!File.Exists(csvPath))
+        {
+            File.WriteAllText(csvPath, "Action,Result,Completion Time\n");
+        }
+        SetCsvPath(csvPath);
     }
 
     //Data Structures

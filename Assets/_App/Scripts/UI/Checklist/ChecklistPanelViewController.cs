@@ -116,7 +116,7 @@ public class ChecklistPanelViewController : LLBasePanel
 
         // Check the item and log timestamp
         firstUncheckedItem.IsChecked.Value = true;
-        //firstUncheckedItem.CompletionTime = DateTime.Now;
+        firstUncheckedItem.CompletionTime = DateTime.Now;
 
         // Increment checkItem if this is not the last check item
         if (ProtocolState.CheckItem < ProtocolState.Steps[ProtocolState.Step].Checklist.Count - 1)
@@ -443,6 +443,7 @@ public class ChecklistPanelViewController : LLBasePanel
         // Write checklist items to CSV
         if (CheckList != null)
         {
+            Debug.Log("######LABLIGHT Writing checklist to CSV " + ProtocolState.CsvPath);
             foreach (var item in CheckList)
             {
                 line = item.Text;

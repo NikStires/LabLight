@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "LabLightVisionOS.sln"
+    "dotnet.defaultSolution": "LabLight.sln"
 }

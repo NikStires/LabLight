@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,15 +21,10 @@ public class ProtocolManager : MonoBehaviour
     private void OnEnable()
     {
         ProtocolState.SetStartTime(DateTime.Now);
-        //InitCSV();
     }
 
     private void OnDisable()
     {
         ProtocolState.AlignmentTriggered.Value = false;
     }
-
-    /*
-     * init csv to create csv file for current protocol session
-     */
 }
