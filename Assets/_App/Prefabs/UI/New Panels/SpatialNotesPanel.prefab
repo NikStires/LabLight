@@ -363,6 +363,38 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1617971214541031556, guid: 8e95296a401aa462f8b665bbdb0729bd, type: 3}
+      propertyPath: m_VersionIndex
+      value: 287
+      objectReference: {fileID: 0}
+    - target: {fileID: 1784837651059950240, guid: 8e95296a401aa462f8b665bbdb0729bd, type: 3}
+      propertyPath: m_SelectExited.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1784837651059950240, guid: 8e95296a401aa462f8b665bbdb0729bd, type: 3}
+      propertyPath: m_SelectExited.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1784837651059950240, guid: 8e95296a401aa462f8b665bbdb0729bd, type: 3}
+      propertyPath: m_SelectExited.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 4872191207464282253}
+    - target: {fileID: 1784837651059950240, guid: 8e95296a401aa462f8b665bbdb0729bd, type: 3}
+      propertyPath: m_SelectExited.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1784837651059950240, guid: 8e95296a401aa462f8b665bbdb0729bd, type: 3}
+      propertyPath: m_SelectExited.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: CloseSpatialNotesMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 1784837651059950240, guid: 8e95296a401aa462f8b665bbdb0729bd, type: 3}
+      propertyPath: m_SelectExited.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: SpatialNotesViewController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1784837651059950240, guid: 8e95296a401aa462f8b665bbdb0729bd, type: 3}
+      propertyPath: m_SelectExited.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 3963195632271618946, guid: 8e95296a401aa462f8b665bbdb0729bd, type: 3}
       propertyPath: m_Name
       value: CloseButton
@@ -444,6 +476,10 @@ PrefabInstance:
     - target: {fileID: 8041265016188457075, guid: d33127b02a2304bb589c59c52a1c6d79, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8333721217562972470, guid: d33127b02a2304bb589c59c52a1c6d79, type: 3}
+      propertyPath: m_VersionIndex
+      value: 91
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -581,6 +617,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3982407743694965325, guid: 67b8b057779b64e58875da1f1333bee8, type: 3}
+      propertyPath: m_VersionIndex
+      value: 464
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2344711536512334927, guid: 67b8b057779b64e58875da1f1333bee8, type: 3}
     m_RemovedGameObjects: []
@@ -610,6 +650,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7955480645091986379}
     m_Modifications:
+    - target: {fileID: 5293795646234731610, guid: 7d5fc6d1da4bd407e98ad8d14a393106, type: 3}
+      propertyPath: m_VersionIndex
+      value: 287
+      objectReference: {fileID: 0}
     - target: {fileID: 6597591215329638234, guid: 7d5fc6d1da4bd407e98ad8d14a393106, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.12
@@ -684,6 +728,10 @@ PrefabInstance:
     - target: {fileID: 5068962898218301961, guid: a90698296b23640719ce02a157ecd741, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -0.0136
+      objectReference: {fileID: 0}
+    - target: {fileID: 6772416621250166967, guid: a90698296b23640719ce02a157ecd741, type: 3}
+      propertyPath: m_VersionIndex
+      value: 472
       objectReference: {fileID: 0}
     - target: {fileID: 7813678415812248219, guid: a90698296b23640719ce02a157ecd741, type: 3}
       propertyPath: m_Name
