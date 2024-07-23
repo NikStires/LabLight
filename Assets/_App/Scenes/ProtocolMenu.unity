@@ -360,8 +360,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1972823408348752747, guid: e16be1529729f40ed8d0a89850266400, type: 3}
-      propertyPath: m_IsActive
+    - target: {fileID: 2127493820987489892, guid: e16be1529729f40ed8d0a89850266400, type: 3}
+      propertyPath: m_TrackScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2127493820987489892, guid: e16be1529729f40ed8d0a89850266400, type: 3}
+      propertyPath: m_TrackRotation
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2127493820987489892, guid: e16be1529729f40ed8d0a89850266400, type: 3}
+      propertyPath: m_UseDynamicAttach
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2292240275852172692, guid: e16be1529729f40ed8d0a89850266400, type: 3}
@@ -408,6 +416,14 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 900117891}
+    - target: {fileID: 4140973367501478658, guid: e16be1529729f40ed8d0a89850266400, type: 3}
+      propertyPath: m_AllowOneHandedScaling
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4140973367501478658, guid: e16be1529729f40ed8d0a89850266400, type: 3}
+      propertyPath: m_AllowTwoHandedScaling
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4154426104151283700, guid: e16be1529729f40ed8d0a89850266400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -432,10 +448,6 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 916359681}
-    - target: {fileID: 4689226250009768554, guid: e16be1529729f40ed8d0a89850266400, type: 3}
-      propertyPath: m_Name
-      value: SideBarButtonDownload
-      objectReference: {fileID: 0}
     - target: {fileID: 4744773430818905727, guid: e16be1529729f40ed8d0a89850266400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -444,14 +456,14 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1056928179}
+    - target: {fileID: 5228836288717631217, guid: e16be1529729f40ed8d0a89850266400, type: 3}
+      propertyPath: downloadButton
+      value: 
+      objectReference: {fileID: 458977459}
     - target: {fileID: 5250515313182513583, guid: e16be1529729f40ed8d0a89850266400, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 170180888}
-    - target: {fileID: 5255882882813735030, guid: e16be1529729f40ed8d0a89850266400, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5503374210688075401, guid: e16be1529729f40ed8d0a89850266400, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -484,17 +496,9 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1807303798}
-    - target: {fileID: 7508288210943864191, guid: e16be1529729f40ed8d0a89850266400, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7508697972642443165, guid: e16be1529729f40ed8d0a89850266400, type: 3}
       propertyPath: m_Name
       value: ProtocolMenuPanel
-      objectReference: {fileID: 0}
-    - target: {fileID: 7651464341026961291, guid: e16be1529729f40ed8d0a89850266400, type: 3}
-      propertyPath: m_Name
-      value: SideBarButtonNext
       objectReference: {fileID: 0}
     - target: {fileID: 8126746718137672725, guid: e16be1529729f40ed8d0a89850266400, type: 3}
       propertyPath: m_Mesh
@@ -508,15 +512,16 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 900117891}
-    - target: {fileID: 9141439557743031184, guid: e16be1529729f40ed8d0a89850266400, type: 3}
-      propertyPath: m_Name
-      value: SideBarButtonPrevious
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e16be1529729f40ed8d0a89850266400, type: 3}
+--- !u!1 &458977459 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4689226250009768554, guid: e16be1529729f40ed8d0a89850266400, type: 3}
+  m_PrefabInstance: {fileID: 458977458}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &732395347
 Mesh:
   m_ObjectHideFlags: 0

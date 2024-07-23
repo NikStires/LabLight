@@ -18,10 +18,26 @@ namespace PolySpatial.Samples
 
         void OnEnable()
         {
-            m_Button.WasPressed += WasPressed;
+            if (m_Button)
+            {
+                m_Button.WasPressed += WasPressed;
+            }
+        }
+
+        void OnDisable()
+        {
+            if (m_Button)
+            {
+                m_Button.WasPressed -= WasPressed;
+            }
         }
 
         void WasPressed(string buttonText, MeshRenderer meshrenderer)
+        {
+            ForceSpawn();
+        }
+
+        public void ForceSpawn()
         {
             var randomObject = Random.Range(0, m_ObjectsToSpawn.Count);
             Instantiate(m_ObjectsToSpawn[randomObject], m_SpawnPosition.position, Quaternion.identity);
