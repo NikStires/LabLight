@@ -55,8 +55,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pinButton: {fileID: 779455975288278311}
-  _pinnedMaterial: {fileID: 2100000, guid: d25001eecceb3274280b0b6d696415d3, type: 2}
-  _unpinnedMaterial: {fileID: 2100000, guid: 782c923da94417a4e9f49e50fca0f183, type: 2}
+  _pinnedMaterial: {fileID: 2100000, guid: 31d8649b7ebe14240956ad6622556a55, type: 2}
+  _unpinnedMaterial: {fileID: 2100000, guid: 56a25e551cc7f4c29bbeea946f317768, type: 2}
   buttonGrid: {fileID: 5478807932184202312}
   buttonPrefab: {fileID: 5827233944868290495, guid: f2ed3c2cfbd814999b55be610e0b2367, type: 3}
   previousButton: {fileID: 766510690606875321}
@@ -181,7 +181,7 @@ MonoBehaviour:
         m_MethodName: set_material
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: -3638643090576869605, guid: 12fe5c8a669f95447a38be1bbda5353d, type: 3}
+          m_ObjectArgument: {fileID: 2100000, guid: 56a25e551cc7f4c29bbeea946f317768, type: 2}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Material, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0

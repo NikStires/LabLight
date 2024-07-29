@@ -9,7 +9,7 @@ using UniRx;
 /// Draggable TimerViewController
 /// </summary>
 
-public class TimerViewController : MonoBehaviour
+public class TimerViewController : LLBasePanel
 {
     [SerializeField] Material timerFlashMaterial;
     Material defaultMaterial;
@@ -27,6 +27,7 @@ public class TimerViewController : MonoBehaviour
 
     void Awake()
     {
+        base.Awake();
         ProtocolState.checklistStream.Subscribe(_ => OnCheckItemChange()).AddTo(this);
         defaultMaterial = backplateMesh.material;
     }
@@ -35,13 +36,16 @@ public class TimerViewController : MonoBehaviour
     void Start()
     {
         TimeLeft = StartingTime;
-
         TimeDisplay.text = GetTimeString();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(this.transform.lossyScale != new Vector3(0.5f,0.5f,0.5f))
+        {
+            transform.localScale = new Vector3(0.5f,0.5f,0.5f);
+        }
         //if timer has not finished and is running decrement time
         if(TimeLeft > 0 & timerRunning)
         {

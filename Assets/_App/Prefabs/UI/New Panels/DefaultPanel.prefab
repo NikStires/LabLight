@@ -162,7 +162,7 @@ MonoBehaviour:
         m_MethodName: set_material
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: -3638643090576869605, guid: 12fe5c8a669f95447a38be1bbda5353d, type: 3}
+          m_ObjectArgument: {fileID: 2100000, guid: 56a25e551cc7f4c29bbeea946f317768, type: 2}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Material, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -1178,6 +1178,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3998053757999673973, guid: 67b8b057779b64e58875da1f1333bee8, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 56a25e551cc7f4c29bbeea946f317768, type: 2}
     m_RemovedComponents:
     - {fileID: 2344711536512334927, guid: 67b8b057779b64e58875da1f1333bee8, type: 3}
     m_RemovedGameObjects: []
@@ -1343,6 +1347,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Panel
       objectReference: {fileID: 0}
+    - target: {fileID: 8295960233914354123, guid: a90698296b23640719ce02a157ecd741, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 56a25e551cc7f4c29bbeea946f317768, type: 2}
     - target: {fileID: 8378772818276989127, guid: a90698296b23640719ce02a157ecd741, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

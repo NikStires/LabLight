@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5171930400049196670, guid: 7d5fc6d1da4bd407e98ad8d14a393106, type: 3}
+      propertyPath: m_SelectExited.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 2100000, guid: 56a25e551cc7f4c29bbeea946f317768, type: 2}
     - target: {fileID: 6597591215329638234, guid: 7d5fc6d1da4bd407e98ad8d14a393106, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.11
@@ -50,7 +54,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7494973040099319644, guid: 7d5fc6d1da4bd407e98ad8d14a393106, type: 3}
       propertyPath: m_Name
-      value: CloseButton Variant
+      value: CloseButton
       objectReference: {fileID: 0}
     - target: {fileID: 7822956399391991967, guid: 7d5fc6d1da4bd407e98ad8d14a393106, type: 3}
       propertyPath: m_Sprite

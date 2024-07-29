@@ -7068,6 +7068,10 @@ PrefabInstance:
       propertyPath: m_SharedVertices.Array.data[59].m_Vertices.Array.data[2]
       value: 157
       objectReference: {fileID: 0}
+    - target: {fileID: 3998053757999673973, guid: 67b8b057779b64e58875da1f1333bee8, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 56a25e551cc7f4c29bbeea946f317768, type: 2}
     - target: {fileID: 5903150335228104702, guid: 67b8b057779b64e58875da1f1333bee8, type: 3}
       propertyPath: m_Size.x
       value: 0.4

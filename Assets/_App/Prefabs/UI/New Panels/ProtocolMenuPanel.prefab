@@ -71,7 +71,11 @@ PrefabInstance:
     - target: {fileID: 764685924911036865, guid: dd216cbce70c340968d5d438f8592667, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 782c923da94417a4e9f49e50fca0f183, type: 2}
+      objectReference: {fileID: 2100000, guid: 56a25e551cc7f4c29bbeea946f317768, type: 2}
+    - target: {fileID: 766510690606875321, guid: dd216cbce70c340968d5d438f8592667, type: 3}
+      propertyPath: m_Name
+      value: PreviousPageButton
+      objectReference: {fileID: 0}
     - target: {fileID: 1150470263426823563, guid: dd216cbce70c340968d5d438f8592667, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.018900037
@@ -79,6 +83,10 @@ PrefabInstance:
     - target: {fileID: 2038893357050093236, guid: dd216cbce70c340968d5d438f8592667, type: 3}
       propertyPath: m_Name
       value: ProtocolMenuPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 2184437092332422818, guid: dd216cbce70c340968d5d438f8592667, type: 3}
+      propertyPath: m_Name
+      value: NextPageButton
       objectReference: {fileID: 0}
     - target: {fileID: 2350127816485890499, guid: dd216cbce70c340968d5d438f8592667, type: 3}
       propertyPath: m_LocalPosition.y
@@ -127,6 +135,10 @@ PrefabInstance:
     - target: {fileID: 3419009937011773609, guid: dd216cbce70c340968d5d438f8592667, type: 3}
       propertyPath: m_VersionIndex
       value: 287
+      objectReference: {fileID: 0}
+    - target: {fileID: 3849629762114241347, guid: dd216cbce70c340968d5d438f8592667, type: 3}
+      propertyPath: m_Name
+      value: DownloadButton
       objectReference: {fileID: 0}
     - target: {fileID: 4044287573815228320, guid: dd216cbce70c340968d5d438f8592667, type: 3}
       propertyPath: m_VersionIndex
@@ -275,7 +287,7 @@ PrefabInstance:
     - target: {fileID: 7636341260724178765, guid: dd216cbce70c340968d5d438f8592667, type: 3}
       propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgument
       value: 
-      objectReference: {fileID: 2100000, guid: d25001eecceb3274280b0b6d696415d3, type: 2}
+      objectReference: {fileID: 2100000, guid: 31d8649b7ebe14240956ad6622556a55, type: 2}
     - target: {fileID: 7636341260724178765, guid: dd216cbce70c340968d5d438f8592667, type: 3}
       propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
@@ -424,6 +436,9 @@ PrefabInstance:
     - {fileID: 2290887397192341772, guid: dd216cbce70c340968d5d438f8592667, type: 3}
     m_RemovedGameObjects:
     - {fileID: 11636149705164355, guid: dd216cbce70c340968d5d438f8592667, type: 3}
+    - {fileID: 8007184490040416834, guid: dd216cbce70c340968d5d438f8592667, type: 3}
+    - {fileID: 4363845187302621535, guid: dd216cbce70c340968d5d438f8592667, type: 3}
+    - {fileID: 2039312498789473366, guid: dd216cbce70c340968d5d438f8592667, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 1150470263426823563, guid: dd216cbce70c340968d5d438f8592667, type: 3}
       insertIndex: -1
@@ -482,8 +497,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pinButton: {fileID: 9128502485270313998}
-  _pinnedMaterial: {fileID: 2100000, guid: d25001eecceb3274280b0b6d696415d3, type: 2}
-  _unpinnedMaterial: {fileID: 2100000, guid: 782c923da94417a4e9f49e50fca0f183, type: 2}
+  _pinnedMaterial: {fileID: 2100000, guid: 31d8649b7ebe14240956ad6622556a55, type: 2}
+  _unpinnedMaterial: {fileID: 2100000, guid: 56a25e551cc7f4c29bbeea946f317768, type: 2}
   buttonGrid: {fileID: 1096257824017719562}
   buttonPrefab: {fileID: 5827233944868290495, guid: a0fe3e35f0bae45dcbbef5b10c3db539, type: 3}
   previousButton: {fileID: 9141439557743031184}

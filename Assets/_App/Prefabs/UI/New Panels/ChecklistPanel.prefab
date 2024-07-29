@@ -974,6 +974,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7523280146200201388, guid: 93a4e1b898a2e4be5ba46bcde7b51fa8, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 2100000, guid: 31d8649b7ebe14240956ad6622556a55, type: 2}
+    - target: {fileID: 7523280146200201388, guid: 93a4e1b898a2e4be5ba46bcde7b51fa8, type: 3}
       propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
@@ -1032,7 +1036,7 @@ PrefabInstance:
     - target: {fileID: 8598308293982099393, guid: 93a4e1b898a2e4be5ba46bcde7b51fa8, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 782c923da94417a4e9f49e50fca0f183, type: 2}
+      objectReference: {fileID: 2100000, guid: 56a25e551cc7f4c29bbeea946f317768, type: 2}
     - target: {fileID: 8976761364177999035, guid: 93a4e1b898a2e4be5ba46bcde7b51fa8, type: 3}
       propertyPath: m_Name
       value: PdfButton
@@ -1231,8 +1235,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pinButton: {fileID: 280494185292516560}
-  _pinnedMaterial: {fileID: 2100000, guid: d25001eecceb3274280b0b6d696415d3, type: 2}
-  _unpinnedMaterial: {fileID: 2100000, guid: 782c923da94417a4e9f49e50fca0f183, type: 2}
+  _pinnedMaterial: {fileID: 2100000, guid: 31d8649b7ebe14240956ad6622556a55, type: 2}
+  _unpinnedMaterial: {fileID: 2100000, guid: 56a25e551cc7f4c29bbeea946f317768, type: 2}
   noChecklistText: {fileID: 8613265750271414373}
   audioPlayer: {fileID: 6612728165382532219}
   checkItemSlots:
