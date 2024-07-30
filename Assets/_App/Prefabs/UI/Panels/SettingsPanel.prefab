@@ -779,7 +779,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 315049695370821489, guid: d33127b02a2304bb589c59c52a1c6d79, type: 3}
       propertyPath: m_text
-      value: Settings Panel
+      value: Settings
       objectReference: {fileID: 0}
     - target: {fileID: 315049695370821489, guid: d33127b02a2304bb589c59c52a1c6d79, type: 3}
       propertyPath: m_fontSize
