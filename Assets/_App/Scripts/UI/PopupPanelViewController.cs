@@ -1,15 +1,21 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using TMPro;
 
 
 public class PopupPanelViewController : MonoBehaviour
 {
     //events are passed through a scriptable object to decrease coupling between classes
     //different popup panels can use different scriptable objects to communicate with other classes
-    //listening classes simple need to subscribe to the events on the associated scriptable object
+    //listening classes simply need to subscribe to the events on the associated scriptable object
     [SerializeField] PopupEventSO popupEventSO;
+
+    [SerializeField] TextMeshProUGUI popupHeaderText;
+    [SerializeField] TextMeshProUGUI popupText;
+
 
     [SerializeField] XRSimpleInteractable yesButton;
     [SerializeField] XRSimpleInteractable noButton;
@@ -30,11 +36,15 @@ public class PopupPanelViewController : MonoBehaviour
             transform.GetChild(0).transform.gameObject.SetActive(false);
             popupEventSO.No();
         });
+    }
 
-        popupEventSO.OpenPopup.AddListener(() => 
-        {
-            transform.GetChild(0).transform.gameObject.SetActive(true);
-            audioSource.Play();
-        });
+    public void DisplayPopup(PopupEventSO newSO)
+    {
+        popupEventSO = newSO;
+        popupHeaderText.text = newSO.popupType.ToString();
+        popupText.text = newSO.popupText;
+
+        transform.GetChild(0).transform.gameObject.SetActive(true);
+        audioSource.Play();
     }
 }

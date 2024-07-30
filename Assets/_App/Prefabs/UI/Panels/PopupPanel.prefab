@@ -244,6 +244,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popupEventSO: {fileID: 0}
+  popupHeaderText: {fileID: 255194874833628117}
+  popupText: {fileID: 3705565816299427009}
   yesButton: {fileID: 8875564652558364015}
   noButton: {fileID: 7041256937618429036}
   audioSource: {fileID: 4505257395014385429}
@@ -944,6 +946,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b4ad5a2c5f664281aaea5c5769af7f2, type: 3}
+--- !u!114 &255194874833628117 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9203883578571945601, guid: 5b4ad5a2c5f664281aaea5c5769af7f2, type: 3}
+  m_PrefabInstance: {fileID: 8948759366692085076}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &7515845357480772823 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1476552527792609667, guid: 5b4ad5a2c5f664281aaea5c5769af7f2, type: 3}

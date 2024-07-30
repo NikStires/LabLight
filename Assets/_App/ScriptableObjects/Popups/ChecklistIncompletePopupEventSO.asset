@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d269273e0fa8e4fdb8126ffeba45e460, type: 3}
   m_Name: ChecklistIncompletePopupEventSO
   m_EditorClassIdentifier: 
+  popupType: 0
+  popupText: You are trying to protgress to the next step but have not checked off
+    all the items on the checklist. Would you like to proceed without signing off?
   OnYesButtonPressed:
     m_PersistentCalls:
       m_Calls: []

@@ -34,10 +34,11 @@ public class ChecklistPanelViewController : LLBasePanel
     [SerializeField] XRSimpleInteractable nextStepButton;
     [SerializeField] XRSimpleInteractable previousStepButton;
 
-    [Header("Popup Event SOs")]
+    [Header("Popups")]
     [SerializeField] PopupEventSO signOffPopupEventSO;
     [SerializeField] PopupEventSO checklistIncompletePopupEventSO;
     [SerializeField] PopupEventSO closeProtocolPopupEventSO;
+    PopupPanelViewController popupPanelViewController;
 
     [Header("HUD Event SO")]
     [SerializeField] HudEventSO hudEventSO;
@@ -64,8 +65,9 @@ public class ChecklistPanelViewController : LLBasePanel
     void Start()
     {
         checkItemPool.CreatePooledObjects();
-
         StartCoroutine(LoadChecklist());
+
+        popupPanelViewController = GameObject.FindFirstObjectByType<PopupPanelViewController>(FindObjectsInactive.Include);
 
         signOffPopupEventSO.OnYesButtonPressed.AddListener(() =>
         {
@@ -254,13 +256,13 @@ public class ChecklistPanelViewController : LLBasePanel
         {
             // Update confirmation panel UI and button controls
             Debug.LogWarning("trying to go to next step without signing off");
-            signOffPopupEventSO.Open();
+            popupPanelViewController.DisplayPopup(signOffPopupEventSO);
             return;
         }
 
         // If not all items are checked, show checklist incomplete confirmation panel
         Debug.LogWarning("trying to go to the next step without checking all items");
-        checklistIncompletePopupEventSO.Open();
+        popupPanelViewController.DisplayPopup(checklistIncompletePopupEventSO);
     }
     
     /// <summary>
@@ -421,7 +423,7 @@ public class ChecklistPanelViewController : LLBasePanel
         //open a popup to confirm closing the protocol
         else
         {
-            closeProtocolPopupEventSO.Open();
+            popupPanelViewController.DisplayPopup(closeProtocolPopupEventSO);
         }
     }
 
