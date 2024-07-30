@@ -11,6 +11,7 @@ public class PopupPanelViewController : MonoBehaviour
     //events are passed through a scriptable object to decrease coupling between classes
     //different popup panels can use different scriptable objects to communicate with other classes
     //listening classes simply need to subscribe to the events on the associated scriptable object
+    [SerializeField] SettingsManagerScriptableObject settingsManagerSO;
     [SerializeField] PopupEventSO popupEventSO;
 
     [SerializeField] TextMeshProUGUI popupHeaderText;
@@ -41,6 +42,14 @@ public class PopupPanelViewController : MonoBehaviour
     public void DisplayPopup(PopupEventSO newSO)
     {
         popupEventSO = newSO;
+
+        if(settingsManagerSO.GetSettingValue(LablightSettings.ShowPopups) == false)
+        {
+            yesButton.selectEntered.Invoke(null);
+            yesButton.selectExited.Invoke(null);
+            return;
+        }
+
         popupHeaderText.text = newSO.popupType.ToString();
         popupText.text = newSO.popupText;
 

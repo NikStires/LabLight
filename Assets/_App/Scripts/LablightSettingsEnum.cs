@@ -1,6 +1,7 @@
 
 public enum LablightSettings
 {
+    ShowPopups,
     ShowWorkspaceOrigin,
     RCMarkersEnabledSetting, //ShowRowColIndicator
     RelevantRConlyEnabledSetting, //ShowRowColIndicatorHighlight
