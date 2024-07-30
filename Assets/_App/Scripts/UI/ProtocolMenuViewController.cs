@@ -12,14 +12,18 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class ProtocolMenuViewController : LLBasePanel
 {
+    [Header("UI Buttons")]
     [SerializeField] GridLayoutGroup buttonGrid;
     [SerializeField] GameObject buttonPrefab;
     [SerializeField] GameObject previousButton;
     [SerializeField] GameObject nextButton;
     [SerializeField] GameObject downloadButton;
-
     [SerializeField] XRSimpleInteractable closeAppButton;
 
+    [Header("Popups")]
+    [SerializeField] PopupEventSO closeAppPopup;
+    PopupPanelViewController popupPanelViewController;
+    
     private int currentPage = 0;
     private int maxPage = 0;
     List<ProcedureDescriptor> protocols;
@@ -57,7 +61,9 @@ public class ProtocolMenuViewController : LLBasePanel
     {
         LoadProtocols();
 
-        closeAppButton.selectEntered.AddListener(_ => Application.Quit());
+        popupPanelViewController = GameObject.FindFirstObjectByType<PopupPanelViewController>(FindObjectsInactive.Include);
+        closeAppButton.selectEntered.AddListener(_ => popupPanelViewController.DisplayPopup(closeAppPopup));
+        closeAppPopup.OnYesButtonPressed.AddListener(() => Application.Quit());
     }
 
     /// <summary>

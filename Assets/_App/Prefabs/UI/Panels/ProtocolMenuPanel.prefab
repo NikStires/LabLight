@@ -180,6 +180,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.0099
       objectReference: {fileID: 0}
+    - target: {fileID: 5839941563778129201, guid: dd216cbce70c340968d5d438f8592667, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 96c614fc247f14f1d8f1818649b380ed, type: 3}
     - target: {fileID: 6672678368126033483, guid: dd216cbce70c340968d5d438f8592667, type: 3}
       propertyPath: m_Size.y
       value: 0.045720935
@@ -505,6 +509,7 @@ MonoBehaviour:
   nextButton: {fileID: 7651464341026961291}
   downloadButton: {fileID: 4689226250009768554}
   closeAppButton: {fileID: 6177861722706078628}
+  closeAppPopup: {fileID: 11400000, guid: e91f3271d43ef467c83b93ce5b197f3b, type: 2}
 --- !u!1 &7651464341026961291 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2184437092332422818, guid: dd216cbce70c340968d5d438f8592667, type: 3}
