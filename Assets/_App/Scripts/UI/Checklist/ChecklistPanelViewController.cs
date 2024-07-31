@@ -8,6 +8,7 @@ using UniRx;
 using System.Linq;
 using UnityEngine.SceneManagement;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using TMPro;
 
 public class ChecklistPanelViewController : LLBasePanel
 {
@@ -21,6 +22,8 @@ public class ChecklistPanelViewController : LLBasePanel
     CheckItemPool checkItemPool;
 
     private bool checkOnCooldown = false;
+
+    [SerializeField] TextMeshProUGUI stepText;
 
     [Header("Signoff Icons")]
     [SerializeField] GameObject unlockedIcon;
@@ -53,12 +56,14 @@ public class ChecklistPanelViewController : LLBasePanel
     void OnEnable()
     {
         SetupButtonEvents();
+        SetupPopupEvents();
         SetupVoiceCommands();
     }
 
     void OnDisable()
     {
         RemoveButtonEvents();
+        RemovePopupEvents();
         DisposeVoice?.Invoke();
     }
 
@@ -68,23 +73,6 @@ public class ChecklistPanelViewController : LLBasePanel
         StartCoroutine(LoadChecklist());
 
         popupPanelViewController = GameObject.FindFirstObjectByType<PopupPanelViewController>(FindObjectsInactive.Include);
-
-        signOffPopupEventSO.OnYesButtonPressed.AddListener(() =>
-        {
-            SignOff(); 
-            NextStep();
-        });
-
-        checklistIncompletePopupEventSO.OnYesButtonPressed.AddListener(() =>
-        {
-            ProtocolState.SetStep(ProtocolState.Step + 1);
-        });
-
-        closeProtocolPopupEventSO.OnYesButtonPressed.AddListener(() =>
-        {
-            SessionState.Instance.activeProtocol = null;
-            SceneLoader.Instance.LoadSceneClean("ProtocolMenu");
-        });
     }
 
     /// <summary>
@@ -264,12 +252,19 @@ public class ChecklistPanelViewController : LLBasePanel
         Debug.LogWarning("trying to go to the next step without checking all items");
         popupPanelViewController.DisplayPopup(checklistIncompletePopupEventSO);
     }
+
+    void LoadStepText()
+    {
+        stepText.text = (ProtocolState.Step + 1) + " / " + ProtocolState.Steps.Count;
+    }
     
     /// <summary>
     /// Loads the checklist for the current step, displays 5 most relevant items, updates the signoff icon
     /// </summary>
     IEnumerator LoadChecklist()
     {
+        LoadStepText();
+
         foreach(var item in checkItemPool.pooledObjects)
         {
             item.SetActive(false);
@@ -478,6 +473,33 @@ public class ChecklistPanelViewController : LLBasePanel
         signOffButton.selectEntered.RemoveAllListeners();
         nextStepButton.selectEntered.RemoveAllListeners();
         previousStepButton.selectEntered.RemoveAllListeners();
+    }
+
+    void SetupPopupEvents()
+    {
+        signOffPopupEventSO.OnYesButtonPressed.AddListener(() =>
+        {
+            SignOff(); 
+            NextStep();
+        });
+
+        checklistIncompletePopupEventSO.OnYesButtonPressed.AddListener(() =>
+        {
+            ProtocolState.SetStep(ProtocolState.Step + 1);
+        });
+
+        closeProtocolPopupEventSO.OnYesButtonPressed.AddListener(() =>
+        {
+            SessionState.Instance.activeProtocol = null;
+            SceneLoader.Instance.LoadSceneClean("ProtocolMenu");
+        });
+    }
+
+    void RemovePopupEvents()
+    {
+        signOffPopupEventSO.OnYesButtonPressed.RemoveAllListeners();
+        checklistIncompletePopupEventSO.OnYesButtonPressed.RemoveAllListeners();
+        closeProtocolPopupEventSO.OnYesButtonPressed.RemoveAllListeners();
     }
 
     Action DisposeVoice;
