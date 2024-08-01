@@ -43,7 +43,7 @@ public class PopupPanelViewController : MonoBehaviour
     {
         popupEventSO = newSO;
 
-        if(settingsManagerSO.GetSettingValue(LablightSettings.ShowPopups) == false)
+        if(settingsManagerSO.GetSettingValue(LablightSettings.Popups) == false)
         {
             yesButton.selectEntered.Invoke(null);
             yesButton.selectExited.Invoke(null);

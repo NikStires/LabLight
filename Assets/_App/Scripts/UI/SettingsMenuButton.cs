@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using MoreMountains.Feedbacks;
 using TMPro;
 using UniRx;
 
@@ -21,6 +22,8 @@ public class SettingsMenuButton : MonoBehaviour
     
     [SerializeField]
     private GameObject _onIndicator = null;
+
+    [SerializeField] MMF_Player animationPlayer;
     
     // Start is called before the first frame update
     void Awake()
@@ -30,6 +33,11 @@ public class SettingsMenuButton : MonoBehaviour
         {
             throw new MissingReferenceException("OffIndicator and OnIndicator fields in CalibrationStatusBehavior class cannot be null.");
         }
+    }
+
+    void OnEnable()
+    {
+        animationPlayer.PlayFeedbacks();
     }
 
     void OnDisable()
@@ -44,7 +52,7 @@ public class SettingsMenuButton : MonoBehaviour
     public void Initialize(LablightSettings setting)
     {
         this.setting = setting;
-        settingName.text = setting.ToString();
+        settingName.text = setting.ToString().Replace("_", " ");
         _offIndicator.SetActive(!settingsManagerSO.GetSettingValue(setting));
         _onIndicator.SetActive(settingsManagerSO.GetSettingValue(setting));
 

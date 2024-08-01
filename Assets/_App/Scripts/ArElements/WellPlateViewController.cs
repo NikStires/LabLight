@@ -60,11 +60,11 @@ public class WellPlateViewController : ModelElementViewController
 
     private List<LablightSettings> wellPlateSettings = new List<LablightSettings>
     {
-        LablightSettings.RCMarkersEnabledSetting,
-        LablightSettings.RelevantRConlyEnabledSetting,
-        LablightSettings.RCHighlightEnabledSetting,
-        LablightSettings.InfoPanelEnabledSetting,
-        LablightSettings.WellIndicatorsEnabledSetting
+        LablightSettings.RC_Markers,
+        LablightSettings.Relevant_RC_Only,
+        LablightSettings.RC_Highlights,
+        LablightSettings.Wellplate_Info_Panel,
+        LablightSettings.Well_Indicators
     };
 
     private Dictionary<LablightSettings, bool> storedSettings = new Dictionary<LablightSettings, bool>();
@@ -184,10 +184,10 @@ public class WellPlateViewController : ModelElementViewController
             }
             else
             {
-                toggleIndicators(storedSettings[LablightSettings.RCMarkersEnabledSetting]);
+                toggleIndicators(storedSettings[LablightSettings.RC_Markers]);
                 if (actions[0].chainIDs.Count() > 0)
                 {
-                    toggleInfoPanel(storedSettings[LablightSettings.InfoPanelEnabledSetting], actions);
+                    toggleInfoPanel(storedSettings[LablightSettings.Wellplate_Info_Panel], actions);
                 }
             }
         }
@@ -236,9 +236,9 @@ public class WellPlateViewController : ModelElementViewController
             }
             else
             {
-                toggleTransform(Markers, storedSettings[LablightSettings.WellIndicatorsEnabledSetting], id, parsedColor);
-                toggleTransform(rowIndicators, storedSettings[LablightSettings.RelevantRConlyEnabledSetting], id.Substring(0, 1), parsedColor);
-                toggleTransform(colIndicators, storedSettings[LablightSettings.RelevantRConlyEnabledSetting], id.Substring(1), parsedColor);
+                toggleTransform(Markers, storedSettings[LablightSettings.Well_Indicators], id, parsedColor);
+                toggleTransform(rowIndicators, storedSettings[LablightSettings.Relevant_RC_Only], id.Substring(0, 1), parsedColor);
+                toggleTransform(colIndicators, storedSettings[LablightSettings.Relevant_RC_Only], id.Substring(1), parsedColor);
                 //toggleTransform(rowHighlights, settingsManagerSO.GetSettingValue(LablightSettings.RCHighlightEnabledSetting), id.Substring(0, 1));
                 //toggleTransform(colHighlights, settingsManagerSO.GetSettingValue(LablightSettings.RCHighlightEnabledSetting), id.Substring(1));
             }
@@ -306,7 +306,7 @@ public class WellPlateViewController : ModelElementViewController
                 {
                     obj.GetComponent<TextMeshProUGUI>().color = defaultIndicatorColor;
                 }
-                else if(!storedSettings[LablightSettings.RelevantRConlyEnabledSetting] && storedSettings[LablightSettings.RCMarkersEnabledSetting])
+                else if(!storedSettings[LablightSettings.Relevant_RC_Only] && storedSettings[LablightSettings.RC_Markers])
                 {
                     obj.GetComponent<TextMeshProUGUI>().color = defaultIndicatorColor;
                 }
@@ -322,7 +322,7 @@ public class WellPlateViewController : ModelElementViewController
                 {
                     obj.GetComponent<TextMeshProUGUI>().color = defaultIndicatorColor;
                 }
-                else if (!storedSettings[LablightSettings.RelevantRConlyEnabledSetting] && storedSettings[LablightSettings.RCMarkersEnabledSetting])
+                else if (!storedSettings[LablightSettings.Relevant_RC_Only] && storedSettings[LablightSettings.RC_Markers])
                 {
                     obj.GetComponent<TextMeshProUGUI>().color = defaultIndicatorColor;
                 }
@@ -397,11 +397,11 @@ public class WellPlateViewController : ModelElementViewController
                     }
                     else
                     {
-                        toggleTransform(rowIndicators, storedSettings[LablightSettings.RelevantRConlyEnabledSetting] && value, id.Substring(0, 1));
-                        toggleTransform(colIndicators, storedSettings[LablightSettings.RelevantRConlyEnabledSetting] && value, id.Substring(1));
+                        toggleTransform(rowIndicators, storedSettings[LablightSettings.Relevant_RC_Only] && value, id.Substring(0, 1));
+                        toggleTransform(colIndicators, storedSettings[LablightSettings.Relevant_RC_Only] && value, id.Substring(1));
                         //toggleTransform(rowHighlights, settingsManagerSO.GetSettingValue(LablightSettings.RCHighlightEnabledSetting) && value, id.Substring(0, 1));
                         //toggleTransform(colHighlights, settingsManagerSO.GetSettingValue(LablightSettings.RCHighlightEnabledSetting) && value, id.Substring(1));
-                        toggleTransform(Markers, storedSettings[LablightSettings.WellIndicatorsEnabledSetting] && value, id);
+                        toggleTransform(Markers, storedSettings[LablightSettings.Well_Indicators] && value, id);
                     }
                 }
             }
@@ -414,8 +414,8 @@ public class WellPlateViewController : ModelElementViewController
         }
         else
         {
-            toggleInfoPanel(storedSettings[LablightSettings.InfoPanelEnabledSetting] && value, currActions);
-            toggleIndicators(storedSettings[LablightSettings.RCMarkersEnabledSetting] && value);
+            toggleInfoPanel(storedSettings[LablightSettings.Wellplate_Info_Panel] && value, currActions);
+            toggleIndicators(storedSettings[LablightSettings.RC_Markers] && value);
         }
     }
 
@@ -452,10 +452,10 @@ public class WellPlateViewController : ModelElementViewController
         // {
         //     switch(settingChanged.Item1)
         //     {
-        //         case LablightSettings.RCMarkersEnabledSetting:
+        //         case LablightSettings.RC_Markers:
         //             toggleIndicators(settingChanged.Item2);
         //             break;
-        //         case LablightSettings.RelevantRConlyEnabledSetting:
+        //         case LablightSettings.Relevant_RC_Only:
         //             if(currActions != null)
         //             {
         //                 Color parsedColor;
@@ -468,7 +468,7 @@ public class WellPlateViewController : ModelElementViewController
         //                     }
         //                     foreach(string id in action.chainIDs)
         //                     {
-        //                         if(!settingChanged.Item2 && storedSettings[LablightSettings.RCMarkersEnabledSetting]) //if indicators should be changed to default color and stay enabled if indicators are enabled
+        //                         if(!settingChanged.Item2 && storedSettings[LablightSettings.RC_Markers]) //if indicators should be changed to default color and stay enabled if indicators are enabled
         //                         {
         //                             toggleTransform(rowIndicators, true, id.Substring(0,1), defaultIndicatorColor); 
         //                             toggleTransform(colIndicators, true, id.Substring(1), defaultIndicatorColor);
@@ -494,10 +494,10 @@ public class WellPlateViewController : ModelElementViewController
         //                 }
         //             }
         //             break;
-        //         case LablightSettings.InfoPanelEnabledSetting:
+        //         case LablightSettings.Wellplate_Info_Panel:
         //             toggleInfoPanel(settingChanged.Item2, currActions);
         //             break;
-        //         case LablightSettings.WellIndicatorsEnabledSetting:
+        //         case LablightSettings.Well_Indicators:
         //             if(currActions != null)
         //             {
         //                 foreach(HighlightAction action in currActions)

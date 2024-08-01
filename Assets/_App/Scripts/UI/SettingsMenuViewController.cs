@@ -35,7 +35,7 @@ public class SettingsMenuViewController : LLBasePanel
         }
 
         currentPage = 0;
-        StartCoroutine(DelayBuildPage(1f));
+        StartCoroutine(DelayBuildPage(0.1f));
     }
 
     void Build(int pageNum)
