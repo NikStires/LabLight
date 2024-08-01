@@ -32,6 +32,14 @@ public class SettingsMenuButton : MonoBehaviour
         }
     }
 
+    void OnDisable()
+    {
+        interactable.selectExited.RemoveListener(_ => {
+            settingsManagerSO.SetSetting(setting, !settingsManagerSO.GetSettingValue(setting));
+        });
+        settingsManagerSO.settingChanged.RemoveListener(value => UpdateVisualState(value.Item1));
+    }
+
     // Update is called once per frame
     public void Initialize(LablightSettings setting)
     {
@@ -43,14 +51,13 @@ public class SettingsMenuButton : MonoBehaviour
         settingsManagerSO.settingChanged.AddListener(value => UpdateVisualState(value.Item1));
 
         interactable.selectExited.AddListener(_ => {
-            Debug.Log("Setting selected: " + setting.ToString() + " to " + !settingsManagerSO.GetSettingValue(setting));
             settingsManagerSO.SetSetting(setting, !settingsManagerSO.GetSettingValue(setting));
         });
     }
 
     private void UpdateVisualState(LablightSettings setting)
     {
-        if(this.setting == setting)
+        if(this.setting == setting && _offIndicator != null && _onIndicator != null)
         {
             _offIndicator.SetActive(!settingsManagerSO.GetSettingValue(setting));
             _onIndicator.SetActive(settingsManagerSO.GetSettingValue(setting));

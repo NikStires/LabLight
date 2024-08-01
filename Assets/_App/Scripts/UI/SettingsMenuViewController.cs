@@ -51,7 +51,6 @@ public class SettingsMenuViewController : LLBasePanel
         {
             if(index >= pageNum * 8 && index < (pageNum + 1) * 8)
             {
-                Debug.Log("Index is: " + index + " instantiating button");
                 var currSetting = setting;
                 var button = Instantiate(buttonPrefab, buttonGrid.transform);
                 SettingsMenuButton buttonScript = button.GetComponent<SettingsMenuButton>();
