@@ -20,9 +20,9 @@ public class ActionCenterPanelViewController : MonoBehaviour
 
     void Start()
     {
-        recordingButton.selectEntered.AddListener(_ => ToggleLighthouseRecording());
-        replayButton.selectEntered.AddListener(_ => ToggleLighthouseReplay());
-        internetBrowserButton.selectEntered.AddListener(_ => OpenInternetBrowser());
+        recordingButton.selectExited.AddListener(_ => ToggleLighthouseRecording());
+        replayButton.selectExited.AddListener(_ => ToggleLighthouseReplay());
+        internetBrowserButton.selectExited.AddListener(_ => OpenInternetBrowser());
     }
 
     /// <summary>
@@ -33,7 +33,6 @@ public class ActionCenterPanelViewController : MonoBehaviour
         var timer = Instantiate(timerPrefab);
         timer.transform.position = transform.position;
         timer.transform.rotation = transform.rotation;
-        this.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -42,19 +41,16 @@ public class ActionCenterPanelViewController : MonoBehaviour
     public void StartCalibration()
     {
         SceneLoader.Instance.LoadSceneAdditive("Calibration");
-        this.gameObject.SetActive(false);
     }
 
     public void OpenSettings()
     {
         SceneLoader.Instance.LoadSceneAdditive("Settings");
-        this.gameObject.SetActive(false);
     }
 
     public void OpenSpatialNotesEditor()
     {
         SceneLoader.Instance.LoadSceneAdditive("SpatialNotesEditor");
-        this.gameObject.SetActive(false);
     }    
 
     /// <summary>
