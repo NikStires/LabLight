@@ -53,7 +53,7 @@ public class ActionCenterPanelViewController : MonoBehaviour
 
     public void OpenSpatialNotesEditor()
     {
-        SceneLoader.Instance.LoadSceneAdditive("SpatialNotesEditor");
+        SceneLoader.Instance.LoadSceneClean("SpatialNotesEditor");
         this.gameObject.SetActive(false);
     }    
 

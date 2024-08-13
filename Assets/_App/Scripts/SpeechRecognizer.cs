@@ -7,6 +7,12 @@ using Whisper;
 using Whisper.Utils;
 using System.Linq;
 
+/// <summary>
+/// Creates a whisperstream and start listening for keywords in the dictionary
+/// Invokes action in response to found keyword
+/// Stops the stream if no keywords left for recognition
+/// New dictionaries can be added with the Listen method
+/// </summary>
 public class SpeechRecognizer : MonoBehaviour
 {
     public static SpeechRecognizer Instance;
