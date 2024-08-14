@@ -31,12 +31,6 @@ public class SessionState : MonoBehaviour
     
     public static ReactiveProperty<bool> enableGenericVisualizations = new ReactiveProperty<bool>();
 
-    //app settings
-    //public static ReactiveProperty<bool> Timer = new ReactiveProperty<bool>();
-    //public static ReactiveProperty<bool> ShowGrid = new ReactiveProperty<bool>();
-    //public static ReactiveProperty<bool> TextToSpeech = new ReactiveProperty<bool>();
-    //public static ReactiveProperty<bool> ConfirmationPanelVisible = new ReactiveProperty<bool>();
-
     public static ReactiveProperty<bool> ShowWorkspaceOrigin = new ReactiveProperty<bool>();
 
     // Data streams typed bus where required
@@ -57,16 +51,6 @@ public class SessionState : MonoBehaviour
     public static ReactiveProperty<string> CsvFileDownloadable = new ReactiveProperty<string>();
 
     public static ReactiveProperty<string> JsonFileDownloadable = new ReactiveProperty<string>();
-
-    // //wellplate settings
-    // public static ReactiveProperty<bool> ShowRowColIndicators = new ReactiveProperty<bool>();
-    // public static ReactiveProperty<bool> ShowRowColIndicatorHighlight = new ReactiveProperty<bool>();
-    // public static ReactiveProperty<bool> ShowRowColHighlights = new ReactiveProperty<bool>();
-    // public static ReactiveProperty<bool> ShowInformationPanel = new ReactiveProperty<bool>();
-    // public static ReactiveProperty<bool> ShowMarker = new ReactiveProperty<bool>();
-    // //reactive properties for tFTubes
-    // public static ReactiveProperty<bool> ShowSourceContents = new ReactiveProperty<bool>();
-    // public static ReactiveProperty<bool> ShowSourceTransform = new ReactiveProperty<bool>();
 
     void Awake()
     {

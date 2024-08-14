@@ -16,7 +16,7 @@ using TMPro;
 public class WellPlateViewController : ModelElementViewController
 {
     public SettingsManagerScriptableObject settingsManagerSO;
-    public bool debugEnableAllSettings = true;
+    public bool debugEnableAllSettings = false;
     
     public bool modelActive;
 
@@ -447,146 +447,73 @@ public class WellPlateViewController : ModelElementViewController
     }
     private void AddSubscriptions()
     {
-        // -> 
-        // settingsManagerSO.settingChanged.AddListener(settingChanged =>
-        // {
-        //     switch(settingChanged.Item1)
-        //     {
-        //         case LablightSettings.RC_Markers:
-        //             toggleIndicators(settingChanged.Item2);
-        //             break;
-        //         case LablightSettings.Relevant_RC_Only:
-        //             if(currActions != null)
-        //             {
-        //                 Color parsedColor;
+        settingsManagerSO.settingChanged.AddListener(settingChanged =>
+        {
+            switch(settingChanged.Item1)
+            {
+                case LablightSettings.RC_Markers:
+                    toggleIndicators(settingChanged.Item2);
+                    break;
+                case LablightSettings.Relevant_RC_Only:
+                    if(currActions != null)
+                    {
+                        Color parsedColor;
 
-        //                 foreach(HighlightAction action in currActions)
-        //                 {
-        //                     if(ColorUtility.TryParseHtmlString(action.colorInfo.Item1, out parsedColor))
-        //                     {
-        //                         parsedColor.a = 255;
-        //                     }
-        //                     foreach(string id in action.chainIDs)
-        //                     {
-        //                         if(!settingChanged.Item2 && storedSettings[LablightSettings.RC_Markers]) //if indicators should be changed to default color and stay enabled if indicators are enabled
-        //                         {
-        //                             toggleTransform(rowIndicators, true, id.Substring(0,1), defaultIndicatorColor); 
-        //                             toggleTransform(colIndicators, true, id.Substring(1), defaultIndicatorColor);
-        //                         }else
-        //                         {
-        //                             toggleTransform(rowIndicators, settingChanged.Item2, id.Substring(0,1), parsedColor);
-        //                             toggleTransform(colIndicators, settingChanged.Item2, id.Substring(1), parsedColor);
-        //                         }
-        //                     }
-        //                 }
-        //             }
-        //             break;
-        //         case LablightSettings.RCHighlightEnabledSetting:
-        //             if(currActions != null)
-        //             {
-        //                 foreach(HighlightAction action in currActions)
-        //                 {
-        //                     foreach(string id in action.chainIDs)
-        //                     {
-        //                         toggleTransform(rowHighlights, settingChanged.Item2, id.Substring(0,1));
-        //                         toggleTransform(colHighlights, settingChanged.Item2, id.Substring(1));
-        //                     }
-        //                 }
-        //             }
-        //             break;
-        //         case LablightSettings.Wellplate_Info_Panel:
-        //             toggleInfoPanel(settingChanged.Item2, currActions);
-        //             break;
-        //         case LablightSettings.Well_Indicators:
-        //             if(currActions != null)
-        //             {
-        //                 foreach(HighlightAction action in currActions)
-        //                 {
-        //                     Color parsedColor;
-        //                     if(ColorUtility.TryParseHtmlString(action.colorInfo.Item1, out parsedColor))
-        //                     {
-        //                         parsedColor.a = 255;
-        //                     }
-        //                     foreach(string id in action.chainIDs)
-        //                     {
-        //                         toggleTransform(Markers, settingChanged.Item2, id, parsedColor);
-        //                     }
-        //                 }
-        //             }
-        //             break;
-        //     }
-        // });
-        // SessionState.ShowRowColIndicators.Subscribe(value =>
-        // {
-        //     toggleIndicators(value);
-        // }).AddTo(this);
-
-        // SessionState.ShowRowColIndicatorHighlight.Subscribe(value =>
-        // {
-        //     if(currActions != null)
-        //     {
-        //         Color parsedColor;
-
-        //         foreach(HighlightAction action in currActions)
-        //         {
-        //             if(ColorUtility.TryParseHtmlString(action.colorInfo.Item1, out parsedColor))
-        //             {
-        //                 parsedColor.a = 255;
-        //             }
-        //             foreach(string id in action.chainIDs)
-        //             {
-        //                 if(!value && SessionState.ShowRowColIndicators.Value) //if indicators should be changed to default color and stay enabled if indicators are enabled
-        //                 {
-        //                     toggleTransform(rowIndicators, true, id.Substring(0,1), defaultIndicatorColor); 
-        //                     toggleTransform(colIndicators, true, id.Substring(1), defaultIndicatorColor);
-        //                 }else
-        //                 {
-        //                     toggleTransform(rowIndicators, value, id.Substring(0,1), parsedColor);
-        //                     toggleTransform(colIndicators, value, id.Substring(1), parsedColor);
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }).AddTo(this);
-
-        // SessionState.ShowRowColHighlights.Subscribe(value =>
-        // {
-        //     if(currActions != null)
-        //     {
-        //         foreach(HighlightAction action in currActions)
-        //         {
-        //             foreach(string id in action.chainIDs)
-        //             {
-        //                 toggleTransform(rowHighlights, value, id.Substring(0,1));
-        //                 toggleTransform(colHighlights, value, id.Substring(1));
-        //             }
-        //         }
-        //     }
-        // }).AddTo(this);
-
-        // SessionState.ShowInformationPanel.Subscribe(value =>
-        // {
-        //     toggleInfoPanel(value, currActions);
-        // }).AddTo(this);
-
-        // SessionState.ShowMarker.Subscribe(value =>
-        // {
-        //     if(currActions != null)
-        //     {
-        //         Debug.Log("Enabling bbs");
-        //         foreach(HighlightAction action in currActions)
-        //         {
-        //             Color parsedColor;
-        //             if(ColorUtility.TryParseHtmlString(action.colorInfo.Item1, out parsedColor))
-        //             {
-        //                 parsedColor.a = 255;
-        //             }
-        //             foreach(string id in action.chainIDs)
-        //             {
-        //                 toggleTransform(Markers, value, id, parsedColor);
-        //             }
-        //         }
-        //     }
-        // }).AddTo(this);
+                        foreach(HighlightAction action in currActions)
+                        {
+                            if(ColorUtility.TryParseHtmlString(action.colorInfo.Item1, out parsedColor))
+                            {
+                                parsedColor.a = 255;
+                            }
+                            foreach(string id in action.chainIDs)
+                            {
+                                if(!settingChanged.Item2 && storedSettings[LablightSettings.RC_Markers]) //if indicators should be changed to default color and stay enabled if indicators are enabled
+                                {
+                                    toggleTransform(rowIndicators, true, id.Substring(0,1), defaultIndicatorColor); 
+                                    toggleTransform(colIndicators, true, id.Substring(1), defaultIndicatorColor);
+                                }else
+                                {
+                                    toggleTransform(rowIndicators, settingChanged.Item2, id.Substring(0,1), parsedColor);
+                                    toggleTransform(colIndicators, settingChanged.Item2, id.Substring(1), parsedColor);
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case LablightSettings.RC_Highlights:
+                    if(currActions != null)
+                    {
+                        foreach(HighlightAction action in currActions)
+                        {
+                            foreach(string id in action.chainIDs)
+                            {
+                                toggleTransform(rowHighlights, settingChanged.Item2, id.Substring(0,1));
+                                toggleTransform(colHighlights, settingChanged.Item2, id.Substring(1));
+                            }
+                        }
+                    }
+                    break;
+                case LablightSettings.Wellplate_Info_Panel:
+                    toggleInfoPanel(settingChanged.Item2, currActions);
+                    break;
+                case LablightSettings.Well_Indicators:
+                    if(currActions != null)
+                    {
+                        foreach(HighlightAction action in currActions)
+                        {
+                            Color parsedColor;
+                            if(ColorUtility.TryParseHtmlString(action.colorInfo.Item1, out parsedColor))
+                            {
+                                parsedColor.a = 255;
+                            }
+                            foreach(string id in action.chainIDs)
+                            {
+                                toggleTransform(Markers, settingChanged.Item2, id, parsedColor);
+                            }
+                        }
+                    }
+                    break;
+            }
+        });
     }
 }
