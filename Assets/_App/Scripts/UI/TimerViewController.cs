@@ -28,16 +28,29 @@ public class TimerViewController : LLBasePanel
     void Awake()
     {
         base.Awake();
-        ProtocolState.checklistStream.Subscribe(_ => OnCheckItemChange()).AddTo(this);
+        
         defaultMaterial = backplateMesh.material;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        TimeLeft = StartingTime;
-        TimeDisplay.text = GetTimeString();
+        if(ProtocolState.Steps[ProtocolState.Step].Checklist != null)
+        {
+            var currentCheckItem = ProtocolState.procedureDef.steps[ProtocolState.Step].checklist[ProtocolState.CheckItem];
+            if(currentCheckItem.activateTimer)
+            {
+                int timeSeconds = (currentCheckItem.hours * 60 * 60) + (currentCheckItem.minutes * 60) + currentCheckItem.seconds;
+                TimeLeft = timeSeconds;
+                TimeDisplay.text = GetTimeString();
+            }
+        }else
+        {
+            TimeLeft = StartingTime;
+            TimeDisplay.text = GetTimeString();
+        }
     }
+
 
     // Update is called once per frame
     void Update()
@@ -186,23 +199,23 @@ public class TimerViewController : LLBasePanel
                     ts.Seconds);
     }
 
-    private void OnCheckItemChange()
-    {
-        if(timerRunning)
-        {
-            return;
-        }
-        if(ProtocolState.Steps[ProtocolState.Step].Checklist != null)
-        {
-            var currentCheckItem = ProtocolState.procedureDef.steps[ProtocolState.Step].checklist[ProtocolState.CheckItem];
-            if(currentCheckItem.activateTimer)
-            {
-                int timeSeconds = (currentCheckItem.hours * 60 * 60) + (currentCheckItem.minutes * 60) + currentCheckItem.seconds;
-                StartingTime = timeSeconds;
-                ResetTimer();
-            }
-        }
-    }
+    // private void OnCheckItemChange()
+    // {
+    //     if(timerRunning)
+    //     {
+    //         return;
+    //     }
+    //     if(ProtocolState.Steps[ProtocolState.Step].Checklist != null)
+    //     {
+    //         var currentCheckItem = ProtocolState.procedureDef.steps[ProtocolState.Step].checklist[ProtocolState.CheckItem];
+    //         if(currentCheckItem.activateTimer)
+    //         {
+    //             int timeSeconds = (currentCheckItem.hours * 60 * 60) + (currentCheckItem.minutes * 60) + currentCheckItem.seconds;
+    //             StartingTime = timeSeconds;
+    //             ResetTimer();
+    //         }
+    //     }
+    // }
 
     private void FlashTimer()
     {

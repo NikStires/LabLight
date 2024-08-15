@@ -193,6 +193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ece0892062fe4f899b41868e6a027e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timerPrefab: {fileID: 1694232983341760152, guid: 0352e1c90cf2c4e78834c11fb305f6cd, type: 3}
 --- !u!114 &75180037
 MonoBehaviour:
   m_ObjectHideFlags: 0

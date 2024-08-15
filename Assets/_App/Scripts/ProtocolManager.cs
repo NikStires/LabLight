@@ -12,10 +12,15 @@ public class ProtocolManager : MonoBehaviour
 {
     private Dictionary<ArDefinition, ArElementViewController> specificArViews = new Dictionary<ArDefinition, ArElementViewController>();
 
+    [SerializeField] GameObject timerPrefab;
+
+    private CheckItemDefinition previousCheckItem;
+
     private void Awake()
     {
         ProtocolState.LockingTriggered.Value = false;
         ProtocolState.AlignmentTriggered.Value = false;
+        ProtocolState.checklistStream.Subscribe(_ => OnCheckItemChange()).AddTo(this);
     }
 
     private void OnEnable()
@@ -26,5 +31,18 @@ public class ProtocolManager : MonoBehaviour
     private void OnDisable()
     {
         ProtocolState.AlignmentTriggered.Value = false;
+    }
+
+    private void OnCheckItemChange()
+    {
+        if(ProtocolState.Steps[ProtocolState.Step].Checklist != null)
+        {
+            var currentCheckItem = ProtocolState.procedureDef.steps[ProtocolState.Step].checklist[ProtocolState.CheckItem];
+            if(currentCheckItem.activateTimer && currentCheckItem != previousCheckItem)
+            {
+                var timer = Instantiate(timerPrefab, transform);
+                previousCheckItem = currentCheckItem;
+            }
+        }
     }
 }
