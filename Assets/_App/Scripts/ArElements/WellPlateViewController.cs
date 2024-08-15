@@ -26,6 +26,8 @@ public class WellPlateViewController : ModelElementViewController
     public bool isSource; //if object only acts as a source
     //if source -> fill in Sources & nametag objects only
 
+    [SerializeField] private Transform Model;
+
     [SerializeField]
     public Transform Markers;
 
@@ -515,5 +517,19 @@ public class WellPlateViewController : ModelElementViewController
                     break;
             }
         });
+    }
+
+    public override void Rotate(float degrees)
+    {
+        Model.Rotate(Vector3.up, degrees);
+
+        foreach (Transform indicator in colIndicators)
+        {
+            indicator.Rotate(Vector3.forward, degrees);
+        }
+        foreach (Transform indicator in rowIndicators)
+        {
+            indicator.Rotate(Vector3.forward, degrees);
+        }
     }
 }
