@@ -135,10 +135,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: XRI_Cube
       objectReference: {fileID: 0}
-    - target: {fileID: 3598423187403434115, guid: f40bd4d7d1568441e9a284620b4a4990, type: 3}
-      propertyPath: m_PermittedDisplacementAxes
-      value: -1
-      objectReference: {fileID: 0}
     - target: {fileID: 7528428744160299020, guid: f40bd4d7d1568441e9a284620b4a4990, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.166
@@ -1120,10 +1116,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: XRI_Cube (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 3598423187403434115, guid: f40bd4d7d1568441e9a284620b4a4990, type: 3}
-      propertyPath: m_PermittedDisplacementAxes
-      value: -1
-      objectReference: {fileID: 0}
     - target: {fileID: 7528428744160299020, guid: f40bd4d7d1568441e9a284620b4a4990, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.16899998
@@ -2056,10 +2048,6 @@ PrefabInstance:
     - target: {fileID: 2404572949823817277, guid: f40bd4d7d1568441e9a284620b4a4990, type: 3}
       propertyPath: m_Name
       value: XRI_Cube (2)
-      objectReference: {fileID: 0}
-    - target: {fileID: 3598423187403434115, guid: f40bd4d7d1568441e9a284620b4a4990, type: 3}
-      propertyPath: m_PermittedDisplacementAxes
-      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 7528428744160299020, guid: f40bd4d7d1568441e9a284620b4a4990, type: 3}
       propertyPath: m_LocalPosition.x
