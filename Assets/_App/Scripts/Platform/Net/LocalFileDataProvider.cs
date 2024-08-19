@@ -11,8 +11,10 @@ using UnityEngine;
 /// <summary>
 /// Implements IDataProvider interface for accessing available procedures and updating runtime state
 /// </summary>
-public class LocalFileDataProvider : IProcedureDataProvider, ITextDataProvider
+public class LocalFileDataProvider : IProcedureDataProvider, ITextDataProvider, IAnchorDataProvider
 {
+    private const string anchorDataFile = "AnchorData.jason";
+
     public async Task<List<ProcedureDescriptor>> GetProcedureList()
     {
         var list = new List<ProcedureDescriptor>();
@@ -165,6 +167,41 @@ public class LocalFileDataProvider : IProcedureDataProvider, ITextDataProvider
         catch (Exception ex)
         {
             Debug.LogErrorFormat("Could not delete file '{0}'", ex.Message);
+        }
+    }
+
+    public IObservable<AnchorData> GetOrCreateAnchorData()
+    {
+        return LoadAnchorDataAsync().ToObservable<AnchorData>();
+    }
+
+    public async Task<AnchorData> LoadAnchorDataAsync()
+    {
+        Debug.Log("Local file data provider trying to load " + Path.Combine(Application.persistentDataPath, anchorDataFile));
+
+        AnchorData anchorData = null;
+        using (StreamReader streamReader = new StreamReader(Path.Combine(Application.persistentDataPath, anchorDataFile)))
+        {
+            anchorData = Parsers.ParseAnchorData(streamReader.ReadToEnd());
+            Debug.LogFormat("Data loaded from file '{0}'", anchorDataFile);
+        }
+
+        if (anchorData == null)
+        {
+            Debug.Log("AnchorData not found, creating empty anchorData");
+            anchorData = new AnchorData();
+        }
+
+        return anchorData;
+    }
+
+    public async void SaveAnchorData(AnchorData anchorData)
+    {
+        using (StreamWriter streamWriter = new StreamWriter(Path.Combine(Application.persistentDataPath, anchorDataFile), append: false))
+        {
+            var output = JsonConvert.SerializeObject(anchorData, Formatting.Indented, Parsers.serializerSettings);
+            streamWriter.WriteLine(output);
+            Debug.LogFormat("Data saved to file '{0}'", anchorDataFile);
         }
     }
 }

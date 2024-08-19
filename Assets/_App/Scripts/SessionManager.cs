@@ -73,6 +73,7 @@ public class SessionManager : MonoBehaviour
 
         var localFileDataProvider = new LocalFileDataProvider();
         ServiceRegistry.RegisterService<ITextDataProvider>(localFileDataProvider);
+        ServiceRegistry.RegisterService<IAnchorDataProvider>(localFileDataProvider);
 
         var resourceFileDataProvider = new ResourceFileDataProvider();
         ServiceRegistry.RegisterService<IProcedureDataProvider>(resourceFileDataProvider);

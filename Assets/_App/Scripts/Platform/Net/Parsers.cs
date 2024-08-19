@@ -186,4 +186,31 @@ public class Parsers
             throw;
         }
     }
+
+    public static AnchorData ParseAnchorData(string json)
+    {
+        try
+        {
+            var anchorData = new AnchorData();
+
+            var root = JObject.Parse(json);
+            anchorData.version = (root["version"] == null) ? 0 : (int)root["version"];
+
+            if (anchorData.version >= 1)
+            {
+                anchorData = JsonConvert.DeserializeObject<AnchorData>(json, serializerSettings);
+            }
+            else
+            {
+                Debug.LogError("Anchor data is missing version.");
+            }
+
+            return anchorData;
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("Parsing anchor data: " + e.ToString());
+            throw;
+        }
+    }
 }
