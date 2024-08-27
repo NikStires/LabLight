@@ -177,19 +177,25 @@ public class LocalFileDataProvider : IProcedureDataProvider, ITextDataProvider, 
 
     public async Task<AnchorData> LoadAnchorDataAsync()
     {
-        Debug.Log("Local file data provider trying to load " + Path.Combine(Application.persistentDataPath, anchorDataFile));
+        var anchorDataFilePath = Path.Combine(Application.persistentDataPath, anchorDataFile);
+        Debug.Log("Local file data provider trying to load " + anchorDataFilePath);
 
         AnchorData anchorData = null;
-        using (StreamReader streamReader = new StreamReader(Path.Combine(Application.persistentDataPath, anchorDataFile)))
+
+        if (File.Exists(anchorDataFilePath))
         {
-            anchorData = Parsers.ParseAnchorData(streamReader.ReadToEnd());
-            Debug.LogFormat("Data loaded from file '{0}'", anchorDataFile);
+            using (StreamReader streamReader = new StreamReader(anchorDataFilePath))
+            {
+                anchorData = Parsers.ParseAnchorData(streamReader.ReadToEnd());
+                Debug.LogFormat("Data loaded from file '{0}'", anchorDataFile);
+            }
         }
 
         if (anchorData == null)
         {
             Debug.Log("AnchorData not found, creating empty anchorData");
             anchorData = new AnchorData();
+            anchorData.version = 1;
         }
 
         return anchorData;

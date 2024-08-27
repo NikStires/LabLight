@@ -6,6 +6,7 @@ using UnityEngine;
 using Lighthouse.MessagePack;
 using UnityEngine.Events;
 
+
 public enum Mode { Master, Isolated, Observer }
 
 /// <summary>
@@ -44,7 +45,11 @@ public class SessionState : MonoBehaviour
     public static Subject<bool> recordingStream = new Subject<bool>();
     public static ReactiveProperty<ArucoSettings> ArucoSettings = new ReactiveProperty<ArucoSettings>();
     public static ReactiveCollection<TrackedObject> TrackedObjects = new ReactiveCollection<TrackedObject>();
+
+    public static ReactiveProperty<bool> SpatialNoteEditMode = new ReactiveProperty<bool>();
+    public static ReactiveCollection<AnchoredObjectController> SpatialNotes = new ReactiveCollection<AnchoredObjectController>();
     
+
     /// <summary>
     /// Keep track of the last settings that where last used for detection so we can detect if Lighthouse changed settings in the meantime 
     /// </summary>

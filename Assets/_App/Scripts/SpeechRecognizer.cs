@@ -6,6 +6,7 @@ using UnityEngine;
 using Whisper;
 using Whisper.Utils;
 using System.Linq;
+using UnityEngine.Events;
 
 /// <summary>
 /// Creates a whisperstream and start listening for keywords in the dictionary
@@ -15,6 +16,7 @@ using System.Linq;
 /// </summary>
 public class SpeechRecognizer : MonoBehaviour
 {
+    
     public static SpeechRecognizer Instance;
 
     WhisperManager _whisper;
@@ -22,6 +24,23 @@ public class SpeechRecognizer : MonoBehaviour
     MicrophoneRecord _microphoneRecord;
 
     public Dictionary<string, Action> Keywords;
+
+    // Custom handler for recognizedtext
+    private Action<string> recognizedTextHandler;
+
+    public Action<string> RecognizedTextHandler
+    {
+        get
+        {
+            return recognizedTextHandler;
+        }
+        set
+        {
+            recognizedTextHandler = value;
+            CheckStreamRecording();
+        }
+    }
+
 
     void Awake()
     {
@@ -48,25 +67,34 @@ public class SpeechRecognizer : MonoBehaviour
         _stream.OnSegmentFinished += Segment =>
         {
             var result = Segment.Result;
-            // Remove special characters and convert to lowercase
-            var recognizedWords = Regex.Replace(result, @"[^\w\d\s]","").ToLower().Split(' ');
 
-            //Debug.Log("Number of Keywords: " + Keywords.Count);
-            if(result == null || Keywords.Count == 0)
+            if (recognizedTextHandler == null)
             {
-                Debug.LogWarning("No keywords provided. Cannot listen for nothing.");
-                return;
-            }
+                // Remove special characters and convert to lowercase
+                var recognizedWords = Regex.Replace(result, @"[^\w\d\s]","").ToLower().Split(' ');
 
-            // Check if recognized words match any keywords
-            foreach(var word in recognizedWords)
-            {
-                Action action;
-                if(Keywords.TryGetValue(word, out action))
+                //Debug.Log("Number of Keywords: " + Keywords.Count);
+                if (result == null || Keywords.Count == 0)
                 {
-                    Debug.Log("Keyword recognized: " + word);
-                    action.Invoke();
+                    Debug.LogWarning("No keywords provided. Cannot listen for nothing.");
+                    return;
                 }
+
+                // Check if recognized words match any keywords
+                foreach (var word in recognizedWords)
+                {
+                    Action action;
+                    if (Keywords.TryGetValue(word, out action))
+                    {
+                        Debug.Log("Keyword recognized: " + word);
+                        action.Invoke();
+                    }
+                }
+            }
+            else
+            {
+                Debug.Log("Raw recognition result");
+                recognizedTextHandler?.Invoke(result);
             }
         };
     }
@@ -102,17 +130,7 @@ public class SpeechRecognizer : MonoBehaviour
             }
         }
 
-        // Start listening if not already listening
-        if(!_microphoneRecord.IsRecording && Keywords.Count > 0)
-        {
-            _microphoneRecord.StartRecord();
-            _stream.StartStream();
-        }
-        else if(_microphoneRecord.IsRecording && Keywords.Count == 0)
-        {
-            _microphoneRecord.StopRecord();
-            _stream.StopStream();
-        }
+        CheckStreamRecording();
         
         // Return an Action to remove the requested keywords
         return () =>
@@ -122,12 +140,22 @@ public class SpeechRecognizer : MonoBehaviour
                 Keywords.Remove(word);
             }
 
-            // Stop listening if no keywords are left
-            if(Keywords.Count == 0 && _microphoneRecord.IsRecording)
-            {
-                _stream.StopStream();
-                _microphoneRecord.StopRecord();
-            }
+            CheckStreamRecording();
         };
+    }
+
+    private void CheckStreamRecording()
+    {
+        // Start listening if not already listening
+        if (!_microphoneRecord.IsRecording && (Keywords.Count > 0 || recognizedTextHandler != null))
+        {
+            _microphoneRecord.StartRecord();
+            _stream.StartStream();
+        }
+        else if (_microphoneRecord.IsRecording && Keywords.Count == 0 && recognizedTextHandler == null)
+        {
+            _microphoneRecord.StopRecord();
+            _stream.StopStream();
+        }
     }
 }

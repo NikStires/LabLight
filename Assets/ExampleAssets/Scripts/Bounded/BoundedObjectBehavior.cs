@@ -5,11 +5,20 @@ namespace PolySpatial.Template
 {
     public class BoundedObjectBehavior : MonoBehaviour
     {
-        const float k_ToVel = 7.5f;
-        const float k_MaxVel = 15.0f;
-        const float k_MaxForce = 40.0f;
-        const float k_Gain = 5f;
-        const float k_StartingTorque = 0.15f;
+        [SerializeField]
+        float k_ToVel = 10f;
+
+        [SerializeField]
+        float k_MaxVel = 20f;
+
+        [SerializeField]
+        float k_MaxForce = 40.0f;
+
+        [SerializeField]
+        float k_Gain = 5f;
+
+        [SerializeField]
+        float k_StartingTorque = 0.15f;
 
         [SerializeField]
         float m_LerpReturnTime = 1.0f;
@@ -32,6 +41,9 @@ namespace PolySpatial.Template
         bool m_Return;
         float m_CurrentTime;
         float m_DelayTime;
+
+        const float k_LerpBaseValue = 2.0f;
+        const float k_LerpExponentValue = -10.0f;
 
         void Start()
         {
@@ -65,7 +77,7 @@ namespace PolySpatial.Template
 
                 var time = m_CurrentTime / m_LerpReturnTime;
                 // exponential ease out
-                time = 1.0f - Mathf.Pow(2.0f, -10.0f * time);
+                time = 1.0f - Mathf.Pow(k_LerpBaseValue, k_LerpExponentValue * time);
 
                 m_Transform.position = Vector3.Lerp(m_StartingLerpPosition, m_StartingPosition, time);
             }

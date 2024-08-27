@@ -6,11 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Samples/XR Interaction Toolkit/3.0.5/AR Starter Assets/ARDemoScene.unity
-    guid: da4db6c21a88243878fecfe160c1be3b
-  - enabled: 1
     path: Assets/_App/Scenes/Persistent.unity
     guid: 1651c094ee4f047ef90379568391b1fc
+  - enabled: 1
+    path: Assets/_App/Scenes/Calibration.unity
+    guid: e9c98d7db1eae4990872049e4a39eb2f
   - enabled: 1
     path: Assets/_App/Scenes/Protocol.unity
     guid: 5cc9ac2b6a37148859f4d0f7f1480648
