@@ -11,6 +11,7 @@ public class ActionCenterPanelViewController : MonoBehaviour
 {
     [SerializeField] private PlaneInteractionManagerScriptableObject planeManager;
     [SerializeField] GameObject timerPrefab;
+    [SerializeField] GameObject hazardZonePanelPrefab;
     [SerializeField] UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable recordingButton;
     bool isRecording = false;
     [SerializeField] UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable replayButton;
@@ -33,6 +34,13 @@ public class ActionCenterPanelViewController : MonoBehaviour
         var timer = Instantiate(timerPrefab);
         timer.transform.position = transform.position;
         timer.transform.rotation = transform.rotation;
+    }
+
+    public void SpawnHazardZonePanel()
+    {
+        var hazardZonePanel = Instantiate(hazardZonePanelPrefab);
+        hazardZonePanel.transform.position = transform.position;
+        hazardZonePanel.transform.rotation = transform.rotation;
     }
 
     /// <summary>

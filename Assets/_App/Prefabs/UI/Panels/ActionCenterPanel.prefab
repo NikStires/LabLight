@@ -3793,7 +3793,7 @@ GameObject:
   - component: {fileID: 6377913729139958165}
   - component: {fileID: 8250004294945884612}
   m_Layer: 0
-  m_Name: IconButton (4)
+  m_Name: IconButtonHazardZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3891,10 +3891,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 4260026214602192422}
+        m_TargetAssemblyTypeName: ActionCenterPanelViewController, Assembly-CSharp
+        m_MethodName: SpawnHazardZonePanel
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -4448,6 +4448,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   planeManager: {fileID: 11400000, guid: 0e4c22905642e492a9c661e3e6ed89b8, type: 2}
   timerPrefab: {fileID: 1694232983341760152, guid: 0352e1c90cf2c4e78834c11fb305f6cd, type: 3}
+  hazardZonePanelPrefab: {fileID: 1826636690095477604, guid: d61a45f8f7d464f03a6000fffecf2562, type: 3}
   recordingButton: {fileID: 7182426023415192798}
   replayButton: {fileID: 652035448485864375}
   internetBrowserButton: {fileID: 4194583014581430610}
@@ -5351,7 +5352,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5ef9b238d44614ce08b5f7fd9f93e7da, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5c1c3c696745c48f986620c332ea3718, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
