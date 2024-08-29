@@ -21,7 +21,7 @@ EditorBuildSettings:
     path: Assets/_App/Scenes/Settings.unity
     guid: 8b99cd2156c2a4642ad37bb214c06de1
   - enabled: 1
-    path: Assets/_App/Scenes/SpatialNotesEditor.unity
+    path: Assets/_App/Scenes/WorkspaceAnchorEditor.unity
     guid: cf9a9d1074f3c4f2c9c91a0385d5ba9f
   m_configObjects:
     UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: b8052296fc70e4ded8d5bb7511509640, type: 2}

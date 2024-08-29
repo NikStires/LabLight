@@ -7053,6 +7053,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5605320861483605485, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5670459310585775920, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -7104,6 +7108,10 @@ PrefabInstance:
     - target: {fileID: 6893370455820845443, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6935727126643393827, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
+      propertyPath: m_Name
+      value: IconButtonWorkspaceAnchorEditor
       objectReference: {fileID: 0}
     - target: {fileID: 7319893822664835165, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_Camera
@@ -7161,6 +7169,10 @@ PrefabInstance:
       propertyPath: m_SelectExited.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
       objectReference: {fileID: 1671999107}
+    - target: {fileID: 9032183474924271185, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
+      propertyPath: m_SelectExited.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_StringArgument
+      value: WorkspaceAnchorEditor
+      objectReference: {fileID: 0}
     - target: {fileID: 9085929669546415557, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

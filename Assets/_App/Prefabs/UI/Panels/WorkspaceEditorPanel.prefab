@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6672678368126033483}
   - component: {fileID: 8941642355252626800}
   m_Layer: 0
-  m_Name: SpatialNotesPanel
+  m_Name: WorkspaceEditorPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40,6 +40,7 @@ Transform:
   - {fileID: 1150470263426823563}
   - {fileID: 2350127816485890499}
   - {fileID: 8702530253563850246}
+  - {fileID: 2189863271836138175}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4872191207464282253
@@ -419,7 +420,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 315049695370821489, guid: d33127b02a2304bb589c59c52a1c6d79, type: 3}
       propertyPath: m_text
-      value: Spatial Notes
+      value: Workspace Editor
       objectReference: {fileID: 0}
     - target: {fileID: 315049695370821489, guid: d33127b02a2304bb589c59c52a1c6d79, type: 3}
       propertyPath: m_fontSize
@@ -712,6 +713,84 @@ GameObject:
 Transform:
   m_CorrespondingSourceObject: {fileID: 6597591215329638234, guid: 7d5fc6d1da4bd407e98ad8d14a393106, type: 3}
   m_PrefabInstance: {fileID: 7120843371125592699}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8465878847743970243
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7955480645091986379}
+    m_Modifications:
+    - target: {fileID: 597682703381156295, guid: 6a4b3e9e3efb6434f8d7f5f4c504b3dc, type: 3}
+      propertyPath: m_Name
+      value: TextButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 7718926761445192060, guid: 6a4b3e9e3efb6434f8d7f5f4c504b3dc, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7718926761445192060, guid: 6a4b3e9e3efb6434f8d7f5f4c504b3dc, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7718926761445192060, guid: 6a4b3e9e3efb6434f8d7f5f4c504b3dc, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7718926761445192060, guid: 6a4b3e9e3efb6434f8d7f5f4c504b3dc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7718926761445192060, guid: 6a4b3e9e3efb6434f8d7f5f4c504b3dc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.251
+      objectReference: {fileID: 0}
+    - target: {fileID: 7718926761445192060, guid: 6a4b3e9e3efb6434f8d7f5f4c504b3dc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.0054
+      objectReference: {fileID: 0}
+    - target: {fileID: 7718926761445192060, guid: 6a4b3e9e3efb6434f8d7f5f4c504b3dc, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7718926761445192060, guid: 6a4b3e9e3efb6434f8d7f5f4c504b3dc, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7718926761445192060, guid: 6a4b3e9e3efb6434f8d7f5f4c504b3dc, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7718926761445192060, guid: 6a4b3e9e3efb6434f8d7f5f4c504b3dc, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7718926761445192060, guid: 6a4b3e9e3efb6434f8d7f5f4c504b3dc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7718926761445192060, guid: 6a4b3e9e3efb6434f8d7f5f4c504b3dc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 7718926761445192060, guid: 6a4b3e9e3efb6434f8d7f5f4c504b3dc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9135648686112794184, guid: 6a4b3e9e3efb6434f8d7f5f4c504b3dc, type: 3}
+      propertyPath: m_text
+      value: Place Hazard Zone
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6a4b3e9e3efb6434f8d7f5f4c504b3dc, type: 3}
+--- !u!4 &2189863271836138175 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7718926761445192060, guid: 6a4b3e9e3efb6434f8d7f5f4c504b3dc, type: 3}
+  m_PrefabInstance: {fileID: 8465878847743970243}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8912671936911084876
 PrefabInstance:
