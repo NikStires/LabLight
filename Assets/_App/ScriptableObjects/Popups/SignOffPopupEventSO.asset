@@ -12,9 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d269273e0fa8e4fdb8126ffeba45e460, type: 3}
   m_Name: SignOffPopupEventSO
   m_EditorClassIdentifier: 
+  popupHeaderText: Warning!
+  popupText: You are trying to progress to the next step without signing off the
+    checklist. Would you like to sign off and continue to the next step?
   OnYesButtonPressed:
     m_PersistentCalls:
       m_Calls: []
   OnNoButtonPressed:
+    m_PersistentCalls:
+      m_Calls: []
+  OpenPopup:
     m_PersistentCalls:
       m_Calls: []

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using AOT;
-using PolySpatial.Samples;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
@@ -39,27 +38,12 @@ public class LLSwiftUiVideoDriver : MonoBehaviour
             newVideoItem = (VideoItem)currentStep.contentItems.Where(x => x.contentType == ContentType.Video).FirstOrDefault();
         }
 
-        if(newVideoItem == null && _swiftUIWindowOpen)
-        {
-            //if there are no video items disable view
-            Debug.Log("######LABLIGHT Requesting CLOSE swift video window");
-            CloseSwiftUIWindow("Video");
-            _swiftUIWindowOpen = false;
-            _currentVideoItem = null;
-        }
-        else if(newVideoItem != null)
+        if(newVideoItem != null)
         {
             if(_currentVideoItem == newVideoItem.url)
             {
                 //if the video is the same as the current video then do nothing
                 return;
-            }
-            else if(_swiftUIWindowOpen)
-            {
-                //if there are no video items disable view
-                Debug.Log("######LABLIGHT Requesting CLOSE swift video window");
-                CloseSwiftUIWindow("Video");
-                _swiftUIWindowOpen = false;
             }
             Debug.Log("######LABLIGHT Requesting swift video window open: " + newVideoItem.url);
             _currentVideoItem = newVideoItem.url;

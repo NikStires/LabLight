@@ -176,8 +176,8 @@ public class SourceElementViewController : ModelElementViewController
             }
             else
             {
-                toggleTransform(Sources, settingsManagerSO.GetSettingValue(LablightSettings.SourceContainerEnabledSetting), id);
-                toggleTransform(nameTags, settingsManagerSO.GetSettingValue(LablightSettings.SourceContentsEnabledSetting), id);
+                toggleTransform(Sources, settingsManagerSO.GetSettingValue(LablightSettings.Source_Container), id);
+                toggleTransform(nameTags, settingsManagerSO.GetSettingValue(LablightSettings.Source_Contents), id);
             }
         }
     }
@@ -233,8 +233,8 @@ public class SourceElementViewController : ModelElementViewController
                     }
                     else
                     {
-                        toggleTransform(Sources, settingsManagerSO.GetSettingValue(LablightSettings.SourceContainerEnabledSetting) && value, id);
-                        toggleTransform(nameTags, settingsManagerSO.GetSettingValue(LablightSettings.SourceContentsEnabledSetting) && value, id);
+                        toggleTransform(Sources, settingsManagerSO.GetSettingValue(LablightSettings.Source_Container) && value, id);
+                        toggleTransform(nameTags, settingsManagerSO.GetSettingValue(LablightSettings.Source_Contents) && value, id);
                     }
                 }
             }
@@ -278,10 +278,10 @@ public class SourceElementViewController : ModelElementViewController
                     {
                         switch(settingChanged.Item1)
                         {
-                            case LablightSettings.SourceContainerEnabledSetting:
+                            case LablightSettings.Source_Container:
                                 toggleTransform(Sources, settingChanged.Item2, id);
                                 break;
-                            case LablightSettings.SourceContentsEnabledSetting:
+                            case LablightSettings.Source_Contents:
                                 toggleTransform(nameTags, settingChanged.Item2, id);
                                 break;
                         }

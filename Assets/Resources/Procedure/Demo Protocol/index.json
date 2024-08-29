@@ -85,7 +85,7 @@
         },
         {
           "$id": "11",
-          "Text": "Get 12-channel pipette",
+          "Text": "Get pipette",
           "activateTimer": false,
           "hours": 0,
           "minutes": 0,
@@ -121,7 +121,7 @@
       "contentItems": [
         {
           "$id": "15",
-          "url": "Test1",
+          "url": "Demo1",
           "contentType": "Video"
         }
       ],
@@ -138,7 +138,7 @@
         },
         {
           "$id": "17",
-          "Text": "Pipette 10uL of Sample Material into wells A1-A12",
+          "Text": "Pipette sample into well E3",
           "activateTimer": false,
           "hours": 0,
           "minutes": 0,
@@ -153,18 +153,7 @@
                   "actionName": "pipette",
                   "isSource": false,
                   "chainIDs": [
-                    "A1",
-                    "A2",
-                    "A3",
-                    "A4",
-                    "A5",
-                    "A6",
-                    "A7",
-                    "A8",
-                    "A9",
-                    "A10",
-                    "A11",
-                    "A12"
+                    "E3"
                   ],
                   "colorInfo": {
                     "$id": "20",
@@ -195,7 +184,9 @@
                   "$id": "24",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": ["0"],
+                  "chainIDs": [
+                    "0"
+                  ],
                   "colorInfo": {
                     "$id": "25",
                     "Item1": "#38CB82",
@@ -222,7 +213,7 @@
         },
         {
           "$id": "28",
-          "Text": "Pipette 10uL of Sample Material into wells B1-B12",
+          "Text": "Pipette sample into well E8",
           "activateTimer": false,
           "hours": 0,
           "minutes": 0,
@@ -237,18 +228,7 @@
                   "actionName": "pipette",
                   "isSource": false,
                   "chainIDs": [
-                    "B1",
-                    "B2",
-                    "B3",
-                    "B4",
-                    "B5",
-                    "B6",
-                    "B7",
-                    "B8",
-                    "B9",
-                    "B10",
-                    "B11",
-                    "B12"
+                    "E8"
                   ],
                   "colorInfo": {
                     "$id": "31",
@@ -269,7 +249,30 @@
               ],
               "arOperationType": "Highlight",
               "arDefinition": {
-                "$ref": "2"
+                "$id": "34",
+                "url": "horizontalwellplate96.prefab",
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0
+                },
+                "rotation": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0,
+                  "w": 0.0
+                },
+                "name": "Well Plate",
+                "contentsToColors": {
+                  "$id": "35"
+                },
+                "arDefinitionType": "Model",
+                "condition": {
+                  "$id": "36",
+                  "filter": "Well Plate",
+                  "target": "96 Well Plate",
+                  "conditionType": "Anchor"
+                }
               }
             },
             {
@@ -279,7 +282,9 @@
                   "$id": "38",
                   "actionName": "pipette",
                   "isSource": true,
-                  "chainIDs": ["0"],
+                  "chainIDs": [
+                    "0"
+                  ],
                   "colorInfo": {
                     "$id": "39",
                     "Item1": "#38CB82",
@@ -299,517 +304,36 @@
               ],
               "arOperationType": "Highlight",
               "arDefinition": {
-                "$ref": "5"
+                "$id": "42",
+                "url": "reservoir.prefab",
+                "position": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0
+                },
+                "rotation": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0,
+                  "w": 0.0
+                },
+                "name": "Sample Container",
+                "contentsToColors": {
+                  "$id": "43"
+                },
+                "arDefinitionType": "Model",
+                "condition": {
+                  "$id": "44",
+                  "filter": "Sample Container",
+                  "target": "Reservoir",
+                  "conditionType": "Anchor"
+                }
               }
             }
           ]
         },
         {
           "$id": "45",
-          "Text": "Pipette 10uL of Sample Material into wells C1-C12",
-          "activateTimer": false,
-          "hours": 0,
-          "minutes": 0,
-          "seconds": 0,
-          "contentItems": [],
-          "operations": [
-            {
-              "$id": "46",
-              "highlightActions": [
-                {
-                  "$id": "47",
-                  "actionName": "pipette",
-                  "isSource": false,
-                  "chainIDs": [
-                    "C1",
-                    "C2",
-                    "C3",
-                    "C4",
-                    "C5",
-                    "C6",
-                    "C7",
-                    "C8",
-                    "C9",
-                    "C10",
-                    "C11",
-                    "C12"
-                  ],
-                  "colorInfo": {
-                    "$id": "48",
-                    "Item1": "#38CB82",
-                    "Item2": "Light green"
-                  },
-                  "contents": {
-                    "$id": "49",
-                    "Item1": "SM",
-                    "Item2": "SM"
-                  },
-                  "volume": {
-                    "$id": "50",
-                    "Item1": 10.0,
-                    "Item2": "μL"
-                  }
-                }
-              ],
-              "arOperationType": "Highlight",
-              "arDefinition": {
-                "$ref": "2"
-              }
-            },
-            {
-              "$id": "54",
-              "highlightActions": [
-                {
-                  "$id": "55",
-                  "actionName": "pipette",
-                  "isSource": true,
-                  "chainIDs": ["0"],
-                  "colorInfo": {
-                    "$id": "56",
-                    "Item1": "#38CB82",
-                    "Item2": "Light green"
-                  },
-                  "contents": {
-                    "$id": "57",
-                    "Item1": "Sample Material",
-                    "Item2": "SM"
-                  },
-                  "volume": {
-                    "$id": "58",
-                    "Item1": 0.0,
-                    "Item2": "Light green"
-                  }
-                }
-              ],
-              "arOperationType": "Highlight",
-              "arDefinition": {
-                "$ref": "5"
-              }
-            }
-          ]
-        },
-        {
-          "$id": "62",
-          "Text": "Pipette 10uL of Sample Material into wells D1-D12",
-          "activateTimer": false,
-          "hours": 0,
-          "minutes": 0,
-          "seconds": 0,
-          "contentItems": [],
-          "operations": [
-            {
-              "$id": "63",
-              "highlightActions": [
-                {
-                  "$id": "64",
-                  "actionName": "pipette",
-                  "isSource": false,
-                  "chainIDs": [
-                    "D1",
-                    "D2",
-                    "D3",
-                    "D4",
-                    "D5",
-                    "D6",
-                    "D7",
-                    "D8",
-                    "D9",
-                    "D10",
-                    "D11",
-                    "D12"
-                  ],
-                  "colorInfo": {
-                    "$id": "65",
-                    "Item1": "#38CB82",
-                    "Item2": "Light green"
-                  },
-                  "contents": {
-                    "$id": "66",
-                    "Item1": "SM",
-                    "Item2": "SM"
-                  },
-                  "volume": {
-                    "$id": "67",
-                    "Item1": 10.0,
-                    "Item2": "μL"
-                  }
-                }
-              ],
-              "arOperationType": "Highlight",
-              "arDefinition": {
-                "$ref": "2"
-              }
-            },
-            {
-              "$id": "71",
-              "highlightActions": [
-                {
-                  "$id": "72",
-                  "actionName": "pipette",
-                  "isSource": true,
-                  "chainIDs": ["0"],
-                  "colorInfo": {
-                    "$id": "73",
-                    "Item1": "#38CB82",
-                    "Item2": "Light green"
-                  },
-                  "contents": {
-                    "$id": "74",
-                    "Item1": "Sample Material",
-                    "Item2": "SM"
-                  },
-                  "volume": {
-                    "$id": "75",
-                    "Item1": 0.0,
-                    "Item2": "Light green"
-                  }
-                }
-              ],
-              "arOperationType": "Highlight",
-              "arDefinition": {
-                "$ref": "5"
-              }
-            }
-          ]
-        },
-        {
-          "$id": "79",
-          "Text": "Pipette 10uL of Sample Material into wells E1-E12",
-          "activateTimer": false,
-          "hours": 0,
-          "minutes": 0,
-          "seconds": 0,
-          "contentItems": [],
-          "operations": [
-            {
-              "$id": "80",
-              "highlightActions": [
-                {
-                  "$id": "81",
-                  "actionName": "pipette",
-                  "isSource": false,
-                  "chainIDs": [
-                    "E1",
-                    "E2",
-                    "E3",
-                    "E4",
-                    "E5",
-                    "E6",
-                    "E7",
-                    "E8",
-                    "E9",
-                    "E10",
-                    "E11",
-                    "E12"
-                  ],
-                  "colorInfo": {
-                    "$id": "82",
-                    "Item1": "#38CB82",
-                    "Item2": "Light green"
-                  },
-                  "contents": {
-                    "$id": "83",
-                    "Item1": "SM",
-                    "Item2": "SM"
-                  },
-                  "volume": {
-                    "$id": "84",
-                    "Item1": 10.0,
-                    "Item2": "μL"
-                  }
-                }
-              ],
-              "arOperationType": "Highlight",
-              "arDefinition": {
-                "$ref": "2"
-              }
-            },
-            {
-              "$id": "88",
-              "highlightActions": [
-                {
-                  "$id": "89",
-                  "actionName": "pipette",
-                  "isSource": true,
-                  "chainIDs": ["0"],
-                  "colorInfo": {
-                    "$id": "90",
-                    "Item1": "#38CB82",
-                    "Item2": "Light green"
-                  },
-                  "contents": {
-                    "$id": "91",
-                    "Item1": "Sample Material",
-                    "Item2": "SM"
-                  },
-                  "volume": {
-                    "$id": "92",
-                    "Item1": 0.0,
-                    "Item2": "Light green"
-                  }
-                }
-              ],
-              "arOperationType": "Highlight",
-              "arDefinition": {
-                "$ref": "5"
-              }
-            }
-          ]
-        },
-        {
-          "$id": "96",
-          "Text": "Pipette 10uL of Sample Material into wells F1-F12",
-          "activateTimer": false,
-          "hours": 0,
-          "minutes": 0,
-          "seconds": 0,
-          "contentItems": [],
-          "operations": [
-            {
-              "$id": "97",
-              "highlightActions": [
-                {
-                  "$id": "98",
-                  "actionName": "pipette",
-                  "isSource": false,
-                  "chainIDs": [
-                    "F1",
-                    "F2",
-                    "F3",
-                    "F4",
-                    "F5",
-                    "F6",
-                    "F7",
-                    "F8",
-                    "F9",
-                    "F10",
-                    "F11",
-                    "F12"
-                  ],
-                  "colorInfo": {
-                    "$id": "99",
-                    "Item1": "#38CB82",
-                    "Item2": "Light green"
-                  },
-                  "contents": {
-                    "$id": "100",
-                    "Item1": "SM",
-                    "Item2": "SM"
-                  },
-                  "volume": {
-                    "$id": "101",
-                    "Item1": 10.0,
-                    "Item2": "μL"
-                  }
-                }
-              ],
-              "arOperationType": "Highlight",
-              "arDefinition": {
-                "$ref": "2"
-              }
-            },
-            {
-              "$id": "105",
-              "highlightActions": [
-                {
-                  "$id": "106",
-                  "actionName": "pipette",
-                  "isSource": true,
-                  "chainIDs": ["0"],
-                  "colorInfo": {
-                    "$id": "107",
-                    "Item1": "#38CB82",
-                    "Item2": "Light green"
-                  },
-                  "contents": {
-                    "$id": "108",
-                    "Item1": "Sample Material",
-                    "Item2": "SM"
-                  },
-                  "volume": {
-                    "$id": "109",
-                    "Item1": 0.0,
-                    "Item2": "Light green"
-                  }
-                }
-              ],
-              "arOperationType": "Highlight",
-              "arDefinition": {
-                "$ref": "5"
-              }
-            }
-          ]
-        },
-        {
-          "$id": "113",
-          "Text": "Pipette 10uL of Sample Material into wells G1-G12",
-          "activateTimer": false,
-          "hours": 0,
-          "minutes": 0,
-          "seconds": 0,
-          "contentItems": [],
-          "operations": [
-            {
-              "$id": "114",
-              "highlightActions": [
-                {
-                  "$id": "115",
-                  "actionName": "pipette",
-                  "isSource": false,
-                  "chainIDs": [
-                    "G1",
-                    "G2",
-                    "G3",
-                    "G4",
-                    "G5",
-                    "G6",
-                    "G7",
-                    "G8",
-                    "G9",
-                    "G10",
-                    "G11",
-                    "G12"
-                  ],
-                  "colorInfo": {
-                    "$id": "116",
-                    "Item1": "#38CB82",
-                    "Item2": "Light green"
-                  },
-                  "contents": {
-                    "$id": "117",
-                    "Item1": "SM",
-                    "Item2": "SM"
-                  },
-                  "volume": {
-                    "$id": "118",
-                    "Item1": 10.0,
-                    "Item2": "μL"
-                  }
-                }
-              ],
-              "arOperationType": "Highlight",
-              "arDefinition": {
-                "$ref": "2"
-              }
-            },
-            {
-              "$id": "122",
-              "highlightActions": [
-                {
-                  "$id": "123",
-                  "actionName": "pipette",
-                  "isSource": true,
-                  "chainIDs": ["0"],
-                  "colorInfo": {
-                    "$id": "124",
-                    "Item1": "#38CB82",
-                    "Item2": "Light green"
-                  },
-                  "contents": {
-                    "$id": "125",
-                    "Item1": "Sample Material",
-                    "Item2": "SM"
-                  },
-                  "volume": {
-                    "$id": "126",
-                    "Item1": 0.0,
-                    "Item2": "Light green"
-                  }
-                }
-              ],
-              "arOperationType": "Highlight",
-              "arDefinition": {
-                "$ref": "5"
-              }
-            }
-          ]
-        },
-        {
-          "$id": "130",
-          "Text": "Pipette 10uL of Sample Material into wells H1-H12",
-          "activateTimer": false,
-          "hours": 0,
-          "minutes": 0,
-          "seconds": 0,
-          "contentItems": [],
-          "operations": [
-            {
-              "$id": "131",
-              "highlightActions": [
-                {
-                  "$id": "132",
-                  "actionName": "pipette",
-                  "isSource": false,
-                  "chainIDs": [
-                    "H1",
-                    "H2",
-                    "H3",
-                    "H4",
-                    "H5",
-                    "H6",
-                    "H7",
-                    "H8",
-                    "H9",
-                    "H10",
-                    "H11",
-                    "H12"
-                  ],
-                  "colorInfo": {
-                    "$id": "133",
-                    "Item1": "#38CB82",
-                    "Item2": "Light green"
-                  },
-                  "contents": {
-                    "$id": "134",
-                    "Item1": "SM",
-                    "Item2": "SM"
-                  },
-                  "volume": {
-                    "$id": "135",
-                    "Item1": 10.0,
-                    "Item2": "μL"
-                  }
-                }
-              ],
-              "arOperationType": "Highlight",
-              "arDefinition": {
-                "$ref": "2"
-              }
-            },
-            {
-              "$id": "139",
-              "highlightActions": [
-                {
-                  "$id": "140",
-                  "actionName": "pipette",
-                  "isSource": true,
-                  "chainIDs": ["0"],
-                  "colorInfo": {
-                    "$id": "141",
-                    "Item1": "#38CB82",
-                    "Item2": "Light green"
-                  },
-                  "contents": {
-                    "$id": "142",
-                    "Item1": "Sample Material",
-                    "Item2": "SM"
-                  },
-                  "volume": {
-                    "$id": "143",
-                    "Item1": 0.0,
-                    "Item2": "Light green"
-                  }
-                }
-              ],
-              "arOperationType": "Highlight",
-              "arDefinition": {
-                "$ref": "5"
-              }
-            }
-          ]
-        },
-        {
-          "$id": "147",
           "Text": "Wait 1 minute for sample to settle",
           "activateTimer": true,
           "hours": 0,

@@ -6,6 +6,11 @@ using UnityEngine.Events;
 [CreateAssetMenu(fileName = "PopupEventSO", menuName = "ScriptableObjects/PopupEvent", order = 1)]
 public class PopupEventSO : ScriptableObject
 {
+    [SerializeField] public PopupType popupType;
+
+    [TextAreaAttribute]
+    [SerializeField] public string popupText;
+
     [SerializeField] public UnityEvent OnYesButtonPressed = new UnityEvent();
     [SerializeField] public UnityEvent OnNoButtonPressed = new UnityEvent();
     [SerializeField] public UnityEvent OpenPopup = new UnityEvent();
@@ -39,5 +44,12 @@ public class PopupEventSO : ScriptableObject
     public void Open()
     {
         OpenPopup.Invoke();
+    }
+
+    public enum PopupType
+    {
+        Warning,
+        Error,
+
     }
 }

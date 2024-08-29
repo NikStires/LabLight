@@ -589,7 +589,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 782c923da94417a4e9f49e50fca0f183, type: 2}
+  - {fileID: 2100000, guid: 56a25e551cc7f4c29bbeea946f317768, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -618,7 +618,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2594698710048323072}
-  m_Mesh: {fileID: 3514246150356823947, guid: 075486cbfeb2d864496c508652b82e35, type: 3}
+  m_Mesh: {fileID: 2017486334179454094, guid: ef82c19893d5941d0acece7c4fb10063, type: 3}
 --- !u!1 &3901745940743028742
 GameObject:
   m_ObjectHideFlags: 0
@@ -1400,10 +1400,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a6faedd8f88a47dfbdc7ce954567f0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemChecked: 1
+  itemChecked: 0
   text: {fileID: 8821898356059951057}
-  activeMaterial: {fileID: 2100000, guid: d25001eecceb3274280b0b6d696415d3, type: 2}
-  defaultMaterial: {fileID: 2100000, guid: 782c923da94417a4e9f49e50fca0f183, type: 2}
+  activeMaterial: {fileID: 2100000, guid: 31d8649b7ebe14240956ad6622556a55, type: 2}
+  defaultMaterial: {fileID: 2100000, guid: 56a25e551cc7f4c29bbeea946f317768, type: 2}
   m_backgroundMesh: {fileID: 2805532397230388919}
   scaleUpAnimation: {fileID: 2368381101477187954}
   scaleDownAnimation: {fileID: 308154345360927329}
@@ -1600,10 +1600,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.85
-  m_fontSizeBase: 1.2
+  m_fontSize: 0.9
+  m_fontSizeBase: 0.9
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 0.1
   m_fontSizeMax: 2
   m_fontStyle: 0

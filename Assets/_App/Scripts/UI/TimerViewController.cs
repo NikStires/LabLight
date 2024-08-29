@@ -9,7 +9,7 @@ using UniRx;
 /// Draggable TimerViewController
 /// </summary>
 
-public class TimerViewController : MonoBehaviour
+public class TimerViewController : LLBasePanel
 {
     [SerializeField] Material timerFlashMaterial;
     Material defaultMaterial;
@@ -27,21 +27,38 @@ public class TimerViewController : MonoBehaviour
 
     void Awake()
     {
-        ProtocolState.checklistStream.Subscribe(_ => OnCheckItemChange()).AddTo(this);
+        base.Awake();
+        
         defaultMaterial = backplateMesh.material;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        TimeLeft = StartingTime;
-
-        TimeDisplay.text = GetTimeString();
+        if(ProtocolState.Steps[ProtocolState.Step].Checklist != null)
+        {
+            var currentCheckItem = ProtocolState.procedureDef.steps[ProtocolState.Step].checklist[ProtocolState.CheckItem];
+            if(currentCheckItem.activateTimer)
+            {
+                int timeSeconds = (currentCheckItem.hours * 60 * 60) + (currentCheckItem.minutes * 60) + currentCheckItem.seconds;
+                TimeLeft = timeSeconds;
+                TimeDisplay.text = GetTimeString();
+            }
+        }else
+        {
+            TimeLeft = StartingTime;
+            TimeDisplay.text = GetTimeString();
+        }
     }
+
 
     // Update is called once per frame
     void Update()
     {
+        if(this.transform.lossyScale != new Vector3(0.5f,0.5f,0.5f))
+        {
+            transform.localScale = new Vector3(0.5f,0.5f,0.5f);
+        }
         //if timer has not finished and is running decrement time
         if(TimeLeft > 0 & timerRunning)
         {
@@ -182,23 +199,23 @@ public class TimerViewController : MonoBehaviour
                     ts.Seconds);
     }
 
-    private void OnCheckItemChange()
-    {
-        if(timerRunning)
-        {
-            return;
-        }
-        if(ProtocolState.Steps[ProtocolState.Step].Checklist != null)
-        {
-            var currentCheckItem = ProtocolState.procedureDef.steps[ProtocolState.Step].checklist[ProtocolState.CheckItem];
-            if(currentCheckItem.activateTimer)
-            {
-                int timeSeconds = (currentCheckItem.hours * 60 * 60) + (currentCheckItem.minutes * 60) + currentCheckItem.seconds;
-                StartingTime = timeSeconds;
-                ResetTimer();
-            }
-        }
-    }
+    // private void OnCheckItemChange()
+    // {
+    //     if(timerRunning)
+    //     {
+    //         return;
+    //     }
+    //     if(ProtocolState.Steps[ProtocolState.Step].Checklist != null)
+    //     {
+    //         var currentCheckItem = ProtocolState.procedureDef.steps[ProtocolState.Step].checklist[ProtocolState.CheckItem];
+    //         if(currentCheckItem.activateTimer)
+    //         {
+    //             int timeSeconds = (currentCheckItem.hours * 60 * 60) + (currentCheckItem.minutes * 60) + currentCheckItem.seconds;
+    //             StartingTime = timeSeconds;
+    //             ResetTimer();
+    //         }
+    //     }
+    // }
 
     private void FlashTimer()
     {

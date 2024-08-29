@@ -77,6 +77,11 @@ public class ModelElementViewController : WorldPositionController
         return;
     }
 
+    public virtual void Rotate(float degrees)
+    {
+        return;
+    }
+
 
     public override void Update()
     {

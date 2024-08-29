@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,16 +12,20 @@ public class ProtocolManager : MonoBehaviour
 {
     private Dictionary<ArDefinition, ArElementViewController> specificArViews = new Dictionary<ArDefinition, ArElementViewController>();
 
+    [SerializeField] GameObject timerPrefab;
+
+    private CheckItemDefinition previousCheckItem;
+
     private void Awake()
     {
         ProtocolState.LockingTriggered.Value = false;
         ProtocolState.AlignmentTriggered.Value = false;
+        ProtocolState.checklistStream.Subscribe(_ => OnCheckItemChange()).AddTo(this);
     }
 
     private void OnEnable()
     {
         ProtocolState.SetStartTime(DateTime.Now);
-        //InitCSV();
     }
 
     private void OnDisable()
@@ -30,7 +33,16 @@ public class ProtocolManager : MonoBehaviour
         ProtocolState.AlignmentTriggered.Value = false;
     }
 
-    /*
-     * init csv to create csv file for current protocol session
-     */
+    private void OnCheckItemChange()
+    {
+        if(ProtocolState.Steps[ProtocolState.Step].Checklist != null)
+        {
+            var currentCheckItem = ProtocolState.procedureDef.steps[ProtocolState.Step].checklist[ProtocolState.CheckItem];
+            if(currentCheckItem.activateTimer && currentCheckItem != previousCheckItem)
+            {
+                var timer = Instantiate(timerPrefab, transform);
+                previousCheckItem = currentCheckItem;
+            }
+        }
+    }
 }

@@ -8,6 +8,7 @@ using UniRx;
 using System.Linq;
 using UnityEngine.SceneManagement;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using TMPro;
 
 public class ChecklistPanelViewController : LLBasePanel
 {
@@ -22,6 +23,8 @@ public class ChecklistPanelViewController : LLBasePanel
 
     private bool checkOnCooldown = false;
 
+    [SerializeField] TextMeshProUGUI stepText;
+
     [Header("Signoff Icons")]
     [SerializeField] GameObject unlockedIcon;
     [SerializeField] GameObject lockedIcon;
@@ -34,10 +37,11 @@ public class ChecklistPanelViewController : LLBasePanel
     [SerializeField] XRSimpleInteractable nextStepButton;
     [SerializeField] XRSimpleInteractable previousStepButton;
 
-    [Header("Popup Event SOs")]
+    [Header("Popups")]
     [SerializeField] PopupEventSO signOffPopupEventSO;
     [SerializeField] PopupEventSO checklistIncompletePopupEventSO;
     [SerializeField] PopupEventSO closeProtocolPopupEventSO;
+    PopupPanelViewController popupPanelViewController;
 
     [Header("HUD Event SO")]
     [SerializeField] HudEventSO hudEventSO;
@@ -52,37 +56,23 @@ public class ChecklistPanelViewController : LLBasePanel
     void OnEnable()
     {
         SetupButtonEvents();
+        SetupPopupEvents();
         SetupVoiceCommands();
     }
 
     void OnDisable()
     {
         RemoveButtonEvents();
+        RemovePopupEvents();
         DisposeVoice?.Invoke();
     }
 
     void Start()
     {
         checkItemPool.CreatePooledObjects();
-
         StartCoroutine(LoadChecklist());
 
-        signOffPopupEventSO.OnYesButtonPressed.AddListener(() =>
-        {
-            SignOff(); 
-            NextStep();
-        });
-
-        checklistIncompletePopupEventSO.OnYesButtonPressed.AddListener(() =>
-        {
-            ProtocolState.SetStep(ProtocolState.Step + 1);
-        });
-
-        closeProtocolPopupEventSO.OnYesButtonPressed.AddListener(() =>
-        {
-            SessionState.Instance.activeProtocol = null;
-            SceneLoader.Instance.LoadSceneClean("ProtocolMenu");
-        });
+        popupPanelViewController = GameObject.FindFirstObjectByType<PopupPanelViewController>(FindObjectsInactive.Include);
     }
 
     /// <summary>
@@ -116,7 +106,7 @@ public class ChecklistPanelViewController : LLBasePanel
 
         // Check the item and log timestamp
         firstUncheckedItem.IsChecked.Value = true;
-        //firstUncheckedItem.CompletionTime = DateTime.Now;
+        firstUncheckedItem.CompletionTime = DateTime.Now;
 
         // Increment checkItem if this is not the last check item
         if (ProtocolState.CheckItem < ProtocolState.Steps[ProtocolState.Step].Checklist.Count - 1)
@@ -254,13 +244,18 @@ public class ChecklistPanelViewController : LLBasePanel
         {
             // Update confirmation panel UI and button controls
             Debug.LogWarning("trying to go to next step without signing off");
-            signOffPopupEventSO.Open();
+            popupPanelViewController.DisplayPopup(signOffPopupEventSO);
             return;
         }
 
         // If not all items are checked, show checklist incomplete confirmation panel
         Debug.LogWarning("trying to go to the next step without checking all items");
-        checklistIncompletePopupEventSO.Open();
+        popupPanelViewController.DisplayPopup(checklistIncompletePopupEventSO);
+    }
+
+    void LoadStepText()
+    {
+        stepText.text = (ProtocolState.Step + 1) + " / " + ProtocolState.Steps.Count;
     }
     
     /// <summary>
@@ -268,6 +263,8 @@ public class ChecklistPanelViewController : LLBasePanel
     /// </summary>
     IEnumerator LoadChecklist()
     {
+        LoadStepText();
+
         foreach(var item in checkItemPool.pooledObjects)
         {
             item.SetActive(false);
@@ -421,7 +418,7 @@ public class ChecklistPanelViewController : LLBasePanel
         //open a popup to confirm closing the protocol
         else
         {
-            closeProtocolPopupEventSO.Open();
+            popupPanelViewController.DisplayPopup(closeProtocolPopupEventSO);
         }
     }
 
@@ -443,6 +440,7 @@ public class ChecklistPanelViewController : LLBasePanel
         // Write checklist items to CSV
         if (CheckList != null)
         {
+            Debug.Log("######LABLIGHT Writing checklist to CSV " + ProtocolState.CsvPath);
             foreach (var item in CheckList)
             {
                 line = item.Text;
@@ -475,6 +473,33 @@ public class ChecklistPanelViewController : LLBasePanel
         signOffButton.selectEntered.RemoveAllListeners();
         nextStepButton.selectEntered.RemoveAllListeners();
         previousStepButton.selectEntered.RemoveAllListeners();
+    }
+
+    void SetupPopupEvents()
+    {
+        signOffPopupEventSO.OnYesButtonPressed.AddListener(() =>
+        {
+            SignOff(); 
+            NextStep();
+        });
+
+        checklistIncompletePopupEventSO.OnYesButtonPressed.AddListener(() =>
+        {
+            ProtocolState.SetStep(ProtocolState.Step + 1);
+        });
+
+        closeProtocolPopupEventSO.OnYesButtonPressed.AddListener(() =>
+        {
+            SessionState.Instance.activeProtocol = null;
+            SceneLoader.Instance.LoadSceneClean("ProtocolMenu");
+        });
+    }
+
+    void RemovePopupEvents()
+    {
+        signOffPopupEventSO.OnYesButtonPressed.RemoveAllListeners();
+        checklistIncompletePopupEventSO.OnYesButtonPressed.RemoveAllListeners();
+        closeProtocolPopupEventSO.OnYesButtonPressed.RemoveAllListeners();
     }
 
     Action DisposeVoice;

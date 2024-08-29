@@ -1,13 +1,14 @@
 
 public enum LablightSettings
 {
-    ShowWorkspaceOrigin,
-    RCMarkersEnabledSetting, //ShowRowColIndicator
-    RelevantRConlyEnabledSetting, //ShowRowColIndicatorHighlight
-    RCHighlightEnabledSetting, //ShowRowColHighlights
-    InfoPanelEnabledSetting,
-    WellIndicatorsEnabledSetting, //ShowBB
-    SourceContentsEnabledSetting,
-    SourceContainerEnabledSetting,
-    VoiceCommandsEnabledSetting,
+    Popups,
+    Workspace_Origin,
+    RC_Markers , //ShowRowColIndicator
+    Relevant_RC_Only, //ShowRowColIndicatorHighlight
+    RC_Highlights, //ShowRowColHighlights
+    Wellplate_Info_Panel,
+    Well_Indicators, //ShowBB
+    Source_Contents,
+    Source_Container,
+    Voice_Commands,
 }

@@ -11,6 +11,7 @@ public class ActionCenterPanelViewController : MonoBehaviour
 {
     [SerializeField] private PlaneInteractionManagerScriptableObject planeManager;
     [SerializeField] GameObject timerPrefab;
+    [SerializeField] GameObject hazardZonePanelPrefab;
     [SerializeField] UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable recordingButton;
     bool isRecording = false;
     [SerializeField] UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable replayButton;
@@ -20,9 +21,9 @@ public class ActionCenterPanelViewController : MonoBehaviour
 
     void Start()
     {
-        recordingButton.selectEntered.AddListener(_ => ToggleLighthouseRecording());
-        replayButton.selectEntered.AddListener(_ => ToggleLighthouseReplay());
-        internetBrowserButton.selectEntered.AddListener(_ => OpenInternetBrowser());
+        recordingButton.selectExited.AddListener(_ => ToggleLighthouseRecording());
+        replayButton.selectExited.AddListener(_ => ToggleLighthouseReplay());
+        internetBrowserButton.selectExited.AddListener(_ => OpenInternetBrowser());
     }
 
     /// <summary>
@@ -33,7 +34,13 @@ public class ActionCenterPanelViewController : MonoBehaviour
         var timer = Instantiate(timerPrefab);
         timer.transform.position = transform.position;
         timer.transform.rotation = transform.rotation;
-        this.gameObject.SetActive(false);
+    }
+
+    public void SpawnHazardZonePanel()
+    {
+        var hazardZonePanel = Instantiate(hazardZonePanelPrefab);
+        hazardZonePanel.transform.position = transform.position;
+        hazardZonePanel.transform.rotation = transform.rotation;
     }
 
     /// <summary>
@@ -42,19 +49,16 @@ public class ActionCenterPanelViewController : MonoBehaviour
     public void StartCalibration()
     {
         SceneLoader.Instance.LoadSceneAdditive("Calibration");
-        this.gameObject.SetActive(false);
     }
 
     public void OpenSettings()
     {
         SceneLoader.Instance.LoadSceneAdditive("Settings");
-        this.gameObject.SetActive(false);
     }
 
     public void OpenSpatialNotesEditor()
     {
-        SceneLoader.Instance.LoadSceneClean("SpatialNotesEditor");
-        this.gameObject.SetActive(false);
+        SceneLoader.Instance.LoadSceneAdditive("SpatialNotesEditor");
     }    
 
     /// <summary>

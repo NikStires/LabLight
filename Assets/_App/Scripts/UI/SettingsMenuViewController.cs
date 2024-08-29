@@ -35,7 +35,7 @@ public class SettingsMenuViewController : LLBasePanel
         }
 
         currentPage = 0;
-        StartCoroutine(DelayBuildPage(1f));
+        StartCoroutine(DelayBuildPage(0.1f));
     }
 
     void Build(int pageNum)
@@ -51,7 +51,6 @@ public class SettingsMenuViewController : LLBasePanel
         {
             if(index >= pageNum * 8 && index < (pageNum + 1) * 8)
             {
-                Debug.Log("Index is: " + index + " instantiating button");
                 var currSetting = setting;
                 var button = Instantiate(buttonPrefab, buttonGrid.transform);
                 SettingsMenuButton buttonScript = button.GetComponent<SettingsMenuButton>();
