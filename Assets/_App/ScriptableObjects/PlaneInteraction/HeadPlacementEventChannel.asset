@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 54d3eb489be454e169289060172804a6, type: 3}
-  m_Name: PlaneInteractionManager
+  m_Name: HeadPlacementEventChannel
   m_EditorClassIdentifier: 
-  FingerTipPlaneCollision:
+  SetHeadtrackedObject:
+    m_PersistentCalls:
+      m_Calls: []
+  PlanePlacementRequested:
     m_PersistentCalls:
       m_Calls: []
   HeadPositionPlacement:
     m_PersistentCalls:
       m_Calls: []
-  EnableTapToPlace:
+  CurrentPrefabLocked:
     m_PersistentCalls:
       m_Calls: []
-  EnableHeadPlacement:
-    m_PersistentCalls:
-      m_Calls: []
-  RequestObjectPlacement:
+  RequestDisablePlaneInteractionManager:
     m_PersistentCalls:
       m_Calls: []

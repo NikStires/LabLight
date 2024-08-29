@@ -9,7 +9,7 @@ using UnityEngine.XR.Hands;
 public class PlaneInteractionManager : MonoBehaviour
 {
     public static PlaneInteractionManager instance;
-    public PlaneInteractionManagerScriptableObject planeInteractionManagerSO;
+    public HeadPlacementEventChannel headPlacementEventChannel;
 
     private GameObject currentPrefab;
 
@@ -66,18 +66,18 @@ public class PlaneInteractionManager : MonoBehaviour
 
     private void AddSubscriptions()
     {
-        planeInteractionManagerSO.SetHeadtrackedObject.AddListener(obj => SetPrefab(obj));
-        planeInteractionManagerSO.PlanePlacementRequested.AddListener(obj => OnPlanePlacementRequested(obj));
-        planeInteractionManagerSO.RequestDisablePlaneInteractionManager.AddListener(ResetObjects);
+        headPlacementEventChannel.SetHeadtrackedObject.AddListener(obj => SetPrefab(obj));
+        headPlacementEventChannel.PlanePlacementRequested.AddListener(obj => OnPlanePlacementRequested(obj));
+        headPlacementEventChannel.RequestDisablePlaneInteractionManager.AddListener(ResetObjects);
         ProtocolState.procedureStream.Subscribe(_ => OnProtocolExit()).AddTo(this);
         ProtocolState.checklistStream.Subscribe(_ => OnNextCheckItem()).AddTo(this);
     }
 
     private void RemoveSubscriptions()
     {
-        planeInteractionManagerSO.SetHeadtrackedObject.RemoveListener(SetPrefab);
-        planeInteractionManagerSO.PlanePlacementRequested.RemoveListener(OnPlanePlacementRequested);
-        planeInteractionManagerSO.RequestDisablePlaneInteractionManager.RemoveListener(ResetObjects);
+        headPlacementEventChannel.SetHeadtrackedObject.RemoveListener(SetPrefab);
+        headPlacementEventChannel.PlanePlacementRequested.RemoveListener(OnPlanePlacementRequested);
+        headPlacementEventChannel.RequestDisablePlaneInteractionManager.RemoveListener(ResetObjects);
         ProtocolState.procedureStream.Subscribe(_ => OnProtocolExit()).Dispose();
 
         ProtocolState.checklistStream.Subscribe(_ => OnNextCheckItem()).Dispose();
@@ -169,7 +169,7 @@ public class PlaneInteractionManager : MonoBehaviour
         {
             currentPrefab = null;
             StartCoroutine(DelayNextPlacement());
-            planeInteractionManagerSO.CurrentPrefabLocked.Invoke();
+            headPlacementEventChannel.CurrentPrefabLocked.Invoke();
             if(currentPlane != null)
             {
                 currentPlane.GetComponent<MeshRenderer>().SetMaterials(new List<Material>() {invisiblePlaneMaterial});
@@ -192,7 +192,7 @@ public class PlaneInteractionManager : MonoBehaviour
         Debug.Log("PlaneInteractionManager: Placing object on plane");
         StartCoroutine(DelayNextPlacement());
         currentPrefab = null;
-        planeInteractionManagerSO.CurrentPrefabLocked.Invoke();
+        headPlacementEventChannel.CurrentPrefabLocked.Invoke();
         currentPlane.GetComponent<MeshRenderer>().SetMaterials(new List<Material>() {invisiblePlaneMaterial});
         currentPlane = null;
     }

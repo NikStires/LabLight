@@ -9,7 +9,7 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 public class PlanePinchInteraction : MonoBehaviour
 {
     [SerializeField]
-    public PlaneInteractionManagerScriptableObject planeInteractionManager;
+    public HeadPlacementEventChannel headPlacementEventChannel;
 
     private XRSimpleInteractable interactable;
 
@@ -26,8 +26,7 @@ public class PlanePinchInteraction : MonoBehaviour
     }
     public void PlaneSelected()
     {
-        planeInteractionManager.OnPlanePlacementRequested(this.GetComponent<ARPlane>());
+        headPlacementEventChannel.OnPlanePlacementRequested(this.GetComponent<ARPlane>());
         Debug.Log("Plane placement requested");
     }
-
 }

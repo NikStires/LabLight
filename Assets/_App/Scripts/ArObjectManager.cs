@@ -12,7 +12,7 @@ public class ArObjectManager : MonoBehaviour
 
     public ProtocolItemLockingManager lockingManager;
 
-    public PlaneInteractionManagerScriptableObject planeInteractionManagerSO;
+    public HeadPlacementEventChannel headPlacementEventChannel;
 
     [Header("World Container Prefabs")]
     public ContainerElementViewController WorldContainerHorizontal;
@@ -676,7 +676,7 @@ public class ArObjectManager : MonoBehaviour
         yield return new WaitForSeconds(0.36f);
         if(model != null)
         {
-            planeInteractionManagerSO.SetHeadtrackedObject.Invoke(model);
+            headPlacementEventChannel.SetHeadtrackedObject.Invoke(model);
         }
         enqueueObjectsCoroutine = null;
     }

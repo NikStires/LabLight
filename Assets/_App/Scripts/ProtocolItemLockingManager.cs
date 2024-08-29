@@ -9,7 +9,7 @@ using UnityEngine.XR.Hands;
 
 public class ProtocolItemLockingManager : MonoBehaviour
 {
-    public PlaneInteractionManagerScriptableObject planeInteractionManagerSO;
+    public HeadPlacementEventChannel headPlacementEventChannel;
 
     private Queue<GameObject> objectsQueue = new Queue<GameObject>();
 
@@ -23,19 +23,19 @@ public class ProtocolItemLockingManager : MonoBehaviour
         RemoveSubscriptions();
         if(objectsQueue.Count > 0)
         {
-            planeInteractionManagerSO.RequestDisablePlaneInteractionManager.Invoke();
+            headPlacementEventChannel.RequestDisablePlaneInteractionManager.Invoke();
             objectsQueue.Clear();
         }
     }
 
     private void AddSubscriptions()
     {
-        planeInteractionManagerSO.CurrentPrefabLocked.AddListener(ObjectLocked);
+        headPlacementEventChannel.CurrentPrefabLocked.AddListener(ObjectLocked);
     }
 
     private void RemoveSubscriptions()
     {
-        planeInteractionManagerSO.CurrentPrefabLocked.RemoveListener(ObjectLocked);
+        headPlacementEventChannel.CurrentPrefabLocked.RemoveListener(ObjectLocked);
     } 
 
     public void EnqueueObjects(List<GameObject> objectsToLock)
@@ -43,7 +43,7 @@ public class ProtocolItemLockingManager : MonoBehaviour
         Debug.Log("Added " + objectsToLock.Count + " objects to lock");
         if(objectsQueue.Count == 0 && objectsToLock.Count > 0)
         {
-            planeInteractionManagerSO.SetHeadtrackedObject.Invoke(objectsToLock[0]);
+            headPlacementEventChannel.SetHeadtrackedObject.Invoke(objectsToLock[0]);
             objectsToLock.RemoveAt(0);
         }
         foreach (GameObject obj in objectsToLock)
@@ -56,11 +56,11 @@ public class ProtocolItemLockingManager : MonoBehaviour
     {
         if(objectsQueue.Count > 0)
         {
-            planeInteractionManagerSO.SetHeadtrackedObject.Invoke(objectsQueue.Dequeue());
+            headPlacementEventChannel.SetHeadtrackedObject.Invoke(objectsQueue.Dequeue());
         }
         if(objectsQueue.Count == 0)
         {
-            planeInteractionManagerSO.RequestDisablePlaneInteractionManager.Invoke();
+            headPlacementEventChannel.RequestDisablePlaneInteractionManager.Invoke();
         }
     }
 }

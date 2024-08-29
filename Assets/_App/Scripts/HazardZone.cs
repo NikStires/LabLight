@@ -14,7 +14,7 @@ public class HazardZone : MonoBehaviour
     MeshFilter zoneMeshFilter;
 
     [Header("Event Channels")]
-    [SerializeField] PlaneInteractionManagerScriptableObject planeInteractionManagerSO;
+    [SerializeField] HeadPlacementEventChannel headPlacementEventChannel;
     [SerializeField] HudEventSO hudEventSO;
 
     [Header("UI Elements")]
@@ -60,7 +60,7 @@ public class HazardZone : MonoBehaviour
         frontSlider.value = zoneTransform.localScale.x;
         sideSlider.value = zoneTransform.localScale.z;
         removeButton.selectExited.AddListener(_ => Destroy(gameObject));
-        moveButton.selectExited.AddListener(_ => planeInteractionManagerSO.OnSetHeadtrackedObject(gameObject));
+        moveButton.selectExited.AddListener(_ => headPlacementEventChannel.OnSetHeadtrackedObject(gameObject));
         resizeButton.selectExited.AddListener(_ => resizeControlParent.SetActive(!resizeControlParent.activeSelf));
     }
 
@@ -128,6 +128,6 @@ public class HazardZone : MonoBehaviour
     IEnumerator StartPlacement()
     {
         yield return new WaitForSeconds(1.0f);
-        planeInteractionManagerSO.OnSetHeadtrackedObject(gameObject);
+        headPlacementEventChannel.OnSetHeadtrackedObject(gameObject);
     }
 }

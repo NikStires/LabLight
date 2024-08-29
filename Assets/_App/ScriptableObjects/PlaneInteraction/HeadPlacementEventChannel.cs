@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.ARFoundation;
 
-[CreateAssetMenu(fileName = "PlaneInteractionManager", menuName = "ScriptableObjects/PlaneInteractionManager", order = 2)]
-public class PlaneInteractionManagerScriptableObject : ScriptableObject
+[CreateAssetMenu(fileName = "HeadPlacementEventChannel", menuName = "ScriptableObjects/HeadPlacementEventChannel", order = 2)]
+public class HeadPlacementEventChannel : ScriptableObject
 {
     [SerializeField]
     public UnityEvent<GameObject> SetHeadtrackedObject = new UnityEvent<GameObject>();
