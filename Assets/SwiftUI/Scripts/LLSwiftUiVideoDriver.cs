@@ -9,7 +9,6 @@ using UniRx;
 
 public class LLSwiftUiVideoDriver : MonoBehaviour
 {
-    bool _swiftUIWindowOpen = false;
     string _currentVideoItem;
 
     void OnDisable()
@@ -49,7 +48,6 @@ public class LLSwiftUiVideoDriver : MonoBehaviour
             _currentVideoItem = newVideoItem.url;
             //if we have a new video item then load the video
             OpenSwiftVideoWindow(newVideoItem.url);
-            _swiftUIWindowOpen = true;
         }
     }
 

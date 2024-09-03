@@ -29,7 +29,7 @@ public class ProtocolMenuViewController : LLBasePanel
     List<ProcedureDescriptor> protocols;
     List<ProtocolMenuButton> buttons = new List<ProtocolMenuButton>();
 
-    void Awake()
+    protected override void Awake()
     {
         base.Awake();
 

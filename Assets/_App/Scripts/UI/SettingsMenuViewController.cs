@@ -20,7 +20,7 @@ public class SettingsMenuViewController : LLBasePanel
 
     List<SettingsMenuButton> buttons = new List<SettingsMenuButton>();
     // Start is called before the first frame update
-    void Awake()
+    protected override void Awake()
     {
         base.Awake();
     }

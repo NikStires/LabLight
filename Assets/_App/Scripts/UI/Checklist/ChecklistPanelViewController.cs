@@ -46,7 +46,7 @@ public class ChecklistPanelViewController : LLBasePanel
     [Header("HUD Event SO")]
     [SerializeField] HudEventSO hudEventSO;
 
-    private void Awake()
+    protected override void Awake()
     {
         base.Awake();
         checkItemPool = GetComponent<CheckItemPool>();

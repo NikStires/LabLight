@@ -29,7 +29,7 @@ public class SpatialVideoPanelViewController : LLBasePanel
     [SerializeField] Sprite _muteSprite;
     [SerializeField] Sprite _unmuteSprite;
 
-    void Awake()
+    protected override void Awake()
     {
         base.Awake();
         

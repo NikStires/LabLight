@@ -20,7 +20,7 @@ public class ProtocolMenuButton : MonoBehaviour
     public TextMeshProUGUI description;
 
     XRSimpleInteractable interactable;
-    Renderer renderer;
+    Renderer buttonRenderer;
     Material defaultMaterial;
     [SerializeField] Material redFillShader;
     float progress = -0.09f;
@@ -29,8 +29,8 @@ public class ProtocolMenuButton : MonoBehaviour
     void Awake()
     {
         interactable = GetComponent<XRSimpleInteractable>();
-        renderer = GetComponent<Renderer>();
-        defaultMaterial = renderer.material;
+        buttonRenderer = GetComponent<Renderer>();
+        defaultMaterial = buttonRenderer.material;
         animationPlayer = GetComponent<MMF_Player>();
     }
 
@@ -58,7 +58,7 @@ public class ProtocolMenuButton : MonoBehaviour
             ServiceRegistry.GetService<IProcedureDataProvider>().GetOrCreateProcedureDefinition(protocol.title).First().Subscribe(protocol =>
             {
                 CancelInvoke();
-                renderer.material = defaultMaterial;
+                buttonRenderer.material = defaultMaterial;
                 Debug.Log(protocol.title + " loaded");
                 SessionState.Instance.activeProtocol = protocol;
                 SceneLoader.Instance.LoadSceneClean("Protocol");
@@ -81,14 +81,14 @@ public class ProtocolMenuButton : MonoBehaviour
     private IEnumerator ChangeMaterialAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        renderer.material = redFillShader;
+        buttonRenderer.material = redFillShader;
         progress = -0.09f;
-        renderer.material.SetFloat("_FillRate", progress);
+        buttonRenderer.material.SetFloat("_FillRate", progress);
     }
 
     private void incrementShaderFill()
     {
-        renderer.material.SetFloat("_FillRate", progress += 0.0075f);
+        buttonRenderer.material.SetFloat("_FillRate", progress += 0.0075f);
         if(progress >= 0.09f)
         {
             interactable.selectExited.RemoveAllListeners();

@@ -25,7 +25,7 @@ public class TimerViewController : LLBasePanel
     private double TimeLeft;
     private bool timerRunning = false;
 
-    void Awake()
+    protected override void Awake()
     {
         base.Awake();
         

@@ -17,7 +17,6 @@ public class ActionCenterPanelViewController : MonoBehaviour
     [SerializeField] UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable replayButton;
     bool isReplaying = false;
     [SerializeField] UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable internetBrowserButton;
-    bool isBrowserOpen = false;
 
     void Start()
     {
