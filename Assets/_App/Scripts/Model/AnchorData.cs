@@ -2,15 +2,54 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum PayloadType
+{
+    Note = 1,
+    HazardZone = 2
+}
+
+public abstract class AnchorPayload
+{
+    public PayloadType payloadType;
+}
+
 /// <summary>
-/// Currently the only type of spatial anchored data are text notes
+/// AR Anchor that will be restored by ARFoundation
+/// Flexible payload
 /// </summary>
 [Serializable]
-public class SpatialNoteAnchor
+public class Anchor
 {
     public string id;
+    public AnchorPayload payload;
+}
 
+/// <summary>
+/// Anchored text note
+/// </summary>
+[Serializable]
+public class SpatialNotePayload : AnchorPayload
+{
     public string text;
+
+    public SpatialNotePayload()
+    {
+        payloadType = PayloadType.Note;
+    }
+}
+
+/// <summary>
+/// Anchored text note
+/// </summary>
+[Serializable]
+public class HazardZonePayload : AnchorPayload
+{
+    // TODO hazardzone data to save
+
+    public HazardZonePayload()
+    {
+        payloadType = PayloadType.HazardZone;
+    }
 }
 
 /// <summary>
@@ -22,5 +61,5 @@ public class AnchorData
     /// Version to help identify differences in file formats
     public int version;
 
-    public List<SpatialNoteAnchor> anchors = new List<SpatialNoteAnchor>();
+    public List<Anchor> anchors = new List<Anchor>();
 }

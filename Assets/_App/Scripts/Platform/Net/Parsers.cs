@@ -17,7 +17,8 @@ public class Parsers
         NullValueHandling = NullValueHandling.Ignore,
         Converters = { new ArDefinitionConverter(),
                        new ArOperationConverter(),
-                       new ContentItemConverter(),}
+                       new ContentItemConverter(),
+                       new AnchorPayloadConverter()}
     };
 
     public static List<ProcedureDescriptor> ParseProcedures(string json)

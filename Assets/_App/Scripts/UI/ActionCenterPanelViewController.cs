@@ -9,7 +9,6 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class ActionCenterPanelViewController : MonoBehaviour
 {
-    [SerializeField] private HeadPlacementEventChannel headPlacementEventChannel;
     [SerializeField] GameObject timerPrefab;
     [SerializeField] GameObject hazardZonePanelPrefab;
     [SerializeField] UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable recordingButton;

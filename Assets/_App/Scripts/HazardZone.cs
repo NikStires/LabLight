@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.XR.ARSubsystems;
 using UnityEngine.XR.Hands;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
-public class HazardZone : MonoBehaviour
+public class HazardZone : AnchorPayloadController
 {
     [SerializeField] float distanceThreshold = 0.33f;
     [SerializeField] MeshRenderer meshRenderer;
