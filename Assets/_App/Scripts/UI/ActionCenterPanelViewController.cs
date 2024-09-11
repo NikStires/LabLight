@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
  
 
 /// <summary>
@@ -12,17 +13,20 @@ public class ActionCenterPanelViewController : MonoBehaviour
     [SerializeField] private HeadPlacementEventChannel headPlacementEventChannel;
     [SerializeField] GameObject timerPrefab;
     [SerializeField] GameObject hazardZonePanelPrefab;
-    [SerializeField] UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable recordingButton;
+    [SerializeField] XRSimpleInteractable recordingButton;
     bool isRecording = false;
-    [SerializeField] UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable replayButton;
+    [SerializeField] XRSimpleInteractable replayButton;
     bool isReplaying = false;
-    [SerializeField] UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable internetBrowserButton;
+    [SerializeField] XRSimpleInteractable internetBrowserButton;
+    [SerializeField] XRSimpleInteractable chatButton;
+    [SerializeField] GameObject chatPanel;
 
     void Start()
     {
         recordingButton.selectExited.AddListener(_ => ToggleLighthouseRecording());
         replayButton.selectExited.AddListener(_ => ToggleLighthouseReplay());
         internetBrowserButton.selectExited.AddListener(_ => OpenInternetBrowser());
+        chatButton.selectExited.AddListener(_ => ToggleChatPanel());
     }
 
     /// <summary>
@@ -98,5 +102,10 @@ public class ActionCenterPanelViewController : MonoBehaviour
     void OpenInternetBrowser()
     {
         ServiceRegistry.GetService<IWebPageProvider>().OpenWebPage("");
+    }
+
+    void ToggleChatPanel()
+    {
+        chatPanel.SetActive(!chatPanel.activeSelf);
     }
 }

@@ -7,8 +7,10 @@ using TMPro;
 public class LLMChatPanelViewController : LLBasePanel
 {
     [SerializeField] TextMeshProUGUI panelText;
+    [SerializeField] TMP_InputField inputField;
     [SerializeField] XRSimpleInteractable recordButton;
     [SerializeField] XRSimpleInteractable testButton;
+    [SerializeField] XRSimpleInteractable submitButton;
 
     [SerializeField] AnthropicEventChannel anthropicEventChannel;
 
@@ -22,6 +24,10 @@ public class LLMChatPanelViewController : LLBasePanel
     {
         recordButton.selectEntered.AddListener(_ => Record());
         testButton.selectEntered.AddListener(_ => Test());
+        submitButton.selectEntered.AddListener(_ => Submit());
+        inputField.onSubmit.AddListener(_ => Submit());
+        inputField.onSelect.AddListener(_ => TouchScreenKeyboard.Open("Test"));
+
         anthropicEventChannel.OnResponse.AddListener(HandleResponse);
     }
 
@@ -32,10 +38,8 @@ public class LLMChatPanelViewController : LLBasePanel
 
     public void HandleRecognizedText(string recognizedText)
     {
-        panelText.text = panelText.text + "<color=blue>" + recognizedText + "\n\n";
+        inputField.text = recognizedText;
         SpeechRecognizer.Instance.RecognizedTextHandler = null;
-
-        anthropicEventChannel.RaiseQuery(recognizedText);
     }
 
     void HandleResponse(string response)
@@ -46,5 +50,13 @@ public class LLMChatPanelViewController : LLBasePanel
     void Test()
     {
         HandleRecognizedText("Hello, Claude!");
+    }
+
+    void Submit()
+    {
+        string query = inputField.text;
+        inputField.text = "";
+        panelText.text = panelText.text + "<color=blue>" + query + "\n\n";
+        anthropicEventChannel.RaiseQuery(query);
     }
 }
