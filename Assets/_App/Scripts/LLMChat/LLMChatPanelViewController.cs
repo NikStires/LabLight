@@ -14,6 +14,8 @@ public class LLMChatPanelViewController : LLBasePanel
 
     [SerializeField] AnthropicEventChannel anthropicEventChannel;
 
+    private TouchScreenKeyboard keyboard;
+
     protected override void Awake()
     {
         base.Awake();
@@ -26,9 +28,19 @@ public class LLMChatPanelViewController : LLBasePanel
         testButton.selectEntered.AddListener(_ => Test());
         submitButton.selectEntered.AddListener(_ => Submit());
         inputField.onSubmit.AddListener(_ => Submit());
-        inputField.onSelect.AddListener(_ => TouchScreenKeyboard.Open("Test"));
+        // inputField.onSelect.AddListener(_ => keyboard = TouchScreenKeyboard.Open(inputField.text, TouchScreenKeyboardType.Default));
 
         anthropicEventChannel.OnResponse.AddListener(HandleResponse);
+    }
+
+    void Update()
+    {
+        if(TouchScreenKeyboard.visible)
+        {
+            inputField.ActivateInputField();
+            inputField.text = keyboard.text;
+            inputField.MoveTextEnd(true);
+        }
     }
 
     public void Record()
