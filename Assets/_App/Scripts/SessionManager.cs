@@ -71,6 +71,9 @@ public class SessionManager : MonoBehaviour
 
         //anchorManager.enabled = false;
 
+        var congintoAuthProvider = new CognitoAuthProvider();
+        ServiceRegistry.RegisterService<IUserAuthProvider>(congintoAuthProvider);
+
         var localFileDataProvider = new LocalFileDataProvider();
         ServiceRegistry.RegisterService<ITextDataProvider>(localFileDataProvider);
         ServiceRegistry.RegisterService<IAnchorDataProvider>(localFileDataProvider);

@@ -9,120 +9,85 @@ using Newtonsoft.Json;
 
 public class LLMChatController : MonoBehaviour
 {
-    // Replace with your actual API endpoint from Anthropic
-    private string apiUrl = "https://api.anthropic.com/v1/messages";
-    
-    // Replace with your actual API key
-    private string apiKey = "";
+    private string apiUrl = "https://2fdv197i13.execute-api.us-east-1.amazonaws.com/dev/message";
 
     [SerializeField] AnthropicEventChannel anthropicEventChannel;
+
+    [SerializeField] bool useTestCredentials;
+    [SerializeField] string testUsername;
+    [SerializeField] string testPassword;
 
     void Start()
     {
         anthropicEventChannel.OnQuery.AddListener(QueryClaudeWithString);
+        if(!ServiceRegistry.GetService<IUserAuthProvider>().IsAuthenticated())
+        {
+            Debug.Log("User is not authenticated. Please log in.");
+            if(useTestCredentials)
+            {
+                Debug.Log("Trying to authenticate with test credentials...");
+                StartCoroutine(ServiceRegistry.GetService<IUserAuthProvider>().TryAuthenticateUser(testUsername, testPassword));
+            }
+        }
     }
 
     // Method to query Claude with a string prompt
     public void QueryClaudeWithString(string query)
     {
-        Debug.Log("Query: " + query);
+        if(!ServiceRegistry.GetService<IUserAuthProvider>().IsAuthenticated())
+        {
+            Debug.LogError("User is not authenticated. Cannot query Claude.");
+            return;
+        }
         StartCoroutine(SendQueryToClaude(query));
     }
 
     // Coroutine to send the query to Claude API
     IEnumerator SendQueryToClaude(string query)
     {
-        // Create the request payload
-        var requestData = new Dictionary<string, object>
-        {
-            {"model", "claude-3-5-sonnet-20240620"},  // Model name
-            {"max_tokens", 1024},                    // Adjust tokens as per your needs
-            {"messages", new List<Dictionary<string, string>> {
-                new Dictionary<string, string> {{"role", "user"}, {"content", query}}
-            }}  // User query goes inside the messages list
-        };
+        string jsonBody = $@"{{
+            ""query"": ""{query}""
+        }}";
 
-        // Convert the dictionary to JSON string
-        string jsonData = JsonConvert.SerializeObject(requestData);
-
-        // Create a UnityWebRequest for a POST request
         using (UnityWebRequest request = new UnityWebRequest(apiUrl, "POST"))
         {
-            // Convert the JSON data to byte array
-            byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
-
-            // Attach body data
+            // Add the JSON body to the request
+            byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonBody);
             request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-
-            // Receive response
             request.downloadHandler = new DownloadHandlerBuffer();
+            request.SetRequestHeader("Content-Type", "application/json");
+            request.SetRequestHeader("auth-token", ServiceRegistry.GetService<IUserAuthProvider>().TryGetIdToken()); // Include the Cognito ID token in the request
 
-            // Set request headers
-            request.SetRequestHeader("content-type", "application/json");
-            request.SetRequestHeader("x-api-key", apiKey);
-            request.SetRequestHeader("anthropic-version", "2023-06-01");
-
-            // Send the request and wait for the response
             yield return request.SendWebRequest();
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                // Parse the JSON response
-                string responseText = request.downloadHandler.text;
-                try
-                {
-                    // Parse the JSON response and access the 'content' field
-                    var responseJson = JsonConvert.DeserializeObject<ClaudeAPIResponse>(responseText);
+                // Parse the outer JSON response
+                var outerResponse = JsonUtility.FromJson<OuterResponse>(request.downloadHandler.text);
 
-                    // Log only the content text
-                    if (responseJson != null && responseJson.content != null && responseJson.content.Count > 0)
-                    {
-                        Debug.Log("Claude's Response Content: " + responseJson.content[0].text);
-                        anthropicEventChannel.RaiseResponse(responseJson.content[0].text);
-                    }
-                    else
-                    {
-                        Debug.LogWarning("Unexpected response format or no messages found.");
-                    }
-                }
-                catch (System.Exception ex)
-                {
-                    Debug.LogError("Error parsing response JSON: " + ex.Message);
-                }
+                // Parse the body (which is a JSON string) to extract the message
+                var bodyJson = JsonUtility.FromJson<InnerBody>(outerResponse.body);
+                anthropicEventChannel.OnResponse.Invoke(bodyJson.message);
             }
             else
             {
-                // Log any errors
-                 Debug.LogError("Error: " + request.error + "\nResponse: " + request.downloadHandler.text);
+                Debug.LogError("Error: " + request.error);
+                Debug.Log("Response: " + request.downloadHandler.text);
             }
         }
     }
-}
 
-// Define classes to deserialize the response JSON
-[System.Serializable]
-public class ClaudeAPIResponse
-{
-    public List<ClaudeContent> content;
-    public string id;
-    public string model;
-    public string role;
-    public string stop_reason;
-    public string stop_sequence;
-    public string type;
-    public ClaudeUsage usage;
-}
+    // Define classes to match the structure of the JSON response
+    [System.Serializable]
+    public class OuterResponse
+    {
+        public int statusCode;
+        public string body; // This is a stringified JSON
+    }
 
-[System.Serializable]
-public class ClaudeContent
-{
-    public string text;
-    public string type;
-}
-
-[System.Serializable]
-public class ClaudeUsage
-{
-    public int input_tokens;
-    public int output_tokens;
+    [System.Serializable]
+    public class InnerBody
+    {
+        public string message;
+    }
 }
