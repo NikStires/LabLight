@@ -6,7 +6,6 @@ using UniRx;
 /// </summary>
 public abstract class AnchorPayloadController : MonoBehaviour
 {
-    public bool editMode = false;
     public bool debugMode = false;
 
     public GameObject[] editModeUI;
@@ -16,13 +15,11 @@ public abstract class AnchorPayloadController : MonoBehaviour
 
     private void Start()
     {
-        SessionState.SpatialNoteEditMode.Subscribe(val =>
+        SessionState.AnchoredObjectEditMode.Subscribe(val =>
         {
-            editMode = val;
             UpdateView();
         }).AddTo(this);
 
-        editMode = SessionState.SpatialNoteEditMode.Value;
         UpdateView();
     }
 
@@ -37,7 +34,7 @@ public abstract class AnchorPayloadController : MonoBehaviour
         // Enable UI for editMode, delete button, grab interaction etc.
         foreach (var obj in editModeUI)
         {
-            obj.SetActive(editMode);
+            obj.SetActive(SessionState.AnchoredObjectEditMode.Value);
         }
 
         // Enable UI for debugMode, show trackableId, show anchor position, show anchor rotation etc.

@@ -182,9 +182,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a372aa0322d764df4bcc0789096bbdcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  headPlacementEventChannel: {fileID: 11400000, guid: 2e9cc040273c143bd9bb9c3be51cd7e6, type: 2}
   debugText: {fileID: 3290736366080534282}
   payloadParent: {fileID: 3406183853209576214}
+  editModeUI:
+  - {fileID: 8921126481505580593}
   payloadFactory: {fileID: 11400000, guid: 53e447508bb8648e8a4a879742bf0d12, type: 2}
 --- !u!1 &1761444362420531602
 GameObject:
@@ -608,5 +609,10 @@ PrefabInstance:
 --- !u!4 &2566693800682420660 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2896763459697520493, guid: 9fd7d9f95c9e113478d23ddca0fb09ab, type: 3}
+  m_PrefabInstance: {fileID: 841580963736934105}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8921126481505580593 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8098545432528756968, guid: 9fd7d9f95c9e113478d23ddca0fb09ab, type: 3}
   m_PrefabInstance: {fileID: 841580963736934105}
   m_PrefabAsset: {fileID: 0}

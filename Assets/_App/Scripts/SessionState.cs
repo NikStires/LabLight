@@ -40,9 +40,8 @@ public class SessionState : MonoBehaviour
     public static ReactiveProperty<ArucoSettings> ArucoSettings = new ReactiveProperty<ArucoSettings>();
     public static ReactiveCollection<TrackedObject> TrackedObjects = new ReactiveCollection<TrackedObject>();
 
-    public static ReactiveProperty<bool> SpatialNoteEditMode = new ReactiveProperty<bool>();
-    public static ReactiveCollection<AnchoredObjectController> SpatialNotes = new ReactiveCollection<AnchoredObjectController>();
-    
+    public static ReactiveProperty<bool> AnchoredObjectEditMode = new ReactiveProperty<bool>();
+   
 
     /// <summary>
     /// Keep track of the last settings that where last used for detection so we can detect if Lighthouse changed settings in the meantime 

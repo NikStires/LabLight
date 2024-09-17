@@ -6,7 +6,7 @@ public class ARPlaneController : MonoBehaviour
 {
     private void Start()
     {
-        SessionState.SpatialNoteEditMode.Subscribe(val =>
+        SessionState.AnchoredObjectEditMode.Subscribe(val =>
         {
             var meshCollider = this.GetComponent<Collider>();
             if (meshCollider)

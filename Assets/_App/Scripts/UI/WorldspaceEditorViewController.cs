@@ -5,10 +5,11 @@ using System.Linq;
 using Unity.XR.CoreUtils;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
 
 public class WorldspaceEditorViewController : LLBasePanel
 {
-    public AnchoredObjectController anchoredObjectPrefab;
+    public ObjectPlacerController objectPlacerController;
     public Transform achoredObjectParent;
 
     private void Start()
@@ -18,12 +19,12 @@ public class WorldspaceEditorViewController : LLBasePanel
 
     public void OnEnable()
     {
-        SessionState.SpatialNoteEditMode.Value = true;
+        SessionState.AnchoredObjectEditMode.Value = true;
     }
 
     public void OnDisable()
     {
-        SessionState.SpatialNoteEditMode.Value = false;
+        SessionState.AnchoredObjectEditMode.Value = false;
     }
 
     public void PlaceHazardZone()
@@ -33,9 +34,24 @@ public class WorldspaceEditorViewController : LLBasePanel
 
     public void PlaceSpatialNote()
     {
-        var anchoredObject = Instantiate(anchoredObjectPrefab, achoredObjectParent);
-        anchoredObject.Initialize(new SpatialNotePayload(), true);
-        anchoredObject.StartPlacementDelayed();
+        // Temporary placement object/reticule that wil be replaced by anchored object after placement
+        var placementObject = Instantiate(objectPlacerController, achoredObjectParent);
+
+        // Payload is injected after placement
+        placementObject.StartPlacementDelayed((anchoredObject) =>
+            {
+                Debug.Log("Initializing anchoredObject");
+                anchoredObject.Initialize(new SpatialNotePayload(), true);
+            });
+    }
+
+    public void RemoveAllAnchoredObjects()
+    {
+        var anchoredObjects = FindObjectsByType<AnchoredObjectController>(FindObjectsSortMode.None);
+        foreach (var anchoredObject in anchoredObjects)
+        {
+            anchoredObject.RemoveAnchoredObject();
+        }
     }
 
     public void CloseSpatialNotesMenu()

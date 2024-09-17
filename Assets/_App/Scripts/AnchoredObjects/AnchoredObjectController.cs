@@ -1,8 +1,8 @@
+using System.Collections;
 using TMPro;
+using UniRx;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
-using UniRx;
-using System.Collections;
 
 /// <summary>
 /// AnchoredObjectController is a script that initializes the payload of this GameObject
@@ -11,14 +11,13 @@ using System.Collections;
 [RequireComponent(typeof(ARAnchor))]
 public class AnchoredObjectController : MonoBehaviour
 {
-    [Header("Event Channels")]
-    [SerializeField] HeadPlacementEventChannel headPlacementEventChannel;
-
     [SerializeField]
     private TextMeshProUGUI debugText;
-
+     
     [SerializeField]
     private Transform payloadParent;
+
+    public GameObject[] editModeUI;
 
     private ARAnchor arAnchor;
 
@@ -30,6 +29,8 @@ public class AnchoredObjectController : MonoBehaviour
     public void Start()
     {
         arAnchor = this.GetComponent<ARAnchor>();
+
+        Debug.Log("Start arAnchor.enabled" + arAnchor.enabled);
 
         if (allAnchorData == null)
         {
@@ -47,6 +48,21 @@ public class AnchoredObjectController : MonoBehaviour
         else
         {
             InitializePayload();
+        }
+
+        SessionState.AnchoredObjectEditMode.Subscribe(val =>
+        {
+
+            UpdateView();
+        }).AddTo(this);
+    }
+
+    protected void UpdateView()
+    {
+        // Enable UI for editMode, delete button, grab interaction etc.
+        foreach (var obj in editModeUI)
+        {
+            obj.SetActive(SessionState.AnchoredObjectEditMode.Value);
         }
     }
 
@@ -79,7 +95,7 @@ public class AnchoredObjectController : MonoBehaviour
         }
         else
         {
-            Debug.LogError("No prefab configure for anchor payloadtype " + payload.payloadType);
+            Debug.LogError("No prefab configured for anchor payloadtype " + payload.payloadType);
         }
 
         if (add)
@@ -127,13 +143,13 @@ public class AnchoredObjectController : MonoBehaviour
     {
         Debug.Log("RemoveAnchoredObject");
 
-        Destroy(this.gameObject);
-
         var anchor = FindAnchor(arAnchor.trackableId.ToString());
         if (anchor != null)
         {
             allAnchorData.anchors.Remove(anchor);
         }
+
+        Destroy(this.gameObject);
     }
 
     public static void SaveAnchorData()
@@ -143,18 +159,4 @@ public class AnchoredObjectController : MonoBehaviour
             anchorDataProvider.SaveAnchorData(allAnchorData);
         }
     }
-
-    public void StartPlacementDelayed()
-    {
-        StartCoroutine(StartPlacement());
-    }
-
-    IEnumerator StartPlacement()
-    {
-        yield return new WaitForSeconds(1.0f);
-
-        //arAnchor.enabled = false;
-        headPlacementEventChannel.OnSetHeadtrackedObject(gameObject);
-    }
-
 }
