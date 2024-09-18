@@ -1,0 +1,2 @@
+/Users/nikolasstires/dev/LabLight/Assets/StreamingAssets/Whisper/ggml-medium.bin filter=lfs diff=lfs merge=lfs -text
+/Assets/StreamingAssets/Whisper/ggml-medium.bin filter=lfs diff=lfs merge=lfs -text

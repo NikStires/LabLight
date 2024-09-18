@@ -7670,7 +7670,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   logLevel: 3
-  modelPath: Whisper/ggml-tiny.bin
+  modelPath: Whisper/ggml-medium.bin
   isModelPathInStreamingAssets: 1
   initOnAwake: 1
   language: en
@@ -7679,9 +7679,7 @@ MonoBehaviour:
   noContext: 1
   singleSegment: 0
   enableTokens: 1
-  initialPrompt: You are recognizing keywords, keep all your results to one or two
-    words and do not transcribe any sounds or silence, do not include any past transcriptions
-    in your result.
+  initialPrompt: 
   stepSec: 1
   keepSec: 0.1
   lengthSec: 1
