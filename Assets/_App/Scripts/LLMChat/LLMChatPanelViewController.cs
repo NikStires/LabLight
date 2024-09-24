@@ -6,19 +6,34 @@ using TMPro;
 
 public class LLMChatPanelViewController : LLBasePanel
 {
-    [SerializeField] TextMeshProUGUI panelText;
+    [SerializeField] AnthropicEventChannel anthropicEventChannel;
+
+    [Header("Login UI")]
+    [SerializeField] GameObject loginCanvas;
+    [SerializeField] TMP_InputField emailField;
+    [SerializeField] TMP_InputField passwordField;
+    [SerializeField] XRSimpleInteractable loginButton;
+    [SerializeField] TextMeshProUGUI loginErrorText;
+
+    [Header("Chat Input UI")]
+    [SerializeField] GameObject inputPanel;
     [SerializeField] TMP_InputField inputField;
     [SerializeField] XRSimpleInteractable recordButton;
     [SerializeField] XRSimpleInteractable testButton;
     [SerializeField] XRSimpleInteractable submitButton;
 
-    [SerializeField] AnthropicEventChannel anthropicEventChannel;
+    [Header("Chat Output UI")]
+    [SerializeField] GameObject chatCanvas;
+    [SerializeField] TextMeshProUGUI panelText;
 
     private TouchScreenKeyboard keyboard;
+
+    private IUserAuthProvider authProvider;
 
     protected override void Awake()
     {
         base.Awake();
+        authProvider = ServiceRegistry.GetService<IUserAuthProvider>();
     }
 
     // Start is called before the first frame update
@@ -29,8 +44,9 @@ public class LLMChatPanelViewController : LLBasePanel
         submitButton.selectEntered.AddListener(_ => Submit());
         inputField.onSubmit.AddListener(_ => Submit());
         // inputField.onSelect.AddListener(_ => keyboard = TouchScreenKeyboard.Open(inputField.text, TouchScreenKeyboardType.Default));
-
         anthropicEventChannel.OnResponse.AddListener(HandleResponse);
+        loginButton.selectExited.AddListener(_ => StartCoroutine(LoginCoroutine()));
+        UpdateUIBasedOnAuthStatus();
     }
 
     void Update()
@@ -70,5 +86,50 @@ public class LLMChatPanelViewController : LLBasePanel
         inputField.text = "";
         panelText.text = panelText.text + "<color=blue>" + query + "\n\n";
         anthropicEventChannel.RaiseQuery(query);
+    }
+
+    private void UpdateUIBasedOnAuthStatus()
+    {
+        bool isAuthenticated = authProvider.IsAuthenticated();
+        inputPanel.SetActive(isAuthenticated);
+        loginCanvas.SetActive(!isAuthenticated);
+        chatCanvas.SetActive(isAuthenticated);
+    }
+
+    private IEnumerator LoginCoroutine()
+    {
+        loginButton.gameObject.SetActive(false);
+
+        string email = emailField.text;
+        string password = passwordField.text;
+
+        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+        {
+            Debug.LogError("Email or password is empty");
+            loginButton.gameObject.SetActive(true);
+            yield break;
+        }
+
+        yield return StartCoroutine(authProvider.TryAuthenticateUser(email, password));
+
+        UpdateUIBasedOnAuthStatus();
+
+        if (authProvider.IsAuthenticated())
+        {
+            // Login successful
+            Debug.Log("Login successful");
+            // You might want to clear the login fields here
+            emailField.text = "";
+            passwordField.text = "";
+            loginErrorText.gameObject.SetActive(false);
+        }
+        else
+        {
+            // Login failed
+            Debug.LogError("Login failed");
+            loginErrorText.gameObject.SetActive(true);
+        }
+
+        loginButton.gameObject.SetActive(true);
     }
 }
