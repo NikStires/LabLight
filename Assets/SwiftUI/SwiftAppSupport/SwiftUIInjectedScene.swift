@@ -27,7 +27,11 @@ struct SwiftUIInjectedScene {
         }
         .defaultSize(width: 900.0, height: 700.0)
 
-        
+        WindowGroup(id: "LLMChat") {
+            LLMChatContentView()
+        }
+        .defaultSize(width: 400, height: 600)
+
         WindowGroup(id: "SimpleText") {
             Text("PDF Window")
         }

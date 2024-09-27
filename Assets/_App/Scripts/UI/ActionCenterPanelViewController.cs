@@ -26,7 +26,7 @@ public class ActionCenterPanelViewController : MonoBehaviour
         recordingButton.selectExited.AddListener(_ => ToggleLighthouseRecording());
         replayButton.selectExited.AddListener(_ => ToggleLighthouseReplay());
         internetBrowserButton.selectExited.AddListener(_ => OpenInternetBrowser());
-        chatButton.selectExited.AddListener(_ => ToggleChatPanel());
+        //chatButton.selectExited.AddListener(_ => ToggleChatPanel());
     }
 
     /// <summary>
