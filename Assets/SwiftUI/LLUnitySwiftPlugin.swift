@@ -78,6 +78,14 @@ func sendMessageToSwiftUI(_ cmessage: UnsafePointer<CChar>) {
     NotificationCenter.default.post(name: Notification.Name("LLMChatMessage"), object: nil, userInfo: ["message": message])
 }
 
+// MARK: - Camera Functionality
+
+@_cdecl("OpenMainCameraWindow")
+func openMainCameraWindow() {
+    let openWindow = EnvironmentValues().openWindow
+    openWindow(id: "Camera")
+}
+
 // MARK: - Any additional functionality...
 
 // You can add more sections here for other plugin functionalities

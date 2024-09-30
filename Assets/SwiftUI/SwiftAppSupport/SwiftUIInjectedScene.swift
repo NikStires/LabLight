@@ -32,6 +32,11 @@ struct SwiftUIInjectedScene {
         }
         .defaultSize(width: 400, height: 600)
 
+        WindowGroup(id: "Camera") {
+            MainCameraContentView()
+        }
+        .defaultSize(width: 400, height: 600)
+
         WindowGroup(id: "SimpleText") {
             Text("PDF Window")
         }
