@@ -1204,7 +1204,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3998053757999673973, guid: 67b8b057779b64e58875da1f1333bee8, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 56a25e551cc7f4c29bbeea946f317768, type: 2}
     m_RemovedComponents:
@@ -1373,7 +1373,7 @@ PrefabInstance:
       value: Panel
       objectReference: {fileID: 0}
     - target: {fileID: 8295960233914354123, guid: a90698296b23640719ce02a157ecd741, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 56a25e551cc7f4c29bbeea946f317768, type: 2}
     - target: {fileID: 8378772818276989127, guid: a90698296b23640719ce02a157ecd741, type: 3}
