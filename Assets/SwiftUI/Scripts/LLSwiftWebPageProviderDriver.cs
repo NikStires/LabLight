@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Runtime.InteropServices;
 
-public class LLSwiftWebPageProviderPlugin : IWebPageProvider
+public class LLSwiftWebPageProviderDriver : IWebPageProvider
 {
     public void OpenWebPage(string url)
     {

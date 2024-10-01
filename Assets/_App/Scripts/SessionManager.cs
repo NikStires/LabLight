@@ -82,7 +82,7 @@ public class SessionManager : MonoBehaviour
         ServiceRegistry.RegisterService<IProcedureDataProvider>(resourceFileDataProvider);
         ServiceRegistry.RegisterService<IMediaProvider>(resourceFileDataProvider);
 
-        var webpageProvider = new LLSwiftWebPageProviderPlugin();
+        var webpageProvider = new LLSwiftWebPageProviderDriver();
         ServiceRegistry.RegisterService<IWebPageProvider>(webpageProvider);
 
         //Set up default state
