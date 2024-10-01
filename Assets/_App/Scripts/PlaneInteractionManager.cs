@@ -137,10 +137,6 @@ public class PlaneInteractionManager : MonoBehaviour
     {
         if(delayOn || currentPlane == null || currentPlane != plane || currentPrefab == null)
         {
-            if(currentPrefab == null)
-            {
-                Debug.Log("No object to place");
-            }
             return;
         }
         var audioSource = currentPrefab.GetComponent<AudioSource>();

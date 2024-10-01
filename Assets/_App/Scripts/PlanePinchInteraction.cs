@@ -27,6 +27,5 @@ public class PlanePinchInteraction : MonoBehaviour
     public void PlaneSelected()
     {
         headPlacementEventChannel.OnPlanePlacementRequested(this.GetComponent<ARPlane>());
-        Debug.Log("Plane placement requested");
     }
 }
