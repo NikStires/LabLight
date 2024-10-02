@@ -78,6 +78,14 @@ func sendMessageToSwiftUI(_ cmessage: UnsafePointer<CChar>) {
     NotificationCenter.default.post(name: Notification.Name("LLMChatMessage"), object: nil, userInfo: ["message": message])
 }
 
+// MARK: - Timer Functionality
+
+@_cdecl("OpenSwiftTimerWindow")
+func openSwiftTimerWindow(_ duration: Int32) {
+    let openWindow = EnvironmentValues().openWindow
+    openWindow(id: "Timer", value: Int(duration))
+}
+
 // MARK: - Any additional functionality...
 
 // You can add more sections here for other plugin functionalities

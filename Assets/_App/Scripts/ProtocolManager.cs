@@ -20,7 +20,7 @@ public class ProtocolManager : MonoBehaviour
     {
         ProtocolState.LockingTriggered.Value = false;
         ProtocolState.AlignmentTriggered.Value = false;
-        ProtocolState.checklistStream.Subscribe(_ => OnCheckItemChange()).AddTo(this);
+        //ProtocolState.checklistStream.Subscribe(_ => OnCheckItemChange()).AddTo(this);
     }
 
     private void OnEnable()
