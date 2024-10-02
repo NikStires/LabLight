@@ -86,6 +86,14 @@ func openSwiftTimerWindow(_ duration: Int32) {
     openWindow(id: "Timer", value: Int(duration))
 }
 
+// MARK: - Scientific Calculator Functionality
+
+@_cdecl("OpenSwiftCalculatorWindow")
+func openSwiftScientificCalculatorWindow() {
+    let openWindow = EnvironmentValues().openWindow
+    openWindow(id: "Calculator")
+}
+
 // MARK: - Any additional functionality...
 
 // You can add more sections here for other plugin functionalities

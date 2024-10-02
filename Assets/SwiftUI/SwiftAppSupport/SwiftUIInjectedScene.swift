@@ -32,11 +32,15 @@ struct SwiftUIInjectedScene {
         }
         .defaultSize(width: 400, height: 600)
 
-                // Add the Timer window group
         WindowGroup(id: "Timer", for: Int.self) { $duration in
             TimerContentView(duration)
         }
         .defaultSize(width: 300, height: 400)
+
+        WindowGroup(id: "Calculator") {
+            CalculatorContentView()
+        }
+        .defaultSize(width: 400, height: 750)
 
         WindowGroup(id: "SimpleText") {
             Text("PDF Window")
