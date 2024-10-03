@@ -1,29 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using UniRx;
 using UnityEngine;
 using Lighthouse.MessagePack;
 using UnityEngine.Events;
 
-
-public enum Mode { Master, Isolated, Observer }
-
 /// <summary>
-/// Central state containing navigation stack, observable values, ProtocolDefinition
+/// Central state containing observable values
 /// </summary>
 public class SessionState : MonoBehaviour
 {
     public static SessionState Instance;
     public static string deviceId;
-    public static WorkspaceFrame workspace;
-    public static float lastFrameTime;
-    public Vector3 mainPanelPosition;
-    public Vector3 mainPanelRotation;
 
     private static bool _connected = false;
     private static bool _recording;
-    private static Mode mode;
 
     public static UnityEvent onCalibrationUpdated = new UnityEvent();
 

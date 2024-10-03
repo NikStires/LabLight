@@ -104,50 +104,10 @@ public class SessionManager : MonoBehaviour
          * file upload handler
          */
     }
-
-    // public void OnEnable()
-    // {
-    //     if (loadProcedure)
-    //     {
-    //         LoadProcedure();
-    //     }
-    // }
-
-    // public void LoadProcedure()
-    // {
-    //     var procedureDataProvider = ServiceRegistry.GetService<IProcedureDataProvider>();
-    //     if(procedureDataProvider != null)
-    //     {
-    //         procedureDataProvider.GetOrCreateProcedureDefinition("piplight_H551").Subscribe(procedure => 
-    //         {
-    //             Debug.Log(procedure.title + " loaded");
-    //             ProtocolState.SetProcedureDefinition(procedure);
-    //         }, (e) =>
-    //         {
-    //             Debug.Log("Error fetching procedure");
-    //         });
-    //     }
-    //     else
-    //     {
-    //         Debug.Log("Procedure Data provider null");
-    //     }
-    // }
-
     public void Update()
     {
         TrackedObjectsDebug = SessionState.TrackedObjects.ToList();
     }
-
-    /* used for charuco calibration, reimplement with hand tracking
-    public void Update()
-    {
-        //NetworkTick();
-    }
-
-    void NetworkTick()
-    {
-
-    }*/
 
     public void UpdateCalibration(Matrix4x4 pose)
     {
@@ -163,10 +123,6 @@ public class SessionManager : MonoBehaviour
         Quaternion rotation = Quaternion.Euler(0f, 90f, 0f);
         CharucoTransform.rotation *= rotation;
         SessionState.onCalibrationUpdated.Invoke();
-
-        // TODO: World lock the charuco transform
-
-        //TODO: Show origin?
     }
 
 }
