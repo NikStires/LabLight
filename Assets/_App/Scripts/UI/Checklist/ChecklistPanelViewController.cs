@@ -15,8 +15,6 @@ public class ChecklistPanelViewController : LLBasePanel
     [SerializeField] GameObject noChecklistText;
     [SerializeField] AudioSource audioPlayer;
 
-    private List<ProtocolState.CheckItemState> prevChecklist;
-
     [Header("Checkitem Views")]
     [SerializeField] List<Transform> checkItemSlots;
     CheckItemPool checkItemPool;
