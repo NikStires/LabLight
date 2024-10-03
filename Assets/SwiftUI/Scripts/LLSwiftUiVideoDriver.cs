@@ -18,19 +18,19 @@ public class LLSwiftUiVideoDriver : MonoBehaviour
 
     void Start()
     {
-        ProtocolState.checklistStream.Subscribe(_ => UpdateContent()).AddTo(this);
+        ProtocolState.Instance.ChecklistStream.Subscribe(_ => UpdateContent()).AddTo(this);
     }
 
     void UpdateContent()
     {
-        var currentStep = ProtocolState.procedureDef.steps[ProtocolState.Step];
+        var currentStep = ProtocolState.Instance.ActiveProtocol.Value.steps[ProtocolState.Instance.CurrentStep.Value];
 
         VideoItem newVideoItem = null;
 
         //check the current checkItem for a video, then check the current step
-        if(currentStep.checklist != null && currentStep.checklist[ProtocolState.CheckItem].contentItems.Count > 0)
+        if(currentStep.checklist != null && currentStep.checklist[ProtocolState.Instance.CurrentStepState.Value.CheckNum.Value].contentItems.Count > 0)
         {
-            newVideoItem = (VideoItem)currentStep.checklist[ProtocolState.CheckItem].contentItems.Where(x => x.contentType == ContentType.Video).FirstOrDefault();
+            newVideoItem = (VideoItem)currentStep.checklist[ProtocolState.Instance.CurrentStepState.Value.CheckNum.Value].contentItems.Where(x => x.contentType == ContentType.Video).FirstOrDefault();
         }
         if(newVideoItem == null && currentStep.contentItems.Count > 0)
         {

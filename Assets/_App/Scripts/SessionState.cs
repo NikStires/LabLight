@@ -10,13 +10,11 @@ using UnityEngine.Events;
 public enum Mode { Master, Isolated, Observer }
 
 /// <summary>
-/// Central state containing navigation stack, observable values, ProcedureDefinition
+/// Central state containing navigation stack, observable values, ProtocolDefinition
 /// </summary>
 public class SessionState : MonoBehaviour
 {
     public static SessionState Instance;
-
-    public ProcedureDefinition activeProtocol;
     public static string deviceId;
     public static WorkspaceFrame workspace;
     public static float lastFrameTime;

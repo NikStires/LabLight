@@ -24,7 +24,7 @@ public class LLSwiftUiPdfDriver : MonoBehaviour
 
     void Start()
     {
-        if(string.IsNullOrEmpty(ProtocolState.procedureDef.pdfPath))
+        if(string.IsNullOrEmpty(ProtocolState.Instance.ActiveProtocol.Value.pdfPath))
         {
             m_Button.transform.GetChild(0).GetChild(0).GetComponent<Image>().color = Color.gray;
             m_Button.enabled = false;
@@ -40,11 +40,11 @@ public class LLSwiftUiPdfDriver : MonoBehaviour
         }
         else
         {
-            if(string.IsNullOrEmpty(ProtocolState.procedureDef.pdfPath))
+            if(string.IsNullOrEmpty(ProtocolState.Instance.ActiveProtocol.Value.pdfPath))
             {
                 return;
             }
-            OpenSwiftPdfWindow(Path.GetFileNameWithoutExtension(ProtocolState.procedureDef.pdfPath));
+            OpenSwiftPdfWindow(Path.GetFileNameWithoutExtension(ProtocolState.Instance.ActiveProtocol.Value.pdfPath));
             m_SwiftUIWindowOpen = true;
         }
     }

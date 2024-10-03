@@ -15,7 +15,7 @@ using MoreMountains.Feedbacks;
 public class ProtocolMenuButton : MonoBehaviour
 {
 
-    private ProcedureDescriptor protocol;
+    private ProtocolDescriptor protocol;
     public TextMeshProUGUI title;
     public TextMeshProUGUI description;
 
@@ -43,7 +43,7 @@ public class ProtocolMenuButton : MonoBehaviour
     /// Initializes the protocol menu button with the specified protocol.
     /// </summary>
     /// <param name="protocol">The protocol to initialize the button with.</param>
-    public void Initialize(ProcedureDescriptor protocol)
+    public void Initialize(ProtocolDescriptor protocol)
     {
         this.protocol = protocol;
         title.text = Path.GetFileNameWithoutExtension(protocol.title);
@@ -55,24 +55,23 @@ public class ProtocolMenuButton : MonoBehaviour
         });
 
         interactable.selectExited.AddListener(_ => {
-            ServiceRegistry.GetService<IProcedureDataProvider>().GetOrCreateProcedureDefinition(protocol.title).First().Subscribe(protocol =>
+            ServiceRegistry.GetService<IProtocolDataProvider>().GetOrCreateProtocolDefinition(protocol.title).First().Subscribe(protocol =>
             {
                 CancelInvoke();
                 buttonRenderer.material = defaultMaterial;
                 Debug.Log(protocol.title + " loaded");
-                SessionState.Instance.activeProtocol = protocol;
+                ProtocolState.Instance.SetProtocolDefinition(protocol);
                 SceneLoader.Instance.LoadSceneClean("Protocol");
             }, (e) =>
             {
-                Debug.Log("Error fetching procedure from resources, checking local files");
+                Debug.Log("Error fetching protocol from resources, checking local files");
                 var lfdp = new LocalFileDataProvider();
-                lfdp.LoadProcedureDefinitionAsync(protocol.title).ToObservable<ProcedureDefinition>().Subscribe(protocol =>
+                lfdp.LoadProtocolDefinitionAsync(protocol.title).ToObservable<ProtocolDefinition>().Subscribe(protocol =>
                 {
-                    SessionState.Instance.activeProtocol = protocol;
-                    SceneLoader.Instance.LoadSceneClean("Protocol");
+                    ProtocolState.Instance.SetProtocolDefinition(protocol);
                 }, (e) =>
                 {
-                    Debug.Log("Error fetching procedure");
+                    Debug.Log("Error fetching protocol from local files");
                 });
             });
         });
@@ -93,8 +92,8 @@ public class ProtocolMenuButton : MonoBehaviour
         {
             interactable.selectExited.RemoveAllListeners();
             var lfdp = new LocalFileDataProvider();
-            lfdp.DeleteProcedureDefinition(title.text);
-            //ServiceRegistry.GetService<IProcedureDataProvider>().DeleteProcedureDefinition(title.text);
+            lfdp.DeleteProtocolDefinition(title.text);
+            //ServiceRegistry.GetService<IProtocolDataProvider>().DeleteProtocolDefinition(title.text);
             Destroy(gameObject);
         }
     }

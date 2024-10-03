@@ -26,7 +26,7 @@ public class ProtocolMenuViewController : LLBasePanel
     
     private int currentPage = 0;
     private int maxPage = 0;
-    List<ProcedureDescriptor> protocols;
+    List<ProtocolDescriptor> protocols;
     List<ProtocolMenuButton> buttons = new List<ProtocolMenuButton>();
 
     protected override void Awake()
@@ -142,11 +142,11 @@ public class ProtocolMenuViewController : LLBasePanel
     /// </summary>
     async void LoadProtocols()
     {
-        // Load procedure list
-        if(ServiceRegistry.GetService<IProcedureDataProvider>() != null)
+        // Load protocol list
+        if(ServiceRegistry.GetService<IProtocolDataProvider>() != null)
         {
-            protocols = await ServiceRegistry.GetService<IProcedureDataProvider>()?.GetProcedureList();
-            protocols.AddRange(await ((LocalFileDataProvider)ServiceRegistry.GetService<ITextDataProvider>())?.GetProcedureList());
+            protocols = await ServiceRegistry.GetService<IProtocolDataProvider>()?.GetProtocolList();
+            protocols.AddRange(await ((LocalFileDataProvider)ServiceRegistry.GetService<ITextDataProvider>())?.GetProtocolList());
             maxPage = (int)Math.Ceiling((float)protocols.Count / 8);
             currentPage = 0;
 

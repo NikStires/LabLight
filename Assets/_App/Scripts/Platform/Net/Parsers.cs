@@ -20,17 +20,17 @@ public class Parsers
                        new ContentItemConverter(),}
     };
 
-    public static List<ProcedureDescriptor> ParseProcedures(string json)
+    public static List<ProtocolDescriptor> ParseProtocols(string json)
     {
-        var list = new List<ProcedureDescriptor>();
-        var procedures = JArray.Parse(json);
-        foreach (JObject procedure in procedures.Children())
+        var list = new List<ProtocolDescriptor>();
+        var protocols = JArray.Parse(json);
+        foreach (JObject protocol in protocols.Children())
         {
-            list.Add(new ProcedureDescriptor()
+            list.Add(new ProtocolDescriptor()
             {
-                name = (string)procedure["name"],
-                title = (string)procedure["title"],
-                description = (string)procedure["description"]
+                name = (string)protocol["name"],
+                title = (string)protocol["title"],
+                description = (string)protocol["description"]
             });
         }
         return list;
@@ -114,22 +114,22 @@ public class Parsers
         }
     }
 
-    public static ProcedureDefinition ParseProcedure(string json)
+    public static ProtocolDefinition ParseProtocol(string json)
     {
         try
         {
-            var procedure = new ProcedureDefinition();
+            var protocol = new ProtocolDefinition();
 
             var root = JObject.Parse(json);
-            procedure.version = (root["version"] == null) ? 0 : (int)root["version"];
+            protocol.version = (root["version"] == null) ? 0 : (int)root["version"];
 
-            procedure.title = (string)root["title"];
+            protocol.title = (string)root["title"];
 
-            Debug.Log("Procedure '" + procedure.title + "' file version " + procedure.version);
+            Debug.Log("Protocol '" + protocol.title + "' file version " + protocol.version);
 
-            if (procedure.version >= 1)
+            if (protocol.version >= 1)
             {
-                procedure = JsonConvert.DeserializeObject<ProcedureDefinition>(json, serializerSettings);
+                protocol = JsonConvert.DeserializeObject<ProtocolDefinition>(json, serializerSettings);
             }
             else
             { 
@@ -137,7 +137,7 @@ public class Parsers
             }
 
 
-            return procedure;
+            return protocol;
         }
         catch (System.Exception e)
         {
@@ -156,29 +156,29 @@ public class Parsers
         return new Vector2((float)arr[0], (float)arr[1]);
     }
 
-    public static ProcedureDefinition ConvertWellPlateCsvToProcedure(string filename, string csvString)
+    public static ProtocolDefinition ConvertWellPlateCsvToProtocol(string filename, string csvString)
     {
         try
         {
-            ProcedureDefinition procedure = new ProcedureDefinition();
-            procedure.version = 7;
-            procedure.title = filename;
+            ProtocolDefinition protocol = new ProtocolDefinition();
+            protocol.version = 7;
+            protocol.title = filename;
 
-            Debug.Log("Procedure '" + procedure.title + "' file version " + procedure.version);
+            Debug.Log("Protocol '" + protocol.title + "' file version " + protocol.version);
 
-            procedure.steps = new List<StepDefinition>();
-            //procedure.steps = convertCSVtoProcedure.ReadStepsFromCSV(csvString.Split('\n'));
+            protocol.steps = new List<StepDefinition>();
+            //protocol.steps = convertCSVtoProtocol.ReadStepsFromCSV(csvString.Split('\n'));
 
             if(filename.Contains("piplight_"))
             {
-                //procedure = convertCSVtoProcedure.ReadPipLightCSV(csvString.Split('\n'), filename);
+                //protocol = convertCSVtoProtocol.ReadPipLightCSV(csvString.Split('\n'), filename);
             }
             else if(filename.Contains("pooling_"))
             {
-                //procedure = convertCSVtoProcedure.ReadPoolingCSV(csvString.Split('\n'), filename);
+                //protocol = convertCSVtoProtocol.ReadPoolingCSV(csvString.Split('\n'), filename);
             }
 
-            return procedure;
+            return protocol;
         }
         catch (System.Exception e)
         {

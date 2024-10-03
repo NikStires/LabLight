@@ -28,30 +28,28 @@ public class ProtocolPanelViewController : MonoBehaviour
 
     private void Awake()
     {
-        ProtocolState.checklistStream.Subscribe(_ => UpdateContentItems()).AddTo(this);
+        ProtocolState.Instance.ChecklistStream.Subscribe(_ => UpdateContentItems()).AddTo(this);
     }
 
     void Start()
     {
-        procedureTitle.text = ProtocolState.procedureDef.title;
+        procedureTitle.text = ProtocolState.Instance.ActiveProtocol.Value.title;
         //UpdateStepDisplay();
         UpdateContentItems();
     }
 
     private void UpdateContentItems()
     {
-        var currentStep = ProtocolState.procedureDef.steps[ProtocolState.Step];
-
         //Get new content items
         var newContentItems = new List<ContentItem>();
-        if(currentStep.checklist != null && currentStep.checklist[ProtocolState.CheckItem].contentItems.Count > 0)
+        if(ProtocolState.Instance.HasCurrentChecklist() && ProtocolState.Instance.CurrentCheckItemDefinition.contentItems.Count > 0)
         {
-            newContentItems.AddRange(currentStep.contentItems.Where(contentItem => contentItem.contentType != ContentType.Video));
-            newContentItems.AddRange(currentStep.checklist[ProtocolState.CheckItem].contentItems.Where(contentItem => contentItem.contentType != ContentType.Video));
+            newContentItems.AddRange(ProtocolState.Instance.CurrentStepDefinition.contentItems.Where(contentItem => contentItem.contentType != ContentType.Video));
+            newContentItems.AddRange(ProtocolState.Instance.CurrentCheckItemDefinition.contentItems.Where(contentItem => contentItem.contentType != ContentType.Video));
         }
         else
         {
-            newContentItems.AddRange(currentStep.contentItems.Where(contentItem => contentItem.contentType != ContentType.Video));
+            newContentItems.AddRange(ProtocolState.Instance.CurrentStepDefinition.contentItems.Where(contentItem => contentItem.contentType != ContentType.Video));
         }
 
         if(newContentItems.Count == 0)

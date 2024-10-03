@@ -73,8 +73,8 @@ public class WellPlateViewController : ModelElementViewController
 
     void Awake()
     {
-        ProtocolState.stepStream.Subscribe(Step => OnStepChanged(Step)).AddTo(this);
-        ProtocolState.checklistStream.Subscribe(_ => OnCheckItemChanged()).AddTo(this);
+        ProtocolState.Instance.StepStream.Subscribe(Step => OnStepChanged(Step)).AddTo(this);
+        ProtocolState.Instance.ChecklistStream.Subscribe(_ => OnCheckItemChanged()).AddTo(this);
     }
 
     public override void Initialize(ArDefinition arDefinition, List<TrackedObject> trackedObjects)
@@ -107,7 +107,7 @@ public class WellPlateViewController : ModelElementViewController
                 marker.gameObject.SetActive(false);
             }
             //activate markers for wells to be highlighted
-            foreach(var checkItem in ProtocolState.procedureDef.steps[ProtocolState.Step].checklist)
+            foreach(var checkItem in ProtocolState.Instance.CurrentChecklist)
             {
                 foreach(HighlightArOperation highlight in checkItem.operations.Where(op => op.arOperationType == ArOperationType.Highlight))
                 {
@@ -254,7 +254,7 @@ public class WellPlateViewController : ModelElementViewController
         {
             if(action.isSource && Markers2D != null && ((ModelArDefinition)arDefinition).name.Contains("extraction"))
             {
-                if(prevCheckItem == ProtocolState.CheckItem + 1)
+                if(prevCheckItem == ProtocolState.Instance.CurrentCheckNum + 1)
                 {
                     toggleTransform(Markers2D, true, id, Color.blue);
                 }
@@ -262,7 +262,7 @@ public class WellPlateViewController : ModelElementViewController
                 {
                     toggleTransform(Markers2D, true, id, Color.gray);
                 }
-                prevCheckItem = ProtocolState.CheckItem;
+                prevCheckItem = ProtocolState.Instance.CurrentCheckNum;
             }
             toggleTransform(Markers, false, id, Color.green);
             toggleTransform(rowIndicators, true, id.Substring(0,1), defaultIndicatorColor);
@@ -423,11 +423,11 @@ public class WellPlateViewController : ModelElementViewController
 
     void OnCheckItemChanged()
     {
-        if(ProtocolState.procedureDef.steps[ProtocolState.Step].checklist == null)
+        if(!ProtocolState.Instance.HasCurrentChecklist())
         {
             return;
         }
-        if (!disableComponents && ProtocolState.CheckItem == ProtocolState.Steps[ProtocolState.Step].Checklist.Count() - 1 && ProtocolState.Steps[ProtocolState.Step].Checklist[ProtocolState.CheckItem].IsChecked.Value) //if on last checked item disable all active components
+        if (!disableComponents && ProtocolState.Instance.CurrentCheckNum == ProtocolState.Instance.CurrentChecklist.Count() - 1 && ProtocolState.Instance.CurrentCheckItemState.Value.IsChecked.Value) //if on last checked item disable all active components
         {
             //play audio for check item completed
             toggleActiveComponents(false);
@@ -444,7 +444,7 @@ public class WellPlateViewController : ModelElementViewController
 
     void OnStepChanged(ProtocolState.StepState step)
     {
-        prevCheckItem = step.CheckNum;
+        prevCheckItem = step.CheckNum.Value;
         toggleTransform(Cover, false);
     }
     private void AddSubscriptions()

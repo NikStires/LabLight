@@ -18,15 +18,15 @@ using UnityEngine.Video;
 /// Implements IDataProvider interface for accessing available procedures and updating runtime state
 /// Implements IMediaProvider interface for accessing images, sound, videos and prefabs
 /// </summary>
-public class ResourceFileDataProvider : IProcedureDataProvider, IMediaProvider
+public class ResourceFileDataProvider : IProtocolDataProvider, IMediaProvider
 {
-    public Task<List<ProcedureDescriptor>> GetProcedureList()
+    public Task<List<ProtocolDescriptor>> GetProtocolList()
     {
-        return LoadTextAsset("Procedure/index").Select(jsonString =>
+        return LoadTextAsset("Protocol/index").Select(jsonString =>
         {
             try
             {
-                return Parsers.ParseProcedures(jsonString);
+                return Parsers.ParseProtocols(jsonString);
             }
             catch (Exception e)
             {
@@ -36,26 +36,26 @@ public class ResourceFileDataProvider : IProcedureDataProvider, IMediaProvider
         }).ToTask();
     }
 
-    public IObservable<ProcedureDefinition> GetOrCreateProcedureDefinition(string procedureName)
+    public IObservable<ProtocolDefinition> GetOrCreateProtocolDefinition(string protocolName)
     {
-        var basePath = "Procedure/" + procedureName;
+        var basePath = "Protocol/" + protocolName;
         var systemIoPath = @"Assets/Resources/" + basePath;
 
         return LoadTextAsset(basePath + "/index").Select(jsonString =>
         {
             try
             {
-                var procedure = Parsers.ParseProcedure(jsonString);
+                var protocol = Parsers.ParseProtocol(jsonString);
 
-                if (procedure.version < 9)
+                if (protocol.version < 9)
                 {
-                    UpdateProcedureVersion(procedure);
+                    UpdateProtocolVersion(protocol);
                 }
 
                 // Set basepath for media to the same path
-                procedure.mediaBasePath = basePath;
+                protocol.mediaBasePath = basePath;
 
-                return procedure;
+                return protocol;
             }
             catch (Exception e)
             {
@@ -65,21 +65,21 @@ public class ResourceFileDataProvider : IProcedureDataProvider, IMediaProvider
         });
     }
 
-    // public void DeleteProcedureDefinition(string procedureName)
+    // public void DeleteProtocolDefinition(string protocolName)
     // {
     //     string indexPath;
     //     #if UNITY_EDITOR
-    //         indexPath = Application.dataPath + "/Resources/Procedure/index.json";
+    //         indexPath = Application.dataPath + "/Resources/Protocol/index.json";
     //     #else
-    //         indexPath = Application.persistentDataPath + "/Resources/Procedure/index.json";
+    //         indexPath = Application.persistentDataPath + "/Resources/Protocol/index.json";
     //     #endif
 
     //     string jsonString = File.ReadAllText(indexPath);
     //     Debug.Log(jsonString);
-    //     var procedures = JsonConvert.DeserializeObject<List<ProcedureDescriptor>>(jsonString);
-    //     var procedureToDelete = procedures.Find(p => p.title == procedureName);
-    //     procedures.Remove(procedureToDelete);
-    //     string updatedIndex = JsonConvert.SerializeObject(procedures, Formatting.Indented);
+    //     var protocols = JsonConvert.DeserializeObject<List<ProtocolDescriptor>>(jsonString);
+    //     var protocolToDelete = protocols.Find(p => p.title == protocolName);
+    //     protocols.Remove(protocolToDelete);
+    //     string updatedIndex = JsonConvert.SerializeObject(protocols, Formatting.Indented);
     //     Debug.Log(updatedIndex);
     //     File.WriteAllText(indexPath, updatedIndex);
     // }
@@ -98,17 +98,17 @@ public class ResourceFileDataProvider : IProcedureDataProvider, IMediaProvider
     /// LabelARDefitions are converted to containers with TextItem
     /// SlideARDefinitions are converted to containers with TextItems, Images and Videos where applicable
     /// </summary>
-    /// <param name="procedure"></param>
-    private static void UpdateProcedureVersion(ProcedureDefinition procedure)
+    /// <param name="protocol"></param>
+    private static void UpdateProtocolVersion(ProtocolDefinition protocol)
     {
         // Convert to version 9 content
-        procedure.version = 9;
+        protocol.version = 9;
 
-        Debug.Log("Updating '" + procedure.title + "'  to file version " + procedure.version);
+        Debug.Log("Updating '" + protocol.title + "'  to file version " + protocol.version);
 
         var newList = new List<ArDefinition>();
-        UpdateArDefinitions(procedure.globalArElements, newList);
-        procedure.globalArElements = newList;
+        UpdateArDefinitions(protocol.globalArElements, newList);
+        protocol.globalArElements = newList;
     }
 
     private static void UpdateArDefinitions(List<ArDefinition> oldList, List<ArDefinition> newList)
@@ -394,14 +394,14 @@ public class ResourceFileDataProvider : IProcedureDataProvider, IMediaProvider
     }
 
     /// <summary>
-    /// Save procedure to resources folder (can only be done inside Unity editor)
+    /// Save protocol to resources folder (can only be done inside Unity editor)
     /// </summary>
-    /// <param name="procedureName"></param>
-    /// <param name="procedure"></param>
-    public void SaveProcedureDefinition(string procedureName, ProcedureDefinition procedure)
+    /// <param name="protocolName"></param>
+    /// <param name="protocol"></param>
+    public void SaveProtocolDefinition(string protocolName, ProtocolDefinition protocol)
     {
 #if UNITY_EDITOR
-        string path = "Assets/Resources/Procedure/" + procedureName;
+        string path = "Assets/Resources/Protocol/" + protocolName;
         string filePath = path + "/index.json";
 
         if (!Directory.Exists(path))
@@ -410,7 +410,7 @@ public class ResourceFileDataProvider : IProcedureDataProvider, IMediaProvider
         }
 
         StreamWriter writer = new StreamWriter(filePath, false);
-        var output = JsonConvert.SerializeObject(procedure, Formatting.Indented, Parsers.serializerSettings);
+        var output = JsonConvert.SerializeObject(protocol, Formatting.Indented, Parsers.serializerSettings);
         writer.WriteLine(output);
         writer.Close();
 

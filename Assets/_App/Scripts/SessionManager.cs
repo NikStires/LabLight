@@ -79,7 +79,7 @@ public class SessionManager : MonoBehaviour
         ServiceRegistry.RegisterService<IAnchorDataProvider>(localFileDataProvider);
 
         var resourceFileDataProvider = new ResourceFileDataProvider();
-        ServiceRegistry.RegisterService<IProcedureDataProvider>(resourceFileDataProvider);
+        ServiceRegistry.RegisterService<IProtocolDataProvider>(resourceFileDataProvider);
         ServiceRegistry.RegisterService<IMediaProvider>(resourceFileDataProvider);
 
         var webpageProvider = new LLSwiftWebPageProviderDriver();

@@ -26,7 +26,7 @@ public class VideoController : ContentController<VideoItem>
 
     private void UpdateView()
     {
-        var videoPath = ProtocolState.procedureDef.mediaBasePath + "/" + ContentItem.url;
+        var videoPath = ProtocolState.Instance.ActiveProtocol.Value.mediaBasePath + "/" + ContentItem.url;
 
         // Cancel previous download
         downloadSubscription?.Dispose();

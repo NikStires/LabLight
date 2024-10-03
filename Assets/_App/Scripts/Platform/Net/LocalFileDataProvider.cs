@@ -11,13 +11,13 @@ using UnityEngine;
 /// <summary>
 /// Implements IDataProvider interface for accessing available procedures and updating runtime state
 /// </summary>
-public class LocalFileDataProvider : IProcedureDataProvider, ITextDataProvider, IAnchorDataProvider
+public class LocalFileDataProvider : IProtocolDataProvider, ITextDataProvider, IAnchorDataProvider
 {
     private const string anchorDataFile = "AnchorData.jason";
 
-    public async Task<List<ProcedureDescriptor>> GetProcedureList()
+    public async Task<List<ProtocolDescriptor>> GetProtocolList()
     {
-        var list = new List<ProcedureDescriptor>();
+        var list = new List<ProtocolDescriptor>();
 
         if (Directory.Exists(Application.persistentDataPath))
         {
@@ -26,7 +26,7 @@ public class LocalFileDataProvider : IProcedureDataProvider, ITextDataProvider, 
             foreach (var file in directoryInfo.GetFiles("*.json"))
             {
                 Debug.Log("Found file: " + file.Name);
-                list.Add(new ProcedureDescriptor()
+                list.Add(new ProtocolDescriptor()
                 {
                     name = Path.GetFileNameWithoutExtension(file.Name),
                     title = file.Name,
@@ -37,9 +37,9 @@ public class LocalFileDataProvider : IProcedureDataProvider, ITextDataProvider, 
         return list;
     }
 
-    public IObservable<ProcedureDefinition> GetOrCreateProcedureDefinition(string procedureName)
+    public IObservable<ProtocolDefinition> GetOrCreateProtocolDefinition(string protocolName)
     {
-        return LoadProcedureDefinitionAsync(procedureName + ".json").ToObservable<ProcedureDefinition>();
+        return LoadProtocolDefinitionAsync(protocolName + ".json").ToObservable<ProtocolDefinition>();
     }
 
 
@@ -47,30 +47,30 @@ public class LocalFileDataProvider : IProcedureDataProvider, ITextDataProvider, 
     /// load procedure from local folder
     /// </summary>
     /// <param name="procedureName"></param>
-    /// <param name="procedure"></param>
-    public async Task<ProcedureDefinition> LoadProcedureDefinitionAsync(string procedureFile)
+    /// <param name="protocol"></param>
+    public async Task<ProtocolDefinition> LoadProtocolDefinitionAsync(string protocolFile)
     {
-        Debug.Log("Local file data provider trying to load " + Path.Combine(Application.persistentDataPath, procedureFile));
-        ProcedureDefinition procedure = null;
-        using (StreamReader streamReader = new StreamReader(Path.Combine(Application.persistentDataPath, procedureFile)))
+        Debug.Log("Local file data provider trying to load " + Path.Combine(Application.persistentDataPath, protocolFile));
+        ProtocolDefinition protocol = null;
+        using (StreamReader streamReader = new StreamReader(Path.Combine(Application.persistentDataPath, protocolFile)))
         {
-            procedure = Parsers.ParseProcedure(streamReader.ReadToEnd());
-            Debug.LogFormat("Data loaded from file '{0}'", procedureFile);
+            protocol = Parsers.ParseProtocol(streamReader.ReadToEnd());
+            Debug.LogFormat("Data loaded from file '{0}'", protocolFile);
         }
 
-        if (procedure == null)
+        if (protocol == null)
         {
             Debug.Log("protocol not found, creating empty protocol");
             // Create empty definition
-            procedure = new ProcedureDefinition()
+            protocol = new ProtocolDefinition()
             {
                 version = 9
             };
         }
 
-        procedure.mediaBasePath = "CSV";
+        protocol.mediaBasePath = "CSV";
 
-        return procedure;
+        return protocol;
     }
 
 
@@ -78,28 +78,28 @@ public class LocalFileDataProvider : IProcedureDataProvider, ITextDataProvider, 
     /// Save procedure to local folder
     /// </summary>
     /// <param name="procedureName"></param>
-    /// <param name="procedure"></param>
-    public async void SaveProcedureDefinition(string procedureName, ProcedureDefinition procedure)
+    /// <param name="protocol"></param>
+    public async void SaveProtocolDefinition(string protocolName, ProtocolDefinition protocol)
     {
-        using (StreamWriter streamWriter = new StreamWriter(Path.Combine(Application.persistentDataPath, procedureName), append: false))
+        using (StreamWriter streamWriter = new StreamWriter(Path.Combine(Application.persistentDataPath, protocolName), append: false))
         {
-            var output = JsonConvert.SerializeObject(procedure, Formatting.Indented, Parsers.serializerSettings);
+            var output = JsonConvert.SerializeObject(protocol, Formatting.Indented, Parsers.serializerSettings);
             streamWriter.WriteLine(output);
-            Debug.LogFormat("Data saved to file '{0}'", procedureName);
+            Debug.LogFormat("Data saved to file '{0}'", protocolName);
         }
     }
 
-    public void DeleteProcedureDefinition(string procedureName)
+    public void DeleteProtocolDefinition(string protocolName)
     {
-        Debug.Log("DeleteProcedureDefinition " + procedureName);
-        string pathForDeletion = Path.Combine(Application.persistentDataPath, procedureName + ".json");
+        Debug.Log("DeleteProtocolDefinition " + protocolName);
+        string pathForDeletion = Path.Combine(Application.persistentDataPath, protocolName + ".json");
         if (pathForDeletion != null)
         {
             File.Delete(pathForDeletion);
         }
         else
         {
-            Debug.LogWarning("specified file for deletion " + procedureName + " could not be found");
+            Debug.LogWarning("specified file for deletion " + protocolName + " could not be found");
         }
     }
 

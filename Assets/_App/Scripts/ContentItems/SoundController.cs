@@ -28,7 +28,7 @@ public class SoundController : ContentController<SoundItem>
 
     private void UpdateView()
     {
-        var soundPath = ProtocolState.procedureDef.mediaBasePath + "/" + ContentItem.url;
+        var soundPath = ProtocolState.Instance.ActiveProtocol.Value.mediaBasePath + "/" + ContentItem.url;
 
         // Cancel previous download
         downloadSubscription?.Dispose();

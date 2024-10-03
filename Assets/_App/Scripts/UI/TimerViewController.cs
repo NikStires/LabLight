@@ -35,9 +35,9 @@ public class TimerViewController : LLBasePanel
     // Start is called before the first frame update
     void Start()
     {
-        if(ProtocolState.Steps[ProtocolState.Step].Checklist != null)
+        if(ProtocolState.Instance.HasCurrentChecklist())
         {
-            var currentCheckItem = ProtocolState.procedureDef.steps[ProtocolState.Step].checklist[ProtocolState.CheckItem];
+            var currentCheckItem = ProtocolState.Instance.CurrentCheckItemDefinition;
             if(currentCheckItem.activateTimer)
             {
                 int timeSeconds = (currentCheckItem.hours * 60 * 60) + (currentCheckItem.minutes * 60) + currentCheckItem.seconds;

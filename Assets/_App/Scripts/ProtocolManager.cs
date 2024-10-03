@@ -1,12 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using TMPro;
-using UniRx;
 using UnityEngine;
-using UnityEngine.UI;
-using System.Threading.Tasks;
+using UniRx;
 
 public class ProtocolManager : MonoBehaviour
 {
@@ -18,27 +13,27 @@ public class ProtocolManager : MonoBehaviour
 
     private void Awake()
     {
-        ProtocolState.LockingTriggered.Value = false;
-        ProtocolState.AlignmentTriggered.Value = false;
-        //ProtocolState.checklistStream.Subscribe(_ => OnCheckItemChange()).AddTo(this);
+        ProtocolState.Instance.LockingTriggered.Value = false;
+        ProtocolState.Instance.AlignmentTriggered.Value = false;
+        ProtocolState.Instance.ChecklistStream.Subscribe(_ => OnCheckItemChange()).AddTo(this);
     }
 
     private void OnEnable()
     {
-        ProtocolState.SetStartTime(DateTime.Now);
+        ProtocolState.Instance.StartTime.Value = DateTime.Now;
     }
 
     private void OnDisable()
     {
-        ProtocolState.AlignmentTriggered.Value = false;
+        ProtocolState.Instance.AlignmentTriggered.Value = false;
     }
 
     private void OnCheckItemChange()
     {
-        if(ProtocolState.Steps[ProtocolState.Step].Checklist != null)
+        if (ProtocolState.Instance.HasCurrentChecklist())
         {
-            var currentCheckItem = ProtocolState.procedureDef.steps[ProtocolState.Step].checklist[ProtocolState.CheckItem];
-            if(currentCheckItem.activateTimer && currentCheckItem != previousCheckItem)
+            var currentCheckItem = ProtocolState.Instance.CurrentCheckItemDefinition;
+            if (currentCheckItem != null && currentCheckItem.activateTimer && currentCheckItem != previousCheckItem)
             {
                 var timer = Instantiate(timerPrefab, transform);
                 previousCheckItem = currentCheckItem;

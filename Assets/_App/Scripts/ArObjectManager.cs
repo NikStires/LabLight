@@ -1,4 +1,4 @@
-  using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,9 +47,9 @@ public class ArObjectManager : MonoBehaviour
     void Awake()
     {
         //add audio... 
-        ProtocolState.procedureStream.Subscribe(_ => InitializeArObjects()).AddTo(this);
-        ProtocolState.stepStream.Subscribe(_ => RebuildArObjects()).AddTo(this);
-        ProtocolState.checklistStream.Subscribe(_ => RebuildArObjects()).AddTo(this);
+        ProtocolState.Instance.ProtocolStream.Subscribe(_ => InitializeArObjects()).AddTo(this);
+        ProtocolState.Instance.StepStream.Subscribe(_ => RebuildArObjects()).AddTo(this);
+        ProtocolState.Instance.ChecklistStream.Subscribe(_ => RebuildArObjects()).AddTo(this);
 
         SessionState.TrackedObjects.ObserveAdd().Subscribe(x => processAddedObject(x.Value)).AddTo(this);
         SessionState.TrackedObjects.ObserveRemove().Subscribe(x => processRemovedObject(x.Value)).AddTo(this);
@@ -65,26 +65,26 @@ public class ArObjectManager : MonoBehaviour
     void OnDisable()
     {
         ClearScene();
-        ProtocolState.AlignmentTriggered.Value = false;
+        ProtocolState.Instance.AlignmentTriggered.Value = false;
     }
 
     private void InitializeArObjects()
     {
         workspaceTransform = SessionManager.instance.WorkspaceTransform;
         //workspaceTransform.position = new Vector3(workspaceTransform.position.x, workspaceTransform.position.y + 0.04f, workspaceTransform.position.z);
-        if(ProtocolState.procedureDef != null)
+        if(ProtocolState.Instance.ActiveProtocol.Value != null)
         {
-            var currentProcedure = ProtocolState.procedureDef;
-            if(currentProcedure.globalArElements != null)
+            var currentProtocol = ProtocolState.Instance.ActiveProtocol.Value;
+            if(currentProtocol.globalArElements != null)
             {
-                specificArDefinitions.AddRange(currentProcedure.globalArElements.Where(ar => ar.IsSpecific()));
+                specificArDefinitions.AddRange(currentProtocol.globalArElements.Where(ar => ar.IsSpecific()));
                 
                 foreach(var arDefinition in specificArDefinitions)
                 {
                     SpecificArDefinitionAdded(arDefinition);
                 }
             }
-            genericArDefinitions.AddRange(currentProcedure.globalArElements.Where(ar => ar.IsGeneric()));
+            genericArDefinitions.AddRange(currentProtocol.globalArElements.Where(ar => ar.IsGeneric()));
             if(SessionState.enableGenericVisualizations.Value)
             {
                 ServiceRegistry.GetService<ILighthouseControl>()?.DetectorMode(4,1,10f);
@@ -352,41 +352,35 @@ public class ArObjectManager : MonoBehaviour
         }
     }
 
-    private void ApplyOperations(ArDefinition arDefinition, ArElementViewController arViewController) //todo NS
+    private void ApplyOperations(ArDefinition arDefinition, ArElementViewController arViewController)
     {
-        if (ProtocolState.procedureDef != null)
+        if (ProtocolState.Instance.ActiveProtocol.Value != null)
         {
-            var currentProcedure = ProtocolState.procedureDef;
-
-            if (currentProcedure.steps != null && currentProcedure.steps[ProtocolState.Step] != null)
+            var currentStep = ProtocolState.Instance.CurrentStepDefinition;
+            
+            if (currentStep != null && ProtocolState.Instance.HasCurrentChecklist() && ProtocolState.Instance.HasCurrentCheckItem())
             {
-                var currentStep = currentProcedure.steps[ProtocolState.Step];
-                
-                if (currentStep.checklist != null && currentStep.checklist.Count > 0 && ProtocolState.CheckItem < currentStep.checklist.Count && !ProtocolState.Steps[ProtocolState.Step].Checklist[ProtocolState.CheckItem].IsChecked.Value)
+                var currentCheckItem = ProtocolState.Instance.CurrentCheckItemDefinition;
+                if (currentCheckItem != null && !ProtocolState.Instance.CurrentCheckItemState.Value.IsChecked.Value)
                 {
-                    var currentCheckItem = currentStep.checklist[ProtocolState.CheckItem];
-                    if (currentCheckItem != null)
+                    foreach (var operation in currentCheckItem.operations)
                     {
-                        foreach (var operation in currentCheckItem.operations)
+                        if (operation.arDefinition == arDefinition)
                         {
-                            if (operation.arDefinition == arDefinition)
+                            if (operation.arOperationType == ArOperationType.Anchor && arDefinition.arDefinitionType == ArDefinitionType.Model && anchorPrefabsDict.ContainsKey((ModelArDefinition)arDefinition))
                             {
-                                if (operation.arOperationType == ArOperationType.Anchor && arDefinition.arDefinitionType == ArDefinitionType.Model && anchorPrefabsDict.ContainsKey((ModelArDefinition)arDefinition))
+                                if(enqueueObjectsCoroutine == null)
                                 {
-                                    //anchorDefs.Add(arDefinition);
-                                    //anchorPrefabs.Add(arViewController.gameObject);
-                                    if(enqueueObjectsCoroutine == null)
-                                    {
-                                        enqueueObjectsCoroutine = StartCoroutine(startNextObjectPlacement(anchorPrefabsDict[(ModelArDefinition)arDefinition]));
-                                    }else
-                                    {
-                                        Debug.Log("courtine already started for requesting object placement");
-                                    }
+                                    enqueueObjectsCoroutine = StartCoroutine(startNextObjectPlacement(anchorPrefabsDict[(ModelArDefinition)arDefinition]));
                                 }
                                 else
                                 {
-                                    operation.Apply(arViewController);
+                                    Debug.Log("coroutine already started for requesting object placement");
                                 }
+                            }
+                            else
+                            {
+                                operation.Apply(arViewController);
                             }
                         }
                     }
@@ -397,7 +391,7 @@ public class ArObjectManager : MonoBehaviour
 
     private void createModel(ModelArDefinition modelArDefinition, TrackedObject trackedObject = null)
     {
-        //var prefabPath = ProtocolState.procedureDef.mediaBasePath + "/" + modelArDefinition.url;
+        //var prefabPath = ProtocolState.Instance.ActiveProtocol.Value.mediaBasePath + "/" + modelArDefinition.url;
         var prefabPath = "Models/" + modelArDefinition.url;
         ServiceRegistry.GetService<IMediaProvider>().GetPrefab(prefabPath).Subscribe(prefab =>
         {

@@ -7,7 +7,7 @@ using UnityEngine;
 using System.IO;
 using System.Data;
 
-public class convertCSVtoProcedure : MonoBehaviour
+public class convertCSVtoProtocol : MonoBehaviour
 {
     private static List<Vector3> targetPositionsList = new List<Vector3>()
     {
@@ -74,15 +74,15 @@ public class convertCSVtoProcedure : MonoBehaviour
         return returnList;
     }
 
-    public static ProcedureDefinition ReadPipLightCSV(string [] lines, string name)
+    public static ProtocolDefinition ReadPipLightCSV(string [] lines, string name)
     {
-        ProcedureDefinition procedure = new ProcedureDefinition();
-        procedure.version = 7;
-        procedure.title = name;
+        ProtocolDefinition protocol = new ProtocolDefinition();
+        protocol.version = 7;
+        protocol.title = name;
 
-        Debug.Log("Procedure '" + procedure.title + "' file version " + procedure.version);
+        Debug.Log("Protocol '" + protocol.title + "' file version " + protocol.version);
 
-        procedure.steps = new List<StepDefinition>();
+        protocol.steps = new List<StepDefinition>();
 
         Queue<Vector3> sourcePositions = new Queue<Vector3>(sourcePositionsList);
 
@@ -115,7 +115,7 @@ public class convertCSVtoProcedure : MonoBehaviour
                 {
                     if(fields[3].Contains(":"))
                     {
-                        if(procedure.globalArElements.Count() == Int32.Parse(fields[3].Substring(0, fields[3].IndexOf(':'))))
+                        if(protocol.globalArElements.Count() == Int32.Parse(fields[3].Substring(0, fields[3].IndexOf(':'))))
                         {
                             if(fields[1].Contains("tuberack")) //right now tuberack is only supported "multi" source -> fields[1].Contains("multi")...
                             {
@@ -133,21 +133,21 @@ public class convertCSVtoProcedure : MonoBehaviour
                                 tempArDef = new ModelArDefinition
                                 {
                                     url = fields[1].Contains(":") ? fields[1].Substring(0, fields[1].IndexOf(':')) : fields[1] + ".prefab",
-                                    name = fields[1].Contains(":") ? fields[1].Substring(fields[1].IndexOf(':') + 1) : fields[1] + procedure.globalArElements.Count() + 1,
+                                    name = fields[1].Contains(":") ? fields[1].Substring(fields[1].IndexOf(':') + 1) : fields[1] + protocol.globalArElements.Count() + 1,
                                     position = sourcePositions.Dequeue(),
                                     rotation = Quaternion.identity,
                                     condition = new AnchorCondition("Reservoir")
                                 };
                             }
                             multiSourceTracking[fields[3]] = fields[4];
-                            procedure.globalArElements.Add(tempArDef);
+                            protocol.globalArElements.Add(tempArDef);
                         }else //append the contents to the model ar definition at that index
                         {
                             multiSourceTracking[fields[3]] = fields[4];
                         }
-                        ModelArDefinition temp = (ModelArDefinition)procedure.globalArElements[Int32.Parse(fields[3].Substring(0, fields[3].IndexOf(':')))];//.contents.Add(fields[3].Substring(fields[3].IndexOf(':') + 1));
+                        ModelArDefinition temp = (ModelArDefinition)protocol.globalArElements[Int32.Parse(fields[3].Substring(0, fields[3].IndexOf(':')))];//.contents.Add(fields[3].Substring(fields[3].IndexOf(':') + 1));
                         temp.contentsToColors[fields[4]] = fields[5].Substring(0, fields[5].IndexOf(':')); //stores colorHex with contents
-                        procedure.globalArElements[Int32.Parse(fields[3].Substring(0, fields[3].IndexOf(':')))] = temp;
+                        protocol.globalArElements[Int32.Parse(fields[3].Substring(0, fields[3].IndexOf(':')))] = temp;
                     }
                 }
                 else //target definition
@@ -155,16 +155,16 @@ public class convertCSVtoProcedure : MonoBehaviour
                     tempArDef = new ModelArDefinition
                     {
                         url = fields[2] + (fields[1].Contains(":") ? fields[1].Substring(0, fields[1].IndexOf(':')) : fields[1] + ".prefab"),
-                        name = fields[1].Contains(":") ? fields[1].Substring(fields[1].IndexOf(':') + 1) : fields[1] + procedure.globalArElements.Count() + 1,
+                        name = fields[1].Contains(":") ? fields[1].Substring(fields[1].IndexOf(':') + 1) : fields[1] + protocol.globalArElements.Count() + 1,
                         position = targetPositions.Dequeue(),
                         rotation = Quaternion.identity,
-                        condition = new AnchorCondition("96 Well Plate", (fields[1].Contains(":") ? fields[1].Substring(fields[1].IndexOf(':') + 1) : fields[1] + procedure.globalArElements.Count() + 1))
+                        condition = new AnchorCondition("96 Well Plate", (fields[1].Contains(":") ? fields[1].Substring(fields[1].IndexOf(':') + 1) : fields[1] + protocol.globalArElements.Count() + 1))
                     };
-                    procedure.globalArElements.Add(tempArDef);
+                    protocol.globalArElements.Add(tempArDef);
                 }
             }else if(fields[0].Contains("step"))
             {
-                if(procedure.steps.Count == 0)
+                if(protocol.steps.Count == 0)
                 {
                     StepDefinition lockingStep = new StepDefinition()
                     {
@@ -179,7 +179,7 @@ public class convertCSVtoProcedure : MonoBehaviour
                     {
                         Text = "Place requested items on workbench"
                     };
-                    foreach(ArDefinition def in procedure.globalArElements)
+                    foreach(ArDefinition def in protocol.globalArElements)
                     {
                         ArOperation operation = new AnchorArOperation()
                         {
@@ -188,7 +188,7 @@ public class convertCSVtoProcedure : MonoBehaviour
                         check.operations.Add(operation);
                     }
                     lockingStep.checklist.Add(check);
-                    procedure.steps.Add(lockingStep);
+                    protocol.steps.Add(lockingStep);
                 }
                 currStep = new StepDefinition()
                 {
@@ -197,7 +197,7 @@ public class convertCSVtoProcedure : MonoBehaviour
             }else if(fields[0].Contains("end"))
             {
                 if(currStep.checklist.Count() > 0)
-                    procedure.steps.Add(currStep);
+                    protocol.steps.Add(currStep);
             }
             else if(fields[0] == "")
             {
@@ -242,7 +242,7 @@ public class convertCSVtoProcedure : MonoBehaviour
                             sourceHighlightAction,
                             targetHighlightAction
                         },
-                        arDefinition = procedure.globalArElements[sourceParentID]
+                        arDefinition = protocol.globalArElements[sourceParentID]
                     };
                     tempCheck.operations.Add(operation);
                 }else
@@ -254,7 +254,7 @@ public class convertCSVtoProcedure : MonoBehaviour
                         {
                             sourceHighlightAction
                         },
-                        arDefinition = procedure.globalArElements[sourceParentID]
+                        arDefinition = protocol.globalArElements[sourceParentID]
                     };
                     ArOperation targetOperation = new HighlightArOperation()
                     {
@@ -263,7 +263,7 @@ public class convertCSVtoProcedure : MonoBehaviour
                         {
                             targetHighlightAction
                         },
-                        arDefinition = procedure.globalArElements[targetParentID]
+                        arDefinition = protocol.globalArElements[targetParentID]
                     };
                     tempCheck.operations.Add(sourceOperation);
                     tempCheck.operations.Add(targetOperation);
@@ -271,7 +271,7 @@ public class convertCSVtoProcedure : MonoBehaviour
                 currStep.checklist.Add(tempCheck);
             }
         }
-        return procedure;
+        return protocol;
     }
 
     public static List<StepDefinition> ReadStepsFromPipLightCSV(string [] lines)
@@ -462,15 +462,15 @@ public class convertCSVtoProcedure : MonoBehaviour
         return returnList;
     }
 
-    public static ProcedureDefinition ReadPoolingCSV(string[] lines, string name)
+    public static ProtocolDefinition ReadPoolingCSV(string[] lines, string name)
     {
-        ProcedureDefinition procedure = new ProcedureDefinition();
-        procedure.version = 7;
-        procedure.title = name;
+        ProtocolDefinition protocol = new ProtocolDefinition();
+        protocol.version = 7;
+        protocol.title = name;
 
-        Debug.Log("Procedure '" + procedure.title + "' file version " + procedure.version);
+        Debug.Log("Protocol '" + protocol.title + "' file version " + protocol.version);
 
-        procedure.steps = new List<StepDefinition>();
+        protocol.steps = new List<StepDefinition>();
 
         Queue<Vector3> sourcePositions = new Queue<Vector3>(sourcePositionsList);
 
@@ -517,7 +517,7 @@ public class convertCSVtoProcedure : MonoBehaviour
                 rotation = Quaternion.identity,
                 condition = new AnchorCondition("96 Well Plate", "extraction plate " + (i + 1).ToString())
             };
-            procedure.globalArElements.Add(tempArDef);
+            protocol.globalArElements.Add(tempArDef);
         }
 
         //add target plates
@@ -532,7 +532,7 @@ public class convertCSVtoProcedure : MonoBehaviour
                 rotation = Quaternion.identity,
                 condition = new AnchorCondition("96 Well Plate", "pooling plate " + (i + 1).ToString())
             };
-            procedure.globalArElements.Add(tempArDef);
+            protocol.globalArElements.Add(tempArDef);
         }
 
         //add locking step
@@ -549,7 +549,7 @@ public class convertCSVtoProcedure : MonoBehaviour
         {
             Text = "Place requested items on workbench"
         };
-        foreach (ArDefinition def in procedure.globalArElements)
+        foreach (ArDefinition def in protocol.globalArElements)
         {
             ArOperation operation = new AnchorArOperation()
             {
@@ -558,7 +558,7 @@ public class convertCSVtoProcedure : MonoBehaviour
             check.operations.Add(operation);
         }
         lockingStep.checklist.Add(check);
-        procedure.steps.Add(lockingStep);
+        protocol.steps.Add(lockingStep);
 
 
         StepDefinition poolingStep = new StepDefinition()
@@ -608,7 +608,7 @@ public class convertCSVtoProcedure : MonoBehaviour
                             sourceHighlightAction,
                             targetHighlightAction
                         },
-                    arDefinition = procedure.globalArElements[sourceParentID]
+                    arDefinition = protocol.globalArElements[sourceParentID]
                 };
                 tempCheck.operations.Add(operation);
             }
@@ -621,7 +621,7 @@ public class convertCSVtoProcedure : MonoBehaviour
                         {
                             sourceHighlightAction
                         },
-                    arDefinition = procedure.globalArElements[sourceParentID]
+                    arDefinition = protocol.globalArElements[sourceParentID]
                 };
                 ArOperation targetOperation = new HighlightArOperation()
                 {
@@ -630,16 +630,16 @@ public class convertCSVtoProcedure : MonoBehaviour
                         {
                             targetHighlightAction
                         },
-                    arDefinition = procedure.globalArElements[targetParentID]
+                    arDefinition = protocol.globalArElements[targetParentID]
                 };
                 tempCheck.operations.Add(sourceOperation);
                 tempCheck.operations.Add(targetOperation);
             }
             poolingStep.checklist.Add(tempCheck);
         }
-        procedure.steps.Add(poolingStep);
+        protocol.steps.Add(poolingStep);
 
-        return procedure;
+        return protocol;
     }
 
     private static string GetWellID(int wellNum)

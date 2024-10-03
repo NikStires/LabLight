@@ -69,8 +69,8 @@ public class PlaneInteractionManager : MonoBehaviour
         headPlacementEventChannel.SetHeadtrackedObject.AddListener(obj => SetPrefab(obj));
         headPlacementEventChannel.PlanePlacementRequested.AddListener(obj => OnPlanePlacementRequested(obj));
         headPlacementEventChannel.RequestDisablePlaneInteractionManager.AddListener(ResetObjects);
-        ProtocolState.procedureStream.Subscribe(_ => OnProtocolExit()).AddTo(this);
-        ProtocolState.checklistStream.Subscribe(_ => OnNextCheckItem()).AddTo(this);
+        ProtocolState.Instance.ProtocolStream.Subscribe(_ => OnProtocolExit()).AddTo(this);
+        ProtocolState.Instance.ChecklistStream.Subscribe(_ => OnNextCheckItem()).AddTo(this);
     }
 
     private void RemoveSubscriptions()
@@ -78,9 +78,8 @@ public class PlaneInteractionManager : MonoBehaviour
         headPlacementEventChannel.SetHeadtrackedObject.RemoveListener(SetPrefab);
         headPlacementEventChannel.PlanePlacementRequested.RemoveListener(OnPlanePlacementRequested);
         headPlacementEventChannel.RequestDisablePlaneInteractionManager.RemoveListener(ResetObjects);
-        ProtocolState.procedureStream.Subscribe(_ => OnProtocolExit()).Dispose();
-
-        ProtocolState.checklistStream.Subscribe(_ => OnNextCheckItem()).Dispose();
+        ProtocolState.Instance.ProtocolStream.Subscribe(_ => OnProtocolExit()).Dispose();   
+        ProtocolState.Instance.ChecklistStream.Subscribe(_ => OnNextCheckItem()).Dispose();
     }
     
 
@@ -220,7 +219,7 @@ public class PlaneInteractionManager : MonoBehaviour
 
     private void OnProtocolExit()
     {
-        if(ProtocolState.procedureDef == null)
+        if(ProtocolState.Instance.ActiveProtocol.Value == null)
         {
             ResetObjects();
         }

@@ -48,7 +48,7 @@ public class SpatialVideoPanelViewController : LLBasePanel
         _videoComponent = GetComponent<VisionOSVideoComponent>();
         _playPauseInteractable.selectEntered.AddListener(_ => PlayPause());
         _muteInteractable.selectEntered.AddListener(_ => Mute());
-        ProtocolState.checklistStream.Subscribe(_ => UpdateContent()).AddTo(this);
+        ProtocolState.Instance.ChecklistStream.Subscribe(_ => UpdateContent()).AddTo(this);
     }
 
     void PlayPause()
@@ -81,19 +81,17 @@ public class SpatialVideoPanelViewController : LLBasePanel
 
     void UpdateContent()
     {
-        var currentStep = ProtocolState.procedureDef.steps[ProtocolState.Step];
-
         //Get new content items
         VideoItem newVideoItem = null;
 
         //check the current check item for a video then check the step, only one video will be shown at a time
-        if(currentStep.contentItems.Count > 0)
+        if(ProtocolState.Instance.CurrentStepDefinition.contentItems.Count > 0)
         {
-            newVideoItem = (VideoItem)currentStep.contentItems.Where(x => x.contentType == ContentType.Video).FirstOrDefault();
+            newVideoItem = (VideoItem)ProtocolState.Instance.CurrentStepDefinition.contentItems.Where(x => x.contentType == ContentType.Video).FirstOrDefault();
         }
-        if(currentStep.checklist != null && currentStep.checklist[ProtocolState.CheckItem].contentItems.Count > 0)
+        if(ProtocolState.Instance.HasCurrentChecklist() && ProtocolState.Instance.CurrentCheckItemDefinition.contentItems.Count > 0)
         {
-            newVideoItem = (VideoItem)currentStep.checklist[ProtocolState.CheckItem].contentItems.Where(x => x.contentType == ContentType.Video).FirstOrDefault();
+            newVideoItem = (VideoItem)ProtocolState.Instance.CurrentCheckItemDefinition.contentItems.Where(x => x.contentType == ContentType.Video).FirstOrDefault();
         }
 
         if(newVideoItem == null)

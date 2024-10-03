@@ -7,8 +7,8 @@ public class TestUi : MonoBehaviour
     private void Awake()
     {
 
-        ProtocolState.SetProcedureDefinition(CreateTestProtocol());
-        ProtocolState.ProcedureTitle = ProtocolState.procedureDef.title;
+        ProtocolState.Instance.SetProtocolDefinition(CreateTestProtocol());
+        ProtocolState.Instance.ProtocolTitle.Value = ProtocolState.Instance.ActiveProtocol.Value.title;
         Debug.Log("Test protocol set");
     }
 
@@ -40,11 +40,11 @@ public class TestUi : MonoBehaviour
         return steps;
     }
 
-    private ProcedureDefinition CreateTestProtocol()
+    private ProtocolDefinition CreateTestProtocol()
     {
-        ProcedureDefinition testProcedure = new ProcedureDefinition();
-        testProcedure.title = "Test Protocol";
-        testProcedure.steps = CreateSteps(10);
-        return testProcedure;
+        ProtocolDefinition testProtocol = new ProtocolDefinition();
+        testProtocol.title = "Test Protocol";
+        testProtocol.steps = CreateSteps(10);
+        return testProtocol;
     }
 }

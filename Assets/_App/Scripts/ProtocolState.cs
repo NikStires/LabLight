@@ -1,295 +1,201 @@
 using System;
 using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UniRx;
-using Unity.VisualScripting;
 
 public class ProtocolState : MonoBehaviour
 {
-    public static ProtocolState Instance;
+    public static ProtocolState Instance { get; private set; }
 
-    //state data
-    public static ProcedureDefinition procedureDef;
-    private static string procedureTitle;
-    private static DateTime startTime; 
-    public static List<StepState> Steps = new List<StepState>();
-    private static int step;
-    private static string csvPath;
+    // State data
+    public ReactiveProperty<ProtocolDefinition> ActiveProtocol { get; } = new ReactiveProperty<ProtocolDefinition>();
+    public ReactiveProperty<string> ProtocolTitle { get; } = new ReactiveProperty<string>();
+    public ReactiveProperty<DateTime> StartTime { get; } = new ReactiveProperty<DateTime>();
+    public ReactiveCollection<StepState> Steps { get; } = new ReactiveCollection<StepState>();
+    public ReactiveProperty<int> CurrentStep { get; } = new ReactiveProperty<int>();
+    public ReactiveProperty<string> CsvPath { get; } = new ReactiveProperty<string>();
 
-    //data streams
-    public static Subject<string> procedureStream = new Subject<string>();
-    public static Subject<StepState> stepStream = new Subject<StepState>();
-    public static Subject<int> checklistStream = new Subject<int>();
+    // Data streams
+    public Subject<string> ProtocolStream { get; } = new Subject<string>();
+    public Subject<StepState> StepStream { get; } = new Subject<StepState>();
+    public Subject<int> ChecklistStream { get; } = new Subject<int>();
 
+    // Locking and alignment bools
+    public ReactiveProperty<bool> LockingTriggered { get; } = new ReactiveProperty<bool>();
+    public ReactiveProperty<bool> AlignmentTriggered { get; } = new ReactiveProperty<bool>();
 
-    //locking and alignment bools
-    public static ReactiveProperty<bool> LockingTriggered = new ReactiveProperty<bool>();
-    public static ReactiveProperty<bool> AlignmentTriggered = new ReactiveProperty<bool>();
+    // Properties for easy access
+    public ReactiveProperty<StepState> CurrentStepState { get; } = new ReactiveProperty<StepState>();
+    public ReactiveProperty<CheckItemState> CurrentCheckItemState { get; } = new ReactiveProperty<CheckItemState>();
+
+    // Computed properties
+    public StepDefinition CurrentStepDefinition => ActiveProtocol.Value?.steps[CurrentStep.Value];
+    public List<CheckItemDefinition> CurrentChecklist => CurrentStepDefinition?.checklist;
+    public CheckItemDefinition CurrentCheckItemDefinition => CurrentChecklist?[CurrentStepState.Value?.CheckNum.Value ?? 0];
+    public int CurrentCheckNum => CurrentStepState.Value?.CheckNum.Value ?? 0;
+
+    // Helper methods
+    public bool HasCurrentChecklist() => CurrentChecklist != null && CurrentChecklist.Count > 0;
+    public bool HasCurrentCheckItem() => CurrentCheckItemDefinition != null;
 
     void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Debug.LogWarning("Multiple ProtocolState instances detected. Destroying duplicate (newest).");
-            DestroyImmediate(gameObject);
-        }
-
-        if(SessionState.Instance.activeProtocol != null)
-        {
-            SetProcedureDefinition(SessionState.Instance.activeProtocol);
-        }
-        else
-        {
-            Debug.Log("No active protocol, returning to protocol selection");
-            SceneLoader.Instance.LoadNewScene("ProtocolMenu");
+            Debug.LogWarning("Multiple ProtocolState instances detected. Destroying duplicate.");
+            Destroy(gameObject);
+            return;
         }
     }
 
-    // Setters
-    public static void SetProcedureDefinition(ProcedureDefinition procedureDefinition)
+    public void SetProtocolDefinition(ProtocolDefinition protocolDefinition)
     {
-        Steps = new List<StepState>();
-        //create a fresh state for the selected protocol
-        if (procedureDefinition != null && procedureDefinition.steps.Count > 0)
+        if (protocolDefinition == null || protocolDefinition.steps.Count == 0)
         {
-            List<ModelArDefinition> arModels = procedureDefinition.globalArElements.Where(x => x.arDefinitionType == ArDefinitionType.Model).Cast<ModelArDefinition>().ToList();
-            if(arModels.Count > 0)
-            {   
-                procedureDefinition.steps.Insert(0, Instance.createLockingStep(arModels));
-            }
-            for (int i = 0; i < procedureDefinition.steps.Count; i++)
+            Debug.LogError("Invalid protocol definition");
+            return;
+        }
+
+        Steps.Clear();
+        ActiveProtocol.Value = protocolDefinition;
+        ProtocolTitle.Value = protocolDefinition.title;
+
+        InitializeSteps(protocolDefinition);
+        InitCSV();
+
+        ServiceRegistry.GetService<ILighthouseControl>()?.SetProtocolStatus();
+        ProtocolStream.OnNext(ProtocolTitle.Value);
+        SceneLoader.Instance.LoadSceneClean("Protocol");
+    }
+
+    private void InitializeSteps(ProtocolDefinition protocolDefinition)
+    {
+        var arModels = protocolDefinition.globalArElements
+            .Where(x => x.arDefinitionType == ArDefinitionType.Model)
+            .Cast<ModelArDefinition>()
+            .ToList();
+
+        if (arModels.Count > 0)
+        {
+            protocolDefinition.steps.Insert(0, CreateLockingStep(arModels));
+        }
+
+        foreach (var step in protocolDefinition.steps)
+        {
+            var stepState = new StepState();
+            if (step.checklist != null)
             {
-                Steps.Add(new StepState());
-                if(procedureDefinition.steps[i].checklist != null)
-                {
-                    Steps[i].Checklist = new List<CheckItemState>();
-                    foreach(var check in procedureDefinition.steps[i].checklist)
-                    {
-                        Steps[i].Checklist.Add(new CheckItemState() { Text = check.Text});
-                    }
-                }
+                stepState.Checklist = new ReactiveCollection<CheckItemState>(
+                    step.checklist.Select(check => new CheckItemState { Text = check.Text })
+                );
             }
-            procedureDef = procedureDefinition;
-            step = 0;
-            Debug.Log("Set procedure definition to " + procedureDefinition.title);
-            ProcedureTitle = procedureDefinition.title;
-            ServiceRegistry.GetService<ILighthouseControl>()?.SetProtocolStatus();
-            InitCSV();
+            Steps.Add(stepState);
         }
+        SetStep(0);
     }
 
-    private StepDefinition createLockingStep(List<ModelArDefinition> arModels)
+    private StepDefinition CreateLockingStep(List<ModelArDefinition> arModels)
     {
-        StepDefinition step = new StepDefinition();
-        step.checklist = new List<CheckItemDefinition>();
-        step.checklist.Add(new CheckItemDefinition() {Text = "Place the items listed below on your workspace"});
-        foreach(ModelArDefinition arModel in arModels)
+        var checkList = new List<CheckItemDefinition>
         {
-            step.checklist.Add(new CheckItemDefinition() { Text = arModel.name, operations = new List<ArOperation>() { new AnchorArOperation() { arDefinition = arModel } } });
-        }
-        return step;
+            new CheckItemDefinition { Text = "Place the items listed below on your workspace" }
+        };
+
+        checkList.AddRange(arModels.Select(arModel => new CheckItemDefinition
+        {
+            Text = arModel.name,
+            operations = new List<ArOperation> { new AnchorArOperation { arDefinition = arModel } }
+        }));
+
+        return new StepDefinition
+        {
+            checklist = checkList
+        };
     }
 
-    public static int Step
+    public void SetStep(int step)
     {
-        set
-        {
-            step = value;
-            stepStream.OnNext(Steps[Step]);
-
-            //if the step has a checklist get the active item
-            if (procedureDef != null && Steps != null && Steps[Step].Checklist != null)
-            {
-                var firstUncheckedItem = (from item in Steps[Step].Checklist
-                                    where !item.IsChecked.Value
-                                    select item).FirstOrDefault();
-
-                if (firstUncheckedItem == null)
-                {
-                    //if there is a checklist but the there is no unchecked item set the current checkItem to the last item;
-                    CheckItem = Steps[Step].Checklist.Count - 1;
-                }
-                else
-                {
-                    CheckItem = Steps[Step].Checklist.IndexOf(firstUncheckedItem);
-                }
-            }
-            else if (Steps[Step].Checklist == null)
-            {
-                CheckItem = 0;
-                checklistStream.OnNext(0);
-            }
-            ServiceRegistry.GetService<ILighthouseControl>()?.SetProtocolStatus();
-        }
-        get
-        {
-            return step;
-        }
-    }
-
-    public static int CheckItem
-    {
-        set
-        {
-            if (procedureDef != null && Steps != null && Step < Steps.Count && Steps[Step].Checklist != null && value <= Steps[Step].Checklist.Count() - 1)
-            {
-                Steps[Step].CheckNum = value; 
-                checklistStream.OnNext(value);
-                ServiceRegistry.GetService<ILighthouseControl>()?.SetProtocolStatus();
-            }
-            // else
-            // {
-            //     Steps[Step].CheckNum = 0; 
-            //     checklistStream.OnNext(0);
-            // }
-        }
-        get
-        {
-            if(Steps != null && Step < Steps.Count && Steps[Step] != null)
-                return Steps[Step].CheckNum;
-            else
-                return 0;
-        }
-    }
-
-
-    public static string ProcedureTitle
-    {
-        set
-        {
-            if (procedureTitle != value)
-            {
-                procedureTitle = value;
-                
-                procedureStream.OnNext(value);
-            }
-        }
-        get
-        {
-            return procedureTitle;
-        }
-    }
-
-    public static DateTime StartTime
-    {
-        set
-        {
-            if (startTime != value)
-            {
-                startTime = value;
-            }
-        }
-        get
-        {
-            return startTime;
-        }
-    }
-
-    public static string CsvPath
-    {
-        set
-        {
-            if (csvPath != value)
-            {
-                csvPath = value;
-            }
-        }
-        get
-        {
-            return csvPath;
-        }
-    }
-
-    public static void SetStep(int step)
-    {
-        if (step < 0 ||
-            procedureDef == null ||
-            Steps == null ||
-            step >= Steps.Count)
+        if (step < 0 || ActiveProtocol.Value == null || Steps == null || step >= Steps.Count)
         {
             return;
         }
 
-        Step = step;
+        CurrentStep.Value = step;
+        CurrentStepState.Value = Steps[step];
+        StepStream.OnNext(CurrentStepState.Value);
+        UpdateCheckItem();
     }
 
-    public static void SetCheckItem(int index)
+    public void SetCheckItem(int index)
     {
-        if (index < 0 ||
-            procedureDef == null ||
-            Steps == null ||
-            Steps[Step] == null ||
-            Steps[Step].Checklist == null || 
-            index >= Steps[Step].Checklist.Count())
+        var currentStep = CurrentStepState.Value;
+        if (index < 0 || currentStep.Checklist == null || index >= currentStep.Checklist.Count)
         {
             return;
         }
 
-        CheckItem = index;
-    }
-
-    public static void SignOff()
-    {
-        if (procedureDef == null ||
-            Steps == null ||
-            Steps[Step] == null ||
-            Steps[Step].Checklist == null ||
-            Steps[Step].SignedOff)
-        {
-            return;
-        }
-
-        Steps[Step].SignedOff = true;
+        currentStep.CheckNum.Value = index;
+        CurrentCheckItemState.Value = currentStep.Checklist[index];
+        ChecklistStream.OnNext(index);
         ServiceRegistry.GetService<ILighthouseControl>()?.SetProtocolStatus();
     }
 
-    public static void SetProcedureTitle(string procedureTitle)
+    private void UpdateCheckItem()
     {
-        //ServiceRegistry.GetService<ISharedStateController>().SetProcedure(SessionState.deviceId, procedureTitle);
-        ProcedureTitle = procedureTitle;
+        var currentStep = CurrentStepState.Value;
+        if (currentStep.Checklist != null)
+        {
+            var firstUncheckedItem = currentStep.Checklist.FirstOrDefault(item => !item.IsChecked.Value);
+            SetCheckItem(firstUncheckedItem != null ? currentStep.Checklist.IndexOf(firstUncheckedItem) : currentStep.Checklist.Count - 1);
+        }
+        else
+        {
+            CurrentCheckItemState.Value = null;
+            ChecklistStream.OnNext(0);
+        }
     }
 
-    public static void SetStartTime(DateTime time)
+    public void SignOff()
     {
-        StartTime = time;
+        var currentStep = Steps[CurrentStep.Value];
+        if (ActiveProtocol.Value == null || currentStep == null || currentStep.Checklist == null || currentStep.SignedOff.Value)
+        {
+            return;
+        }
+
+        currentStep.SignedOff.Value = true;
+        ServiceRegistry.GetService<ILighthouseControl>()?.SetProtocolStatus();
     }
 
-    public static void SetCsvPath(string path)
+    private void InitCSV()
     {
-        CsvPath = path;
-    }
-
-    private static void InitCSV()
-    {
-        string fileName = procedureDef.title + "_" + DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".csv";
+        string fileName = $"{ProtocolTitle.Value}_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.csv";
         string csvPath = Path.Combine(Application.persistentDataPath, fileName);
         if (!File.Exists(csvPath))
         {
             File.WriteAllText(csvPath, "Action,Result,Completion Time\n");
         }
-        SetCsvPath(csvPath);
+        CsvPath.Value = csvPath;
     }
 
-    //Data Structures
     public class StepState
     {
-        public bool SignedOff = false;
-        public int CheckNum = 0;
-        public List<CheckItemState> Checklist = null;
+        public ReactiveProperty<bool> SignedOff { get; } = new ReactiveProperty<bool>();
+        public ReactiveProperty<int> CheckNum { get; } = new ReactiveProperty<int>();
+        public ReactiveCollection<CheckItemState> Checklist { get; set; }
     }
 
     public class CheckItemState
     {   
-        public DateTime CompletionTime;
-        public ReactiveProperty<bool> IsChecked = new ReactiveProperty<bool>();
-        public string Text;
+        public ReactiveProperty<DateTime> CompletionTime { get; } = new ReactiveProperty<DateTime>();
+        public ReactiveProperty<bool> IsChecked { get; } = new ReactiveProperty<bool>();
+        public string Text { get; set; }
     }
 }

@@ -43,8 +43,8 @@ public class SourceElementViewController : ModelElementViewController
 
     void Awake()
     {
-        ProtocolState.checklistStream.Subscribe(_ => OnCheckItemChanged()).AddTo(this);
-        ProtocolState.stepStream.Subscribe(Step => OnStepChanged(Step)).AddTo(this);
+        ProtocolState.Instance.ChecklistStream.Subscribe(_ => OnCheckItemChanged()).AddTo(this);
+        ProtocolState.Instance.StepStream.Subscribe(Step => OnStepChanged(Step)).AddTo(this);
     }
 
 
@@ -244,11 +244,11 @@ public class SourceElementViewController : ModelElementViewController
 
     void OnCheckItemChanged()
     {
-        if(ProtocolState.procedureDef.steps[ProtocolState.Step].checklist == null)
+        if(!ProtocolState.Instance.HasCurrentChecklist())
         {
             return;
         }
-        if (!disableComponents && ProtocolState.CheckItem == ProtocolState.procedureDef.steps[ProtocolState.Step].checklist.Count()) //if on last checked item disable all active components
+        if (!disableComponents && ProtocolState.Instance.CurrentCheckNum == ProtocolState.Instance.CurrentChecklist.Count()) //if on last checked item disable all active components
         {
             //play audio for last event completed
             toggleActiveComponents(false);
@@ -263,7 +263,7 @@ public class SourceElementViewController : ModelElementViewController
 
     void OnStepChanged(ProtocolState.StepState step)
     {
-        prevCheckItem = step.CheckNum;
+        prevCheckItem = step.CheckNum.Value;
     }
 
     private void AddSubscriptions()
