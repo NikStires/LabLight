@@ -136,7 +136,7 @@ public class ProtocolPanelViewController : MonoBehaviour
                 case ContentType.WebUrl:
                     // Open a web browser
                     WebUrlItem webUrlItem = contentItem as WebUrlItem;
-                    ServiceRegistry.GetService<IWebPageProvider>().OpenWebPage(webUrlItem.url);
+                    //ServiceRegistry.GetService<IWebPageProvider>().OpenWebPage(webUrlItem.url);
                     break;
                 default:
                     break;

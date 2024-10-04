@@ -1051,14 +1051,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72c443dbaf25a7d4f956e116cb52ed5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeProtocol:
-    version: 0
-    title: 
-    pdfPath: 
-    steps: []
-    mediaBasePath: 
-  mainPanelPosition: {x: 0, y: 0, z: 0}
-  mainPanelRotation: {x: 0, y: 0, z: 0}
 --- !u!114 &248604197
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10017,6 +10009,14 @@ PrefabInstance:
       propertyPath: chatButton
       value: 
       objectReference: {fileID: 1888716916}
+    - target: {fileID: 4260026214602192422, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
+      propertyPath: timerButton
+      value: 
+      objectReference: {fileID: 1466924196}
+    - target: {fileID: 4260026214602192422, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
+      propertyPath: calculatorButton
+      value: 
+      objectReference: {fileID: 649512960}
     - target: {fileID: 4335549638224643746, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_Sprite
       value: 

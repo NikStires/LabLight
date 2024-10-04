@@ -11,7 +11,6 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 public class ActionCenterPanelViewController : MonoBehaviour
 {
     [SerializeField] private HeadPlacementEventChannel headPlacementEventChannel;
-    [SerializeField] GameObject timerPrefab;
     [SerializeField] GameObject hazardZonePanelPrefab;
     [SerializeField] XRSimpleInteractable recordingButton;
     bool isRecording = false;
@@ -19,24 +18,17 @@ public class ActionCenterPanelViewController : MonoBehaviour
     bool isReplaying = false;
     [SerializeField] XRSimpleInteractable internetBrowserButton;
     [SerializeField] XRSimpleInteractable chatButton;
-    [SerializeField] GameObject chatPanel;
+    [SerializeField] XRSimpleInteractable timerButton;
+    [SerializeField] XRSimpleInteractable calculatorButton;
 
     void Start()
     {
         recordingButton.selectExited.AddListener(_ => ToggleLighthouseRecording());
         replayButton.selectExited.AddListener(_ => ToggleLighthouseReplay());
-        internetBrowserButton.selectExited.AddListener(_ => OpenInternetBrowser());
-        //chatButton.selectExited.AddListener(_ => ToggleChatPanel());
-    }
-
-    /// <summary>
-    /// Spawns a timer object at the same position and rotation as the action center panel, and deactivates the panel.
-    /// </summary>
-    public void SpawnTimer()
-    {
-        var timer = Instantiate(timerPrefab);
-        timer.transform.position = transform.position;
-        timer.transform.rotation = transform.rotation;
+        internetBrowserButton.selectExited.AddListener(_ => ServiceRegistry.GetService<IUIDriver>().DisplayWebPage(""));
+        calculatorButton.selectExited.AddListener(_ => ServiceRegistry.GetService<IUIDriver>().DisplayCalculator());
+        chatButton.selectExited.AddListener(_ => ServiceRegistry.GetService<IUIDriver>().DisplayLLMChat());
+        timerButton.selectExited.AddListener(_ => ServiceRegistry.GetService<IUIDriver>().DisplayTimer(30));
     }
 
     public void SpawnHazardZonePanel()
@@ -97,15 +89,5 @@ public class ActionCenterPanelViewController : MonoBehaviour
             ServiceRegistry.GetService<ILighthouseControl>().StartPlayingVideo();
         }
         isReplaying = !isReplaying;
-    }
-
-    void OpenInternetBrowser()
-    {
-        ServiceRegistry.GetService<IWebPageProvider>().OpenWebPage("");
-    }
-
-    void ToggleChatPanel()
-    {
-        chatPanel.SetActive(!chatPanel.activeSelf);
     }
 }

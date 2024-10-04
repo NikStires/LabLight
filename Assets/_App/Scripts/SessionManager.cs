@@ -82,8 +82,10 @@ public class SessionManager : MonoBehaviour
         ServiceRegistry.RegisterService<IProtocolDataProvider>(resourceFileDataProvider);
         ServiceRegistry.RegisterService<IMediaProvider>(resourceFileDataProvider);
 
-        var webpageProvider = new LLSwiftWebPageProviderDriver();
-        ServiceRegistry.RegisterService<IWebPageProvider>(webpageProvider);
+        #if UNITY_VISIONOS
+        var UIDriver = new SwiftUIDriver();
+        ServiceRegistry.RegisterService<IUIDriver>(UIDriver);
+        #endif
 
         //Set up default state
         SessionState.deviceId = SystemInfo.deviceName;
