@@ -31,9 +31,52 @@ struct VideoContentView: View {
 
                 // Playback controls
                 HStack {
-                    // ... (existing playback control buttons)
+                    Button(action: {
+                        let currentTime = player.currentTime()
+                        let newTime = CMTimeMake(value: currentTime.value - 10 * Int64(currentTime.timescale), timescale: currentTime.timescale)
+                        player.seek(to: newTime)
+                    }) {
+                        Image(systemName: "gobackward.10")
+                            .foregroundColor(.white)
+                            .padding()
+                    }
+                    
+                    Button(action: {
+                        if isPlaying {
+                            player.pause()
+                        } else {
+                            player.play()
+                        }
+                        isPlaying.toggle()
+                    }) {
+                        Image(systemName: isPlaying ? "pause.fill" : "play.fill")
+                            .foregroundColor(.white)
+                            .padding()
+                    }
+                    .padding()
+
+                    Button(action: {
+                        let currentTime = player.currentTime()
+                        let newTime = CMTimeMake(value: currentTime.value + 10 * Int64(currentTime.timescale), timescale: currentTime.timescale)
+                        player.seek(to: newTime)
+                    }) {
+                        Image(systemName: "goforward.10")
+                            .foregroundColor(.white)
+                            .padding()
+                    }
+                    // Button to present fullscreen player
+                    Button(action: {
+                        isPresentingFullScreenPlayer = true
+                    }) {
+                        Text("View Immersive")
+                            .padding()
+                            .cornerRadius(10)
+                    }
+                    .sheet(isPresented: $isPresentingFullScreenPlayer) {
+                        // Present AVPlayerViewController in fullscreen mode
+                        AVPlayerViewControllerWrapper(player: player)
+                    }  
                 }
-                .padding()
             } else if let errorMessage = errorMessage {
                 Text(errorMessage)
                     .foregroundColor(.red)
