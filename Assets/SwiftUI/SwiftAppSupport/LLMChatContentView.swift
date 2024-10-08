@@ -15,12 +15,13 @@ class LLMChatViewModel: ObservableObject {
             DispatchQueue.main.async {
                 if message.hasPrefix("authStatus:") {
                     let status = message.dropFirst("authStatus:".count)
-                    self.isAuthenticated = (status == "true")
+                    self.isAuthenticated = (status == "True")
                     if !self.isAuthenticated {
                         self.loginError = "Authentication failed. Please try again."
                     }
                 } else {
-                    self.addMessage(message, isUser: false)
+                    let chatMessage = message.replacingOccurrences(of: "LLMChatMessage:", with: "")
+                    self.addMessage(chatMessage, isUser: false)
                 }
             }
         }
@@ -64,7 +65,7 @@ struct LLMChatContentView: View {
                 .textFieldStyle(RoundedBorderTextFieldStyle())
             Button("Login") {
                 if isValidEmail(email) && !password.isEmpty {
-                    CallCSharpCallback("login:" + email + ":" + password)
+                    CallCSharpCallback("login:" + email + "," + password)
                 } else {
                     viewModel.loginError = "Please enter a valid email and password."
                 }

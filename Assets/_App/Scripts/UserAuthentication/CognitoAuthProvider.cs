@@ -52,14 +52,15 @@ public class CognitoAuthProvider : IUserAuthProvider
                 }
                 else
                 {
-                    Debug.LogError("AuthResult is null, deserialization failed.");
+                    Debug.Log("AuthResult is null, deserialization failed.");
                 }
             }
             else
             {
-                Debug.LogError("Error: " + request.error);
-                Debug.LogError("Response: " + request.downloadHandler.text);
+                Debug.Log("Error: " + request.error);
+                Debug.Log("Response: " + request.downloadHandler.text);
             }
+            ServiceRegistry.GetService<IUIDriver>().SendAuthStatus(IsAuthenticated());
         }
     }
 

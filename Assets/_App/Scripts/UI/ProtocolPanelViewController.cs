@@ -7,12 +7,16 @@ using TMPro;
 using UniRx;
 using UnityEngine.XR.Interaction.Toolkit;
 using System.Linq;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using System.IO;
 
 public class ProtocolPanelViewController : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI procedureTitle;
     //[SerializeField] TextMeshProUGUI stepText;
     [SerializeField] Transform contentFrame;
+
+    [SerializeField] XRSimpleInteractable OpenPDFButton;
 
     //content item prefabs
     [SerializeField] LayoutController ContainerHorizontalItem;
@@ -36,6 +40,7 @@ public class ProtocolPanelViewController : MonoBehaviour
         procedureTitle.text = ProtocolState.Instance.ActiveProtocol.Value.title;
         //UpdateStepDisplay();
         UpdateContentItems();
+        OpenPDFButton.selectExited.AddListener(_ => OnOpenPDFButtonClicked());
     }
 
     private void UpdateContentItems()
@@ -136,7 +141,7 @@ public class ProtocolPanelViewController : MonoBehaviour
                 case ContentType.WebUrl:
                     // Open a web browser
                     WebUrlItem webUrlItem = contentItem as WebUrlItem;
-                    //ServiceRegistry.GetService<IWebPageProvider>().OpenWebPage(webUrlItem.url);
+                    ServiceRegistry.GetService<IUIDriver>().DisplayWebPage(webUrlItem.url);
                     break;
                 default:
                     break;
@@ -151,5 +156,14 @@ public class ProtocolPanelViewController : MonoBehaviour
             Destroy(contentItem.gameObject);
         }
         contentItemInstances.Clear();
+    }
+
+    void OnOpenPDFButtonClicked()
+    {
+        if(string.IsNullOrEmpty(ProtocolState.Instance.ActiveProtocol.Value.pdfPath))
+        {
+            return;
+        }
+        ServiceRegistry.GetService<IUIDriver>().DisplayPDFReader(Path.GetFileNameWithoutExtension(ProtocolState.Instance.ActiveProtocol.Value.pdfPath));
     }
 }

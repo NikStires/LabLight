@@ -11,15 +11,13 @@ public class LLMChatController : MonoBehaviour
 {
     private string apiUrl = "https://2fdv197i13.execute-api.us-east-1.amazonaws.com/dev/message";
 
-    [SerializeField] AnthropicEventChannel anthropicEventChannel;
-
     [SerializeField] bool useTestCredentials;
     [SerializeField] string testUsername;
     [SerializeField] string testPassword;
 
     void Start()
     {
-        anthropicEventChannel.OnQuery.AddListener(QueryClaudeWithString);
+        AnthropicEventChannel.Instance.OnQuery.AddListener(QueryClaudeWithString);
         if(!ServiceRegistry.GetService<IUserAuthProvider>().IsAuthenticated())
         {
             Debug.Log("User is not authenticated. Please log in.");
@@ -67,7 +65,7 @@ public class LLMChatController : MonoBehaviour
 
                 // Parse the body (which is a JSON string) to extract the message
                 var bodyJson = JsonUtility.FromJson<InnerBody>(outerResponse.body);
-                anthropicEventChannel.OnResponse.Invoke(bodyJson.message);
+                AnthropicEventChannel.Instance.OnResponse.Invoke(bodyJson.message);
             }
             else
             {

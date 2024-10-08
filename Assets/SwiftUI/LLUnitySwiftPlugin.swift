@@ -75,6 +75,7 @@ func openSwiftSafariWindow(_ cname: UnsafePointer<CChar>) {
 @_cdecl("SendMessageToSwiftUI")
 func sendMessageToSwiftUI(_ cmessage: UnsafePointer<CChar>) {
     let message = String(cString: cmessage)
+    print("######LABLIGHT Message Received from Unity \(message)")
     NotificationCenter.default.post(name: Notification.Name("LLMChatMessage"), object: nil, userInfo: ["message": message])
 }
 

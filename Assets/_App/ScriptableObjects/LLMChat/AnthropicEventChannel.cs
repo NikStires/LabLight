@@ -8,6 +8,23 @@ public class StringEvent : UnityEvent<string> { }
 [CreateAssetMenu(menuName = "ScriptableObjects/AnthropicEventChannel")]
 public class AnthropicEventChannel : ScriptableObject
 {
+    private static AnthropicEventChannel _instance;
+    public static AnthropicEventChannel Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = Resources.Load<AnthropicEventChannel>("AnthropicEventChannel");
+                if (_instance == null)
+                {
+                    _instance = CreateInstance<AnthropicEventChannel>();
+                }
+            }
+            return _instance;
+        }
+    }
+
     public StringEvent OnQuery = new StringEvent();
     public StringEvent OnResponse = new StringEvent();
 

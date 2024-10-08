@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Runtime.InteropServices;
 using System;
 using AOT;
+using UniRx;
+using System.Linq;
 
 public class SwiftUIDriver : MonoBehaviour, IUIDriver
 {
@@ -23,14 +25,6 @@ public class SwiftUIDriver : MonoBehaviour, IUIDriver
         }
     }
 
-    // Unity Callback Methods
-    private Action<int> stepNavigationCallback;
-    private Action<int, bool> checklistItemToggleCallback;
-    private Action<string> protocolSelectionCallback;
-    private Action<bool> checklistSignOffCallback;
-    private Action<string> chatMessageCallback;
-    private Action<string, string> loginCallback;
-
     void Awake()
     {
         if (_instance == null)
@@ -46,29 +40,70 @@ public class SwiftUIDriver : MonoBehaviour, IUIDriver
         SetNativeCallback(OnMessageReceived);
     }
 
+    void Start()
+    {
+        ProtocolState.Instance.ProtocolStream.Subscribe(OnProtocolChange);
+        ProtocolState.Instance.StepStream.Subscribe(OnStepChange);
+        ProtocolState.Instance.ChecklistStream.Subscribe(OnCheckItemChange);
+        AnthropicEventChannel.Instance.OnResponse.AddListener(OnChatMessageReceived);
+    }
+
     // Swift UI Update methods
     public void OnProtocolChange(string protocolJson)
     {
         SendMessageToSwiftUI($"protocolChange:{protocolJson}");
     }
 
-    public void OnStepChange(int index, bool isSignedOff)
+    public void OnStepChange(ProtocolState.StepState stepState)
     {
-        SendMessageToSwiftUI($"stepChange:{index}:{isSignedOff}");
+        var currentStep = ProtocolState.Instance.CurrentStepDefinition;
+        SendMessageToSwiftUI($"stepChange:{ProtocolState.Instance.CurrentStep}:{stepState.SignedOff.Value}");
+
+        foreach(var contentItem in currentStep.contentItems)
+        {
+            switch(contentItem.contentType)
+            {
+                case ContentType.Video:
+                    var videoItem = (VideoItem)contentItem;
+                    DisplayVideoPlayer(videoItem.url);
+                    break;
+            }
+        }
     }
 
     public void OnCheckItemChange(int index)
     {
+        var currentCheckItem = ProtocolState.Instance.CurrentCheckItemDefinition;
         SendMessageToSwiftUI($"checkItemChange:{index}");
+
+        if(ProtocolState.Instance.HasCurrentCheckItem())
+        {
+            if(currentCheckItem.activateTimer)
+            {
+                int seconds = currentCheckItem.hours * 3600 + currentCheckItem.minutes * 60 + currentCheckItem.seconds;
+                DisplayTimer(seconds);
+            }
+            foreach(var contentItem in currentCheckItem.contentItems)
+            {
+                switch(contentItem.contentType)
+                {
+                    case ContentType.Video:
+                        var videoItem = (VideoItem)contentItem;
+                        DisplayVideoPlayer(videoItem.url);
+                        break;
+                }
+            }
+        }
     }
 
-    public void SendChatMessage(string message)
+    public void OnChatMessageReceived(string message)
     {
-        SendMessageToSwiftUI($"sendChatMessage:{message}");
+        SendMessageToSwiftUI($"LLMChatMessage:{message}");
     }
 
     public void SendAuthStatus(bool isAuthenticated)
     {
+        Debug.Log("######LABLIGHT sending auth status to Swift: " + isAuthenticated);
         SendMessageToSwiftUI($"authStatus:{isAuthenticated}");
     }
 
@@ -104,34 +139,37 @@ public class SwiftUIDriver : MonoBehaviour, IUIDriver
     }
 
     // Input Handling Methods
-    public void SetStepNavigationCallback(Action<int> callback)
+    public void StepNavigationCallback(int navigationDirection)
     {
-        stepNavigationCallback = callback;
+        ProtocolState.Instance.SetStep(ProtocolState.Instance.CurrentStep.Value + navigationDirection);
     }
 
-    public void SetChecklistItemToggleCallback(Action<int, bool> callback)
+    public void ChecklistItemToggleCallback(int index, bool isChecked)
     {
-        checklistItemToggleCallback = callback;
+        Debug.Log("check item " + index.ToString() + " " + isChecked.ToString());
     }
 
-    public void SetProtocolSelectionCallback(Action<string> callback)
+    public void ProtocolSelectionCallback(string protocolJSON)
     {
-        protocolSelectionCallback = callback;
+        Debug.Log(protocolJSON);
     }
 
-    public void SetChecklistSignOffCallback(Action<bool> callback)
+    public void ChecklistSignOffCallback(bool isSignedOff)
     {
-        checklistSignOffCallback = callback;
+        if(isSignedOff)
+        {
+            ProtocolState.Instance.SignOff();
+        }
     }
 
-    public void SetChatMessageCallback(Action<string> callback)
+    public void ChatMessageCallback(string message)
     {
-        chatMessageCallback = callback;
+        AnthropicEventChannel.Instance.RaiseQuery(message);
     }
 
-    public void SetLoginCallback(Action<string, string> callback)
+    public void LoginCallback(string username, string password)
     {
-        loginCallback = callback;
+        StartCoroutine(ServiceRegistry.GetService<IUserAuthProvider>().TryAuthenticateUser(username, password));
     }
 
     // Native callback handler
@@ -143,6 +181,7 @@ public class SwiftUIDriver : MonoBehaviour, IUIDriver
 
     private void HandleMessage(string message)
     {
+        Debug.Log("######LABLIGHT Message Recieved from SwiftUI " + message);
         string[] parts = message.Split(':');
         if (parts.Length < 2) return;
 
@@ -152,26 +191,27 @@ public class SwiftUIDriver : MonoBehaviour, IUIDriver
         switch (command)
         {
             case "stepNavigation":
-                stepNavigationCallback?.Invoke(int.Parse(data));
+                StepNavigationCallback(int.Parse(data));
                 break;
             case "checklistItemToggle":
                 string[] toggleData = data.Split(',');
-                checklistItemToggleCallback?.Invoke(int.Parse(toggleData[0]), bool.Parse(toggleData[1]));
+                ChecklistItemToggleCallback(int.Parse(toggleData[0]), bool.Parse(toggleData[1]));
                 break;
             case "protocolSelection":
-                protocolSelectionCallback?.Invoke(data);
+                ProtocolSelectionCallback(data);
                 break;
             case "checklistSignOff":
-                checklistSignOffCallback?.Invoke(bool.Parse(data));
+                ChecklistSignOffCallback(bool.Parse(data));
                 break;
             case "sendMessage":
-                chatMessageCallback?.Invoke(data);
+                ChatMessageCallback(data);
                 break;
             case "login":
                 string[] loginData = data.Split(',');
                 if (loginData.Length == 2)
                 {
-                    loginCallback?.Invoke(loginData[0], loginData[1]);
+                    Debug.Log("######LABLIGHT triggering Login Callback: " + loginData[0] + " " + loginData[1]);
+                    LoginCallback(loginData[0], loginData[1]);
                 }
                 break;
             // Add more cases as needed

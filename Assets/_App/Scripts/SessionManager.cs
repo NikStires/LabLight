@@ -84,7 +84,9 @@ public class SessionManager : MonoBehaviour
 
         #if UNITY_VISIONOS
         var UIDriver = new SwiftUIDriver();
+        gameObject.AddComponent<SwiftUIDriver>();
         ServiceRegistry.RegisterService<IUIDriver>(UIDriver);
+        SetupUICallbacks();
         #endif
 
         //Set up default state
@@ -127,4 +129,8 @@ public class SessionManager : MonoBehaviour
         SessionState.onCalibrationUpdated.Invoke();
     }
 
+    void SetupUICallbacks()
+    {
+        
+    }
 }

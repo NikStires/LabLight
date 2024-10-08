@@ -5,12 +5,12 @@ public interface IUIDriver
 {
     //UI Update methods
     void OnProtocolChange(string protocolJson);
-    void OnStepChange(int index, bool isSignedOff);
+    void OnStepChange(ProtocolState.StepState stepState);
     void OnCheckItemChange(int index);
-    void SendChatMessage(string message);
+    void OnChatMessageReceived(string message);
     void SendAuthStatus(bool isAuthenticated);
 
-    //UI Display methods
+    //UI Display methods 
     void DisplayTimer(int seconds);
     void DisplayCalculator();
     void DisplayWebPage(string url);
@@ -19,10 +19,10 @@ public interface IUIDriver
     void DisplayPDFReader(string url);
 
     //Unity Callback Methods
-    void SetStepNavigationCallback(System.Action<int> callback);
-    void SetChecklistItemToggleCallback(System.Action<int, bool> callback);
-    void SetProtocolSelectionCallback(System.Action<string> callback);
-    void SetChecklistSignOffCallback(System.Action<bool> callback);
-    void SetChatMessageCallback(Action<string> callback);
-    void SetLoginCallback(Action<string, string> callback);
+    void StepNavigationCallback(int navigationDirection); //-1 for previous, 1 for next
+    void ChecklistItemToggleCallback(int index, bool isChecked);
+    void ProtocolSelectionCallback(string protocolJSON);
+    void ChecklistSignOffCallback(bool isSignedOff);
+    void ChatMessageCallback(string message);
+    void LoginCallback(string username, string password);
 }
