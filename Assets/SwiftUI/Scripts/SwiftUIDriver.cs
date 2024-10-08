@@ -45,7 +45,7 @@ public class SwiftUIDriver : MonoBehaviour, IUIDriver
         ProtocolState.Instance.ProtocolStream.Subscribe(OnProtocolChange);
         ProtocolState.Instance.StepStream.Subscribe(OnStepChange);
         ProtocolState.Instance.ChecklistStream.Subscribe(OnCheckItemChange);
-        AnthropicEventChannel.Instance.OnResponse.AddListener(OnChatMessageReceived);
+        ServiceRegistry.GetService<ILLMChatProvider>().OnResponse.AddListener(OnChatMessageReceived);
     }
 
     // Swift UI Update methods
@@ -138,7 +138,7 @@ public class SwiftUIDriver : MonoBehaviour, IUIDriver
         OpenSwiftPdfWindow(url);
     }
 
-    // Input Handling Methods
+    // Unity Callback Methods
     public void StepNavigationCallback(int navigationDirection)
     {
         ProtocolState.Instance.SetStep(ProtocolState.Instance.CurrentStep.Value + navigationDirection);
@@ -164,7 +164,7 @@ public class SwiftUIDriver : MonoBehaviour, IUIDriver
 
     public void ChatMessageCallback(string message)
     {
-        AnthropicEventChannel.Instance.RaiseQuery(message);
+        ServiceRegistry.GetService<ILLMChatProvider>().QueryAsync(message);
     }
 
     public void LoginCallback(string username, string password)
@@ -179,6 +179,7 @@ public class SwiftUIDriver : MonoBehaviour, IUIDriver
         Instance.HandleMessage(message);
     }
 
+    //Handle message passing from SwiftUI
     private void HandleMessage(string message)
     {
         Debug.Log("######LABLIGHT Message Recieved from SwiftUI " + message);

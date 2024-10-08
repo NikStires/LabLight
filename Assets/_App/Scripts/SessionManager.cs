@@ -82,11 +82,13 @@ public class SessionManager : MonoBehaviour
         ServiceRegistry.RegisterService<IProtocolDataProvider>(resourceFileDataProvider);
         ServiceRegistry.RegisterService<IMediaProvider>(resourceFileDataProvider);
 
+        var llmChatProvider = new ClaudeChatProvider();
+        ServiceRegistry.RegisterService<ILLMChatProvider>(llmChatProvider);
+
         #if UNITY_VISIONOS
         var UIDriver = new SwiftUIDriver();
         gameObject.AddComponent<SwiftUIDriver>();
         ServiceRegistry.RegisterService<IUIDriver>(UIDriver);
-        SetupUICallbacks();
         #endif
 
         //Set up default state
@@ -127,10 +129,5 @@ public class SessionManager : MonoBehaviour
         Quaternion rotation = Quaternion.Euler(0f, 90f, 0f);
         CharucoTransform.rotation *= rotation;
         SessionState.onCalibrationUpdated.Invoke();
-    }
-
-    void SetupUICallbacks()
-    {
-        
     }
 }

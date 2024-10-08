@@ -1,47 +1,33 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 using System.Text;
 using System.IO;
 using Newtonsoft.Json;
 
-public class LLMChatController : MonoBehaviour
+public class ClaudeChatProvider : ILLMChatProvider
 {
     private string apiUrl = "https://2fdv197i13.execute-api.us-east-1.amazonaws.com/dev/message";
 
-    [SerializeField] bool useTestCredentials;
-    [SerializeField] string testUsername;
-    [SerializeField] string testPassword;
-
-    void Start()
-    {
-        AnthropicEventChannel.Instance.OnQuery.AddListener(QueryClaudeWithString);
-        if(!ServiceRegistry.GetService<IUserAuthProvider>().IsAuthenticated())
-        {
-            Debug.Log("User is not authenticated. Please log in.");
-            if(useTestCredentials)
-            {
-                Debug.Log("Trying to authenticate with test credentials...");
-                StartCoroutine(ServiceRegistry.GetService<IUserAuthProvider>().TryAuthenticateUser(testUsername, testPassword));
-            }
-        }
-    }
+    private readonly StringEvent _onResponse = new StringEvent();
+    public StringEvent OnResponse => _onResponse;
 
     // Method to query Claude with a string prompt
-    public void QueryClaudeWithString(string query)
+    public async Task QueryAsync(string query)
     {
         if(!ServiceRegistry.GetService<IUserAuthProvider>().IsAuthenticated())
         {
             Debug.LogError("User is not authenticated. Cannot query Claude.");
             return;
         }
-        StartCoroutine(SendQueryToClaude(query));
+        await SendQueryToClaudeAsync(query);
     }
 
     // Coroutine to send the query to Claude API
-    IEnumerator SendQueryToClaude(string query)
+    private async Task SendQueryToClaudeAsync(string query)
     {
         string jsonBody = $@"{{
             ""query"": ""{query}""
@@ -56,7 +42,12 @@ public class LLMChatController : MonoBehaviour
             request.SetRequestHeader("Content-Type", "application/json");
             request.SetRequestHeader("auth-token", ServiceRegistry.GetService<IUserAuthProvider>().TryGetIdToken()); // Include the Cognito ID token in the request
 
-            yield return request.SendWebRequest();
+            var operation = request.SendWebRequest();
+
+            while(!operation.isDone)
+            {
+                await Task.Yield();
+            }
 
             if (request.result == UnityWebRequest.Result.Success)
             {
@@ -65,7 +56,7 @@ public class LLMChatController : MonoBehaviour
 
                 // Parse the body (which is a JSON string) to extract the message
                 var bodyJson = JsonUtility.FromJson<InnerBody>(outerResponse.body);
-                AnthropicEventChannel.Instance.OnResponse.Invoke(bodyJson.message);
+                _onResponse.Invoke(bodyJson.message);
             }
             else
             {

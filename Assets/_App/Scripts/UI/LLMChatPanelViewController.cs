@@ -6,8 +6,6 @@ using TMPro;
 
 public class LLMChatPanelViewController : LLBasePanel
 {
-    [SerializeField] AnthropicEventChannel anthropicEventChannel;
-
     [Header("Login UI")]
     [SerializeField] GameObject loginCanvas;
     [SerializeField] TMP_InputField emailField;
@@ -28,12 +26,9 @@ public class LLMChatPanelViewController : LLBasePanel
 
     private TouchScreenKeyboard keyboard;
 
-    private IUserAuthProvider authProvider;
-
     protected override void Awake()
     {
         base.Awake();
-        authProvider = ServiceRegistry.GetService<IUserAuthProvider>();
     }
 
     // Start is called before the first frame update
@@ -44,7 +39,7 @@ public class LLMChatPanelViewController : LLBasePanel
         submitButton.selectEntered.AddListener(_ => Submit());
         inputField.onSubmit.AddListener(_ => Submit());
         // inputField.onSelect.AddListener(_ => keyboard = TouchScreenKeyboard.Open(inputField.text, TouchScreenKeyboardType.Default));
-        anthropicEventChannel.OnResponse.AddListener(HandleResponse);
+        ServiceRegistry.GetService<ILLMChatProvider>().OnResponse.AddListener(HandleResponse);
         loginButton.selectExited.AddListener(_ => StartCoroutine(LoginCoroutine()));
         UpdateUIBasedOnAuthStatus();
     }
@@ -85,12 +80,12 @@ public class LLMChatPanelViewController : LLBasePanel
         string query = inputField.text;
         inputField.text = "";
         panelText.text = panelText.text + "<color=blue>" + query + "\n\n";
-        anthropicEventChannel.RaiseQuery(query);
+        ServiceRegistry.GetService<ILLMChatProvider>().QueryAsync(query);
     }
 
     private void UpdateUIBasedOnAuthStatus()
     {
-        bool isAuthenticated = authProvider.IsAuthenticated();
+        bool isAuthenticated = ServiceRegistry.GetService<IUserAuthProvider>().IsAuthenticated();
         inputPanel.SetActive(isAuthenticated);
         loginCanvas.SetActive(!isAuthenticated);
         chatCanvas.SetActive(isAuthenticated);
@@ -110,11 +105,11 @@ public class LLMChatPanelViewController : LLBasePanel
             yield break;
         }
 
-        yield return StartCoroutine(authProvider.TryAuthenticateUser(email, password));
+        yield return StartCoroutine(ServiceRegistry.GetService<IUserAuthProvider>().TryAuthenticateUser(email, password));
 
         UpdateUIBasedOnAuthStatus();
 
-        if (authProvider.IsAuthenticated())
+        if (ServiceRegistry.GetService<IUserAuthProvider>().IsAuthenticated())
         {
             // Login successful
             Debug.Log("Login successful");
