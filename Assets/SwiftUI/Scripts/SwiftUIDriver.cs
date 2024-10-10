@@ -65,8 +65,10 @@ public class SwiftUIDriver : IUIDriver, IDisposable
     }
 
     // Swift UI Update methods
-    public void OnProtocolChange(string protocolJson)
+    public void OnProtocolChange(ProtocolDefinition protocol)
     {
+        Debug.Log("######LABLIGHT SWIFTUIDRIVER OnProtocolChange: " + protocol.title);
+        string protocolJson = JsonConvert.SerializeObject(protocol);
         SendMessageToSwiftUI($"protocolChange:{protocolJson}");
     }
 
@@ -119,7 +121,7 @@ public class SwiftUIDriver : IUIDriver, IDisposable
 
     public void SendAuthStatus(bool isAuthenticated)
     {
-        Debug.Log("######LABLIGHT sending auth status to Swift: " + isAuthenticated);
+        Debug.Log("######LABLIGHT SWIFTUIDRIVER sending auth status to Swift: " + isAuthenticated);
         SendMessageToSwiftUI($"authStatus:{isAuthenticated}");
     }
 
@@ -136,7 +138,7 @@ public class SwiftUIDriver : IUIDriver, IDisposable
 
     public void DisplayCalculator()
     {
-        OpenSwiftCalculatorWindow();
+        OpenSwiftUIWindow("Calculator");
     }
 
     public void DisplayWebPage(string url)
@@ -207,7 +209,7 @@ public class SwiftUIDriver : IUIDriver, IDisposable
 
     public void LoginCallback(string username, string password)
     {
-        Debug.Log("######LABLIGHT triggering Login Callback: " + username + " " + password);
+        Debug.Log("######LABLIGHT SWIFTUIDRIVER triggering Login Callback: " + username + " " + password);
         var authProvider = ServiceRegistry.GetService<IUserAuthProvider>();
         if (authProvider != null)
         {
@@ -242,7 +244,7 @@ public class SwiftUIDriver : IUIDriver, IDisposable
     //Handle message passing from SwiftUI
     private void HandleMessage(string message)
     {
-        Debug.Log("######LABLIGHT Message Recieved from SwiftUI " + message);
+        Debug.Log("######LABLIGHT SWIFTUIDRIVER Message Recieved from SwiftUI " + message);
         string[] parts = message.Split(':');
         if (parts.Length < 2) return;
 
@@ -271,7 +273,7 @@ public class SwiftUIDriver : IUIDriver, IDisposable
                 string[] loginData = data.Split(',');
                 if (loginData.Length == 2)
                 {
-                    Debug.Log("######LABLIGHT triggering Login Callback: " + loginData[0] + " " + loginData[1]);
+                    Debug.Log("######LABLIGHT SWIFTUIDRIVER triggering Login Callback: " + loginData[0] + " " + loginData[1]);
                     LoginCallback(loginData[0], loginData[1]);
                 }
                 break;
@@ -321,9 +323,6 @@ public class SwiftUIDriver : IUIDriver, IDisposable
     private static extern void OpenSwiftTimerWindow(int duration);
 
     [DllImport("__Internal")]
-    private static extern void OpenSwiftCalculatorWindow();
-
-    [DllImport("__Internal")]
     private static extern void OpenSwiftSafariWindow(string urlString);
 
     [DllImport("__Internal")]
@@ -337,7 +336,6 @@ public class SwiftUIDriver : IUIDriver, IDisposable
     private static void OpenSwiftUIWindow(string name) { Debug.Log($"OpenSwiftUIWindow: {name}"); }
     private static void CloseSwiftUIWindow(string name) { Debug.Log($"CloseSwiftUIWindow: {name}"); }
     private static void OpenSwiftTimerWindow(int duration) { Debug.Log($"OpenSwiftTimerWindow: {duration}"); }
-    private static void OpenSwiftCalculatorWindow() { Debug.Log("OpenSwiftCalculatorWindow"); }
     private static void OpenSwiftSafariWindow(string urlString) { Debug.Log($"OpenSwiftSafariWindow: {urlString}"); }
     private static void OpenSwiftVideoWindow(string videoTitle) { Debug.Log($"OpenSwiftVideoWindow: {videoTitle}"); }
     private static void OpenSwiftPdfWindow(string pdfUrlString) { Debug.Log($"OpenSwiftPdfWindow: {pdfUrlString}"); }

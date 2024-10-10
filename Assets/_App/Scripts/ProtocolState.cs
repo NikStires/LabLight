@@ -18,7 +18,7 @@ public class ProtocolState : MonoBehaviour
     public ReactiveProperty<string> CsvPath { get; } = new ReactiveProperty<string>();
 
     // Data streams
-    public Subject<string> ProtocolStream { get; } = new Subject<string>();
+    public Subject<ProtocolDefinition> ProtocolStream { get; } = new Subject<ProtocolDefinition>();
     public Subject<StepState> StepStream { get; } = new Subject<StepState>();
     public Subject<int> ChecklistStream { get; } = new Subject<int>();
 
@@ -70,7 +70,7 @@ public class ProtocolState : MonoBehaviour
         InitCSV();
 
         ServiceRegistry.GetService<ILighthouseControl>()?.SetProtocolStatus();
-        ProtocolStream.OnNext(ProtocolTitle.Value);
+        ProtocolStream.OnNext(protocolDefinition);
         SceneLoader.Instance.LoadSceneClean("Protocol");
     }
 

@@ -3,6 +3,7 @@ import UnityFramework
 
 struct ProtocolMenuContentView: View {
     @StateObject private var viewModel = ProtocolMenuViewModel()
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         VStack {
@@ -16,6 +17,7 @@ struct ProtocolMenuContentView: View {
                 List(viewModel.protocols) { protocolItem in
                     Button(action: {
                         viewModel.selectProtocol(protocolItem.name)
+                        dismiss()
                     }) {
                         VStack(alignment: .leading) {
                             Text(formatText(protocolItem.title))

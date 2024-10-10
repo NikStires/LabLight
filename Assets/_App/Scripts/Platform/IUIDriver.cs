@@ -4,7 +4,7 @@ using System;
 public interface IUIDriver
 {
     //UI Update methods
-    void OnProtocolChange(string protocolJson);
+    void OnProtocolChange(ProtocolDefinition protocol);
     void OnStepChange(ProtocolState.StepState stepState);
     void OnCheckItemChange(int index);
     void OnChatMessageReceived(string message);
@@ -22,7 +22,7 @@ public interface IUIDriver
     //Unity Callback Methods
     void StepNavigationCallback(int navigationDirection); //-1 for previous, 1 for next
     void ChecklistItemToggleCallback(int index, bool isChecked);
-    void ProtocolSelectionCallback(string protocolJSON);
+    void ProtocolSelectionCallback(string protocolTitle);
     void ChecklistSignOffCallback(bool isSignedOff);
     void ChatMessageCallback(string message);
     void LoginCallback(string username, string password);
