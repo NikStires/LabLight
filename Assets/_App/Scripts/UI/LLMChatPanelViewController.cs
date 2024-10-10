@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using TMPro;
+using System.Threading.Tasks;
+using UniRx;
 
 public class LLMChatPanelViewController : LLBasePanel
 {
@@ -38,9 +40,8 @@ public class LLMChatPanelViewController : LLBasePanel
         testButton.selectEntered.AddListener(_ => Test());
         submitButton.selectEntered.AddListener(_ => Submit());
         inputField.onSubmit.AddListener(_ => Submit());
-        // inputField.onSelect.AddListener(_ => keyboard = TouchScreenKeyboard.Open(inputField.text, TouchScreenKeyboardType.Default));
         ServiceRegistry.GetService<ILLMChatProvider>().OnResponse.AddListener(HandleResponse);
-        loginButton.selectExited.AddListener(_ => StartCoroutine(LoginCoroutine()));
+        loginButton.selectExited.AddListener(_ => LoginAsync());
         UpdateUIBasedOnAuthStatus();
     }
 
@@ -91,7 +92,7 @@ public class LLMChatPanelViewController : LLBasePanel
         chatCanvas.SetActive(isAuthenticated);
     }
 
-    private IEnumerator LoginCoroutine()
+    private async void LoginAsync()
     {
         loginButton.gameObject.SetActive(false);
 
@@ -102,14 +103,14 @@ public class LLMChatPanelViewController : LLBasePanel
         {
             Debug.LogError("Email or password is empty");
             loginButton.gameObject.SetActive(true);
-            yield break;
+            return;
         }
 
-        yield return StartCoroutine(ServiceRegistry.GetService<IUserAuthProvider>().TryAuthenticateUser(email, password));
+        bool isAuthenticated = await ServiceRegistry.GetService<IUserAuthProvider>().TryAuthenticateUser(email, password);
 
         UpdateUIBasedOnAuthStatus();
 
-        if (ServiceRegistry.GetService<IUserAuthProvider>().IsAuthenticated())
+        if (isAuthenticated)
         {
             // Login successful
             Debug.Log("Login successful");

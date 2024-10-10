@@ -5,7 +5,7 @@ using AOT;
 using UniRx;
 using System.Linq;
 
-public class SwiftUIDriver : MonoBehaviour, IUIDriver
+public class SwiftUIDriver : IUIDriver, IDisposable
 {
     private static SwiftUIDriver _instance;
     public static SwiftUIDriver Instance
@@ -14,38 +14,53 @@ public class SwiftUIDriver : MonoBehaviour, IUIDriver
         {
             if (_instance == null)
             {
-                _instance = FindObjectOfType<SwiftUIDriver>();
-                if (_instance == null)
-                {
-                    GameObject go = new GameObject("SwiftUIDriver");
-                    _instance = go.AddComponent<SwiftUIDriver>();
-                }
+                _instance = new SwiftUIDriver();
             }
             return _instance;
         }
     }
 
-    void Awake()
-    {
-        if (_instance == null)
-        {
-            _instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else if (_instance != this)
-        {
-            Destroy(gameObject);
-        }
+    private CompositeDisposable _disposables = new CompositeDisposable();
 
+    public SwiftUIDriver()
+    {
         SetNativeCallback(OnMessageReceived);
+        // Remove Initialize() call from constructor
     }
 
-    void Start()
+    // Make Initialize public and call it after ensuring dependencies are ready
+    public void Initialize()
     {
-        ProtocolState.Instance.ProtocolStream.Subscribe(OnProtocolChange);
-        ProtocolState.Instance.StepStream.Subscribe(OnStepChange);
-        ProtocolState.Instance.ChecklistStream.Subscribe(OnCheckItemChange);
-        ServiceRegistry.GetService<ILLMChatProvider>().OnResponse.AddListener(OnChatMessageReceived);
+        if (ProtocolState.Instance != null)
+        {
+            _disposables.Add(ProtocolState.Instance.ProtocolStream.Subscribe(OnProtocolChange));
+            _disposables.Add(ProtocolState.Instance.StepStream.Subscribe(OnStepChange));
+            _disposables.Add(ProtocolState.Instance.ChecklistStream.Subscribe(OnCheckItemChange));
+        }
+        else
+        {
+            Debug.LogWarning("ProtocolState.Instance is null during SwiftUIDriver initialization");
+        }
+
+        var chatProvider = ServiceRegistry.GetService<ILLMChatProvider>();
+        if (chatProvider != null)
+        {
+            chatProvider.OnResponse.AddListener(OnChatMessageReceived);
+        }
+        else
+        {
+            Debug.LogWarning("ILLMChatProvider is null during SwiftUIDriver initialization");
+        }
+    }
+
+    public void Dispose()
+    {
+        _disposables.Dispose();
+        var chatProvider = ServiceRegistry.GetService<ILLMChatProvider>();
+        if (chatProvider != null)
+        {
+            chatProvider.OnResponse.RemoveListener(OnChatMessageReceived);
+        }
     }
 
     // Swift UI Update methods
@@ -169,7 +184,29 @@ public class SwiftUIDriver : MonoBehaviour, IUIDriver
 
     public void LoginCallback(string username, string password)
     {
-        StartCoroutine(ServiceRegistry.GetService<IUserAuthProvider>().TryAuthenticateUser(username, password));
+        Debug.Log("######LABLIGHT triggering Login Callback: " + username + " " + password);
+        var authProvider = ServiceRegistry.GetService<IUserAuthProvider>();
+        if (authProvider != null)
+        {
+            authProvider.TryAuthenticateUser(username, password)
+                .ToObservable()
+                .Subscribe(
+                    result => {
+                        // Handle successful authentication
+                        SendAuthStatus(result);
+                    },
+                    error => {
+                        // Handle authentication error
+                        Debug.LogError("Authentication failed: " + error.Message);
+                        SendAuthStatus(false);
+                    }
+                );
+        }
+        else
+        {
+            Debug.LogError("IUserAuthProvider is not available");
+            SendAuthStatus(false);
+        }
     }
 
     // Native callback handler

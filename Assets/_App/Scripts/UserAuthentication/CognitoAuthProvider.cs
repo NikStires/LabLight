@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 public class CognitoAuthProvider : IUserAuthProvider
 {
@@ -13,7 +14,7 @@ public class CognitoAuthProvider : IUserAuthProvider
 
     private AuthenticationResult authResult;
 
-    public IEnumerator TryAuthenticateUser(string username, string password)
+    public async Task<bool> TryAuthenticateUser(string username, string password)
     {
         // Manually create the JSON request body
         string jsonBody = $@"{{
@@ -37,7 +38,12 @@ public class CognitoAuthProvider : IUserAuthProvider
             request.downloadHandler = new DownloadHandlerBuffer();
 
             // Send the request
-            yield return request.SendWebRequest();
+            var operation = request.SendWebRequest();
+
+            while (!operation.isDone)
+            {
+                await Task.Yield();
+            }
 
             if (request.result == UnityWebRequest.Result.Success)
             {
@@ -49,18 +55,20 @@ public class CognitoAuthProvider : IUserAuthProvider
                 {
                     authResult = authResponse.AuthenticationResult;
                     Debug.Log("User authenticated successfully.");
+                    return true;
                 }
                 else
                 {
                     Debug.Log("AuthResult is null, deserialization failed.");
+                    return false;
                 }
             }
             else
             {
                 Debug.Log("Error: " + request.error);
                 Debug.Log("Response: " + request.downloadHandler.text);
+                return false;
             }
-            ServiceRegistry.GetService<IUIDriver>().SendAuthStatus(IsAuthenticated());
         }
     }
 
