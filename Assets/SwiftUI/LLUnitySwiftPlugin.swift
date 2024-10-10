@@ -27,6 +27,19 @@ public func CallCSharpCallback(_ str: String) {
     }
 }
 
+// MARK: - Unity to SwiftUI Message Passing
+@_cdecl("SendMessageToSwiftUI")
+func sendMessageToSwiftUI(_ cmessage: UnsafePointer<CChar>) {
+    let message = String(cString: cmessage)
+    print("######LABLIGHT Message Received from Unity \(message)")
+    if message.hasPrefix("protocolDescriptions:") {
+        print("######LABLIGHT Posting ProtocolMenuMessage notification")
+        NotificationCenter.default.post(name: Notification.Name("ProtocolMenuMessage"), object: nil, userInfo: ["message": message])
+    } else {
+        NotificationCenter.default.post(name: Notification.Name("LLMChatMessage"), object: nil, userInfo: ["message": message])
+    }
+}
+
 // MARK: - Window Management
 
 @_cdecl("OpenSwiftUIWindow")
@@ -68,15 +81,6 @@ func openSwiftSafariWindow(_ cname: UnsafePointer<CChar>) {
     let urlString = String(cString: cname)
     let openWindow = EnvironmentValues().openWindow
     openWindow(id: "Safari", value: urlString)
-}
-
-// MARK: - LLM Chat Functionality
-
-@_cdecl("SendMessageToSwiftUI")
-func sendMessageToSwiftUI(_ cmessage: UnsafePointer<CChar>) {
-    let message = String(cString: cmessage)
-    print("######LABLIGHT Message Received from Unity \(message)")
-    NotificationCenter.default.post(name: Notification.Name("LLMChatMessage"), object: nil, userInfo: ["message": message])
 }
 
 // MARK: - Timer Functionality

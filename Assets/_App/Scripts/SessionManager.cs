@@ -89,6 +89,7 @@ public class SessionManager : MonoBehaviour
         var UIDriver = new SwiftUIDriver();
         ServiceRegistry.RegisterService<IUIDriver>(UIDriver);
         UIDriver.Initialize();
+        UIDriver.DisplayProtocolMenu();
         #endif
 
         //Set up default state

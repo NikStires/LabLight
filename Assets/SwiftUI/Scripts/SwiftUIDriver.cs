@@ -4,6 +4,7 @@ using System;
 using AOT;
 using UniRx;
 using System.Linq;
+using Newtonsoft.Json;
 
 public class SwiftUIDriver : IUIDriver, IDisposable
 {
@@ -123,6 +124,11 @@ public class SwiftUIDriver : IUIDriver, IDisposable
     }
 
     //Swift UI Display methods
+    public void DisplayProtocolMenu()
+    {
+        OpenSwiftUIWindow("ProtocolMenu");
+    }
+    
     public void DisplayTimer(int seconds)
     {
         OpenSwiftTimerWindow(seconds);
@@ -164,9 +170,26 @@ public class SwiftUIDriver : IUIDriver, IDisposable
         Debug.Log("check item " + index.ToString() + " " + isChecked.ToString());
     }
 
-    public void ProtocolSelectionCallback(string protocolJSON)
+    public void ProtocolSelectionCallback(string protocolTitle)
     {
-        Debug.Log(protocolJSON);
+         ServiceRegistry.GetService<IProtocolDataProvider>().GetOrCreateProtocolDefinition(protocolTitle).First().Subscribe(protocol =>
+        {
+            Debug.Log(protocol.title + " loaded");
+            ProtocolState.Instance.SetProtocolDefinition(protocol);
+            SceneLoader.Instance.LoadSceneClean("Protocol");
+        }, (e) =>
+        {
+            Debug.Log("Error fetching protocol from resources, checking local files");
+            var lfdp = new LocalFileDataProvider();
+            lfdp.LoadProtocolDefinitionAsync(protocolTitle).ToObservable<ProtocolDefinition>().Subscribe(protocol =>
+            {
+                ProtocolState.Instance.SetProtocolDefinition(protocol);
+                SceneLoader.Instance.LoadSceneClean("Protocol");
+            }, (e) =>
+            {
+                Debug.Log("Error fetching protocol from local files");
+            });
+        });
     }
 
     public void ChecklistSignOffCallback(bool isSignedOff)
@@ -235,7 +258,7 @@ public class SwiftUIDriver : IUIDriver, IDisposable
                 string[] toggleData = data.Split(',');
                 ChecklistItemToggleCallback(int.Parse(toggleData[0]), bool.Parse(toggleData[1]));
                 break;
-            case "protocolSelection":
+            case "selectProtocol":
                 ProtocolSelectionCallback(data);
                 break;
             case "checklistSignOff":
@@ -252,7 +275,31 @@ public class SwiftUIDriver : IUIDriver, IDisposable
                     LoginCallback(loginData[0], loginData[1]);
                 }
                 break;
+            case "requestProtocolDescriptions":
+                LoadProtocolDescriptions();
+                break;
             // Add more cases as needed
+        }
+    }
+
+    private async void LoadProtocolDescriptions()
+    {
+        var protocolDataProvider = ServiceRegistry.GetService<IProtocolDataProvider>();
+        if (protocolDataProvider == null)
+        {
+            Debug.LogError("IProtocolDataProvider not found in ServiceRegistry");
+            return;
+        }
+
+        try
+        {
+            var protocols = await protocolDataProvider.GetProtocolList();
+            string protocolsJson = JsonConvert.SerializeObject(protocols);
+            SendMessageToSwiftUI($"protocolDescriptions:{protocolsJson}");
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Error loading protocol list: {ex.Message}");
         }
     }
 

@@ -11,6 +11,7 @@ public interface IUIDriver
     void SendAuthStatus(bool isAuthenticated);
 
     //UI Display methods 
+    void DisplayProtocolMenu();
     void DisplayTimer(int seconds);
     void DisplayCalculator();
     void DisplayWebPage(string url);

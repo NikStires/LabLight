@@ -69,6 +69,7 @@ public class ProtocolMenuButton : MonoBehaviour
                 lfdp.LoadProtocolDefinitionAsync(protocol.title).ToObservable<ProtocolDefinition>().Subscribe(protocol =>
                 {
                     ProtocolState.Instance.SetProtocolDefinition(protocol);
+                    SceneLoader.Instance.LoadSceneClean("Protocol");
                 }, (e) =>
                 {
                     Debug.Log("Error fetching protocol from local files");
