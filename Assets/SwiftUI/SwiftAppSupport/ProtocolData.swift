@@ -1,8 +1,13 @@
 import Foundation
+import Combine
 
 // MARK: - Protocol Definition
 
 struct ProtocolDefinition: Codable, Identifiable, Equatable, Hashable {
+    static func == (lhs: ProtocolDefinition, rhs: ProtocolDefinition) -> Bool {
+        return lhs.title == rhs.title
+    }
+
     let jsonId: String?
     let version: Int
     let title: String
@@ -25,12 +30,17 @@ struct ProtocolDefinition: Codable, Identifiable, Equatable, Hashable {
 
 // MARK: - Step
 
-struct Step: Codable, Identifiable {
+struct Step: Codable, Identifiable, Equatable, Hashable {
+    static func == (lhs: Step, rhs: Step) -> Bool {
+        return lhs.id == rhs.id
+    }
+
     // MARK: Properties
     let jsonId: String?
     let isCritical: Bool
     let arElements: [ArElement]
     let checklist: [ChecklistItem]
+    let contentItems: [ContentItem]
     let signedOff: Bool?
     
     // Computed property for Identifiable
@@ -41,7 +51,7 @@ struct Step: Codable, Identifiable {
     // MARK: Coding Keys
     enum CodingKeys: String, CodingKey {
         case jsonId = "$id"
-        case isCritical, arElements, checklist
+        case isCritical, arElements, checklist, contentItems
         case signedOff = "SignedOff"
     }
     
@@ -52,6 +62,7 @@ struct Step: Codable, Identifiable {
         isCritical = try container.decodeIfPresent(Bool.self, forKey: .isCritical) ?? false
         arElements = try container.decodeIfPresent([ArElement].self, forKey: .arElements) ?? []
         checklist = try container.decodeIfPresent([ChecklistItem].self, forKey: .checklist) ?? []
+        contentItems = try container.decodeIfPresent([ContentItem].self, forKey: .contentItems) ?? []
         signedOff = try container.decodeIfPresent(Bool.self, forKey: .signedOff)
     }
 }
@@ -153,7 +164,15 @@ struct ContentItem: Codable, Identifiable, Equatable, Hashable {
 
 // MARK: - Checklist Item
 
-struct ChecklistItem: Codable, Identifiable, Equatable, Hashable {
+class ChecklistItem: Codable, Identifiable, ObservableObject, Equatable, Hashable {
+    static func == (lhs: ChecklistItem, rhs: ChecklistItem) -> Bool {
+        return lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+
     let jsonId: String?
     let text: String
     let activateTimer: Bool
@@ -161,15 +180,15 @@ struct ChecklistItem: Codable, Identifiable, Equatable, Hashable {
     let minutes: Int
     let seconds: Int
     let completionTime: String?
-    let isChecked: IsChecked?
+    @Published var isChecked: Bool // Simplified from IsChecked?
     let arElements: [ArElement]
     let operations: [Operation]
-    
+
     // Computed property for Identifiable
     var id: String {
         jsonId ?? UUID().uuidString
     }
-    
+
     // MARK: Coding Keys
     enum CodingKeys: String, CodingKey {
         case jsonId = "$id"
@@ -179,9 +198,9 @@ struct ChecklistItem: Codable, Identifiable, Equatable, Hashable {
         case isChecked = "IsChecked"
         case arElements, operations
     }
-    
-    // Custom initializer to provide default values
-    init(from decoder: Decoder) throws {
+
+    // MARK: Initializer for Decoding
+    required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         jsonId = try container.decodeIfPresent(String.self, forKey: .jsonId)
         text = try container.decode(String.self, forKey: .text)
@@ -190,9 +209,58 @@ struct ChecklistItem: Codable, Identifiable, Equatable, Hashable {
         minutes = try container.decodeIfPresent(Int.self, forKey: .minutes) ?? 0
         seconds = try container.decodeIfPresent(Int.self, forKey: .seconds) ?? 0
         completionTime = try container.decodeIfPresent(String.self, forKey: .completionTime)
-        isChecked = try container.decodeIfPresent(IsChecked.self, forKey: .isChecked)
+        
+        // Simplify isChecked from IsChecked? to Bool
+        if let isCheckedStruct = try container.decodeIfPresent(IsChecked.self, forKey: .isChecked) {
+            isChecked = isCheckedStruct.value ?? false
+        } else {
+            isChecked = false
+        }
+        
         arElements = try container.decodeIfPresent([ArElement].self, forKey: .arElements) ?? []
         operations = try container.decodeIfPresent([Operation].self, forKey: .operations) ?? []
+    }
+
+    // MARK: Encoding
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(jsonId, forKey: .jsonId)
+        try container.encode(text, forKey: .text)
+        try container.encode(activateTimer, forKey: .activateTimer)
+        try container.encode(hours, forKey: .hours)
+        try container.encode(minutes, forKey: .minutes)
+        try container.encode(seconds, forKey: .seconds)
+        try container.encode(completionTime, forKey: .completionTime)
+        
+        // Encode isChecked as IsChecked struct
+        let isCheckedStruct = IsChecked(value: isChecked)
+        try container.encode(isCheckedStruct, forKey: .isChecked)
+        
+        try container.encode(arElements, forKey: .arElements)
+        try container.encode(operations, forKey: .operations)
+    }
+
+    // MARK: Initializer
+    init(jsonId: String? = nil,
+         text: String,
+         activateTimer: Bool = false,
+         hours: Int = 0,
+         minutes: Int = 0,
+         seconds: Int = 0,
+         completionTime: String? = nil,
+         isChecked: Bool = false,
+         arElements: [ArElement] = [],
+         operations: [Operation] = []) {
+        self.jsonId = jsonId
+        self.text = text
+        self.activateTimer = activateTimer
+        self.hours = hours
+        self.minutes = minutes
+        self.seconds = seconds
+        self.completionTime = completionTime
+        self.isChecked = isChecked
+        self.arElements = arElements
+        self.operations = operations
     }
 }
 
@@ -208,7 +276,7 @@ struct IsChecked: Codable, Identifiable, Equatable, Hashable {
         jsonId ?? UUID().uuidString
     }
     
-    // MARK: Coding Keyss
+    // MARK: Coding Keys
     enum CodingKeys: String, CodingKey {
         case jsonId = "$id"
         case value = "Value"
@@ -221,6 +289,13 @@ struct IsChecked: Codable, Identifiable, Equatable, Hashable {
         jsonId = try container.decodeIfPresent(String.self, forKey: .jsonId)
         value = try container.decodeIfPresent(Bool.self, forKey: .value)
         hasValue = try container.decodeIfPresent(Bool.self, forKey: .hasValue)
+    }
+    
+    // Convenience initializer
+    init(value: Bool?) {
+        self.jsonId = nil
+        self.value = value
+        self.hasValue = value != nil
     }
 }
 
@@ -259,4 +334,3 @@ extension KeyedDecodingContainer {
         return (try? decode([T].self, forKey: key)) ?? []
     }
 }
-

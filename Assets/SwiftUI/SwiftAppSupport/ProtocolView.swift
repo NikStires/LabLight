@@ -3,25 +3,73 @@ import SwiftUI
 struct ProtocolView: View {
     let selectedProtocol: ProtocolDefinition
     
+    @State private var selectedStepIndex: Int = 0
+    
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            Text(selectedProtocol.title)
-                .font(.largeTitle)
-                .padding(.top)
-            Spacer()
+        VStack {
+            Picker("Select Step", selection: $selectedStepIndex) {
+                ForEach(0..<selectedProtocol.steps.count, id: \.self) { index in
+                    Text("Step \(index + 1)").tag(index)
+                }
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            .padding()
+            
+            HStack(spacing: 0) {
+                ChecklistView(checklistItems: currentStep.checklist)
+                    .frame(maxWidth: .infinity)
+                
+                ProtocolContentView(contentItems: currentStep.contentItems)
+                    .frame(maxWidth: .infinity)
+                    .padding(.leading, 10)
+            }
         }
+        .navigationTitle(selectedProtocol.title)
         .padding()
-        .navigationTitle("Protocol Details")
+        .ornament(.left) {
+            ProtocolOrnamentView(
+                selectedStepIndex: $selectedStepIndex,
+                protocolDefinition: selectedProtocol,
+                checklistItems: currentStep.checklist,
+                onCheckNext: checkNextItem,
+                onUncheckLast: uncheckLastItem,
+                onNextStep: goToNextStep,
+                onPreviousStep: goToPreviousStep,
+                onOpenPDF: openPDF
+            )
+        }
     }
     
-    func formatText(_ text: String) -> String {
-        // Remove special characters
-        var formatted = text.components(separatedBy: CharacterSet.alphanumerics.inverted).joined()
-        
-        // Add spaces before capital letters (for camel case)
-        formatted = formatted.replacingOccurrences(of: "([a-z])([A-Z])", with: "$1 $2", options: .regularExpression, range: nil)
-        
-        // Capitalize the first letter
-        return formatted.prefix(1).uppercased() + formatted.dropFirst()
+    private var currentStep: Step {
+        selectedProtocol.steps[selectedStepIndex]
+    }
+    
+    // MARK: - Action Methods
+    
+    private func checkNextItem() {
+        guard let nextItem = currentStep.checklist.first(where: { !$0.isChecked }) else { return }
+        nextItem.isChecked = true
+    }
+    
+    private func uncheckLastItem() {
+        guard let lastItem = currentStep.checklist.reversed().first(where: { $0.isChecked }) else { return }
+        lastItem.isChecked = false
+    }
+    
+    private func goToNextStep() {
+        if selectedStepIndex < selectedProtocol.steps.count - 1 {
+            selectedStepIndex += 1
+        }
+    }
+    
+    private func goToPreviousStep() {
+        if selectedStepIndex > 0 {
+            selectedStepIndex -= 1
+        }
+    }
+    
+    private func openPDF() {
+        let openWindow = EnvironmentValues().openWindow
+        openWindow(id: "PDF", value: selectedProtocol.pdfPath)
     }
 }

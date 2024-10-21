@@ -36,7 +36,7 @@ struct ProtocolMenuContentView: View {
                 viewModel.requestProtocolDescriptions()
             }
             .navigationDestination(for: ProtocolDefinition.self) { protocolDef in
-                ProtocolView(protocol: protocolDef)  // Navigate to ProtocolView
+                ProtocolView(selectedProtocol: protocolDef)  // Navigate to ProtocolView
             }
             .onReceive(viewModel.$selectedProtocol) { selected in
                 if let selected = selected {
