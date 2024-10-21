@@ -3,6 +3,8 @@ using System;
 
 public interface IUIDriver
 {
+    void Initialize();
+
     //UI Update methods
     void OnProtocolChange(ProtocolDefinition protocol);
     void OnStepChange(ProtocolState.StepState stepState);

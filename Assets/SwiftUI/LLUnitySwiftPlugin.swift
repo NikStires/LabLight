@@ -35,7 +35,12 @@ func sendMessageToSwiftUI(_ cmessage: UnsafePointer<CChar>) {
     if message.hasPrefix("protocolDescriptions:") {
         print("######LABLIGHT Posting ProtocolMenuMessage notification")
         NotificationCenter.default.post(name: Notification.Name("ProtocolMenuMessage"), object: nil, userInfo: ["message": message])
-    } else {
+    }
+    else if message.hasPrefix("protocolChange:") {
+        print("######LABLIGHT Posting ProtocolChange notification")
+        NotificationCenter.default.post(name: Notification.Name("ProtocolChange"), object: nil, userInfo: ["message": message])
+    }
+    else {
         NotificationCenter.default.post(name: Notification.Name("LLMChatMessage"), object: nil, userInfo: ["message": message])
     }
 }

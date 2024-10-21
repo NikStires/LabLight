@@ -52,6 +52,7 @@ public class ProtocolState : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+        ServiceRegistry.GetService<IUIDriver>()?.Initialize();
     }
 
     public void SetProtocolDefinition(ProtocolDefinition protocolDefinition)

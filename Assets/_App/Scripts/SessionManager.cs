@@ -88,7 +88,6 @@ public class SessionManager : MonoBehaviour
         #if UNITY_VISIONOS
         var UIDriver = new SwiftUIDriver();
         ServiceRegistry.RegisterService<IUIDriver>(UIDriver);
-        UIDriver.Initialize();
         UIDriver.DisplayProtocolMenu();
         #endif
 
