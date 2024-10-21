@@ -26,17 +26,35 @@ struct ProtocolView: View {
         }
         .navigationTitle(selectedProtocol.title)
         .padding()
-        .ornament(.left) {
-            ProtocolOrnamentView(
-                selectedStepIndex: $selectedStepIndex,
-                protocolDefinition: selectedProtocol,
-                checklistItems: currentStep.checklist,
-                onCheckNext: checkNextItem,
-                onUncheckLast: uncheckLastItem,
-                onNextStep: goToNextStep,
-                onPreviousStep: goToPreviousStep,
-                onOpenPDF: openPDF
-            )
+        .ornament(visibility: .visible, attachmentAnchor: .scene(.leading)) {
+            VStack(spacing: 20) {
+                Button(action: checkNextItem) {
+                    Image(systemName: "checkmark")
+                }
+                .disabled(nextUncheckedItem() == nil)
+                
+                Button(action: uncheckLastItem) {
+                    Image(systemName: "xmark")
+                }
+                .disabled(lastCheckedItem() == nil)
+                
+                Button(action: goToPreviousStep) {
+                    Image(systemName: "chevron.left")
+                }
+                .disabled(selectedStepIndex == 0)
+                
+                Button(action: goToNextStep) {
+                    Image(systemName: "chevron.right")
+                }
+                .disabled(selectedStepIndex >= selectedProtocol.steps.count - 1)
+                
+                Button(action: openPDF) {
+                    Image(systemName: "doc.richtext")
+                }
+                .disabled(selectedProtocol.pdfPath == nil)
+            }
+            .padding()
+            .frame(width: 100)
         }
     }
     
@@ -71,5 +89,13 @@ struct ProtocolView: View {
     private func openPDF() {
         let openWindow = EnvironmentValues().openWindow
         openWindow(id: "PDF", value: selectedProtocol.pdfPath)
+    }
+    
+    private func nextUncheckedItem() -> ChecklistItem? {
+        return selectedProtocol.steps[selectedStepIndex].checklist.first(where: { !$0.isChecked })
+    }
+    
+    private func lastCheckedItem() -> ChecklistItem? {
+        return selectedProtocol.steps[selectedStepIndex].checklist.reversed().first(where: { $0.isChecked })
     }
 }
