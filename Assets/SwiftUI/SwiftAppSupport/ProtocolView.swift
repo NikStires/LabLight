@@ -1,14 +1,17 @@
 import SwiftUI
+import UnityFramework
 
 struct ProtocolView: View {
-    let selectedProtocol: ProtocolDefinition
+    @StateObject private var viewModel: ProtocolViewModel
     
-    @State private var selectedStepIndex: Int = 0
+    init(selectedProtocol: ProtocolDefinition) {
+        _viewModel = StateObject(wrappedValue: ProtocolViewModel(selectedProtocol: selectedProtocol))
+    }
     
     var body: some View {
         VStack {
-            Picker("Select Step", selection: $selectedStepIndex) {
-                ForEach(0..<selectedProtocol.steps.count, id: \.self) { index in
+            Picker("Select Step", selection: $viewModel.selectedStepIndex) {
+                ForEach(0..<viewModel.selectedProtocol.steps.count, id: \.self) { index in
                     Text("Step \(index + 1)").tag(index)
                 }
             }
@@ -16,86 +19,116 @@ struct ProtocolView: View {
             .padding()
             
             HStack(spacing: 0) {
-                ChecklistView(checklistItems: currentStep.checklist)
+                ChecklistView(checklistItems: viewModel.checklistItems)
                     .frame(maxWidth: .infinity)
                 
-                ProtocolContentView(contentItems: currentStep.contentItems)
+                ProtocolContentView(contentItems: viewModel.currentStep.contentItems)
                     .frame(maxWidth: .infinity)
                     .padding(.leading, 10)
             }
         }
-        .navigationTitle(selectedProtocol.title)
+        .navigationTitle(viewModel.selectedProtocol.title)
         .padding()
         .ornament(visibility: .visible, attachmentAnchor: .scene(.leading)) {
             VStack(spacing: 20) {
-                Button(action: checkNextItem) {
+                Button(action: viewModel.checkNextItem) {
                     Image(systemName: "checkmark")
                 }
-                .disabled(nextUncheckedItem() == nil)
+                .disabled(viewModel.nextUncheckedItem() == nil)
                 
-                Button(action: uncheckLastItem) {
+                Button(action: viewModel.uncheckLastItem) {
                     Image(systemName: "xmark")
                 }
-                .disabled(lastCheckedItem() == nil)
+                .disabled(viewModel.lastCheckedItem() == nil)
                 
-                Button(action: goToPreviousStep) {
+                Button(action: viewModel.goToPreviousStep) {
                     Image(systemName: "chevron.left")
                 }
-                .disabled(selectedStepIndex == 0)
+                .disabled(viewModel.selectedStepIndex == 0)
                 
-                Button(action: goToNextStep) {
+                Button(action: viewModel.goToNextStep) {
                     Image(systemName: "chevron.right")
                 }
-                .disabled(selectedStepIndex >= selectedProtocol.steps.count - 1)
+                .disabled(viewModel.selectedStepIndex >= viewModel.selectedProtocol.steps.count - 1)
                 
-                Button(action: openPDF) {
+                Button(action: viewModel.openPDF) {
                     Image(systemName: "doc.richtext")
                 }
-                .disabled(selectedProtocol.pdfPath == nil)
+                .disabled(viewModel.selectedProtocol.pdfPath == nil)
             }
             .padding()
             .frame(width: 100)
         }
     }
+}
     
-    private var currentStep: Step {
+class ProtocolViewModel: ObservableObject {
+    let selectedProtocol: ProtocolDefinition
+
+    @Published var selectedStepIndex: Int = 0 {
+        didSet {
+            if selectedStepIndex != oldValue {
+                CallCSharpCallback("stepNavigation:" + String(selectedStepIndex))
+            }
+        }
+    }
+    @Published var checklistItems: [ChecklistItem] = []
+
+    init(selectedProtocol: ProtocolDefinition) {
+        self.selectedProtocol = selectedProtocol
+        self.checklistItems = selectedProtocol.steps.first?.checklist ?? []
+        NotificationCenter.default.addObserver(self, selector: #selector(handleStepChange(_:)), name: Notification.Name("StepChange"), object: nil)
+    }
+
+    @objc func handleStepChange(_ notification: Notification) {
+        if let message = notification.userInfo?["message"] as? String,
+           message.hasPrefix("stepChange:") {
+            let parts = message.dropFirst("stepChange:".count).split(separator: ":")
+            if parts.count == 2, let stepIndex = Int(parts[0]){
+                selectedStepIndex = stepIndex
+                checklistItems = currentStep.checklist
+            } else {
+                print("Invalid stepChange message format")
+            }
+        }
+    }
+
+    var currentStep: Step {
         selectedProtocol.steps[selectedStepIndex]
     }
-    
-    // MARK: - Action Methods
-    
-    private func checkNextItem() {
-        guard let nextItem = currentStep.checklist.first(where: { !$0.isChecked }) else { return }
-        nextItem.isChecked = true
+
+    func checkNextItem() {
+        guard let nextItemIndex = checklistItems.firstIndex(where: { !$0.isChecked }) else { return }
+        checklistItems[nextItemIndex].isChecked.toggle()
     }
-    
-    private func uncheckLastItem() {
-        guard let lastItem = currentStep.checklist.reversed().first(where: { $0.isChecked }) else { return }
-        lastItem.isChecked = false
+
+    func uncheckLastItem() {
+        guard let lastItemIndex = checklistItems.lastIndex(where: { $0.isChecked }) else { return }
+        checklistItems[lastItemIndex].isChecked.toggle()
     }
-    
-    private func goToNextStep() {
+
+    func goToNextStep() {
         if selectedStepIndex < selectedProtocol.steps.count - 1 {
             selectedStepIndex += 1
         }
     }
-    
-    private func goToPreviousStep() {
+
+    func goToPreviousStep() {
         if selectedStepIndex > 0 {
             selectedStepIndex -= 1
         }
     }
-    
-    private func openPDF() {
+
+    func openPDF() {
         let openWindow = EnvironmentValues().openWindow
         openWindow(id: "PDF", value: selectedProtocol.pdfPath)
     }
-    
-    private func nextUncheckedItem() -> ChecklistItem? {
-        return selectedProtocol.steps[selectedStepIndex].checklist.first(where: { !$0.isChecked })
+
+    func nextUncheckedItem() -> ChecklistItem? {
+        return checklistItems.first(where: { !$0.isChecked })
     }
-    
-    private func lastCheckedItem() -> ChecklistItem? {
-        return selectedProtocol.steps[selectedStepIndex].checklist.reversed().first(where: { $0.isChecked })
+
+    func lastCheckedItem() -> ChecklistItem? {
+        return checklistItems.last(where: { $0.isChecked })
     }
 }

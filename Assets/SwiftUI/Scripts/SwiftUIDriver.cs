@@ -75,7 +75,7 @@ public class SwiftUIDriver : IUIDriver, IDisposable
     public void OnStepChange(ProtocolState.StepState stepState)
     {
         var currentStep = ProtocolState.Instance.CurrentStepDefinition;
-        SendMessageToSwiftUI($"stepChange:{ProtocolState.Instance.CurrentStep}:{stepState.SignedOff.Value}");
+        SendMessageToSwiftUI($"stepChange:{ProtocolState.Instance.CurrentStep}:{(stepState.SignedOff.Value ? 1 : 0)}");
 
         foreach(var contentItem in currentStep.contentItems)
         {
@@ -162,9 +162,9 @@ public class SwiftUIDriver : IUIDriver, IDisposable
     }
 
     // Unity Callback Methods
-    public void StepNavigationCallback(int navigationDirection)
+    public void StepNavigationCallback(int stepIndex)
     {
-        ProtocolState.Instance.SetStep(ProtocolState.Instance.CurrentStep.Value + navigationDirection);
+        ProtocolState.Instance.SetStep(stepIndex);
     }
 
     public void ChecklistItemToggleCallback(int index, bool isChecked)

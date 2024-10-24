@@ -33,12 +33,16 @@ func sendMessageToSwiftUI(_ cmessage: UnsafePointer<CChar>) {
     let message = String(cString: cmessage)
     print("######LABLIGHT Message Received from Unity \(message)")
     if message.hasPrefix("protocolDescriptions:") {
-        print("######LABLIGHT Posting ProtocolMenuMessage notification")
-        NotificationCenter.default.post(name: Notification.Name("ProtocolMenuMessage"), object: nil, userInfo: ["message": message])
+        print("######LABLIGHT Posting ProtocolDescriptions notification")
+        NotificationCenter.default.post(name: Notification.Name("ProtocolDescriptions"), object: nil, userInfo: ["message": message])
     }
     else if message.hasPrefix("protocolChange:") {
         print("######LABLIGHT Posting ProtocolChange notification")
         NotificationCenter.default.post(name: Notification.Name("ProtocolChange"), object: nil, userInfo: ["message": message])
+    }
+    else if message.hasPrefix("stepChange:") {
+        print("######LABLIGHT Posting StepChange notification")
+        NotificationCenter.default.post(name: Notification.Name("StepChange"), object: nil, userInfo: ["message": message])
     }
     else {
         NotificationCenter.default.post(name: Notification.Name("LLMChatMessage"), object: nil, userInfo: ["message": message])
