@@ -120,8 +120,7 @@ class ProtocolViewModel: ObservableObject {
     }
 
     func openPDF() {
-        let openWindow = EnvironmentValues().openWindow
-        openWindow(id: "PDF", value: selectedProtocol.pdfPath)
+        CallCSharpCallback("requestPDF:")
     }
 
     func nextUncheckedItem() -> ChecklistItem? {

@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Runtime.InteropServices;
 using System;
+using System.IO;
 using AOT;
 using UniRx;
 using System.Linq;
@@ -279,6 +280,17 @@ public class SwiftUIDriver : IUIDriver, IDisposable
                 break;
             case "requestProtocolDescriptions":
                 LoadProtocolDescriptions();
+                break;
+            case "requestPDF":
+                if(!string.IsNullOrEmpty(ProtocolState.Instance.ActiveProtocol.Value.pdfPath))
+                {
+                    Debug.Log("######LABLIGHT SWIFTUIDRIVER displaying PDF: " + Path.GetFileNameWithoutExtension(ProtocolState.Instance.ActiveProtocol.Value.pdfPath));
+                    DisplayPDFReader(Path.GetFileNameWithoutExtension(ProtocolState.Instance.ActiveProtocol.Value.pdfPath));
+                }
+                else
+                {
+                    Debug.Log("######LABLIGHT SWIFTUIDRIVER no PDF to display");
+                }
                 break;
             // Add more cases as needed
         }
