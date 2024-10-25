@@ -9,55 +9,67 @@ struct ProtocolView: View {
     }
     
     var body: some View {
-        VStack {
+        VStack(spacing: 16) {
             Picker("Select Step", selection: $viewModel.selectedStepIndex) {
                 ForEach(0..<viewModel.selectedProtocol.steps.count, id: \.self) { index in
                     Text("Step \(index + 1)").tag(index)
                 }
             }
             .pickerStyle(SegmentedPickerStyle())
-            .padding()
+            .padding(.horizontal)
             
             HStack(spacing: 0) {
                 ChecklistView(checklistItems: viewModel.checklistItems)
-                    .frame(maxWidth: .infinity)
+                    .frame(maxWidth: viewModel.currentStep.contentItems.isEmpty ? .infinity : 400)
+                    .animation(.spring(), value: viewModel.currentStep.contentItems.isEmpty)
                 
-                ProtocolContentView(contentItems: viewModel.currentStep.contentItems)
-                    .frame(maxWidth: .infinity)
-                    .padding(.leading, 10)
+                if !viewModel.currentStep.contentItems.isEmpty {
+                    ProtocolContentView(contentItems: viewModel.currentStep.contentItems)
+                        .frame(maxWidth: .infinity)
+                        .padding(.leading, 10)
+                        .transition(.move(edge: .trailing))
+                }
             }
+            .padding(.horizontal)
         }
+        .navigationBarTitleDisplayMode(.inline)
         .navigationTitle(viewModel.selectedProtocol.title)
-        .padding()
         .ornament(visibility: .visible, attachmentAnchor: .scene(.leading)) {
             VStack(spacing: 20) {
                 Button(action: viewModel.checkNextItem) {
                     Image(systemName: "checkmark")
                 }
                 .disabled(viewModel.nextUncheckedItem() == nil)
+                .padding(EdgeInsets(top: 4, leading: 8, bottom: 4,trailing: 8))
                 
                 Button(action: viewModel.uncheckLastItem) {
                     Image(systemName: "xmark")
                 }
                 .disabled(viewModel.lastCheckedItem() == nil)
+                .padding(EdgeInsets(top: 4, leading: 8, bottom: 4,trailing: 8))
                 
                 Button(action: viewModel.goToPreviousStep) {
                     Image(systemName: "chevron.left")
                 }
                 .disabled(viewModel.selectedStepIndex == 0)
-                
+                .padding(EdgeInsets(top: 4, leading: 8, bottom: 4,trailing: 8))
+
                 Button(action: viewModel.goToNextStep) {
                     Image(systemName: "chevron.right")
                 }
                 .disabled(viewModel.selectedStepIndex >= viewModel.selectedProtocol.steps.count - 1)
-                
+                .padding(EdgeInsets(top: 4, leading: 8, bottom: 4,trailing: 8))
+
                 Button(action: viewModel.openPDF) {
                     Image(systemName: "doc.richtext")
                 }
                 .disabled(viewModel.selectedProtocol.pdfPath == nil)
+                .padding(EdgeInsets(top: 4, leading: 8, bottom: 4,trailing: 8))
+
             }
             .padding()
-            .frame(width: 100)
+            .buttonStyle(.plain)
+            .glassBackgroundEffect(in: RoundedRectangle(cornerRadius: 22))
         }
     }
 }
