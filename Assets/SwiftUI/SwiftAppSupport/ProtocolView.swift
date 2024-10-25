@@ -19,7 +19,7 @@ struct ProtocolView: View {
             .padding(.horizontal)
             
             HStack(spacing: 0) {
-                ChecklistView(checklistItems: viewModel.checklistItems)
+                ChecklistView(viewModel: viewModel)
                     .frame(maxWidth: viewModel.currentStep.contentItems.isEmpty ? .infinity : 400)
                     .animation(.spring(), value: viewModel.currentStep.contentItems.isEmpty)
                 
@@ -86,6 +86,8 @@ class ProtocolViewModel: ObservableObject {
     }
     @Published var checklistItems: [ChecklistItem] = []
 
+    @Published var lastCheckedItemIndex: Int?
+
     init(selectedProtocol: ProtocolDefinition) {
         self.selectedProtocol = selectedProtocol
         self.checklistItems = selectedProtocol.steps.first?.checklist ?? []
@@ -128,6 +130,9 @@ class ProtocolViewModel: ObservableObject {
     func updateCheckItemState(_ checkItemState: CheckItemStateData) {
         print("######LABLIGHT Updating checklist item \(checkItemState.checkIndex) to \(checkItemState.isChecked)")
         checklistItems[checkItemState.checkIndex].isChecked = checkItemState.isChecked
+        if checkItemState.isChecked {
+            lastCheckedItemIndex = checkItemState.checkIndex
+        }
     }
 
     var currentStep: Step {

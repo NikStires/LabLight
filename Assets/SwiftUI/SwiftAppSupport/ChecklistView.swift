@@ -1,12 +1,22 @@
 import SwiftUI
 
 struct ChecklistView: View {
-    let checklistItems: [ChecklistItem]
+    @ObservedObject var viewModel: ProtocolViewModel
     
     var body: some View {
-        List {
-            ForEach(checklistItems) { item in
-                CheckItemView(checklistItem: item)
+        ScrollViewReader { proxy in
+            List {
+                ForEach(Array(viewModel.checklistItems.enumerated()), id: \.element.id) { index, item in
+                    CheckItemView(checklistItem: item)
+                        .id(index)
+                }
+            }
+            .onChange(of: viewModel.lastCheckedItemIndex) { _, newIndex in
+                if let nextUncheckedIndex = viewModel.checklistItems.firstIndex(where: { !$0.isChecked }) {
+                    withAnimation {
+                        proxy.scrollTo(nextUncheckedIndex, anchor: .center)
+                    }
+                }
             }
         }
     }
