@@ -122,7 +122,7 @@ public class ProtocolState : MonoBehaviour
 
     public void SetStep(int step)
     {
-        if (step < 0 || ActiveProtocol.Value == null || Steps == null || step >= Steps.Count || step == CurrentStep.Value)
+        if (step < 0 || ActiveProtocol.Value == null || Steps == null || step >= Steps.Count)
         {
             return;
         }

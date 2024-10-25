@@ -189,8 +189,20 @@ public class SwiftUIDriver : IUIDriver, IDisposable
 
     public void CheckItemCallback(int index)
     {
-        ProtocolState.Instance.CurrentStepState.Value.Checklist[index].IsChecked.Value = true;
-        if(index + 1 < ProtocolState.Instance.CurrentStepState.Value.Checklist.Count)
+        var currentStepState = ProtocolState.Instance.CurrentStepState.Value;
+        if (currentStepState == null || currentStepState.Checklist == null)
+        {
+            return;
+        }
+
+        if (index < 0 || index >= currentStepState.Checklist.Count)
+        {
+            return;
+        }
+
+        currentStepState.Checklist[index].IsChecked.Value = true;
+        
+        if(index + 1 < currentStepState.Checklist.Count)
         {
             ProtocolState.Instance.SetCheckItem(index + 1);
         }
@@ -285,56 +297,73 @@ public class SwiftUIDriver : IUIDriver, IDisposable
     //Handle message passing from SwiftUI
     private void HandleMessage(string message)
     {
-        Debug.Log("######LABLIGHT SWIFTUIDRIVER Message Recieved from SwiftUI " + message);
+        Debug.Log("######LABLIGHT SWIFTUIDRIVER Message Received from SwiftUI " + message);
+        
+        if (ProtocolState.Instance == null)
+        {
+            Debug.LogError("######LABLIGHT SWIFTUIDRIVER HandleMessage - ProtocolState.Instance is null");
+            return;
+        }
+
         string[] parts = message.Split(':');
-        if (parts.Length < 2) return;
+        if (parts.Length < 2)
+        {
+            return;
+        }
 
         string command = parts[0];
         string data = parts[1];
 
-        switch (command)
+        try
         {
-            case "stepNavigation":
-                StepNavigationCallback(int.Parse(data));
-                break;
-            case "checkItem":
-                CheckItemCallback(int.Parse(data));
-                break;
-            case "uncheckItem":
-                UncheckItemCallback(int.Parse(data));
-                break;
-            case "selectProtocol":
-                ProtocolSelectionCallback(data);
-                break;
-            case "checklistSignOff":
-                ChecklistSignOffCallback(bool.Parse(data));
-                break;
-            case "sendMessage":
-                ChatMessageCallback(data);
-                break;
-            case "login":
-                string[] loginData = data.Split(',');
-                if (loginData.Length == 2)
-                {
-                    Debug.Log("######LABLIGHT SWIFTUIDRIVER triggering Login Callback: " + loginData[0] + " " + loginData[1]);
-                    LoginCallback(loginData[0], loginData[1]);
-                }
-                break;
-            case "requestProtocolDescriptions":
-                LoadProtocolDescriptions();
-                break;
-            case "requestPDF":
-                if(!string.IsNullOrEmpty(ProtocolState.Instance.ActiveProtocol.Value.pdfPath))
-                {
-                    Debug.Log("######LABLIGHT SWIFTUIDRIVER displaying PDF: " + Path.GetFileNameWithoutExtension(ProtocolState.Instance.ActiveProtocol.Value.pdfPath));
-                    DisplayPDFReader(Path.GetFileNameWithoutExtension(ProtocolState.Instance.ActiveProtocol.Value.pdfPath));
-                }
-                else
-                {
-                    Debug.Log("######LABLIGHT SWIFTUIDRIVER no PDF to display");
-                }
-                break;
-            // Add more cases as needed
+            switch (command)
+            {
+                case "stepNavigation":
+                    StepNavigationCallback(int.Parse(data));
+                    break;
+                case "checkItem":
+                    CheckItemCallback(int.Parse(data));
+                    break;
+                case "uncheckItem":
+                    UncheckItemCallback(int.Parse(data));
+                    break;
+                case "selectProtocol":
+                    ProtocolSelectionCallback(data);
+                    break;
+                case "checklistSignOff":
+                    ChecklistSignOffCallback(bool.Parse(data));
+                    break;
+                case "sendMessage":
+                    ChatMessageCallback(data);
+                    break;
+                case "login":
+                    string[] loginData = data.Split(',');
+                    if (loginData.Length == 2)
+                    {
+                        Debug.Log("######LABLIGHT SWIFTUIDRIVER triggering Login Callback: " + loginData[0] + " " + loginData[1]);
+                        LoginCallback(loginData[0], loginData[1]);
+                    }
+                    break;
+                case "requestProtocolDescriptions":
+                    LoadProtocolDescriptions();
+                    break;
+                case "requestPDF":
+                    if(!string.IsNullOrEmpty(ProtocolState.Instance.ActiveProtocol.Value.pdfPath))
+                    {
+                        Debug.Log("######LABLIGHT SWIFTUIDRIVER displaying PDF: " + Path.GetFileNameWithoutExtension(ProtocolState.Instance.ActiveProtocol.Value.pdfPath));
+                        DisplayPDFReader(Path.GetFileNameWithoutExtension(ProtocolState.Instance.ActiveProtocol.Value.pdfPath));
+                    }
+                    else
+                    {
+                        Debug.Log("######LABLIGHT SWIFTUIDRIVER no PDF to display");
+                    }
+                    break;
+                // Add more cases as needed
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"######LABLIGHT SWIFTUIDRIVER HandleMessage - Exception in command {command}: {ex.Message}\nStackTrace: {ex.StackTrace}");
         }
     }
 
