@@ -1,6 +1,6 @@
 using UnityEngine;
 using System;
-
+using System.Collections.Generic;
 public interface IUIDriver
 {
     void Initialize();
@@ -8,7 +8,7 @@ public interface IUIDriver
     //UI Update methods
     void OnProtocolChange(ProtocolDefinition protocol);
     void OnStepChange(ProtocolState.StepState stepState);
-    void OnCheckItemChange(int index);
+    void OnCheckItemChange(List<ProtocolState.CheckItemState> checkItemStates);
     void OnChatMessageReceived(string message);
     void SendAuthStatus(bool isAuthenticated);
 
@@ -22,8 +22,9 @@ public interface IUIDriver
     void DisplayPDFReader(string url);
 
     //Unity Callback Methods
-    void StepNavigationCallback(int navigationDirection); //-1 for previous, 1 for next
-    void ChecklistItemToggleCallback(int index, bool isChecked);
+    void StepNavigationCallback(int index);
+    void CheckItemCallback(int index);
+    void UncheckItemCallback(int index);
     void ProtocolSelectionCallback(string protocolTitle);
     void ChecklistSignOffCallback(bool isSignedOff);
     void ChatMessageCallback(string message);

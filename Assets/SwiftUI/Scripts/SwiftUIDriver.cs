@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Runtime.InteropServices;
 using System;
 using System.IO;
+using System.Collections.Generic;
 using AOT;
 using UniRx;
 using System.Linq;
@@ -75,9 +76,20 @@ public class SwiftUIDriver : IUIDriver, IDisposable
 
     public void OnStepChange(ProtocolState.StepState stepState)
     {
-        var currentStep = ProtocolState.Instance.CurrentStepDefinition;
-        SendMessageToSwiftUI($"stepChange:{ProtocolState.Instance.CurrentStep}:{(stepState.SignedOff.Value ? 1 : 0)}");
+        var stepStateData = new StepStateData
+        {
+            CurrentStepIndex = ProtocolState.Instance.CurrentStep.Value,
+            IsSignedOff = stepState.SignedOff.Value,
+            ChecklistState = stepState.Checklist.Select(item => new CheckItemStateData
+            {
+                IsChecked = item.IsChecked.Value,
+                CheckIndex = ProtocolState.Instance.CurrentStepState.Value.Checklist.IndexOf(item)
+            }).ToList()
+        };
+        string stepStateJson = JsonConvert.SerializeObject(stepStateData);
+        SendMessageToSwiftUI($"stepChange:{stepStateJson}");
 
+        var currentStep = ProtocolState.Instance.CurrentStepDefinition;
         foreach(var contentItem in currentStep.contentItems)
         {
             switch(contentItem.contentType)
@@ -90,21 +102,28 @@ public class SwiftUIDriver : IUIDriver, IDisposable
         }
     }
 
-    public void OnCheckItemChange(int index)
+    public void OnCheckItemChange(List<ProtocolState.CheckItemState> checkItemStates)
     {
-        var currentCheckItem = ProtocolState.Instance.CurrentCheckItemDefinition;
-        SendMessageToSwiftUI($"checkItemChange:{index}");
-
-        if(ProtocolState.Instance.HasCurrentCheckItem())
+        var checkItemStateDataList = checkItemStates.Select(checkItemState => new CheckItemStateData
         {
-            if(currentCheckItem.activateTimer)
+            IsChecked = checkItemState.IsChecked.Value,
+            CheckIndex = ProtocolState.Instance.CurrentStepState.Value.Checklist.IndexOf(checkItemState)
+        }).ToList();
+
+        string checkItemStatesJson = JsonConvert.SerializeObject(checkItemStateDataList);
+        SendMessageToSwiftUI($"checkItemChange:{checkItemStatesJson}");
+
+        var currentCheckItem = ProtocolState.Instance.CurrentCheckItemDefinition;
+        if (currentCheckItem != null)
+        {
+            if (currentCheckItem.activateTimer)
             {
                 int seconds = currentCheckItem.hours * 3600 + currentCheckItem.minutes * 60 + currentCheckItem.seconds;
                 DisplayTimer(seconds);
             }
-            foreach(var contentItem in currentCheckItem.contentItems)
+            foreach (var contentItem in currentCheckItem.contentItems)
             {
-                switch(contentItem.contentType)
+                switch (contentItem.contentType)
                 {
                     case ContentType.Video:
                         var videoItem = (VideoItem)contentItem;
@@ -168,9 +187,30 @@ public class SwiftUIDriver : IUIDriver, IDisposable
         ProtocolState.Instance.SetStep(stepIndex);
     }
 
-    public void ChecklistItemToggleCallback(int index, bool isChecked)
+    public void CheckItemCallback(int index)
     {
-        Debug.Log("check item " + index.ToString() + " " + isChecked.ToString());
+        ProtocolState.Instance.CurrentStepState.Value.Checklist[index].IsChecked.Value = true;
+        if(index + 1 < ProtocolState.Instance.CurrentStepState.Value.Checklist.Count)
+        {
+            ProtocolState.Instance.SetCheckItem(index + 1);
+        }
+        else
+        {
+            ProtocolState.Instance.SetCheckItem(index);
+        }
+    }
+
+    public void UncheckItemCallback(int index)
+    {
+        ProtocolState.Instance.CurrentStepState.Value.Checklist[index].IsChecked.Value = false;
+        if(index - 1 >= 0)
+        {
+            ProtocolState.Instance.SetCheckItem(index - 1);
+        }
+        else
+        {
+            ProtocolState.Instance.SetCheckItem(index);
+        }
     }
 
     public void ProtocolSelectionCallback(string protocolTitle)
@@ -257,9 +297,11 @@ public class SwiftUIDriver : IUIDriver, IDisposable
             case "stepNavigation":
                 StepNavigationCallback(int.Parse(data));
                 break;
-            case "checklistItemToggle":
-                string[] toggleData = data.Split(',');
-                ChecklistItemToggleCallback(int.Parse(toggleData[0]), bool.Parse(toggleData[1]));
+            case "checkItem":
+                CheckItemCallback(int.Parse(data));
+                break;
+            case "uncheckItem":
+                UncheckItemCallback(int.Parse(data));
                 break;
             case "selectProtocol":
                 ProtocolSelectionCallback(data);
@@ -315,6 +357,19 @@ public class SwiftUIDriver : IUIDriver, IDisposable
         {
             Debug.LogError($"Error loading protocol list: {ex.Message}");
         }
+    }
+
+    public class StepStateData
+    {
+        public int CurrentStepIndex { get; set; }
+        public bool IsSignedOff { get; set; }
+        public List<CheckItemStateData> ChecklistState { get; set; }
+    }
+
+    public class CheckItemStateData
+    {
+        public bool IsChecked { get; set; }
+        public int CheckIndex { get; set; }
     }
 
     // DllImports

@@ -20,7 +20,7 @@ public class ProtocolState : MonoBehaviour
     // Data streams
     public Subject<ProtocolDefinition> ProtocolStream { get; } = new Subject<ProtocolDefinition>();
     public Subject<StepState> StepStream { get; } = new Subject<StepState>();
-    public Subject<int> ChecklistStream { get; } = new Subject<int>();
+    public Subject<List<CheckItemState>> ChecklistStream { get; } = new Subject<List<CheckItemState>>();
 
     // Locking and alignment bools
     public ReactiveProperty<bool> LockingTriggered { get; } = new ReactiveProperty<bool>();
@@ -135,30 +135,30 @@ public class ProtocolState : MonoBehaviour
 
     public void SetCheckItem(int index)
     {
-        var currentStep = CurrentStepState.Value;
-        if (index < 0 || currentStep.Checklist == null || index >= currentStep.Checklist.Count)
+        var currentStepState = CurrentStepState.Value;
+        if (index < 0 || currentStepState.Checklist == null || index >= currentStepState.Checklist.Count)
         {
             return;
         }
 
-        currentStep.CheckNum.Value = index;
-        CurrentCheckItemState.Value = currentStep.Checklist[index];
-        ChecklistStream.OnNext(index);
+        currentStepState.CheckNum.Value = index;
+        CurrentCheckItemState.Value = currentStepState.Checklist[index];
+        ChecklistStream.OnNext(currentStepState.Checklist.ToList());
         ServiceRegistry.GetService<ILighthouseControl>()?.SetProtocolStatus();
     }
 
     private void UpdateCheckItem()
     {
-        var currentStep = CurrentStepState.Value;
-        if (currentStep.Checklist != null)
+        var currentStepState = CurrentStepState.Value;
+        if (currentStepState.Checklist != null)
         {
-            var firstUncheckedItem = currentStep.Checklist.FirstOrDefault(item => !item.IsChecked.Value);
-            SetCheckItem(firstUncheckedItem != null ? currentStep.Checklist.IndexOf(firstUncheckedItem) : currentStep.Checklist.Count - 1);
+            var firstUncheckedItem = currentStepState.Checklist.FirstOrDefault(item => !item.IsChecked.Value);
+            SetCheckItem(firstUncheckedItem != null ? currentStepState.Checklist.IndexOf(firstUncheckedItem) : currentStepState.Checklist.Count - 1);
         }
         else
         {
             CurrentCheckItemState.Value = null;
-            ChecklistStream.OnNext(0);
+            ChecklistStream.OnNext(null);
         }
     }
 

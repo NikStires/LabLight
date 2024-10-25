@@ -11,6 +11,7 @@ struct CheckItemView: View {
                     .foregroundColor(checklistItem.isChecked ? .gray : .white)
             }
             .toggleStyle(CheckBoxToggleStyle())
+            .disabled(true)
         }
     }
 }
@@ -26,5 +27,6 @@ struct CheckBoxToggleStyle: ToggleStyle {
             }
         }
         .buttonStyle(PlainButtonStyle())
+        .disabled(true)
     }
 }

@@ -44,6 +44,10 @@ func sendMessageToSwiftUI(_ cmessage: UnsafePointer<CChar>) {
         print("######LABLIGHT Posting StepChange notification")
         NotificationCenter.default.post(name: Notification.Name("StepChange"), object: nil, userInfo: ["message": message])
     }
+    else if message.hasPrefix("checkItemChange:") {
+        print("######LABLIGHT Posting CheckItemChange notification")
+        NotificationCenter.default.post(name: Notification.Name("CheckItemChange"), object: nil, userInfo: ["message": message])
+    }
     else {
         NotificationCenter.default.post(name: Notification.Name("LLMChatMessage"), object: nil, userInfo: ["message": message])
     }
