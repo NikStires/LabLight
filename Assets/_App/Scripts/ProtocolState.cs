@@ -40,6 +40,14 @@ public class ProtocolState : MonoBehaviour
     public bool HasCurrentChecklist() => CurrentChecklist != null && CurrentChecklist.Count > 0;
     public bool HasCurrentCheckItem() => CurrentCheckItemDefinition != null;
 
+    public bool AreAllItemsChecked()
+    {
+        var currentStepState = CurrentStepState.Value;
+        if (currentStepState?.Checklist == null) return false;
+        
+        return currentStepState.Checklist.All(item => item.IsChecked.Value);
+    }
+
     void Awake()
     {
         if (Instance == null)
@@ -101,6 +109,7 @@ public class ProtocolState : MonoBehaviour
         SetStep(0);
     }
 
+    //TODO: move this to a protocol definition class
     private StepDefinition CreateLockingStep(List<ModelArDefinition> arModels)
     {
         var checkList = new List<CheckItemDefinition>
@@ -153,7 +162,15 @@ public class ProtocolState : MonoBehaviour
         if (currentStepState.Checklist != null)
         {
             var firstUncheckedItem = currentStepState.Checklist.FirstOrDefault(item => !item.IsChecked.Value);
-            SetCheckItem(firstUncheckedItem != null ? currentStepState.Checklist.IndexOf(firstUncheckedItem) : currentStepState.Checklist.Count - 1);
+            if (firstUncheckedItem != null)
+            {
+                SetCheckItem(currentStepState.Checklist.IndexOf(firstUncheckedItem));
+            }
+            else
+            {
+                CurrentCheckItemState.Value = currentStepState.Checklist.Last();
+                ChecklistStream.OnNext(currentStepState.Checklist.ToList());
+            }
         }
         else
         {
@@ -174,6 +191,7 @@ public class ProtocolState : MonoBehaviour
         ServiceRegistry.GetService<ILighthouseControl>()?.SetProtocolStatus();
     }
 
+    //TODO: move this to another class
     private void InitCSV()
     {
         string fileName = $"{ProtocolTitle.Value}_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.csv";

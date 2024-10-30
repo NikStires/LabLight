@@ -40,7 +40,6 @@ public class LLMChatPanelViewController : LLBasePanel
         testButton.selectEntered.AddListener(_ => Test());
         submitButton.selectEntered.AddListener(_ => Submit());
         inputField.onSubmit.AddListener(_ => Submit());
-        ServiceRegistry.GetService<ILLMChatProvider>().OnResponse.AddListener(HandleResponse);
         loginButton.selectExited.AddListener(_ => LoginAsync());
         UpdateUIBasedOnAuthStatus();
     }
@@ -66,7 +65,7 @@ public class LLMChatPanelViewController : LLBasePanel
         SpeechRecognizer.Instance.RecognizedTextHandler = null;
     }
 
-    void HandleResponse(string response)
+    public void DisplayResponse(string response)
     {
         panelText.text = panelText.text + "<color=white>" + response + "\n\n";
     }

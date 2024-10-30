@@ -25,8 +25,10 @@ public interface IUIDriver
     void StepNavigationCallback(int index);
     void CheckItemCallback(int index);
     void UncheckItemCallback(int index);
+    void SignOffChecklistCallback();
     void ProtocolSelectionCallback(string protocolTitle);
     void ChecklistSignOffCallback(bool isSignedOff);
+    void CloseProtocolCallback();
     void ChatMessageCallback(string message);
     void LoginCallback(string username, string password);
 }

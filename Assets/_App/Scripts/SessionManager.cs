@@ -12,10 +12,6 @@ public class SessionManager : MonoBehaviour
 
     private ARAnchorManager anchorManager;
 
-    //audio manager
-
-    //public bool loadProcedure = true;
-
     private static Transform workspaceTransform;
 
     public Transform WorkspaceTransform
@@ -85,11 +81,15 @@ public class SessionManager : MonoBehaviour
         var llmChatProvider = new ClaudeChatProvider();
         ServiceRegistry.RegisterService<ILLMChatProvider>(llmChatProvider);
 
-        #if UNITY_VISIONOS
+        #if UNITY_VISIONOS && !UNITY_EDITOR
         var UIDriver = new SwiftUIDriver();
         ServiceRegistry.RegisterService<IUIDriver>(UIDriver);
-        UIDriver.DisplayProtocolMenu();
+        Destroy(GetComponent<UnityUIDriver>());
+        #elif UNITY_EDITOR
+        var UIDriver = GetComponent<UnityUIDriver>();
+        ServiceRegistry.RegisterService<IUIDriver>(UIDriver);
         #endif
+        UIDriver.DisplayProtocolMenu();
 
         //Set up default state
         SessionState.deviceId = SystemInfo.deviceName;

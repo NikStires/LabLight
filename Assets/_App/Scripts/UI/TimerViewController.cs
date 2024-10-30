@@ -148,6 +148,12 @@ public class TimerViewController : LLBasePanel
         }
     }
 
+    public void SetTimer(int timeSeconds)
+    {
+        TimeLeft = timeSeconds;
+        TimeDisplay.text = GetTimeString();
+    }
+
     public void ResetTimer()
     {
         TimeLeft = StartingTime;

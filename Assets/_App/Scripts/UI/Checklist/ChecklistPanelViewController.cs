@@ -9,9 +9,11 @@ using System.Linq;
 using UnityEngine.SceneManagement;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using TMPro;
+using Unity.VisualScripting;
 
 public class ChecklistPanelViewController : LLBasePanel
 {
+    UnityUIDriver UIDriver;
     [SerializeField] GameObject noChecklistText;
     [SerializeField] AudioSource audioPlayer;
 
@@ -48,7 +50,6 @@ public class ChecklistPanelViewController : LLBasePanel
     {
         base.Awake();
         checkItemPool = GetComponent<CheckItemPool>();
-        ProtocolState.Instance.StepStream.Subscribe(_ => StartCoroutine(LoadChecklist())).AddTo(this);
     }
 
     void OnEnable()
@@ -68,9 +69,11 @@ public class ChecklistPanelViewController : LLBasePanel
     void Start()
     {
         checkItemPool.CreatePooledObjects();
+        UIDriver = (UnityUIDriver)ServiceRegistry.GetService<IUIDriver>();
+
         StartCoroutine(LoadChecklist());
 
-        popupPanelViewController = GameObject.FindFirstObjectByType<PopupPanelViewController>(FindObjectsInactive.Include);
+        popupPanelViewController = FindFirstObjectByType<PopupPanelViewController>(FindObjectsInactive.Include);
     }
 
     /// <summary>
@@ -100,25 +103,19 @@ public class ChecklistPanelViewController : LLBasePanel
             return;
         }
 
-        // Check the item and log timestamp
-        firstUncheckedItem.IsChecked.Value = true;
-        firstUncheckedItem.CompletionTime.Value = DateTime.Now;
-
         // Increment checkItem if this is not the last check item
         if (ProtocolState.Instance.CurrentCheckNum < ProtocolState.Instance.CurrentStepState.Value.Checklist.Count - 1)
         {
-            //if there are more items to display scroll the checklist up
-            if(ProtocolState.Instance.CurrentStepState.Value.Checklist.Count > 5 && ProtocolState.Instance.CurrentCheckNum > 0 && ProtocolState.Instance.CurrentCheckNum + 4 < ProtocolState.Instance.CurrentStepState.Value.Checklist.Count)
+            if(ProtocolState.Instance.CurrentStepState.Value.Checklist.Count > 5 && 
+               ProtocolState.Instance.CurrentCheckNum > 0 && 
+               ProtocolState.Instance.CurrentCheckNum + 4 < ProtocolState.Instance.CurrentStepState.Value.Checklist.Count)
             {
                 StartCoroutine(ScrollChecklistUp());
             }
-            
-            ProtocolState.Instance.SetCheckItem(ProtocolState.Instance.CurrentCheckNum + 1);
         }
-        else
-        {
-            ProtocolState.Instance.SetCheckItem(ProtocolState.Instance.CurrentCheckNum);
-        }
+
+        int itemIndex = ProtocolState.Instance.CurrentStepState.Value.Checklist.IndexOf(firstUncheckedItem);
+        UIDriver.CheckItemCallback(itemIndex);
 
         Invoke("ResetCooldown", 1f);
         checkOnCooldown = true;
@@ -151,15 +148,13 @@ public class ChecklistPanelViewController : LLBasePanel
             return;
         }
 
-        // Uncheck the item
-        lastCheckedItem.IsChecked.Value = false;
-
         if(ProtocolState.Instance.CurrentCheckNum > 1 && ProtocolState.Instance.CurrentStepState.Value.Checklist.Count > 5 && ProtocolState.Instance.CurrentCheckNum + 3 < ProtocolState.Instance.CurrentStepState.Value.Checklist.Count)
         {
             StartCoroutine(ScrollChecklistDown());
         }
 
-        ProtocolState.Instance.SetCheckItem(ProtocolState.Instance.CurrentStepState.Value.Checklist.IndexOf(lastCheckedItem));
+        // Uncheck the item
+        UIDriver.UncheckItemCallback(ProtocolState.Instance.CurrentStepState.Value.Checklist.IndexOf(lastCheckedItem));
 
         Invoke("ResetCooldown", 1f);
         checkOnCooldown = true;
@@ -187,13 +182,12 @@ public class ChecklistPanelViewController : LLBasePanel
         }
 
         audioPlayer.Play();
-        //update protocol state
-        ProtocolState.Instance.SignOff();
+        UIDriver.SignOffChecklistCallback();
+        //UIDriver.WriteChecklistToCSV(ProtocolState.Instance.CurrentStepState.Value.Checklist);
+        
         //lock sign off indicator in UI
         lockedIcon.SetActive(true);
         unlockedIcon.SetActive(false);
-        //write checklist for this step to CSV
-        WriteChecklistToCSV(ProtocolState.Instance.CurrentStepState.Value.Checklist);
     }
 
     /// <summary>
@@ -201,16 +195,7 @@ public class ChecklistPanelViewController : LLBasePanel
     /// </summary>
     public void PreviousStep()
     {
-        if (ProtocolState.Instance.LockingTriggered.Value)
-        {
-            Debug.LogWarning("cannot navigate to previous step: locking in progress");
-            return;
-        }
-        if(ProtocolState.Instance.CurrentStep.Value == 0)
-        {
-            return;
-        }
-        ProtocolState.Instance.SetStep(ProtocolState.Instance.CurrentStep.Value - 1);
+        UIDriver.StepNavigationCallback(ProtocolState.Instance.CurrentStep.Value - 1);
     }
 
     /// <summary>
@@ -218,31 +203,7 @@ public class ChecklistPanelViewController : LLBasePanel
     /// </summary>
     public void NextStep()
     {
-        // If there is no checklist or the checklist is already signed off, proceed to the next step
-        if (!ProtocolState.Instance.HasCurrentChecklist() || ProtocolState.Instance.CurrentStepState.Value.SignedOff.Value)
-        {
-            if (ProtocolState.Instance.LockingTriggered.Value)
-            {
-                Debug.LogWarning("cannot navigate to next step: locking in progress");
-                return;
-            }
-            ProtocolState.Instance.SetStep(ProtocolState.Instance.CurrentStep.Value + 1);
-            return;
-        }
-
-        // If all items are checked but the checklist is not signed off, show sign off confirmation panel
-        if (ProtocolState.Instance.CurrentCheckNum == ProtocolState.Instance.CurrentStepState.Value.Checklist.Count - 1 &&
-            ProtocolState.Instance.CurrentCheckItemState.Value.IsChecked.Value)
-        {
-            // Update confirmation panel UI and button controls
-            Debug.LogWarning("trying to go to next step without signing off");
-            popupPanelViewController.DisplayPopup(signOffPopupEventSO);
-            return;
-        }
-
-        // If not all items are checked, show checklist incomplete confirmation panel
-        Debug.LogWarning("trying to go to the next step without checking all items");
-        popupPanelViewController.DisplayPopup(checklistIncompletePopupEventSO);
+        UIDriver.StepNavigationCallback(ProtocolState.Instance.CurrentStep.Value + 1);
     }
 
     void LoadStepText()
@@ -253,7 +214,7 @@ public class ChecklistPanelViewController : LLBasePanel
     /// <summary>
     /// Loads the checklist for the current step, displays 5 most relevant items, updates the signoff icon
     /// </summary>
-    IEnumerator LoadChecklist()
+    public IEnumerator LoadChecklist()
     {
         LoadStepText();
 
@@ -398,19 +359,7 @@ public class ChecklistPanelViewController : LLBasePanel
     /// </summary>
     void CloseProtocol()
     {
-        var lastStepWithChecklist = ProtocolState.Instance.Steps.Where(step => step.Checklist != null).LastOrDefault();
-            
-        //if we are on the last step and the last checklist has been signed off close the protocol
-        if(ProtocolState.Instance.CurrentStep.Value == (ProtocolState.Instance.Steps.Count - 1) && lastStepWithChecklist != null && lastStepWithChecklist.SignedOff.Value)
-        {
-            ProtocolState.Instance.ActiveProtocol.Value = null;
-            SceneLoader.Instance.LoadSceneClean("ProtocolMenu");   
-        }
-        //open a popup to confirm closing the protocol
-        else
-        {
-            popupPanelViewController.DisplayPopup(closeProtocolPopupEventSO);
-        }
+        UIDriver.CloseProtocolCallback();
     }
 
     /// <summary>
@@ -476,7 +425,7 @@ public class ChecklistPanelViewController : LLBasePanel
 
         checklistIncompletePopupEventSO.OnYesButtonPressed.AddListener(() =>
         {
-            ProtocolState.Instance.SetStep(ProtocolState.Instance.CurrentStep.Value + 1);
+            UIDriver.StepNavigationCallback(ProtocolState.Instance.CurrentStep.Value + 1);
         });
 
         closeProtocolPopupEventSO.OnYesButtonPressed.AddListener(() =>

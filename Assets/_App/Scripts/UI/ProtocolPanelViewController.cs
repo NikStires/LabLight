@@ -12,6 +12,7 @@ using System.IO;
 
 public class ProtocolPanelViewController : MonoBehaviour
 {
+    UnityUIDriver UIDriver;
     [SerializeField] TextMeshProUGUI procedureTitle;
     //[SerializeField] TextMeshProUGUI stepText;
     [SerializeField] Transform contentFrame;
@@ -30,20 +31,15 @@ public class ProtocolPanelViewController : MonoBehaviour
     private List<MonoBehaviour> contentItemInstances = new List<MonoBehaviour>();
     private List<ContentItem> currentContentItems = new List<ContentItem>();
 
-    private void Awake()
-    {
-        ProtocolState.Instance.ChecklistStream.Subscribe(_ => UpdateContentItems()).AddTo(this);
-    }
-
     void Start()
     {
+        UIDriver = (UnityUIDriver)ServiceRegistry.GetService<IUIDriver>();
         procedureTitle.text = ProtocolState.Instance.ActiveProtocol.Value.title;
-        //UpdateStepDisplay();
         UpdateContentItems();
         OpenPDFButton.selectExited.AddListener(_ => OnOpenPDFButtonClicked());
     }
 
-    private void UpdateContentItems()
+    public void UpdateContentItems()
     {
         //Get new content items
         var newContentItems = new List<ContentItem>();
@@ -141,7 +137,7 @@ public class ProtocolPanelViewController : MonoBehaviour
                 case ContentType.WebUrl:
                     // Open a web browser
                     WebUrlItem webUrlItem = contentItem as WebUrlItem;
-                    ServiceRegistry.GetService<IUIDriver>().DisplayWebPage(webUrlItem.url);
+                    UIDriver.DisplayWebPage(webUrlItem.url);
                     break;
                 default:
                     break;
@@ -164,6 +160,6 @@ public class ProtocolPanelViewController : MonoBehaviour
         {
             return;
         }
-        ServiceRegistry.GetService<IUIDriver>().DisplayPDFReader(Path.GetFileNameWithoutExtension(ProtocolState.Instance.ActiveProtocol.Value.pdfPath));
+        UIDriver.DisplayPDFReader(Path.GetFileNameWithoutExtension(ProtocolState.Instance.ActiveProtocol.Value.pdfPath));
     }
 }

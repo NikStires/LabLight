@@ -66,6 +66,11 @@ public class ProtocolMenuViewController : LLBasePanel
         closeAppPopup.OnYesButtonPressed.AddListener(() => Application.Quit());
     }
 
+    void OnEnable()
+    {
+        LoadProtocols();
+    }
+
     /// <summary>
     /// Called when the behaviour becomes disabled or inactive.
     /// </summary>

@@ -28,10 +28,8 @@ public class SwiftUIDriver : IUIDriver, IDisposable
     public SwiftUIDriver()
     {
         SetNativeCallback(OnMessageReceived);
-        // Remove Initialize() call from constructor
     }
 
-    // Make Initialize public and call it after ensuring dependencies are ready
     public void Initialize()
     {
         if (ProtocolState.Instance != null)
@@ -201,6 +199,7 @@ public class SwiftUIDriver : IUIDriver, IDisposable
         }
 
         currentStepState.Checklist[index].IsChecked.Value = true;
+        currentStepState.Checklist[index].CompletionTime.Value = DateTime.Now;
         
         if(index + 1 < currentStepState.Checklist.Count)
         {
@@ -223,6 +222,11 @@ public class SwiftUIDriver : IUIDriver, IDisposable
         {
             ProtocolState.Instance.SetCheckItem(index);
         }
+    }
+
+    public void SignOffChecklistCallback()
+    {
+        ProtocolState.Instance.SignOff();
     }
 
     public void ProtocolSelectionCallback(string protocolTitle)
@@ -255,6 +259,11 @@ public class SwiftUIDriver : IUIDriver, IDisposable
         }
     }
 
+    public void CloseProtocolCallback()
+    {
+        SendMessageToSwiftUI("closeProtocol");
+    }
+
     public void ChatMessageCallback(string message)
     {
         ServiceRegistry.GetService<ILLMChatProvider>().QueryAsync(message);
@@ -270,11 +279,9 @@ public class SwiftUIDriver : IUIDriver, IDisposable
                 .ToObservable()
                 .Subscribe(
                     result => {
-                        // Handle successful authentication
                         SendAuthStatus(result);
                     },
                     error => {
-                        // Handle authentication error
                         Debug.LogError("Authentication failed: " + error.Message);
                         SendAuthStatus(false);
                     }
