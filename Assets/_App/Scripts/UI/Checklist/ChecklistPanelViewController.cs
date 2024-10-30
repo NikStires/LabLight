@@ -46,10 +46,18 @@ public class ChecklistPanelViewController : LLBasePanel
     [Header("HUD Event SO")]
     [SerializeField] HudEventSO hudEventSO;
 
+    // Add new fields for optimization
+    private readonly WaitForSeconds standardDelay = new WaitForSeconds(0.2f);
+    private readonly WaitForSeconds buttonDelay = new WaitForSeconds(0.5f);
+    private const float COOLDOWN_DURATION = 1f;
+
     protected override void Awake()
     {
         base.Awake();
-        checkItemPool = GetComponent<CheckItemPool>();
+        if (!TryGetComponent(out checkItemPool))
+        {
+            Debug.LogError($"[{nameof(ChecklistPanelViewController)}] Missing CheckItemPool component!");
+        }
     }
 
     void OnEnable()
@@ -64,16 +72,32 @@ public class ChecklistPanelViewController : LLBasePanel
         RemoveButtonEvents();
         RemovePopupEvents();
         DisposeVoice?.Invoke();
+        
+        // Clean up all slots
+        foreach(var slot in checkItemSlots)
+        {
+            CleanupSlot(slot);
+        }
     }
 
     void Start()
     {
-        checkItemPool.CreatePooledObjects();
-        UIDriver = (UnityUIDriver)ServiceRegistry.GetService<IUIDriver>();
+        checkItemPool?.CreatePooledObjects();
+        UIDriver = ServiceRegistry.GetService<IUIDriver>() as UnityUIDriver;
+        
+        if (UIDriver == null)
+        {
+            Debug.LogError($"[{nameof(ChecklistPanelViewController)}] Failed to get UIDriver!");
+            return;
+        }
 
         StartCoroutine(LoadChecklist());
 
         popupPanelViewController = FindFirstObjectByType<PopupPanelViewController>(FindObjectsInactive.Include);
+        if (popupPanelViewController == null)
+        {
+            Debug.LogWarning($"[{nameof(ChecklistPanelViewController)}] PopupPanelViewController not found!");
+        }
     }
 
     /// <summary>
@@ -81,44 +105,33 @@ public class ChecklistPanelViewController : LLBasePanel
     /// </summary>
     public void CheckItem()
     {
-        if(checkOnCooldown == true)
-        {
-            Debug.LogWarning("Check on cooldown! Pressing too fast!");
+        if (!ValidateChecklistOperation("check"))
             return;
-        }
 
-        if (!ProtocolState.Instance.HasCurrentChecklist() || ProtocolState.Instance.CurrentStepState.Value.SignedOff.Value)
+        var checklist = ProtocolState.Instance.CurrentStepState.Value.Checklist;
+        var firstUncheckedItem = checklist?.FirstOrDefault(item => !item.IsChecked.Value);
+
+        if (firstUncheckedItem == null)
         {
-            Debug.LogWarning("Already signed off or no item to check");
-            hudEventSO.DisplayHudWarning("Checklist already signed off.");
-            return;
-        }
-
-        var firstUncheckedItem = ProtocolState.Instance.CurrentStepState.Value.Checklist.FirstOrDefault(item => !item.IsChecked.Value);
-
-        if (firstUncheckedItem == null || ProtocolState.Instance.LockingTriggered.Value)
-        {
-            Debug.LogWarning("No item to check or locking triggered");
             hudEventSO.DisplayHudWarning("No item to check.");
             return;
         }
 
-        // Increment checkItem if this is not the last check item
-        if (ProtocolState.Instance.CurrentCheckNum < ProtocolState.Instance.CurrentStepState.Value.Checklist.Count - 1)
+        int itemIndex = checklist.IndexOf(firstUncheckedItem);
+        
+        // Scroll handling with bounds checking
+        if (ProtocolState.Instance.CurrentCheckNum < checklist.Count - 1)
         {
-            if(ProtocolState.Instance.CurrentStepState.Value.Checklist.Count > 5 && 
-               ProtocolState.Instance.CurrentCheckNum > 0 && 
-               ProtocolState.Instance.CurrentCheckNum + 4 < ProtocolState.Instance.CurrentStepState.Value.Checklist.Count)
+            if (checklist.Count > 5 && 
+                ProtocolState.Instance.CurrentCheckNum > 0 && 
+                ProtocolState.Instance.CurrentCheckNum + 4 < checklist.Count)
             {
                 StartCoroutine(ScrollChecklistUp());
             }
         }
 
-        int itemIndex = ProtocolState.Instance.CurrentStepState.Value.Checklist.IndexOf(firstUncheckedItem);
         UIDriver.CheckItemCallback(itemIndex);
-
-        Invoke("ResetCooldown", 1f);
-        checkOnCooldown = true;
+        StartCooldown();
     }
 
     /// <summary>
@@ -218,9 +231,16 @@ public class ChecklistPanelViewController : LLBasePanel
     {
         LoadStepText();
 
-        foreach(var item in checkItemPool.pooledObjects)
+        if(checkItemPool == null)
         {
-            item.SetActive(false);
+            TryGetComponent(out checkItemPool);
+            checkItemPool.CreatePooledObjects();
+        }
+
+        // Clean up all slots before loading new items
+        foreach(var slot in checkItemSlots)
+        {
+            CleanupSlot(slot);
         }
 
         //display proper signoff icon
@@ -285,16 +305,26 @@ public class ChecklistPanelViewController : LLBasePanel
     /// </summary>
     void LoadCheckItem(ProtocolState.CheckItemState checkItemData, int slotIndex)
     {
-        //grab a view from the pool and initalize it with the proper data
-        var checkItemView = checkItemPool.GetPooledObject().GetComponent<CheckitemView>();
-        checkItemView.InitalizeCheckItem(checkItemData);
+        if (checkItemData == null || slotIndex < 0 || slotIndex >= checkItemSlots.Count)
+        {
+            Debug.LogError($"Invalid LoadCheckItem parameters: data={checkItemData != null}, slot={slotIndex}");
+            return;
+        }
 
-        //child the view to the proper slot and reset its position and rotation
-        checkItemView.transform.SetParent(checkItemSlots[slotIndex]);
+        // Clean the target slot first
+        CleanupSlot(checkItemSlots[slotIndex]);
+
+        var checkItemView = checkItemPool.GetPooledObject()?.GetComponent<CheckitemView>();
+        if (checkItemView == null)
+        {
+            Debug.LogError("Failed to get pooled CheckitemView!");
+            return;
+        }
+
+        checkItemView.InitalizeCheckItem(checkItemData);
+        checkItemView.transform.SetParent(checkItemSlots[slotIndex], false);
         checkItemView.transform.localPosition = Vector3.zero;
         checkItemView.transform.localRotation = Quaternion.identity;
-
-        //activate the view and play the scale up animation
         checkItemView.gameObject.SetActive(true);
         checkItemView.PlayScaleUpAnimation();
     }
@@ -304,25 +334,49 @@ public class ChecklistPanelViewController : LLBasePanel
     /// </summary>
     IEnumerator ScrollChecklistUp()
     {
-        //scale down the first item
-        checkItemSlots[0].GetChild(0).GetComponent<CheckitemView>().PlayScaleDownAnimation();
+        if (checkItemSlots == null || checkItemSlots.Count < 5)
+        {
+            Debug.LogError("Invalid checkItemSlots configuration!");
+            yield break;
+        }
 
-        yield return new WaitForSeconds(0.2f);
+        // Clean up first slot and play animation for its primary item
+        if (checkItemSlots[0].childCount > 0)
+        {
+            var firstItem = checkItemSlots[0].GetChild(0)?.GetComponent<CheckitemView>();
+            if (firstItem != null)
+            {
+                firstItem.PlayScaleDownAnimation();
+                yield return standardDelay;
+            }
+            CleanupSlot(checkItemSlots[0]);
+        }
 
+        // Move items up
         for(int i = 1; i < 5; i++)
         {
-            //move the items up
-            checkItemSlots[i].GetChild(0).GetComponent<CheckitemView>().PlayMoveUpAnimation(checkItemSlots[i].position, checkItemSlots[i - 1].position);
-            checkItemSlots[i].GetChild(0).SetParent(checkItemSlots[i - 1]);
-            checkItemSlots[i-1].GetChild(0).localPosition = Vector3.zero;
-            checkItemSlots[i-1].GetChild(0).localRotation = Quaternion.identity;
+            if (checkItemSlots[i].childCount > 0)
+            {
+                var itemTransform = checkItemSlots[i].GetChild(0);
+                var itemView = itemTransform.GetComponent<CheckitemView>();
+                
+                // Clean target slot before moving
+                CleanupSlot(checkItemSlots[i - 1]);
+                
+                itemView.PlayMoveUpAnimation(checkItemSlots[i].position, checkItemSlots[i - 1].position);
+                itemTransform.SetParent(checkItemSlots[i - 1]);
+                itemTransform.localPosition = Vector3.zero;
+                itemTransform.localRotation = Quaternion.identity;
+            }
 
             if(i != 4)
             {
-                yield return new WaitForSeconds(0.2f);
+                yield return standardDelay;
             }
         }
-        //load the next item
+
+        // Clean last slot before loading new item
+        CleanupSlot(checkItemSlots[4]);
         LoadCheckItem(ProtocolState.Instance.CurrentStepState.Value.Checklist[ProtocolState.Instance.CurrentCheckNum + 3], 4);
     }
 
@@ -331,26 +385,42 @@ public class ChecklistPanelViewController : LLBasePanel
     /// </summary>
     IEnumerator ScrollChecklistDown()
     {
-        //scale down the last item
-        checkItemSlots[4].GetChild(0).GetComponent<CheckitemView>().PlayScaleDownAnimation();
-
-        yield return new WaitForSeconds(0.2f);
+        // Clean up last slot and play animation for its primary item
+        if (checkItemSlots[4].childCount > 0)
+        {
+            var lastItem = checkItemSlots[4].GetChild(0)?.GetComponent<CheckitemView>();
+            if (lastItem != null)
+            {
+                lastItem.PlayScaleDownAnimation();
+                yield return standardDelay;
+            }
+            CleanupSlot(checkItemSlots[4]);
+        }
 
         for(int i = 3; i >= 0; i--)
         {
-            //move the items down
-            checkItemSlots[i].GetChild(0).GetComponent<CheckitemView>().PlayMoveDownAnimation(checkItemSlots[i].position, checkItemSlots[i + 1].position);
-            checkItemSlots[i].GetChild(0).SetParent(checkItemSlots[i + 1]);
-            checkItemSlots[i+1].GetChild(0).localPosition = Vector3.zero;
-            checkItemSlots[i+1].GetChild(0).localRotation = Quaternion.identity;
+            if (checkItemSlots[i].childCount > 0)
+            {
+                var itemTransform = checkItemSlots[i].GetChild(0);
+                var itemView = itemTransform.GetComponent<CheckitemView>();
+                
+                // Clean target slot before moving
+                CleanupSlot(checkItemSlots[i + 1]);
+                
+                itemView.PlayMoveDownAnimation(checkItemSlots[i].position, checkItemSlots[i + 1].position);
+                itemTransform.SetParent(checkItemSlots[i + 1]);
+                itemTransform.localPosition = Vector3.zero;
+                itemTransform.localRotation = Quaternion.identity;
+            }
 
             if(i != 0)
             {
-                yield return new WaitForSeconds(0.2f);
+                yield return standardDelay;
             }
         }
-        
-        //load the previous item
+
+        // Clean first slot before loading new item
+        CleanupSlot(checkItemSlots[0]);
         LoadCheckItem(ProtocolState.Instance.CurrentStepState.Value.Checklist[ProtocolState.Instance.CurrentCheckNum - 1], 0);
     }
 
@@ -494,5 +564,56 @@ public class ChecklistPanelViewController : LLBasePanel
     private IEnumerator Wait()
     {
         yield return new WaitForSeconds(0.5f);
+    }
+
+    // Add validation helper
+    private bool ValidateChecklistOperation(string operation)
+    {
+        if (checkOnCooldown)
+        {
+            Debug.LogWarning($"{operation} on cooldown! Pressing too fast!");
+            return false;
+        }
+
+        if (!ProtocolState.Instance?.HasCurrentChecklist() ?? true)
+        {
+            hudEventSO.DisplayHudWarning("No checklist available.");
+            return false;
+        }
+
+        if (ProtocolState.Instance.CurrentStepState.Value.SignedOff.Value)
+        {
+            hudEventSO.DisplayHudWarning("Checklist already signed off.");
+            return false;
+        }
+
+        if (ProtocolState.Instance.LockingTriggered.Value)
+        {
+            hudEventSO.DisplayHudWarning($"Cannot {operation} - checklist is locked.");
+            return false;
+        }
+
+        return true;
+    }
+
+    // Improved cooldown handling
+    private void StartCooldown()
+    {
+        checkOnCooldown = true;
+        CancelInvoke(nameof(ResetCooldown));
+        Invoke(nameof(ResetCooldown), COOLDOWN_DURATION);
+    }
+
+    // Add this helper method to clean a single slot
+    private void CleanupSlot(Transform slot)
+    {
+        // Deactivate all children in the slot
+        for (int i = slot.childCount - 1; i >= 0; i--)
+        {
+            var child = slot.GetChild(i);
+            child.gameObject.SetActive(false);
+            // Optionally return to original parent if needed
+            child.SetParent(checkItemPool.Content);
+        }
     }
 }
