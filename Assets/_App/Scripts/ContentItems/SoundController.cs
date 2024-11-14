@@ -5,18 +5,18 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// Sound content item
+/// Sound content item controller
 /// </summary>
-public class SoundController : ContentController<SoundItem>
+public class SoundController : ContentController<ContentItem>
 {
     public AudioSource audioSource;
     public GameObject playerUI;
     public GameObject loadingIndicator;
-    public IDisposable downloadSubscription;
+    private IDisposable downloadSubscription;
     public TextMeshProUGUI Text;
     public Slider progressIndicator;
 
-    public override SoundItem ContentItem
+    public override ContentItem ContentItem
     {
         get => base.ContentItem;
         set
@@ -26,10 +26,15 @@ public class SoundController : ContentController<SoundItem>
         }
     }
 
+    private void OnDisable()
+    {
+        // Cancel previous download
+        downloadSubscription?.Dispose();
+        downloadSubscription = null;
+    }
+
     private void UpdateView()
     {
-        var soundPath = ProtocolState.Instance.ActiveProtocol.Value.mediaBasePath + "/" + ContentItem.url;
-
         // Cancel previous download
         downloadSubscription?.Dispose();
         downloadSubscription = null;
@@ -38,15 +43,21 @@ public class SoundController : ContentController<SoundItem>
         loadingIndicator.SetActive(true);
         playerUI.SetActive(false);
 
-        // Start new download
-        downloadSubscription = ServiceRegistry.GetService<IMediaProvider>().GetSound(soundPath).Subscribe(clip =>
+        // Start new download using GetContentItem
+        downloadSubscription = ServiceRegistry.GetService<IMediaProvider>().GetContentItem(ContentItem).Subscribe(content =>
         {
+            AudioClip clip = content as AudioClip;
             if (clip == null)
             {
+                ServiceRegistry.Logger.LogError("Content is not an AudioClip.");
                 return;
             }
 
-            Text.text = ContentItem.url;
+            if (ContentItem.Properties != null && ContentItem.Properties.TryGetValue("Url", out object url))
+            {
+                Text.text = url.ToString();
+            }
+
             audioSource.clip = clip;
             audioSource.Play();
 
@@ -57,13 +68,15 @@ public class SoundController : ContentController<SoundItem>
             playerUI.SetActive(true);
         }, (e) =>
         {
-            ServiceRegistry.Logger.LogError("Could not load sound " + soundPath + ". " + e.ToString());
+            ServiceRegistry.Logger.LogError("Could not load sound content. " + e.ToString());
         });
     }
 
-
     private void Update()
     {
-        progressIndicator.value = audioSource.time;
+        if (audioSource.clip != null)
+        {
+            progressIndicator.value = audioSource.time;
+        }
     }
 }

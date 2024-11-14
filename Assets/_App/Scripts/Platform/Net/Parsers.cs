@@ -5,20 +5,21 @@ using System;
 using System.IO;
 using Newtonsoft.Json;
 
-/// <summary>
-/// Static helper methods to convert parsed JSON data into instanced classes
-/// </summary>
 public class Parsers
 {
-    public static JsonSerializerSettings serializerSettings = new JsonSerializerSettings
+    public static List<ProtocolDescriptor> ParseProtocols(string json)
     {
-        PreserveReferencesHandling = PreserveReferencesHandling.Objects,
-        ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
-        NullValueHandling = NullValueHandling.Ignore,
-        Converters = { new ArDefinitionConverter(),
-                       new ArOperationConverter(),
-                       new ContentItemConverter(),}
-    };
+        try
+        {
+            var protocols = JsonConvert.DeserializeObject<List<ProtocolDescriptor>>(json);
+            return protocols;
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("Error parsing protocols list: " + e);
+            throw;
+        }
+    }
 
     public static List<ProtocolDescriptor> ParseProtocols(string json)
     {
@@ -34,7 +35,7 @@ public class Parsers
             });
         }
         return list;
-    }
+    }*/
 
     public static WorkspaceFrame ParseWorkspace(string json)
     {
@@ -114,37 +115,37 @@ public class Parsers
         }
     }
 
-    public static ProtocolDefinition ParseProtocol(string json)
-    {
-        try
-        {
-            var protocol = new ProtocolDefinition();
+    // public static ProtocolDefinition ParseProtocol(string json)
+    // {
+    //     try
+    //     {
+    //         var protocol = new ProtocolDefinition();
 
-            var root = JObject.Parse(json);
-            protocol.version = (root["version"] == null) ? 0 : (int)root["version"];
+    //         var root = JObject.Parse(json);
+    //         protocol.version = (root["version"] == null) ? 0 : (int)root["version"];
 
-            protocol.title = (string)root["title"];
+    //         protocol.title = (string)root["title"];
 
-            Debug.Log("Protocol '" + protocol.title + "' file version " + protocol.version);
+    //         Debug.Log("Protocol '" + protocol.title + "' file version " + protocol.version);
 
-            if (protocol.version >= 1)
-            {
-                protocol = JsonConvert.DeserializeObject<ProtocolDefinition>(json, serializerSettings);
-            }
-            else
-            { 
-                Debug.LogError("Version 0 procedure is no longer supported");
-            }
+    //         if (protocol.version >= 1)
+    //         {
+    //             protocol = JsonConvert.DeserializeObject<ProtocolDefinition>(json, serializerSettings);
+    //         }
+    //         else
+    //         { 
+    //             Debug.LogError("Version 0 procedure is no longer supported");
+    //         }
 
 
-            return protocol;
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError("Parsing protocol index: " + e.ToString());
-            throw;
-        }
-    }
+    //         return protocol;
+    //     }
+    //     catch (System.Exception e)
+    //     {
+    //         Debug.LogError("Parsing protocol index: " + e.ToString());
+    //         throw;
+    //     }
+    // }
 
     static Vector3 vec3(JArray arr)
     {
@@ -156,36 +157,36 @@ public class Parsers
         return new Vector2((float)arr[0], (float)arr[1]);
     }
 
-    public static ProtocolDefinition ConvertWellPlateCsvToProtocol(string filename, string csvString)
-    {
-        try
-        {
-            ProtocolDefinition protocol = new ProtocolDefinition();
-            protocol.version = 7;
-            protocol.title = filename;
+    // public static ProtocolDefinition ConvertWellPlateCsvToProtocol(string filename, string csvString)
+    // {
+    //     try
+    //     {
+    //         ProtocolDefinition protocol = new ProtocolDefinition();
+    //         protocol.version = 7;
+    //         protocol.title = filename;
 
-            Debug.Log("Protocol '" + protocol.title + "' file version " + protocol.version);
+    //         Debug.Log("Protocol '" + protocol.title + "' file version " + protocol.version);
 
-            protocol.steps = new List<StepDefinition>();
-            //protocol.steps = convertCSVtoProtocol.ReadStepsFromCSV(csvString.Split('\n'));
+    //         protocol.steps = new List<StepDefinition>();
+    //         //protocol.steps = convertCSVtoProtocol.ReadStepsFromCSV(csvString.Split('\n'));
 
-            if(filename.Contains("piplight_"))
-            {
-                //protocol = convertCSVtoProtocol.ReadPipLightCSV(csvString.Split('\n'), filename);
-            }
-            else if(filename.Contains("pooling_"))
-            {
-                //protocol = convertCSVtoProtocol.ReadPoolingCSV(csvString.Split('\n'), filename);
-            }
+    //         if(filename.Contains("piplight_"))
+    //         {
+    //             //protocol = convertCSVtoProtocol.ReadPipLightCSV(csvString.Split('\n'), filename);
+    //         }
+    //         else if(filename.Contains("pooling_"))
+    //         {
+    //             //protocol = convertCSVtoProtocol.ReadPoolingCSV(csvString.Split('\n'), filename);
+    //         }
 
-            return protocol;
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError("Parsing protocol index: " + e.ToString());
-            throw;
-        }
-    }
+    //         return protocol;
+    //     }
+    //     catch (System.Exception e)
+    //     {
+    //         Debug.LogError("Parsing protocol index: " + e.ToString());
+    //         throw;
+    //     }
+    // }
 
     public static AnchorData ParseAnchorData(string json)
     {

@@ -4,14 +4,14 @@ using UniRx;
 using System;
 
 /// <summary>
-/// Image content item 
+/// Image content item controller
 /// </summary>
-public class ImageController : ContentController<ImageItem>
+public class ImageController : ContentController<ContentItem>
 {
     public Image Image;
     private IDisposable downloadSubscription;
 
-    public override ImageItem ContentItem
+    public override ContentItem ContentItem
     {
         get => base.ContentItem;
         set
@@ -30,19 +30,19 @@ public class ImageController : ContentController<ImageItem>
 
     private void UpdateView()
     {
-        var imagePath = ProtocolState.Instance.ActiveProtocol.Value.mediaBasePath + "/" + ContentItem.url;
-
         // Cancel previous download
         downloadSubscription?.Dispose();
         downloadSubscription = null;
 
         Image.enabled = false;
 
-        // Start new download
-        downloadSubscription = ServiceRegistry.GetService<IMediaProvider>().GetSprite(imagePath).Subscribe(sprite =>
+        // Start new download using GetContentItem
+        downloadSubscription = ServiceRegistry.GetService<IMediaProvider>().GetContentItem(ContentItem).Subscribe(content =>
         {
+            Sprite sprite = content as Sprite;
             if (sprite == null)
             {
+                ServiceRegistry.Logger.LogError("Content is not a Sprite.");
                 return;
             }
 
@@ -53,12 +53,12 @@ public class ImageController : ContentController<ImageItem>
             var fitter = this.GetComponent<AspectRatioFitter>();
             if (fitter != null)
             {
-               var ratio = (float)Image.sprite.rect.width / (float)Image.sprite.rect.height;
-               fitter.aspectRatio = ratio;
+                var ratio = (float)Image.sprite.rect.width / (float)Image.sprite.rect.height;
+                fitter.aspectRatio = ratio;
             }
         }, (e) =>
         {
-            ServiceRegistry.Logger.LogError("Could not load image " + imagePath + ". " + e.ToString());
+            ServiceRegistry.Logger.LogError("Could not load sprite content. " + e.ToString());
         });
     }
 }

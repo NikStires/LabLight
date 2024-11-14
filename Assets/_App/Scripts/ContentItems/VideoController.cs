@@ -5,16 +5,16 @@ using UniRx;
 using UnityEngine.UI;
 
 /// <summary>
-/// Video content item
+/// Video content item controller
 /// </summary>
-public class VideoController : ContentController<VideoItem>
+public class VideoController : ContentController<ContentItem>
 {
-    public VideoPlayer video;
+    public VideoPlayer videoPlayer;
     public RawImage videoTargetImage;
     public GameObject loadingIndicator;
-    public IDisposable downloadSubscription;
+    private IDisposable downloadSubscription;
 
-    public override VideoItem ContentItem
+    public override ContentItem ContentItem
     {
         get => base.ContentItem;
         set
@@ -24,10 +24,15 @@ public class VideoController : ContentController<VideoItem>
         }
     }
 
+    private void OnDisable()
+    {
+        // Cancel previous download
+        downloadSubscription?.Dispose();
+        downloadSubscription = null;
+    }
+
     private void UpdateView()
     {
-        var videoPath = ProtocolState.Instance.ActiveProtocol.Value.mediaBasePath + "/" + ContentItem.url;
-
         // Cancel previous download
         downloadSubscription?.Dispose();
         downloadSubscription = null;
@@ -36,19 +41,21 @@ public class VideoController : ContentController<VideoItem>
         videoTargetImage.enabled = false;
         loadingIndicator.SetActive(true);
 
-        // Start new download
-        downloadSubscription = ServiceRegistry.GetService<IMediaProvider>().GetVideo(videoPath).Subscribe(clip =>
+        // Start new download using GetContentItem
+        downloadSubscription = ServiceRegistry.GetService<IMediaProvider>().GetContentItem(ContentItem).Subscribe(content =>
         {
+            VideoClip clip = content as VideoClip;
             if (clip == null)
             {
+                ServiceRegistry.Logger.LogError("Content is not a VideoClip.");
                 return;
             }
 
-            video.clip = clip;
+            videoPlayer.clip = clip;
             videoTargetImage.enabled = true;
             loadingIndicator.SetActive(false);
-            video.targetTexture = new RenderTexture((int)clip.width, (int)clip.height, 1);
-            videoTargetImage.texture = video.targetTexture;
+            videoPlayer.targetTexture = new RenderTexture((int)clip.width, (int)clip.height, 1);
+            videoTargetImage.texture = videoPlayer.targetTexture;
 
             var fitter = this.GetComponent<AspectRatioFitter>();
             if (fitter != null)
@@ -58,7 +65,7 @@ public class VideoController : ContentController<VideoItem>
             }
         }, (e) =>
         {
-            ServiceRegistry.Logger.LogError("Could not load video " + videoPath + ". " + e.ToString());
+            ServiceRegistry.Logger.LogError("Could not load video content. " + e.ToString());
         });
     }
 }

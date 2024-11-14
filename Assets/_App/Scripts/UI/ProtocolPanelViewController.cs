@@ -83,6 +83,49 @@ public class ProtocolPanelViewController : MonoBehaviour
     {
         foreach (var contentItem in contentItems)
         {
+            switch (contentItem.Type.ToLowerInvariant())
+            {
+                case "text":
+                    var textController = Instantiate(TextItemPrefab, container.transform).GetComponent<TextController>();
+                    textController.ContentItem = contentItem;
+
+                    if (store)
+                    {
+                        contentItemInstances.Add(textController);
+                    }
+                    break;
+
+                case "image":
+                    var imageController = Instantiate(ImageItemPrefab, container.transform).GetComponent<ImageController>();
+                    imageController.ContentItem = contentItem;
+
+                    if (store)
+                    {
+                        contentItemInstances.Add(imageController);
+                    }
+                    break;
+
+                case "sound":
+                    var soundController = Instantiate(SoundItemPrefab, container.transform).GetComponent<SoundController>();
+                    soundController.ContentItem = contentItem;
+
+                    if (store)
+                    {
+                        contentItemInstances.Add(soundController);
+                    }
+                    break;
+
+                case "video":
+                    var videoController = Instantiate(VideoItemPrefab, container.transform).GetComponent<VideoController>();
+                    videoController.ContentItem = contentItem;
+
+                    if (store)
+                    {
+                        contentItemInstances.Add(videoController);
+                    }
+                    break;
+            }
+            /*
             switch (contentItem.contentType)
             {
                 case ContentType.Property:
@@ -141,7 +184,7 @@ public class ProtocolPanelViewController : MonoBehaviour
                     break;
                 default:
                     break;
-            }
+            }*/
         }
     }
 

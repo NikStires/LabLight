@@ -26,11 +26,12 @@ public class ResourceFileDataProvider : IProtocolDataProvider, IMediaProvider
         {
             try
             {
+                //return JsonConvert.DeserializeObject<List<ProtocolDescriptor>>(jsonString);
                 return Parsers.ParseProtocols(jsonString);
             }
             catch (Exception e)
             {
-                ServiceRegistry.Logger.LogError("Could not create procedures " + e.ToString());
+                Debug.LogError("Could not create protocols list: " + e);
                 throw;
             }
         }).ToTask();
@@ -41,28 +42,59 @@ public class ResourceFileDataProvider : IProtocolDataProvider, IMediaProvider
         var basePath = "Protocol/" + protocolName;
         var systemIoPath = @"Assets/Resources/" + basePath;
 
-        return LoadTextAsset(basePath + "/index").Select(jsonString =>
+        return LoadTextAsset(basePath + "/" + protocolName).Select(jsonString =>
         {
             try
             {
-                var protocol = Parsers.ParseProtocol(jsonString);
+                var protocol = JsonConversionV2.DeserializeProtocol(jsonString);
 
-                if (protocol.version < 9)
-                {
-                    UpdateProtocolVersion(protocol);
-                }
+                // Build ArObject lookup dictionary
+                protocol.BuildArObjectLookup();
 
-                // Set basepath for media to the same path
-                protocol.mediaBasePath = basePath;
+                // Resolve ArObject references
+                ResolveArObjectReferences(protocol);
 
                 return protocol;
             }
             catch (Exception e)
             {
-                ServiceRegistry.Logger.LogError("Parsing protocol definition " + e.ToString());
+                Debug.LogError("Error loading protocol definition: " + e);
                 throw;
             }
         });
+    }
+
+    private void ResolveArObjectReferences(ProtocolDefinition protocol)
+    {
+        foreach (var step in protocol.Steps)
+        {
+            foreach (var contentItem in step.ContentItems)
+            {
+                if (!string.IsNullOrEmpty(contentItem.ArObjectID) && protocol.ArObjectLookup.TryGetValue(contentItem.ArObjectID, out var arObject))
+                {
+                    contentItem.ArObject = arObject;
+                }
+            }
+
+            foreach (var checkItem in step.Checklist)
+            {
+                foreach (var contentItem in checkItem.ContentItems)
+                {
+                    if (!string.IsNullOrEmpty(contentItem.ArObjectID) && protocol.ArObjectLookup.TryGetValue(contentItem.ArObjectID, out var arObject))
+                    {
+                        contentItem.ArObject = arObject;
+                    }
+                }
+
+                foreach (var arAction in checkItem.ArActions)
+                {
+                    if (!string.IsNullOrEmpty(arAction.ArObjectID) && protocol.ArObjectLookup.TryGetValue(arAction.ArObjectID, out var arObject))
+                    {
+                        arAction.ArObject = arObject;
+                    }
+                }
+            }
+        }
     }
 
     // public void DeleteProtocolDefinition(string protocolName)
@@ -388,6 +420,7 @@ public class ResourceFileDataProvider : IProtocolDataProvider, IMediaProvider
                     }
                 }
             }
+
         }
 
         return Observable.Return<List<MediaDescriptor>>(mediaItems);
@@ -401,20 +434,106 @@ public class ResourceFileDataProvider : IProtocolDataProvider, IMediaProvider
     public void SaveProtocolDefinition(string protocolName, ProtocolDefinition protocol)
     {
 #if UNITY_EDITOR
-        string path = "Assets/Resources/Protocol/" + protocolName;
-        string filePath = path + "/index.json";
+        string path = Path.Combine(Application.dataPath, "Resources/Protocol");
+        string filePath = Path.Combine(path, protocolName + ".json");
 
         if (!Directory.Exists(path))
         {
             Directory.CreateDirectory(path);
         }
 
-        StreamWriter writer = new StreamWriter(filePath, false);
-        var output = JsonConvert.SerializeObject(protocol, Formatting.Indented, Parsers.serializerSettings);
-        writer.WriteLine(output);
-        writer.Close();
+        var output = JsonConversionV2.SerializeProtocol(protocol);
+        File.WriteAllText(filePath, output);
+        Debug.Log($"Protocol '{protocolName}' saved to '{filePath}'");
 
         AssetDatabase.ImportAsset(filePath);
 #endif
+    }
+
+    /// <summary>
+    /// Retrieves content based on the given ContentItem.
+    /// </summary>
+    /// <param name="contentItem">The ContentItem containing the content details.</param>
+    /// <returns>An IObservable representing the content.</returns>
+    public IObservable<object> GetContentItem(ContentItem contentItem)
+    {
+        switch (contentItem.Type.ToLowerInvariant())
+        {
+            case "image":
+                return GetImageContent(contentItem)
+                    .Select<Texture2D, object>(texture => texture);
+
+            case "sprite":
+                return GetSpriteContent(contentItem)
+                    .Select<Sprite, object>(sprite => sprite);
+
+            case "video":
+                return GetVideoContent(contentItem)
+                    .Select<VideoClip, object>(video => video);
+
+            case "sound":
+                return GetSoundContent(contentItem)
+                    .Select<AudioClip, object>(audio => audio);
+
+            case "text":
+                return GetTextContent(contentItem)
+                    .Select<string, object>(text => text);
+
+            default:
+                return Observable.Throw<object>(new NotSupportedException($"Content type '{contentItem.Type}' is not supported."));
+        }
+    }
+
+    private IObservable<Texture2D> GetImageContent(ContentItem contentItem)
+    {
+        string url = GetContentUrl(contentItem);
+        return GetImage(url);
+    }
+
+    private IObservable<Sprite> GetSpriteContent(ContentItem contentItem)
+    {
+        string url = GetContentUrl(contentItem);
+        return GetSprite(url);
+    }
+
+    private IObservable<VideoClip> GetVideoContent(ContentItem contentItem)
+    {
+        string url = GetContentUrl(contentItem);
+        return GetVideo(url);
+    }
+
+    private IObservable<AudioClip> GetSoundContent(ContentItem contentItem)
+    {
+        string url = GetContentUrl(contentItem);
+        return GetSound(url);
+    }
+
+    private IObservable<string> GetTextContent(ContentItem contentItem)
+    {
+        if (contentItem.Properties != null && contentItem.Properties.TryGetValue("Text", out object textValue))
+        {
+            return Observable.Return(textValue.ToString());
+        }
+        else
+        {
+            return Observable.Throw<string>(new Exception("Text content missing 'Text' property."));
+        }
+    }
+
+    /// <summary>
+    /// Extracts the 'Url' property from the ContentItem's Properties.
+    /// </summary>
+    /// <param name="contentItem">The ContentItem containing the Properties.</param>
+    /// <returns>The URL as a string.</returns>
+    private string GetContentUrl(ContentItem contentItem)
+    {
+        if (contentItem.Properties != null && contentItem.Properties.TryGetValue("Url", out object urlValue))
+        {
+            return urlValue.ToString();
+        }
+        else
+        {
+            throw new Exception("ContentItem missing 'Url' property.");
+        }
     }
 }
