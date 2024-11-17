@@ -1,4 +1,6 @@
-
+using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 public enum ContentType //depricated 
 {
@@ -10,11 +12,6 @@ public enum ContentType //depricated
     Property = 5,            // TrackedObject property as string (only useful for containers that are attached to a trackedObject)
     WebUrl = 6              // URL to a webpage
 }
-
-using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
-
 [Serializable]
 public class ContentItem
 {
