@@ -115,14 +115,17 @@ public class SwiftUIDriver : IUIDriver, IDisposable
         var currentCheckItem = ProtocolState.Instance.CurrentCheckItemDefinition;
         if (currentCheckItem != null)
         {
-            if (currentCheckItem.activateTimer)
-            {
-                int seconds = currentCheckItem.hours * 3600 + currentCheckItem.minutes * 60 + currentCheckItem.seconds;
-                DisplayTimer(seconds);
-            }
             foreach (var contentItem in currentCheckItem.contentItems)
             {
-                if (contentItem.type == "Video")
+                if (contentItem.type == "Timer")
+                {
+                    if (contentItem.properties.TryGetValue("duration", out object durationObj) && 
+                        int.TryParse(durationObj.ToString(), out int seconds))
+                    {
+                        DisplayTimer(seconds);
+                    }
+                }
+                else if (contentItem.type == "Video")
                 {
                     string videoUrl = contentItem.properties["url"]?.ToString();
                     if (!string.IsNullOrEmpty(videoUrl))
