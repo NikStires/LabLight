@@ -49,35 +49,45 @@ public class SourceElementViewController : ModelElementViewController
     }
 
 
-    public override void Initialize(ArDefinition arDefinition, List<TrackedObject> trackedObjects)
+    public override void Initialize(ArObject arObject, List<TrackedObject> trackedObjects)
     {
-        base.Initialize(arDefinition, trackedObjects);
+        base.Initialize(arObject, trackedObjects);
 
-        if(ModelName != null)
+        if (ModelName != null)
         {
-            ModelName.GetComponent<TextMeshProUGUI>().text = ((ModelArDefinition)arDefinition).name;
+            ModelName.GetComponent<TextMeshProUGUI>().text = arObject.specificObjectName;
             ModelName.gameObject.SetActive(true);
         }
-        //if source instantiate colors and nametags
-        if(Sources != null)
+
+        if (Sources != null)
         {
-            if(((ModelArDefinition)arDefinition).contentsToColors.Count() > 0)
+            var contentsToColors = arObject.Properties?.GetValueOrDefault("contentsToColors", 
+                new Dictionary<string, string>());
+
+            if (contentsToColors?.Count > 0)
             {
                 int count = 0;
-                foreach(string contents in ((ModelArDefinition)arDefinition).contentsToColors.Keys)
+                foreach (var contentPair in contentsToColors)
                 {
-                    if(nameTags != null)
+                    string contents = contentPair.Key;
+                    string colorHex = contentPair.Value;
+
+                    if (nameTags != null)
                     {
-                        nameTags.Find(Convert.ToString(count)).Find("Contents").GetComponent<TextMeshProUGUI>().text = contents.Contains(":") ? contents.Substring(contents.IndexOf(':') + 1) : contents;
+                        nameTags.Find(Convert.ToString(count))
+                            .Find("Contents")
+                            .GetComponent<TextMeshProUGUI>().text = 
+                            contents.Contains(":") ? contents.Substring(contents.IndexOf(':') + 1) : contents;
                     }
 
-                    if(Sources.childCount > 1) //if object is multiSource
+                    if (Sources.childCount > 1)
                     {
-                        Color parsedColor;
-                        if(ColorUtility.TryParseHtmlString(((ModelArDefinition)arDefinition).contentsToColors[contents], out parsedColor))
+                        if (ColorUtility.TryParseHtmlString(colorHex, out Color parsedColor))
                         {
                             parsedColor.a = 125;
-                            Sources.Find(Convert.ToString(count)).GetComponent<Renderer>().material.SetColor("_Color", parsedColor);
+                            Sources.Find(Convert.ToString(count))
+                                .GetComponent<Renderer>()
+                                .material.SetColor("_Color", parsedColor);
                         }
                     }
                     count++;

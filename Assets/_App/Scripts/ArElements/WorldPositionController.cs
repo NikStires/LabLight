@@ -112,8 +112,8 @@ public class WorldPositionController : ArObjectViewController
     //     positionOnLock = pos;
     // }
 
-    //public virtual void Update()
-    //{
+    public virtual void Update()
+    {
         // Vector3 target; used for object detection, depricated
         // // Position in the middle of the object (z is negative)
         // if(selectedForLocking || this.arObject.IsGeneric())
@@ -131,7 +131,7 @@ public class WorldPositionController : ArObjectViewController
         //     target = _defaultSlot.position;
         //     transform.localPosition = Vector3.SmoothDamp(transform.localPosition, target, ref currentVelocity, smoothTime);
         // }
-    //}
+    }
 
     // public ArObjectType GetArDefinitionType()
     // {

@@ -20,7 +20,7 @@ public class ContentItemController : MonoBehaviour
         uiDriver = (UnityUIDriver)ServiceRegistry.GetService<IUIDriver>();
     }
 
-    public void CreateContentItems(List<ContentItem> contentItems, LayoutGroup container, ContainerElementViewController containerController)
+    public void CreateContentItems(List<ContentItem> contentItems, LayoutGroup container)
     {
         foreach (var contentItem in contentItems)
         {
@@ -28,7 +28,7 @@ public class ContentItemController : MonoBehaviour
         }
     }
 
-    private void CreateContentItem(ContentItem contentItem, LayoutGroup container, ContainerElementViewController containerController)
+    private void CreateContentItem(ContentItem contentItem, LayoutGroup container)
     {
         MonoBehaviour controller = null;
 

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 
 //constants for property retrieval
-public const string TEXT_PROPERTY = "text";
-public const string TEXT_TYPE_PROPERTY = "textType";
-public const string DURATION_PROPERTY = "duration";
-public const string URL_PROPERTY = "url";
+// public const string TEXT_PROPERTY = "text";
+// public const string TEXT_TYPE_PROPERTY = "textType";
+// public const string DURATION_PROPERTY = "duration";
+// public const string URL_PROPERTY = "url";
 
 [Serializable]
 public class ContentItem
