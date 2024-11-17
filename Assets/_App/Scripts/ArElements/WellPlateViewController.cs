@@ -114,9 +114,8 @@ public class WellPlateViewController : ModelElementViewController
             // Activate markers for wells to be highlighted
             foreach (var checkItem in ProtocolState.Instance.CurrentChecklist)
             {
-                foreach (var operation in checkItem.operations.Where(op => op.arAction?.actionType == "highlight"))
+                foreach (var action in checkItem.arActions.Where(op => op.arAction?.actionType == "highlight"))
                 {
-                    var action = operation.arAction;
                     if (action?.properties != null)
                     {
                         var isSource = action.properties.GetValueOrDefault("isSource", false);
