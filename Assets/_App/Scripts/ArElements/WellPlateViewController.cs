@@ -117,10 +117,10 @@ public class WellPlateViewController : ModelElementViewController
                 foreach (var operation in checkItem.operations.Where(op => op.arAction?.actionType == "highlight"))
                 {
                     var action = operation.arAction;
-                    if (action?.Properties != null)
+                    if (action?.properties != null)
                     {
-                        var isSource = action.Properties.GetValueOrDefault("isSource", false);
-                        var subIDs = action.Properties.GetValueOrDefault("subIDs", new List<string>());
+                        var isSource = action.properties.GetValueOrDefault("isSource", false);
+                        var subIDs = action.properties.GetValueOrDefault("subIDs", new List<string>());
 
                         if (isSource is bool && isSource && Markers2D != null)
                         {
@@ -202,11 +202,11 @@ public class WellPlateViewController : ModelElementViewController
 
     private void EnableHighlight(ArAction action)
     {
-        if (action?.Properties == null) return;
+        if (action?.properties == null) return;
 
         // Cache property lookups
-        var subIDs = action.Properties.GetValueOrDefault("subIDs", new List<string>());
-        var colorHex = action.Properties.GetValueOrDefault("colorHex", "#FFFFFF");
+        var subIDs = action.properties.GetValueOrDefault("subIDs", new List<string>());
+        var colorHex = action.properties.GetValueOrDefault("colorHex", "#FFFFFF");
         var parsedColor = Color.white;
         if (ColorUtility.TryParseHtmlString(colorHex, out parsedColor))
         {
@@ -248,9 +248,9 @@ public class WellPlateViewController : ModelElementViewController
 
     private void DisableHighlight(ArAction action)
     {
-        if (action?.Properties == null) return;
+        if (action?.properties == null) return;
 
-        var subIDs = action.Properties.GetValueOrDefault("subIDs", new List<string>());
+        var subIDs = action.properties.GetValueOrDefault("subIDs", new List<string>());
 
         foreach (string id in subIDs)
         {
@@ -375,7 +375,7 @@ public class WellPlateViewController : ModelElementViewController
         {
             foreach(var action in currActions)
             {
-                var subIDs = action.Properties.GetValueOrDefault("subIDs", new List<string>());
+                var subIDs = action.properties.GetValueOrDefault("subIDs", new List<string>());
                 foreach(string id in subIDs)
                 {
                     if (debugEnableAllSettings)
@@ -446,8 +446,8 @@ public class WellPlateViewController : ModelElementViewController
                     {
                         foreach(var action in currActions)
                         {
-                            var colorHex = action.Properties.GetValueOrDefault("colorHex", "#FFFFFF").ToString();
-                            var subIDs = action.Properties.GetValueOrDefault("subIDs", new List<string>());
+                            var colorHex = action.properties.GetValueOrDefault("colorHex", "#FFFFFF").ToString();
+                            var subIDs = action.properties.GetValueOrDefault("subIDs", new List<string>());
                             
                             Color parsedColor;
                             if(ColorUtility.TryParseHtmlString(colorHex, out parsedColor))
@@ -476,7 +476,7 @@ public class WellPlateViewController : ModelElementViewController
                     {
                         foreach(var action in currActions)
                         {
-                            var subIDs = action.Properties.GetValueOrDefault("subIDs", new List<string>());
+                            var subIDs = action.properties.GetValueOrDefault("subIDs", new List<string>());
                             foreach(string id in (List<string>)subIDs)
                             {
                                 toggleTransform(rowHighlights, settingChanged.Item2, id.Substring(0,1));
@@ -493,8 +493,8 @@ public class WellPlateViewController : ModelElementViewController
                     {
                         foreach(var action in currActions)
                         {
-                            var colorHex = action.Properties.GetValueOrDefault("colorHex", "#FFFFFF").ToString();
-                            var subIDs = action.Properties.GetValueOrDefault("subIDs", new List<string>());
+                            var colorHex = action.properties.GetValueOrDefault("colorHex", "#FFFFFF").ToString();
+                            var subIDs = action.properties.GetValueOrDefault("subIDs", new List<string>());
                             
                             Color parsedColor;
                             if(ColorUtility.TryParseHtmlString(colorHex, out parsedColor))
