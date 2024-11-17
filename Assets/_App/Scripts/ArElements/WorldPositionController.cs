@@ -79,28 +79,28 @@ public class WorldPositionController : ArElementViewController
 
     public void UnlockPosition()
     {
-        positionLocked = false;
-        lockedToTablePlane = false;
+        // positionLocked = false;
+        // lockedToTablePlane = false;
         //hasBeenLocked = false; //should reset model to original slot position
     }
 
     public void LockPosition()
     {
-        hasBeenLocked = true;
-        positionLocked = true;
-        if(GetCondition() != null && GetCondition().conditionType == ConditionType.Anchor)
-        {
-            if(this.GetArDefinitionType() == ArDefinitionType.Model)
-            {
-                lockedToTablePlane = true;
-                transform.localPosition = new Vector3(transform.localPosition.x, 0, transform.localPosition.z);
-            }
-            else
-            {
-                lockedToTablePlane = false;
-            }
-        }
-        positionOnLock = transform.localPosition;
+        // hasBeenLocked = true;
+        // positionLocked = true;
+        // if(GetCondition() != null && GetCondition().conditionType == ConditionType.Anchor)
+        // {
+        //     if(this.GetArDefinitionType() == ArDefinitionType.Model)
+        //     {
+        //         lockedToTablePlane = true;
+        //         transform.localPosition = new Vector3(transform.localPosition.x, 0, transform.localPosition.z);
+        //     }
+        //     else
+        //     {
+        //         lockedToTablePlane = false;
+        //     }
+        // }
+        // positionOnLock = transform.localPosition;
         //transform.localRotation = Quaternion.identity;
     }
 
@@ -111,8 +111,8 @@ public class WorldPositionController : ArElementViewController
     //     positionOnLock = pos;
     // }
 
-    public virtual void Update()
-    {
+    //public virtual void Update()
+    //{
         // Vector3 target; used for object detection, depricated
         // // Position in the middle of the object (z is negative)
         // if(selectedForLocking || this.arObject.IsGeneric())
@@ -130,7 +130,7 @@ public class WorldPositionController : ArElementViewController
         //     target = _defaultSlot.position;
         //     transform.localPosition = Vector3.SmoothDamp(transform.localPosition, target, ref currentVelocity, smoothTime);
         // }
-    }
+    //}
 
     // public ArObjectType GetArDefinitionType()
     // {
