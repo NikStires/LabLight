@@ -4,7 +4,7 @@ using System;
 /// <summary>
 /// Text contentitem
 /// </summary>
-public class CheckboxTextController : ContentController<TextItem>
+public class CheckboxTextController : ContentController<ContentItem>
 {
     public TextMeshProUGUI Text;
 

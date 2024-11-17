@@ -7,7 +7,7 @@ public class ProtocolManager : MonoBehaviour
 {
     // private Dictionary<ArDefinition, ArElementViewController> specificArViews = new Dictionary<ArDefinition, ArElementViewController>();
 
-    private Dictionary<ArObject, ArElementViewController> specificArObjectViews = new Dictionary<ArObject, ArElementViewController>();
+    private Dictionary<ArObject, ArObjectViewController> specificArObjectViews = new Dictionary<ArObject, ArObjectViewController>();
 
     [SerializeField] GameObject timerPrefab;
 
