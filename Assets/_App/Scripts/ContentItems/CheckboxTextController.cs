@@ -8,10 +8,10 @@ public class CheckboxTextController : ContentController<TextItem>
 {
     public TextMeshProUGUI Text;
 
-    public override TextItem ContentItem 
-    { 
-        get => base.ContentItem; 
-        set 
+    public override ContentItem ContentItem
+    {
+        get => base.ContentItem;
+        set
         {
             base.ContentItem = value;
             UpdateView();
