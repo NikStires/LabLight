@@ -47,10 +47,10 @@ public class ResourceFileDataProvider : IProtocolDataProvider, IMediaProvider
             {
                 var protocol = Parsers.ParseProtocol(jsonString);
 
-                if (protocol.version < 9)
-                {
-                    UpdateProtocolVersion(protocol);
-                }
+                // if (protocol.version < 9)
+                // {
+                //     UpdateProtocolVersion(protocol);
+                // }
 
                 // Set basepath for media to the same path
                 protocol.mediaBasePath = basePath;
@@ -99,40 +99,40 @@ public class ResourceFileDataProvider : IProtocolDataProvider, IMediaProvider
     /// SlideARDefinitions are converted to containers with TextItems, Images and Videos where applicable
     /// </summary>
     /// <param name="protocol"></param>
-    private static void UpdateProtocolVersion(ProtocolDefinition protocol)
-    {
-        // Convert to version 9 content
-        protocol.version = 9;
+    // private static void UpdateProtocolVersion(ProtocolDefinition protocol)
+    // {
+    //     // Convert to version 9 content
+    //     protocol.version = 9;
 
-        Debug.Log("Updating '" + protocol.title + "'  to file version " + protocol.version);
+    //     Debug.Log("Updating '" + protocol.title + "'  to file version " + protocol.version);
 
-        var newList = new List<ArDefinition>();
-        UpdateArDefinitions(protocol.globalArElements, newList);
-        protocol.globalArElements = newList;
-    }
+    //     var newList = new List<ArDefinition>();
+    //     UpdateArDefinitions(protocol.globalArElements, newList);
+    //     protocol.globalArElements = newList;
+    // }
 
-    private static void UpdateArDefinitions(List<ArDefinition> oldList, List<ArDefinition> newList)
-    {
-        foreach (var ar in oldList)
-        {
-            ArDefinition updatedItem = ar;
+    // private static void UpdateArDefinitions(List<ArDefinition> oldList, List<ArDefinition> newList)
+    // {
+    //     foreach (var ar in oldList)
+    //     {
+    //         ArDefinition updatedItem = ar;
 
-            var containerDef = ar as ContainerArDefinition;
-            if (containerDef != null)
-            {
-                foreach (var content in containerDef.layout.contentItems)
-                {
-                    var textItem = content as TextItem;
-                    if (textItem != null)
-                    {
-                        textItem.textType = (textItem.fontsize < 10) ? TextType.Block : TextType.Header;
-                    }
-                }
-            }
+    //         var containerDef = ar as ContainerArDefinition;
+    //         if (containerDef != null)
+    //         {
+    //             foreach (var content in containerDef.layout.contentItems)
+    //             {
+    //                 var textItem = content as TextItem;
+    //                 if (textItem != null)
+    //                 {
+    //                     textItem.textType = (textItem.fontsize < 10) ? TextType.Block : TextType.Header;
+    //                 }
+    //             }
+    //         }
 
-            newList.Add(updatedItem);
-        }
-    }
+    //         newList.Add(updatedItem);
+    //     }
+    // }
 
     /// <summary>
     /// Some jumping through hoops to match the HttpDataProvider way of working

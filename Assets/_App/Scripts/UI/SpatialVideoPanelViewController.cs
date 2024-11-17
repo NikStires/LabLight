@@ -87,11 +87,11 @@ public class SpatialVideoPanelViewController : LLBasePanel
         //check the current check item for a video then check the step, only one video will be shown at a time
         if(ProtocolState.Instance.CurrentStepDefinition.contentItems.Count > 0)
         {
-            newVideoItem = (VideoItem)ProtocolState.Instance.CurrentStepDefinition.contentItems.Where(x => x.contentType == ContentType.Video).FirstOrDefault();
+            newVideoItem = (VideoItem)ProtocolState.Instance.CurrentStepDefinition.contentItems.Where(x => x.contentType == "video").FirstOrDefault();
         }
         if(ProtocolState.Instance.HasCurrentChecklist() && ProtocolState.Instance.CurrentCheckItemDefinition.contentItems.Count > 0)
         {
-            newVideoItem = (VideoItem)ProtocolState.Instance.CurrentCheckItemDefinition.contentItems.Where(x => x.contentType == ContentType.Video).FirstOrDefault();
+            newVideoItem = (VideoItem)ProtocolState.Instance.CurrentCheckItemDefinition.contentItems.Where(x => x.contentType == "video").FirstOrDefault();
         }
 
         if(newVideoItem == null)

@@ -36,6 +36,9 @@ public class ProtocolDefinition
             }
         }
     }
+    
+    [JsonIgnore]
+    public string mediaBasePath { get; set; }
 }
 
 [Serializable]
