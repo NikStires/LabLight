@@ -14,25 +14,25 @@ public class ArObjectManager : MonoBehaviour
 
     public HeadPlacementEventChannel headPlacementEventChannel;
 
-    [Header("World Container Prefabs")]
-    public ContainerElementViewController WorldContainerHorizontal;
-    public ContainerElementViewController WorldContainerVertical;
+    // [Header("World Container Prefabs")]
+    // public ContainerElementViewController WorldContainerHorizontal;
+    // public ContainerElementViewController WorldContainerVertical;
 
-    [Header("Content Item Prefabs")]
-    [Tooltip("Placed in contentFrame canvas")]
-    public LayoutController ContainerHorizontalItem;
-    public LayoutController ContainerVerticalItem;
-    public TextController TextItem;
-    public PropertyTextController PropertyItem;
+    // [Header("Content Item Prefabs")]
+    // [Tooltip("Placed in contentFrame canvas")]
+    // public LayoutController ContainerHorizontalItem;
+    // public LayoutController ContainerVerticalItem;
+    // public TextController TextItem;
+    // public PropertyTextController PropertyItem;
     // public ImageController ImageItem;
     // public VideoController VideoItem;
     // public SoundController SoundItem;
 
     //prefabs for generic
-    public ArrowElementViewController ArrowPrefab;
+    //public ArrowElementViewController ArrowPrefab;
 
-    private List<ArDefinition> genericArDefinitions = new List<ArDefinition>();
-    private Dictionary<ArDefinition, List<ArElementViewController>> genericArViews = new Dictionary<ArDefinition, List<ArElementViewController>>();
+    //private List<ArDefinition> genericArDefinitions = new List<ArDefinition>();
+    //private Dictionary<ArDefinition, List<ArElementViewController>> genericArViews = new Dictionary<ArDefinition, List<ArElementViewController>>();
 
     private List<ArDefinition> specificArDefinitions = new List<ArDefinition>();
     private Dictionary<ArDefinition, ArElementViewController> specificArViews = new Dictionary<ArDefinition, ArElementViewController>();
@@ -54,7 +54,7 @@ public class ArObjectManager : MonoBehaviour
         SessionState.TrackedObjects.ObserveAdd().Subscribe(x => processAddedObject(x.Value)).AddTo(this);
         SessionState.TrackedObjects.ObserveRemove().Subscribe(x => processRemovedObject(x.Value)).AddTo(this);
 
-        SessionState.enableGenericVisualizations.Subscribe(_ => ToggleGenericViews()).AddTo(this);
+        //SessionState.enableGenericVisualizations.Subscribe(_ => ToggleGenericViews()).AddTo(this);
     }
 
     void Start()
@@ -84,11 +84,11 @@ public class ArObjectManager : MonoBehaviour
                     SpecificArDefinitionAdded(arDefinition);
                 }
             }
-            genericArDefinitions.AddRange(currentProtocol.globalArElements.Where(ar => ar.IsGeneric()));
-            if(SessionState.enableGenericVisualizations.Value)
-            {
-                ServiceRegistry.GetService<ILighthouseControl>()?.DetectorMode(4,1,10f);
-            }
+            // genericArDefinitions.AddRange(currentProtocol.globalArElements.Where(ar => ar.IsGeneric()));
+            // if(SessionState.enableGenericVisualizations.Value)
+            // {
+            //     ServiceRegistry.GetService<ILighthouseControl>()?.DetectorMode(4,1,10f);
+            // }
         }
     }
 
@@ -118,38 +118,38 @@ public class ArObjectManager : MonoBehaviour
         }
     }
 
-    private void processAddedGenericObject(TrackedObject trackedObject)
-    {
-        Transform parent = SessionManager.instance.CharucoTransform;
+    // private void processAddedGenericObject(TrackedObject trackedObject)
+    // {
+    //     Transform parent = SessionManager.instance.CharucoTransform;
 
-        // Apply generic definitions
-        Debug.Log(genericArDefinitions.Count);
-        foreach (var arDefinition in genericArDefinitions)
-        {
-            Debug.Log(arDefinition.arDefinitionType);
-            switch (arDefinition.arDefinitionType)
-            {
-                case ArDefinitionType.Container:
-                    createGenericArContainerView((ContainerArDefinition)arDefinition, parent, trackedObject);
-                    break;
-                case ArDefinitionType.Model:
-                    if (!arDefinition.IsTargeted() || arDefinition.IsOfInterest(trackedObject.label))
-                    {
-                        createGenericModel((ModelArDefinition)arDefinition, parent, trackedObject);
-                    }
-                    break;
-                case ArDefinitionType.Arrow:
-                    // JA not sure what happens here, RS this should generate an arrow for each trackedobject, but also not something that will happen often
-                    break;
-                //case ArDefinitionType.BoundingBox:
-                //    createGenericArView(BoundingBoxPrefab, arDefinition, parent, trackedObject);
-                //    break;
-                default:
-                    Debug.LogError("ArDefinition of type '" + arDefinition.arDefinitionType + "' is not supported as generic definition yet.");
-                    break;
-            }
-        }
-    }
+    //     // Apply generic definitions
+    //     Debug.Log(genericArDefinitions.Count);
+    //     foreach (var arDefinition in genericArDefinitions)
+    //     {
+    //         Debug.Log(arDefinition.arDefinitionType);
+    //         switch (arDefinition.arDefinitionType)
+    //         {
+    //             case ArDefinitionType.Container:
+    //                 createGenericArContainerView((ContainerArDefinition)arDefinition, parent, trackedObject);
+    //                 break;
+    //             case ArDefinitionType.Model:
+    //                 if (!arDefinition.IsTargeted() || arDefinition.IsOfInterest(trackedObject.label))
+    //                 {
+    //                     createGenericModel((ModelArDefinition)arDefinition, parent, trackedObject);
+    //                 }
+    //                 break;
+    //             case ArDefinitionType.Arrow:
+    //                 // JA not sure what happens here, RS this should generate an arrow for each trackedobject, but also not something that will happen often
+    //                 break;
+    //             //case ArDefinitionType.BoundingBox:
+    //             //    createGenericArView(BoundingBoxPrefab, arDefinition, parent, trackedObject);
+    //             //    break;
+    //             default:
+    //                 Debug.LogError("ArDefinition of type '" + arDefinition.arDefinitionType + "' is not supported as generic definition yet.");
+    //                 break;
+    //         }
+    //     }
+    // }
 
     private void processRemovedObject(TrackedObject trackedObject)
     {
@@ -161,31 +161,31 @@ public class ArObjectManager : MonoBehaviour
         {
             arView.Value.TrackedObjects.Remove(trackedObject);
         }
-        if(SessionState.enableGenericVisualizations.Value)
-        {
-            processRemovedGenericObject(trackedObject);
-        }
+        // if(SessionState.enableGenericVisualizations.Value)
+        // {
+        //     processRemovedGenericObject(trackedObject);
+        // }
     }
 
-    private void processRemovedGenericObject(TrackedObject trackedObject)
-    {
-        foreach (var arDefinition in genericArDefinitions)
-        {
-            List<ArElementViewController> views;
-            if (genericArViews.TryGetValue(arDefinition, out views))
-            {
-                var trackedObjectView = (from view in views
-                                         where view.TrackedObjects.Contains(trackedObject)
-                                         select view).FirstOrDefault();
+    // private void processRemovedGenericObject(TrackedObject trackedObject)
+    // {
+    //     foreach (var arDefinition in genericArDefinitions)
+    //     {
+    //         List<ArElementViewController> views;
+    //         if (genericArViews.TryGetValue(arDefinition, out views))
+    //         {
+    //             var trackedObjectView = (from view in views
+    //                                      where view.TrackedObjects.Contains(trackedObject)
+    //                                      select view).FirstOrDefault();
 
-                if (trackedObjectView)
-                {
-                    Destroy(trackedObjectView.gameObject);
-                    views.Remove(trackedObjectView);
-                }
-            }
-        }
-    }
+    //             if (trackedObjectView)
+    //             {
+    //                 Destroy(trackedObjectView.gameObject);
+    //                 views.Remove(trackedObjectView);
+    //             }
+    //         }
+    //     }
+    // }
 
     private static List<TrackedObject> ResolveTrackedObjects(string[] targets)
     {
@@ -281,24 +281,24 @@ public class ArObjectManager : MonoBehaviour
 
         switch (arDefinition.arDefinitionType)
         {
-            case ArDefinitionType.Line:
-                // Not handled
-                break;
-            case ArDefinitionType.Outline:
-                // Not handled
-                break;
-            case ArDefinitionType.Overlay:
-                // Not handled
-                break;
+            // case ArDefinitionType.Line:
+            //     // Not handled
+            //     break;
+            // case ArDefinitionType.Outline:
+            //     // Not handled
+            //     break;
+            // case ArDefinitionType.Overlay:
+            //     // Not handled
+            //     break;
             case ArDefinitionType.Model:
                 createModel((ModelArDefinition)arDefinition);
                 break;
-            case ArDefinitionType.Container:
-                createContainer((ContainerArDefinition)arDefinition);
-                break;
-            case ArDefinitionType.Arrow:
-                //createArrow((ArrowArDefinition)arDefinition, workspaceTransform); not handled
-                break;
+            // case ArDefinitionType.Container:
+            //     createContainer((ContainerArDefinition)arDefinition);
+            //     break;
+            // case ArDefinitionType.Arrow:
+            //     //createArrow((ArrowArDefinition)arDefinition, workspaceTransform); not handled
+            //     break;
         }
     }
 
@@ -339,18 +339,18 @@ public class ArObjectManager : MonoBehaviour
     //     }
     // }
 
-    private void GenericArDefinitionRemoved(ArDefinition arDefinition)
-    {
-        List<ArElementViewController> arViews;
-        if (genericArViews.TryGetValue(arDefinition, out arViews))
-        {
-            foreach (var arView in arViews)
-            {
-                Destroy(arView.gameObject);
-            }
-            genericArViews.Remove(arDefinition);
-        }
-    }
+    // private void GenericArDefinitionRemoved(ArDefinition arDefinition)
+    // {
+    //     List<ArElementViewController> arViews;
+    //     if (genericArViews.TryGetValue(arDefinition, out arViews))
+    //     {
+    //         foreach (var arView in arViews)
+    //         {
+    //             Destroy(arView.gameObject);
+    //         }
+    //         genericArViews.Remove(arDefinition);
+    //     }
+    // }
 
     private void ApplyOperations(ArDefinition arDefinition, ArElementViewController arViewController)
     {
@@ -522,97 +522,97 @@ public class ArObjectManager : MonoBehaviour
         }
     }
 
-    private void createGenericModel(ModelArDefinition modelArDefinition, Transform parent, TrackedObject trackedObject = null)
-    {
-        //var prefabPath = ProtocolState.procedureDef.mediaBasePath + "/" + modelArDefinition.url;
-        var prefabPath = "Models/" + modelArDefinition.url;
-        ServiceRegistry.GetService<IMediaProvider>().GetPrefab(prefabPath).Subscribe(prefab =>
-        {
-            ArElementViewController arViewPrefab = prefab.GetComponent<ArElementViewController>();
-            if (arViewPrefab)
-            {
-                var prefabInstance = Instantiate(arViewPrefab, parent);
-                List<ArElementViewController> views;
-                if (!genericArViews.TryGetValue(modelArDefinition, out views))
-                {
-                    views = new List<ArElementViewController>();
-                    genericArViews[modelArDefinition] = views;
-                }
-                views.Add(prefabInstance);
+    // private void createGenericModel(ModelArDefinition modelArDefinition, Transform parent, TrackedObject trackedObject = null)
+    // {
+    //     //var prefabPath = ProtocolState.procedureDef.mediaBasePath + "/" + modelArDefinition.url;
+    //     var prefabPath = "Models/" + modelArDefinition.url;
+    //     ServiceRegistry.GetService<IMediaProvider>().GetPrefab(prefabPath).Subscribe(prefab =>
+    //     {
+    //         ArElementViewController arViewPrefab = prefab.GetComponent<ArElementViewController>();
+    //         if (arViewPrefab)
+    //         {
+    //             var prefabInstance = Instantiate(arViewPrefab, parent);
+    //             List<ArElementViewController> views;
+    //             if (!genericArViews.TryGetValue(modelArDefinition, out views))
+    //             {
+    //                 views = new List<ArElementViewController>();
+    //                 genericArViews[modelArDefinition] = views;
+    //             }
+    //             views.Add(prefabInstance);
 
-                prefabInstance.Initialize(modelArDefinition, new List<TrackedObject>() { trackedObject });
-            }
-            else
-            {
-                ServiceRegistry.Logger.LogError("Loaded model " + modelArDefinition.url + " does not contain the model script.");
-            }
-        }, (e) =>
-        {
-            ServiceRegistry.Logger.LogError("Could not load model " + modelArDefinition.url + ". " + e.ToString());
-        });
-    }
+    //             prefabInstance.Initialize(modelArDefinition, new List<TrackedObject>() { trackedObject });
+    //         }
+    //         else
+    //         {
+    //             ServiceRegistry.Logger.LogError("Loaded model " + modelArDefinition.url + " does not contain the model script.");
+    //         }
+    //     }, (e) =>
+    //     {
+    //         ServiceRegistry.Logger.LogError("Could not load model " + modelArDefinition.url + ". " + e.ToString());
+    //     });
+    // }
 
 
-    private ArElementViewController createGenericArView(ArElementViewController prefab, ArDefinition arDefinition, Transform parent, TrackedObject trackedObject)
-    {
-        var genericInstance = Instantiate(prefab, parent);
-        genericInstance.Initialize(arDefinition, new List<TrackedObject>() { trackedObject });
-        List<ArElementViewController> views;
-        if (!genericArViews.TryGetValue(arDefinition, out views))
-        {
-            views = new List<ArElementViewController>();
-            genericArViews[arDefinition] = views;
-        }
-        views.Add(genericInstance);
-        return genericInstance;
-    }
-    private void createGenericArContainerView(ContainerArDefinition containerArDefinition, Transform parent, TrackedObject trackedObject)
-    {
-        var prefab = (containerArDefinition.layout.layoutType == LayoutType.Vertical) ? WorldContainerVertical : WorldContainerHorizontal;
-        var containerViewController = createGenericArView(prefab, containerArDefinition, parent, trackedObject) as ContainerElementViewController;
+    // private ArElementViewController createGenericArView(ArElementViewController prefab, ArDefinition arDefinition, Transform parent, TrackedObject trackedObject)
+    // {
+    //     var genericInstance = Instantiate(prefab, parent);
+    //     genericInstance.Initialize(arDefinition, new List<TrackedObject>() { trackedObject });
+    //     List<ArElementViewController> views;
+    //     if (!genericArViews.TryGetValue(arDefinition, out views))
+    //     {
+    //         views = new List<ArElementViewController>();
+    //         genericArViews[arDefinition] = views;
+    //     }
+    //     views.Add(genericInstance);
+    //     return genericInstance;
+    // }
+    // private void createGenericArContainerView(ContainerArDefinition containerArDefinition, Transform parent, TrackedObject trackedObject)
+    // {
+    //     var prefab = (containerArDefinition.layout.layoutType == LayoutType.Vertical) ? WorldContainerVertical : WorldContainerHorizontal;
+    //     var containerViewController = createGenericArView(prefab, containerArDefinition, parent, trackedObject) as ContainerElementViewController;
 
-        var layoutController = containerViewController.GetComponent<LayoutController>();
-        var container = layoutController.LayoutGroup;
+    //     var layoutController = containerViewController.GetComponent<LayoutController>();
+    //     var container = layoutController.LayoutGroup;
 
-        if (container != null)
-        {
-            CreateContentItem(containerArDefinition.layout.contentItems, container, containerViewController, false);
-        }
-        else
-        {
-            Debug.LogWarning("Missing LayoutGroup on one of the container prefabs");
-        }
-    }
+    //     if (container != null)
+    //     {
+    //         CreateContentItem(containerArDefinition.layout.contentItems, container, containerViewController, false);
+    //     }
+    //     else
+    //     {
+    //         Debug.LogWarning("Missing LayoutGroup on one of the container prefabs");
+    //     }
+    // }
     
         //maybe remove AM
-    private void createArrow(ArrowArDefinition arrowArDefinition, Transform parent)
-    {
-        ArrowElementViewController arViewPrefab = ArrowPrefab.GetComponent<ArrowElementViewController>();
-        if (arViewPrefab)
-        {
-            var prefabInstance = Instantiate(ArrowPrefab, parent);
+    // private void createArrow(ArrowArDefinition arrowArDefinition, Transform parent)
+    // {
+    //     ArrowElementViewController arViewPrefab = ArrowPrefab.GetComponent<ArrowElementViewController>();
+    //     if (arViewPrefab)
+    //     {
+    //         var prefabInstance = Instantiate(ArrowPrefab, parent);
 
-            // Resolve all trackedObjects that this definition wants
-            List<TrackedObject> trackedObjects = ResolveTrackedObjects(arrowArDefinition.Targets());
+    //         // Resolve all trackedObjects that this definition wants
+    //         List<TrackedObject> trackedObjects = ResolveTrackedObjects(arrowArDefinition.Targets());
 
-            prefabInstance.Initialize(arrowArDefinition, trackedObjects);
-            specificArViews[arrowArDefinition] = prefabInstance;
+    //         prefabInstance.Initialize(arrowArDefinition, trackedObjects);
+    //         specificArViews[arrowArDefinition] = prefabInstance;
 
-            // Arrows do not currently support operations
-        }
-        else
-        {
-            ServiceRegistry.Logger.LogError("Arrow does not contain arrow controller script.");
-        }
-    }
-    private void clearContentItems()
-    {
-        foreach (var contentItem in contentItemInstances)
-        {
-            Destroy(contentItem.gameObject);
-        }
-        contentItemInstances.Clear();
-    }
+    //         // Arrows do not currently support operations
+    //     }
+    //     else
+    //     {
+    //         ServiceRegistry.Logger.LogError("Arrow does not contain arrow controller script.");
+    //     }
+    // }
+    // private void clearContentItems()
+    // {
+    //     foreach (var contentItem in contentItemInstances)
+    //     {
+    //         Destroy(contentItem.gameObject);
+    //     }
+    //     contentItemInstances.Clear();
+    // }
 
     private void ClearScene()
     {
@@ -627,43 +627,43 @@ public class ArObjectManager : MonoBehaviour
         }
         specificArViews.Clear();
 
-        foreach(var arDef in genericArViews.Keys)
-        {
-            foreach(var arView in genericArViews[arDef])
-            {   
-                Destroy(arView.gameObject);
-            }
-        }
-        genericArViews.Clear();
+        // foreach(var arDef in genericArViews.Keys)
+        // {
+        //     foreach(var arView in genericArViews[arDef])
+        //     {   
+        //         Destroy(arView.gameObject);
+        //     }
+        // }
+        // genericArViews.Clear();
     }
 
-    public void ToggleGenericViews()
-    {
-        if(SessionState.enableGenericVisualizations.Value)
-        {
-            ServiceRegistry.GetService<ILighthouseControl>()?.DetectorMode(4,1,10f);
+    // public void ToggleGenericViews()
+    // {
+    //     if(SessionState.enableGenericVisualizations.Value)
+    //     {
+    //         ServiceRegistry.GetService<ILighthouseControl>()?.DetectorMode(4,1,10f);
             
-            foreach(var arDef in genericArViews.Keys)
-            {
-                foreach(var arView in genericArViews[arDef])
-                {   
-                    arView.gameObject.SetActive(true);
-                }
-            }
-        }
-        else
-        {
-            ServiceRegistry.GetService<ILighthouseControl>()?.DetectorMode(4,0,10f);
+    //         foreach(var arDef in genericArViews.Keys)
+    //         {
+    //             foreach(var arView in genericArViews[arDef])
+    //             {   
+    //                 arView.gameObject.SetActive(true);
+    //             }
+    //         }
+    //     }
+    //     else
+    //     {
+    //         ServiceRegistry.GetService<ILighthouseControl>()?.DetectorMode(4,0,10f);
 
-            foreach(var arDef in genericArViews.Keys)
-            {
-                foreach(var arView in genericArViews[arDef])
-                {   
-                    arView.gameObject.SetActive(false);
-                }
-            }
-        }
-    }
+    //         foreach(var arDef in genericArViews.Keys)
+    //         {
+    //             foreach(var arView in genericArViews[arDef])
+    //             {   
+    //                 arView.gameObject.SetActive(false);
+    //             }
+    //         }
+    //     }
+    // }
 
     private IEnumerator startNextObjectPlacement(GameObject model)
     {
