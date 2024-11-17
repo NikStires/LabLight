@@ -44,11 +44,11 @@ public class Parsers
             // Validate required fields
             foreach (var protocol in protocols)
             {
-                if (string.IsNullOrEmpty(protocol.Title))
+                if (string.IsNullOrEmpty(protocol.title))
                 {
                     throw new Exception("Protocol descriptor missing required Title field");
                 }
-                if (string.IsNullOrEmpty(protocol.Version))
+                if (string.IsNullOrEmpty(protocol.version))
                 {
                     throw new Exception("Protocol descriptor missing required Version field");
                 }
@@ -95,35 +95,35 @@ public class Parsers
         foreach (var step in protocol.Steps)
         {
             // Link content items
-            foreach (var contentItem in step.ContentItems)
+            foreach (var contentItem in step.contentItems)
             {
-                if (!string.IsNullOrEmpty(contentItem.ArObjectID) && 
-                    protocol.ArObjectLookup.TryGetValue(contentItem.ArObjectID, out var arObject))
+                if (!string.IsNullOrEmpty(contentItem.arObjectID) && 
+                    protocol.arObjectLookup.TryGetValue(contentItem.arObjectID, out var arObject))
                 {
-                    contentItem.ArObject = arObject;
+                    contentItem.arObject = arObject;
                 }
             }
 
             // Link checklist items
-            foreach (var checkItem in step.Checklist)
+            foreach (var checkItem in step.checklist)
             {
                 // Link content items in checklist
-                foreach (var contentItem in checkItem.ContentItems)
+                foreach (var contentItem in checkItem.contentItems)
                 {
-                    if (!string.IsNullOrEmpty(contentItem.ArObjectID) && 
-                        protocol.ArObjectLookup.TryGetValue(contentItem.ArObjectID, out var arObject))
+                    if (!string.IsNullOrEmpty(contentItem.arObjectID) && 
+                        protocol.arObjectLookup.TryGetValue(contentItem.arObjectID, out var arObject))
                     {
-                        contentItem.ArObject = arObject;
+                        contentItem.arObject = arObject;
                     }
                 }
 
                 // Link AR actions
-                foreach (var arAction in checkItem.ArActions)
+                foreach (var arAction in checkItem.arActions)
                 {
-                    if (!string.IsNullOrEmpty(arAction.ArObjectID) && 
-                        protocol.ArObjectLookup.TryGetValue(arAction.ArObjectID, out var arObject))
+                    if (!string.IsNullOrEmpty(arAction.arObjectID) && 
+                        protocol.arObjectLookup.TryGetValue(arAction.arObjectID, out var arObject))
                     {
-                        arAction.ArObject = arObject;
+                        arAction.arObject = arObject;
                     }
                 }
             }

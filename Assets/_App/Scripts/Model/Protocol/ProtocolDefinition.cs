@@ -7,23 +7,23 @@ using UnityEngine;
 [Serializable]
 public class ProtocolDefinition
 {
-    [JsonProperty("Version")]
-    public string Version { get; set; } // Version to help identify differences in file formats
+    [JsonProperty("version")]
+    public string version { get; set; } // Version to help identify differences in file formats
 
-    [JsonProperty("Title")]
-    public string Title { get; set; } // Title of the protocol
+    [JsonProperty("title")]
+    public string title { get; set; } // Title of the protocol
 
-    [JsonProperty("ProtocolPDFNames")]
-    public List<string> ProtocolPDFNames { get; set; } = new List<string>(); // List of PDF file names
+    [JsonProperty("protocolPDFNames")]
+    public List<string> protocolPDFNames { get; set; } = new List<string>(); // List of PDF file names
 
-    [JsonProperty("GlobalArObjects")]
-    public List<ArObject> GlobalArObjects { get; set; } = new List<ArObject>(); // List of global AR objects
+    [JsonProperty("globalArObjects")]
+    public List<ArObject> globalArObjects { get; set; } = new List<ArObject>(); // List of global AR objects
 
-    [JsonProperty("Steps")]
-    public List<StepDefinition> Steps { get; set; } = new List<StepDefinition>(); // List of steps
+    [JsonProperty("steps")]
+    public List<StepDefinition> steps { get; set; } = new List<StepDefinition>(); // List of steps
 
     [JsonIgnore]
-    public Dictionary<string, ArObject> ArObjectLookup { get; private set; }
+    public Dictionary<string, ArObject> arObjectLookup { get; private set; }
 
     public void BuildArObjectLookup()
     {
@@ -41,66 +41,63 @@ public class ProtocolDefinition
 [Serializable]
 public class StepDefinition
 {
-    [JsonProperty("IsCritical")]
-    public bool IsCritical { get; set; }
+    [JsonProperty("isCritical")]
+    public bool isCritical { get; set; }
 
-    [JsonProperty("Title")]
-    public string Title { get; set; }
+    [JsonProperty("estimatedDurationInSeconds")]
+    public int estimatedDurationInSeconds { get; set; }
 
-    [JsonProperty("EstimatedDurationInSeconds")]
-    public int EstimatedDurationInSeconds { get; set; }
+    [JsonProperty("contentItems")]
+    public List<ContentItem> contentItems { get; set; } = new List<ContentItem>();
 
-    [JsonProperty("ContentItems")]
-    public List<ContentItem> ContentItems { get; set; } = new List<ContentItem>();
-
-    [JsonProperty("Checklist")]
-    public List<CheckItemDefinition> Checklist { get; set; } = new List<CheckItem>();
+    [JsonProperty("checklist")]
+    public List<CheckItemDefinition> checklist { get; set; } = new List<CheckItem>();
 }
 
 [Serializable]
 public class CheckItemDefinition
 {
-    [JsonProperty("Text")]
-    public string Text { get; set; }
+    [JsonProperty("text")]
+    public string text { get; set; }
 
-    [JsonProperty("ContentItems")]
-    public List<ContentItem> ContentItems { get; set; } = new List<ContentItem>();
+    [JsonProperty("contentItems")]
+    public List<ContentItem> contentItems { get; set; } = new List<ContentItem>();
 
-    [JsonProperty("ArActions")]
-    public List<ArAction> ArActions { get; set; } = new List<ArAction>();
+    [JsonProperty("arActions")]
+    public List<ArAction> arActions { get; set; } = new List<ArAction>();
 }
 
 [Serializable]
 public class ContentItem
 {
-    [JsonProperty("Type")]
-    public string Type { get; set; } // e.g., "Text", "Image", "Video", "Timer"
+    [JsonProperty("type")]
+    public string type { get; set; } // e.g., "Text", "Image", "Video", "Timer"
 
-    [JsonProperty("ArObjectID")]
-    public string ArObjectID { get; set; } // Used to link to specific ArObject
+    [JsonProperty("arObjectID")]
+    public string arObjectID { get; set; } // Used to link to specific ArObject
 
     [JsonIgnore]
-    public ArObject ArObject { get; set; } // Reference to the actual ArObject
+    public ArObject arObject { get; set; } // Reference to the actual ArObject
 
-    [JsonProperty("Properties")]
-    public Dictionary<string, object> Properties { get; set; } = new Dictionary<string, object>();
+    [JsonProperty("properties")]
+    public Dictionary<string, object> properties { get; set; } = new Dictionary<string, object>();
 }
 
 
 [Serializable]
 public class ArAction
 {
-    [JsonProperty("Type")]
-    public string Type { get; set; } // e.g., "Highlight", "Activate Timer"
+    [JsonProperty("type")]
+    public string type { get; set; } // e.g., "Highlight", "Activate Timer"
 
-    [JsonProperty("ArObjectID")]
-    public string ArObjectID { get; set; } // Reference to the target ArObject
+    [JsonProperty("arObjectID")]
+    public string arObjectID { get; set; } // Reference to the target ArObject
 
     [JsonIgnore]
-    public ArObject ArObject { get; set; } // Reference to the actual ArObject
+    public ArObject arObject { get; set; } // Reference to the actual ArObject
 
-    [JsonProperty("Properties")]
-    public Dictionary<string, object> Properties { get; set; } = new Dictionary<string, object>();
+    [JsonProperty("properties")]
+    public Dictionary<string, object> properties { get; set; } = new Dictionary<string, object>();
 }
 
 [Serializable]
@@ -109,15 +106,15 @@ public class ArObject
     // [JsonIgnore] 
     // public Condition placementCondition; AM TODO -> rework condition to get condition from prefab (view)
 
-    [JsonProperty("SpecificObjectName")]
-    public string SpecificObjectName { get; set; }
+    [JsonProperty("specificObjectName")]
+    public string specificObjectName { get; set; }
 
 
-    [JsonProperty("ArObjectID")]
-    public string ArObjectID { get; set; }
+    [JsonProperty("arObjectID")]
+    public string arObjectID { get; set; }
 
-    [JsonProperty("RootPrefabName")]
-    public string RootPrefabName { get; set; }
+    [JsonProperty("rootPrefabName")]
+    public string rootPrefabName { get; set; }
 }   
 
 

@@ -4,9 +4,9 @@ using Newtonsoft.Json;
 [Serializable]
 public class ProtocolDescriptor
 {
-    [JsonProperty("Title")]
-    public string Title { get; set; }
+    [JsonProperty("title")]
+    public string title { get; set; }
 
-    [JsonProperty("Version")]
-    public string Version { get; set; }
+    [JsonProperty("version")]
+    public string version { get; set; }
 }
