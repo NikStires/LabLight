@@ -1,33 +1,33 @@
 {
-  "Version": 1,
-  "Title": "DNA Extraction Protocol",
-  "ProtocolPDFNames": ["DNA_Extraction_SOP.pdf"],
-  "GlobalArObjects": [
+  "version": 1,
+  "title": "DNA Extraction Protocol",
+  "protocolPDFNames": ["DNA_Extraction_SOP.pdf"],
+  "globalArObjects": [
     {
-      "SpecificObjectName": "Reaction Plate",
-      "ArObjectID": "wellplate_01",
-      "RootPrefabName": "Well Plate"
+      "specificObjectName": "Reaction Plate",
+      "arObjectID": "wellplate_01",
+      "rootPrefabName": "Well Plate"
     }
   ],
-  "Steps": [
+  "steps": [
     {
-      "IsCritical": true,
-      "ContentItems": [
+      "isCritical": true,
+      "contentItems": [
         {
-          "Type": "Text",
-          "Properties": {
+          "contentType": "Text",
+          "properties": {
             "Text": "Test patient sample"
           }
         },
       ],
-      "Checklist": [
+      "checklist": [
         {
-          "Text": "Pipette 100µl of patient sample into well A1",
-          "ArActions": [
+          "text": "Pipette 100µl of patient sample into well A1",
+          "arActions": [
             {
-              "Type": "Highlight",
-              "ArObjectID": "wellplate_01",
-              "Properties": {
+              "actionType": "Highlight",
+              "arObjectID": "wellplate_01",
+              "properties": {
                 "actionName": "Pipette",
                 "subIDs": ["A1"],
                 "colorHex": "#FFD700",
@@ -37,12 +37,12 @@
           ]
         },
         {
-          "Text": "Pipette 100µl of the reaction mix into well A1",
-          "ArActions": [
+          "text": "Pipette 100µl of the reaction mix into well A1",
+          "arActions": [
             {
-              "Type": "Highlight",
-              "ArObjectID": "wellplate_01",
-              "Properties": {
+              "actionType": "Highlight",
+              "arObjectID": "wellplate_01",
+              "properties": {
                 "subIDs": ["A1"],
                 "colorHex": "#FFD700",
                 "colorName": "Gold"

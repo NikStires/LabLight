@@ -90,7 +90,7 @@ public class SwiftUIDriver : IUIDriver, IDisposable
         var currentStep = ProtocolState.Instance.CurrentStepDefinition;
         foreach(var contentItem in currentStep.contentItems)
         {
-            if (contentItem.type == "Video")
+            if (contentItem.contentType == "Video")
             {
                 string videoUrl = contentItem.properties["url"]?.ToString();
                 if (!string.IsNullOrEmpty(videoUrl))
@@ -117,20 +117,24 @@ public class SwiftUIDriver : IUIDriver, IDisposable
         {
             foreach (var contentItem in currentCheckItem.contentItems)
             {
-                if (contentItem.type == "Timer")
-                {
-                    if (contentItem.properties.TryGetValue("duration", out object durationObj) && 
-                        int.TryParse(durationObj.ToString(), out int seconds))
-                    {
-                        DisplayTimer(seconds);
-                    }
-                }
-                else if (contentItem.type == "Video")
+
+                else if (contentItem.contentType == "Video")
                 {
                     string videoUrl = contentItem.properties["url"]?.ToString();
                     if (!string.IsNullOrEmpty(videoUrl))
                     {
                         DisplayVideoPlayer(videoUrl);
+                    }
+                }
+            }
+            foreach(var arAction in currentCheckItem.arActions)
+            {
+                if (arAction.actionType == "Timer")
+                {
+                    if (arAction.properties.TryGetValue("duration", out object durationObj) && 
+                        int.TryParse(durationObj.ToString(), out int seconds))
+                    {
+                        DisplayTimer(seconds);
                     }
                 }
             }

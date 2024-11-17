@@ -70,8 +70,8 @@ public class CheckItemDefinition
 [Serializable]
 public class ContentItem
 {
-    [JsonProperty("type")]
-    public string type { get; set; } // e.g., "Text", "Image", "Video", "Timer"
+    [JsonProperty("contentType")]
+    public string contentType { get; set; } // e.g., "Text", "Image", "Video", "Timer"
 
     [JsonProperty("arObjectID")]
     public string arObjectID { get; set; } // Used to link to specific ArObject
@@ -87,8 +87,8 @@ public class ContentItem
 [Serializable]
 public class ArAction
 {
-    [JsonProperty("type")]
-    public string type { get; set; } // e.g., "Highlight", "Activate Timer"
+    [JsonProperty("actionType")]
+    public string actionType { get; set; } // e.g., "Highlight", "Activate Timer"
 
     [JsonProperty("arObjectID")]
     public string arObjectID { get; set; } // Reference to the target ArObject
