@@ -361,9 +361,9 @@ public class SwiftUIDriver : IUIDriver, IDisposable
                     break;
                 case "requestPDF":
                     var protocol = ProtocolState.Instance.ActiveProtocol.Value;
-                    if (protocol.pdfNames != null && protocol.pdfNames.Length > 0)
+                    if (protocol.protocolPDFNames != null && protocol.protocolPDFNames.Count > 0)
                     {
-                        string pdfName = protocol.pdfNames[0]; // Use first PDF for now
+                        string pdfName = protocol.protocolPDFNames[0]; // Use first PDF for now
                         Debug.Log($"######LABLIGHT SWIFTUIDRIVER displaying PDF: {pdfName}");
                         DisplayPDFReader(pdfName);
                     }
