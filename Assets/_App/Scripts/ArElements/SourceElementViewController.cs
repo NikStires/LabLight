@@ -61,7 +61,7 @@ public class SourceElementViewController : ModelElementViewController
 
         if (Sources != null)
         {
-            var contentsToColors = arObject.Properties?.GetValueOrDefault("contentsToColors", 
+            var contentsToColors = arObject.properties?.GetValueOrDefault("contentsToColors", 
                 new Dictionary<string, string>());
 
             if (contentsToColors?.Count > 0)
@@ -165,11 +165,11 @@ public class SourceElementViewController : ModelElementViewController
 
     private void EnableHighlight(ArAction action)
     {
-        if (action?.Properties == null) return;
+        if (action?.properties == null) return;
 
         // Cache property lookups
-        var chainIDs = action.Properties.GetValueOrDefault("subIDs", new List<string>());
-        var colorHex = action.Properties.GetValueOrDefault("colorHex", "#FFFFFF").ToString();
+        var chainIDs = action.properties.GetValueOrDefault("subIDs", new List<string>());
+        var colorHex = action.properties.GetValueOrDefault("colorHex", "#FFFFFF").ToString();
 
         foreach (string id in chainIDs)
         {
@@ -202,9 +202,9 @@ public class SourceElementViewController : ModelElementViewController
 
     private void DisableHighlight(ArAction action)
     {
-        if (action?.Properties == null) return;
+        if (action?.properties == null) return;
 
-        var chainIDs = action.Properties.GetValueOrDefault("subIDs", new List<string>());
+        var chainIDs = action.properties.GetValueOrDefault("subIDs", new List<string>());
 
         foreach (string id in chainIDs)
         {
@@ -245,7 +245,7 @@ public class SourceElementViewController : ModelElementViewController
         {
             foreach (var action in currActions)
             {
-                var chainIDs = action.Properties.GetValueOrDefault("subIDs", new List<string>());
+                var chainIDs = action.properties.GetValueOrDefault("subIDs", new List<string>());
                 foreach (string id in chainIDs)
                 {
                     if (debugeEnableAllSettings)

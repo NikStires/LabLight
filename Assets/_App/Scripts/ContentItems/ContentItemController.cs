@@ -24,7 +24,7 @@ public class ContentItemController : MonoBehaviour
     {
         foreach (var contentItem in contentItems)
         {
-            CreateContentItem(contentItem, container, containerController);
+            CreateContentItem(contentItem, container);
         }
     }
 

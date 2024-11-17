@@ -86,7 +86,7 @@ public class WellPlateViewController : ModelElementViewController
 
         if(ModelName != null)
         {
-            ModelName.GetComponent<TextMeshProUGUI>().text = ((ModelArDefinition)arDefinition).name;
+            ModelName.GetComponent<TextMeshProUGUI>().text = arObject.specificObjectName;
             ModelName.gameObject.SetActive(true);
         }
 
@@ -100,9 +100,9 @@ public class WellPlateViewController : ModelElementViewController
     private void InitializeMarkers2D()
     {
         bool firstHighlight = true;
-        if(Markers2D != null && ((ModelArDefinition)arDefinition).name.Contains("extraction"))
+        if(Markers2D != null && arObject.specificObjectName.Contains("extraction"))
         {
-            Debug.Log("initalizing 2d markers for " + ((ModelArDefinition)arDefinition).name);
+            Debug.Log("initalizing 2d markers for " + arObject.specificObjectName);
             toggleTransform(Plate2D, true);
             //deactivate all markers
             foreach(Transform marker in Markers2D)

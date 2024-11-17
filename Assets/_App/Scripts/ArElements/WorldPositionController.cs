@@ -34,47 +34,54 @@ public class WorldPositionController : ArObjectViewController
 
 
         // Jump to initial position
-        if(GetCondition() != null && GetCondition().conditionType == ConditionType.Target)
-        {
-            if (TrackedObjects != null)
-            {
-                if (TrackedObjects.Count == 1)
-                {
-                    if (!positionLocked)
-                    {
-                        transform.localPosition = TrackedObjects[0].position;
-                        //transform.localRotation = this.TrackedObjects[0].rotation;
-                    }
-                }
-                else
-                {
-                    // TODO Handle multiple 
-                }
-            }
-            else
-            {
+        // if(GetCondition() != null && GetCondition().conditionType == ConditionType.Target)
+        // {
+        //     if (TrackedObjects != null)
+        //     {
+        //         if (TrackedObjects.Count == 1)
+        //         {
+        //             if (!positionLocked)
+        //             {
+        //                 transform.localPosition = TrackedObjects[0].position;
+        //                 //transform.localRotation = this.TrackedObjects[0].rotation;
+        //             }
+        //         }
+        //         else
+        //         {
+        //             // TODO Handle multiple 
+        //         }
+        //     }
+        //     else
+        //     {
 
-                //transform.position = _defaultPosition;
-                if(SessionManager.instance.CharucoTransform != null)
-                {
-                    transform.position = SessionManager.instance.CharucoTransform.position;
-                // }else
-                // {
-                //     transform.position = ((ModelArObject)this.arObject).position;
-                // }
-                }
-            }
-        }
-        else
+        //         //transform.position = _defaultPosition;
+        //         if(SessionManager.instance.CharucoTransform != null)
+        //         {
+        //             transform.position = SessionManager.instance.CharucoTransform.position;
+        //         // }else
+        //         // {
+        //         //     transform.position = ((ModelArObject)this.arObject).position;
+        //         // }
+        //         }
+        //     }
+        // }
+        // else
+        // {
+        //     //transform.position = ((ModelArDefinition)this.arDefinition).position; removed for debugging purposes
+        //     if(SessionManager.instance.CharucoTransform != null)
+        //     {
+        //         transform.position = SessionManager.instance.CharucoTransform.position;
+        //     }else
+        //     {
+        //         transform.position = Vector3.zero;
+        //     }
+        // }
+        if(SessionManager.instance.CharucoTransform != null)
         {
-            //transform.position = ((ModelArDefinition)this.arDefinition).position; removed for debugging purposes
-            if(SessionManager.instance.CharucoTransform != null)
-            {
-                transform.position = SessionManager.instance.CharucoTransform.position;
-            }else
-            {
-                transform.position = Vector3.zero;
-            }
+            transform.position = SessionManager.instance.CharucoTransform.position;
+        }else
+        {
+            transform.position = Vector3.zero;
         }
     }
 
