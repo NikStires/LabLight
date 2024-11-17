@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 /// </summary>
 public class Parsers
 {
-    public static JsonSerializerSettings serializerSettings = new JsonSerializerSettings
+    public static JsonSerializerSettings oldSerializerSettings = new JsonSerializerSettings
     {
         PreserveReferencesHandling = PreserveReferencesHandling.Objects,
         ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
@@ -20,20 +20,73 @@ public class Parsers
                        new ContentItemConverter(),}
     };
 
-    public static List<ProtocolDescriptor> ParseProtocols(string json)
+    public static JsonSerializerSettings serializerSettings = new JsonSerializerSettings
     {
-        var list = new List<ProtocolDescriptor>();
-        var protocols = JArray.Parse(json);
-        foreach (JObject protocol in protocols.Children())
+        NullValueHandling = NullValueHandling.Ignore,
+        MissingMemberHandling = MissingMemberHandling.Ignore,
+        ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+        Converters = new List<JsonConverter>
         {
-            list.Add(new ProtocolDescriptor()
-            {
-                name = (string)protocol["name"],
-                title = (string)protocol["title"],
-                description = (string)protocol["description"]
-            });
+            new PropertiesConverter()
         }
-        return list;
+    };
+
+    public static List<ProtocolDescriptor> ParseProtocols(string jsonString)
+    {
+        try
+        {
+            var protocols = JsonConvert.DeserializeObject<List<ProtocolDescriptor>>(jsonString, serializerSettings);
+            if (protocols == null)
+            {
+                throw new Exception("Failed to parse protocol list - result was null");
+            }
+
+            // Validate required fields
+            foreach (var protocol in protocols)
+            {
+                if (string.IsNullOrEmpty(protocol.Title))
+                {
+                    throw new Exception("Protocol descriptor missing required Title field");
+                }
+                if (string.IsNullOrEmpty(protocol.Version))
+                {
+                    throw new Exception("Protocol descriptor missing required Version field");
+                }
+            }
+
+            return protocols;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error parsing protocol list: {e.Message}");
+            throw;
+        }
+    }
+
+    public static ProtocolDefinition ParseProtocol(string jsonString)
+    {
+        try
+        {
+            var protocol = new ProtocolDefinition();
+            protocol = JsonConvert.DeserializeObject<ProtocolDefinition>(jsonString, serializerSettings);
+            if (protocol == null)
+            {
+                throw new Exception("Failed to parse protocol - result was null");
+            }
+
+            // Build lookup dictionary for AR objects
+            protocol.BuildArObjectLookup();
+
+            // Link AR objects to their references in content items and actions
+            LinkArObjects(protocol);
+
+            return protocol;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error parsing protocol: {e.Message}");
+            throw;
+        }
     }
 
     public static WorkspaceFrame ParseWorkspace(string json)
@@ -114,37 +167,37 @@ public class Parsers
         }
     }
 
-    public static ProtocolDefinition ParseProtocol(string json)
-    {
-        try
-        {
-            var protocol = new ProtocolDefinition();
+    // public static ProtocolDefinition ParseProtocol(string json)
+    // {
+    //     try
+    //     {
+    //         var protocol = new ProtocolDefinition();
 
-            var root = JObject.Parse(json);
-            protocol.version = (root["version"] == null) ? 0 : (int)root["version"];
+    //         var root = JObject.Parse(json);
+    //         protocol.version = (root["version"] == null) ? 0 : (int)root["version"];
 
-            protocol.title = (string)root["title"];
+    //         protocol.title = (string)root["title"];
 
-            Debug.Log("Protocol '" + protocol.title + "' file version " + protocol.version);
+    //         Debug.Log("Protocol '" + protocol.title + "' file version " + protocol.version);
 
-            if (protocol.version >= 1)
-            {
-                protocol = JsonConvert.DeserializeObject<ProtocolDefinition>(json, serializerSettings);
-            }
-            else
-            { 
-                Debug.LogError("Version 0 procedure is no longer supported");
-            }
+    //         if (protocol.version >= 1)
+    //         {
+    //             protocol = JsonConvert.DeserializeObject<ProtocolDefinition>(json, serializerSettings);
+    //         }
+    //         else
+    //         { 
+    //             Debug.LogError("Version 0 procedure is no longer supported");
+    //         }
 
 
-            return protocol;
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError("Parsing protocol index: " + e.ToString());
-            throw;
-        }
-    }
+    //         return protocol;
+    //     }
+    //     catch (System.Exception e)
+    //     {
+    //         Debug.LogError("Parsing protocol index: " + e.ToString());
+    //         throw;
+    //     }
+    // }
 
     static Vector3 vec3(JArray arr)
     {
@@ -198,7 +251,7 @@ public class Parsers
 
             if (anchorData.version >= 1)
             {
-                anchorData = JsonConvert.DeserializeObject<AnchorData>(json, serializerSettings);
+                anchorData = JsonConvert.DeserializeObject<AnchorData>(json, oldSerializerSettings);
             }
             else
             {

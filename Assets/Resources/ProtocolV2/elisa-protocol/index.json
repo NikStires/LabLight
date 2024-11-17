@@ -1,0 +1,130 @@
+{
+  "Version": 2,
+  "Title": "ELISA Protocol - IL-6 Detection",
+  "EstimatedDuration": 14400,
+  "ProtocolPDFNames": ["ELISA_Manual.pdf", "IL6_Detection_Guide.pdf"],
+  "GlobalArObjects": [
+    {
+      "SpecificObjectName": "Microplate Reader",
+      "ArObjectID": "plate_reader_01",
+      "RootPrefabName": "PlateReader_Model340"
+    },
+    {
+      "SpecificObjectName": "Multichannel Pipette",
+      "ArObjectID": "multichannel_01",
+      "RootPrefabName": "Pipette_8Channel"
+    },
+    {
+      "SpecificObjectName": "Plate Washer",
+      "ArObjectID": "washer_01",
+      "RootPrefabName": "PlateWasher_Auto"
+    }
+  ],
+  "Steps": [
+    {
+      "IsCritical": true,
+      "Title": "Standard Curve Preparation",
+      "EstimatedDuration": 1800,
+      "ContentItems": [
+        {
+          "Type": "Image",
+          "ArObjectID": "",
+          "Properties": {
+            "URL": "standard_curve_layout.png"
+          }
+        },
+        {
+          "Type": "Text",
+          "ArObjectID": "multichannel_01",
+          "Properties": {
+            "Text": "Prepare 7 standard dilutions: 1000, 500, 250, 125, 62.5, 31.25, 15.625 pg/mL"
+          }
+        }
+      ],
+      "Checklist": [
+        {
+          "Text": "Perform serial dilutions for standard curve",
+          "ContentItems": [
+            {
+              "Type": "Video",
+              "ArObjectID": "",
+              "Properties": {
+                "URL": "serial_dilution_technique.mp4"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "IsCritical": true,
+      "Title": "Sample Incubation",
+      "EstimatedDuration": 7200,
+      "ContentItems": [
+        {
+          "Type": "Timer",
+          "ArObjectID": "",
+          "Properties": {
+            "DurationInSeconds": 7200
+          }
+        }
+      ],
+      "Checklist": [
+        {
+          "Text": "Add 100µL of samples to designated wells",
+          "ArActions": [
+            {
+              "Type": "Animation",
+              "ArObjectID": "multichannel_01",
+              "Properties": {
+                "AnimationName": "multichannel_dispensing"
+              }
+            }
+          ]
+        },
+        {
+          "Text": "Seal plate and incubate for 2 hours at room temperature",
+          "ArActions": [
+            {
+              "Type": "Highlight",
+              "ArObjectID": "plate_sealer_01",
+              "Properties": {
+                "subIDs": ["SealingArea"],
+                "colorHex": "#FF0000",
+                "colorName": "Red"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "IsCritical": true,
+      "Title": "Plate Reading",
+      "EstimatedDuration": 300,
+      "ContentItems": [
+        {
+          "Type": "Webpage",
+          "ArObjectID": "plate_reader_01",
+          "Properties": {
+            "URL": "www.platereader.com/software-guide"
+          }
+        }
+      ],
+      "Checklist": [
+        {
+          "Text": "Read plate at 450nm with wavelength correction at 570nm",
+          "ArActions": [
+            {
+              "Type": "Animation",
+              "ArObjectID": "plate_reader_01",
+              "Properties": {
+                "AnimationName": "plate_reading_sequence"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

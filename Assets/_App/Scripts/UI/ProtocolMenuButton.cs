@@ -47,7 +47,7 @@ public class ProtocolMenuButton : MonoBehaviour
     {
         this.protocol = protocol;
         title.text = Path.GetFileNameWithoutExtension(protocol.title);
-        description.text = protocol.description;
+        description.text = protocol.version; 
 
         interactable.selectEntered.AddListener(_ => {
             StartCoroutine(ChangeMaterialAfterDelay(1f));

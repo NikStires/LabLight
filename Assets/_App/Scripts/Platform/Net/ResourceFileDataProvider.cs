@@ -38,7 +38,7 @@ public class ResourceFileDataProvider : IProtocolDataProvider, IMediaProvider
 
     public IObservable<ProtocolDefinition> GetOrCreateProtocolDefinition(string protocolName)
     {
-        var basePath = "Protocol/" + protocolName;
+        var basePath = "ProtocolV2/" + protocolName;
         var systemIoPath = @"Assets/Resources/" + basePath;
 
         return LoadTextAsset(basePath + "/index").Select(jsonString =>

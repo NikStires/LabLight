@@ -1,0 +1,56 @@
+{
+  "Version": 1,
+  "Title": "DNA Extraction Protocol",
+  "ProtocolPDFNames": ["DNA_Extraction_SOP.pdf"],
+  "GlobalArObjects": [
+    {
+      "SpecificObjectName": "Reaction Plate",
+      "ArObjectID": "wellplate_01",
+      "RootPrefabName": "Well Plate"
+    }
+  ],
+  "Steps": [
+    {
+      "IsCritical": true,
+      "ContentItems": [
+        {
+          "Type": "Text",
+          "Properties": {
+            "Text": "Test patient sample"
+          }
+        },
+      ],
+      "Checklist": [
+        {
+          "Text": "Pipette 100µl of patient sample into well A1",
+          "ArActions": [
+            {
+              "Type": "Highlight",
+              "ArObjectID": "wellplate_01",
+              "Properties": {
+                "actionName": "Pipette",
+                "subIDs": ["A1"],
+                "colorHex": "#FFD700",
+                "colorName": "Gold"
+              }
+            }
+          ]
+        },
+        {
+          "Text": "Pipette 100µl of the reaction mix into well A1",
+          "ArActions": [
+            {
+              "Type": "Highlight",
+              "ArObjectID": "wellplate_01",
+              "Properties": {
+                "subIDs": ["A1"],
+                "colorHex": "#FFD700",
+                "colorName": "Gold"
+              }
+            }
+          ]
+        },
+      ]
+    }
+  ]
+}

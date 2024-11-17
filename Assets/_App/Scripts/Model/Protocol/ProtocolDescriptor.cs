@@ -1,16 +1,12 @@
 using System;
-using System.Collections.Generic;
-using UnityEngine;
+using Newtonsoft.Json;
 
-/// <summary>
-/// Short protocol descriptor for listing available protocols
-/// </summary>
 [Serializable]
 public class ProtocolDescriptor
 {
-    public string title;
-    public string name;
+    [JsonProperty("Title")]
+    public string Title { get; set; }
 
-    [Multiline(2)]
-    public string description;
+    [JsonProperty("Version")]
+    public string Version { get; set; }
 }
