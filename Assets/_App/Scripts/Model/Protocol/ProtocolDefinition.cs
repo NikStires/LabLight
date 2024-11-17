@@ -60,8 +60,8 @@ public class StepDefinition
 [Serializable]
 public class CheckItemDefinition
 {
-    [JsonProperty("text")]
-    public string text { get; set; }
+    [JsonProperty("Text")]
+    public string Text { get; set; }
 
     [JsonProperty("contentItems")]
     public List<ContentItem> contentItems { get; set; } = new List<ContentItem>();
