@@ -58,7 +58,7 @@ public class StepDefinition
 }
 
 [Serializable]
-public class CheckItem
+public class CheckItemDefinition
 {
     [JsonProperty("Text")]
     public string Text { get; set; }
