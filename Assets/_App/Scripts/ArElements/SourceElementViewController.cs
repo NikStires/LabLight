@@ -59,41 +59,6 @@ public class SourceElementViewController : ModelElementViewController
             ModelName.gameObject.SetActive(true);
         }
 
-        if (Sources != null)
-        {
-            var contentsToColors = arObject.properties?.GetValueOrDefault("contentsToColors", 
-                new Dictionary<string, string>());
-
-            if (contentsToColors?.Count > 0)
-            {
-                int count = 0;
-                foreach (var contentPair in contentsToColors)
-                {
-                    string contents = contentPair.Key;
-                    string colorHex = contentPair.Value;
-
-                    if (nameTags != null)
-                    {
-                        nameTags.Find(Convert.ToString(count))
-                            .Find("Contents")
-                            .GetComponent<TextMeshProUGUI>().text = 
-                            contents.Contains(":") ? contents.Substring(contents.IndexOf(':') + 1) : contents;
-                    }
-
-                    if (Sources.childCount > 1)
-                    {
-                        if (ColorUtility.TryParseHtmlString(colorHex, out Color parsedColor))
-                        {
-                            parsedColor.a = 125;
-                            Sources.Find(Convert.ToString(count))
-                                .GetComponent<Renderer>()
-                                .material.SetColor("_Color", parsedColor);
-                        }
-                    }
-                    count++;
-                }
-            }
-        }
         AddSubscriptions();
     }
 
@@ -315,3 +280,40 @@ public class SourceElementViewController : ModelElementViewController
     
 
 }
+/* Original contentsToColors implementation for reference:
+if (Sources != null)
+{
+    var contentsToColors = arObject.properties?.GetValueOrDefault("contentsToColors", 
+        new Dictionary<string, string>());
+
+    if (contentsToColors?.Count > 0)
+    {
+        int count = 0;
+        foreach (var contentPair in contentsToColors)
+        {
+            string contents = contentPair.Key;
+            string colorHex = contentPair.Value;
+
+            if (nameTags != null)
+            {
+                nameTags.Find(Convert.ToString(count))
+                    .Find("Contents")
+                    .GetComponent<TextMeshProUGUI>().text = 
+                    contents.Contains(":") ? contents.Substring(contents.IndexOf(':') + 1) : contents;
+            }
+
+            if (Sources.childCount > 1)
+            {
+                if (ColorUtility.TryParseHtmlString(colorHex, out Color parsedColor))
+                {
+                    parsedColor.a = 125;
+                    Sources.Find(Convert.ToString(count))
+                        .GetComponent<Renderer>()
+                        .material.SetColor("_Color", parsedColor);
+                }
+            }
+            count++;
+        }
+    }
+}
+*/
