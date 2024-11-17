@@ -89,6 +89,47 @@ public class Parsers
         }
     }
 
+    private static void LinkArObjects(ProtocolDefinition protocol)
+    {
+        // Link AR objects in steps
+        foreach (var step in protocol.Steps)
+        {
+            // Link content items
+            foreach (var contentItem in step.ContentItems)
+            {
+                if (!string.IsNullOrEmpty(contentItem.ArObjectID) && 
+                    protocol.ArObjectLookup.TryGetValue(contentItem.ArObjectID, out var arObject))
+                {
+                    contentItem.ArObject = arObject;
+                }
+            }
+
+            // Link checklist items
+            foreach (var checkItem in step.Checklist)
+            {
+                // Link content items in checklist
+                foreach (var contentItem in checkItem.ContentItems)
+                {
+                    if (!string.IsNullOrEmpty(contentItem.ArObjectID) && 
+                        protocol.ArObjectLookup.TryGetValue(contentItem.ArObjectID, out var arObject))
+                    {
+                        contentItem.ArObject = arObject;
+                    }
+                }
+
+                // Link AR actions
+                foreach (var arAction in checkItem.ArActions)
+                {
+                    if (!string.IsNullOrEmpty(arAction.ArObjectID) && 
+                        protocol.ArObjectLookup.TryGetValue(arAction.ArObjectID, out var arObject))
+                    {
+                        arAction.ArObject = arObject;
+                    }
+                }
+            }
+        }
+    }
+
     public static WorkspaceFrame ParseWorkspace(string json)
     {
         // Workspace values are in meters
@@ -209,36 +250,36 @@ public class Parsers
         return new Vector2((float)arr[0], (float)arr[1]);
     }
 
-    public static ProtocolDefinition ConvertWellPlateCsvToProtocol(string filename, string csvString)
-    {
-        try
-        {
-            ProtocolDefinition protocol = new ProtocolDefinition();
-            protocol.version = 7;
-            protocol.title = filename;
+    // public static ProtocolDefinition ConvertWellPlateCsvToProtocol(string filename, string csvString) depricated
+    // {
+    //     try
+    //     {
+    //         ProtocolDefinition protocol = new ProtocolDefinition();
+    //         protocol.version = 7;
+    //         protocol.title = filename;
 
-            Debug.Log("Protocol '" + protocol.title + "' file version " + protocol.version);
+    //         Debug.Log("Protocol '" + protocol.title + "' file version " + protocol.version);
 
-            protocol.steps = new List<StepDefinition>();
-            //protocol.steps = convertCSVtoProtocol.ReadStepsFromCSV(csvString.Split('\n'));
+    //         protocol.steps = new List<StepDefinition>();
+    //         //protocol.steps = convertCSVtoProtocol.ReadStepsFromCSV(csvString.Split('\n'));
 
-            if(filename.Contains("piplight_"))
-            {
-                //protocol = convertCSVtoProtocol.ReadPipLightCSV(csvString.Split('\n'), filename);
-            }
-            else if(filename.Contains("pooling_"))
-            {
-                //protocol = convertCSVtoProtocol.ReadPoolingCSV(csvString.Split('\n'), filename);
-            }
+    //         if(filename.Contains("piplight_"))
+    //         {
+    //             //protocol = convertCSVtoProtocol.ReadPipLightCSV(csvString.Split('\n'), filename);
+    //         }
+    //         else if(filename.Contains("pooling_"))
+    //         {
+    //             //protocol = convertCSVtoProtocol.ReadPoolingCSV(csvString.Split('\n'), filename);
+    //         }
 
-            return protocol;
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError("Parsing protocol index: " + e.ToString());
-            throw;
-        }
-    }
+    //         return protocol;
+    //     }
+    //     catch (System.Exception e)
+    //     {
+    //         Debug.LogError("Parsing protocol index: " + e.ToString());
+    //         throw;
+    //     }
+    // }
 
     public static AnchorData ParseAnchorData(string json)
     {
