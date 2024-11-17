@@ -136,8 +136,7 @@ public class ArObjectManager : MonoBehaviour
             case "highlight":
                 if (viewController is ModelElementViewController modelView)
                 {
-                    var highlightActions = ConvertToHighlightActions(action.properties);
-                    modelView.HighlightGroup(highlightActions);
+                    modelView.HighlightGroup(action.properties);
                 }
                 break;
 
@@ -150,13 +149,6 @@ public class ArObjectManager : MonoBehaviour
 
             // Add other action types as needed
         }
-    }
-
-    private List<HighlightAction> ConvertToHighlightActions(Dictionary<string, object> properties)
-    {
-        // Convert action properties to highlight actions
-        // Implementation depends on your specific requirements
-        return new List<HighlightAction>();
     }
 
     private void RequestObjectPlacement(GameObject model)

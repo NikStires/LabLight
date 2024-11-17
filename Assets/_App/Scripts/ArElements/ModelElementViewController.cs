@@ -68,7 +68,7 @@ public class ModelElementViewController : WorldPositionController
         return;
     }
             //new imp
-    public virtual void HighlightGroup(List<HighlightAction> actions)
+    public virtual void HighlightGroup(Dictionary<string, object> properties)
     {
         return;
     }

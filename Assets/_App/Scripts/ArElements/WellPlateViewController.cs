@@ -77,9 +77,9 @@ public class WellPlateViewController : ModelElementViewController
         ProtocolState.Instance.ChecklistStream.Subscribe(_ => OnCheckItemChanged()).AddTo(this);
     }
 
-    public override void Initialize(ArDefinition arDefinition, List<TrackedObject> trackedObjects)
+    public override void Initialize(ArObject arObject, List<TrackedObject> trackedObjects)
     {
-        base.Initialize(arDefinition, trackedObjects);
+        base.Initialize(arObject, trackedObjects);
 
         if(ModelName != null)
         {
