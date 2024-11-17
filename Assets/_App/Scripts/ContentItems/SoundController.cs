@@ -50,7 +50,7 @@ public class SoundController : ContentController<ContentItem>
                 return;
             }
 
-            Text.text = ContentItem.url;
+            Text.text = soundPath;
             audioSource.clip = clip;
             audioSource.Play();
 

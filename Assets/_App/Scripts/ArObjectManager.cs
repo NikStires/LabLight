@@ -67,15 +67,14 @@ public class ArObjectManager : MonoBehaviour
     {
         if (string.IsNullOrEmpty(arObject.specificObjectName))
         {
-            ServiceRegistry.Logger.LogError($"specificObjectName cannot be null or empty for ArObject: {arObject.arObjectID}");
+            Debug.Log("arObject.specificObjectName: " + arObject.specificObjectName + " is null or empty");
             return;
         }
 
         if (!SupportedPrefabs.Contains(arObject.specificObjectName))
         {
-            ServiceRegistry.Logger.LogWarning(
-                $"Prefab '{arObject.specificObjectName}' is not currently supported. " +
-                $"Supported prefabs are: {string.Join(", ", SupportedPrefabs)}");
+            Debug.Log("arObject.specificObjectName: " + arObject.specificObjectName + " is not supported");
+            Debug.Log("SupportedPrefabs: " + string.Join(", ", SupportedPrefabs));
             return;
         }
 
@@ -106,11 +105,9 @@ public class ArObjectManager : MonoBehaviour
                 }
                 else
                 {
-                    ServiceRegistry.Logger.LogError(
-                        $"Model {prefabPath} missing required ArObjectViewController component");
+                    Debug.Log("Model " + prefabPath + " missing required ArObjectViewController component");
                 }
-            },
-            error => ServiceRegistry.Logger.LogError($"Failed to load model {prefabPath}: {error}")
+            }
         );
     }
 
