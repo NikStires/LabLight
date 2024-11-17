@@ -259,7 +259,7 @@ public class SourceElementViewController : ModelElementViewController
         {
             if(currActions != null)
             {
-                foreach(HighlightAction action in currActions)
+                foreach(var action in currActions)
                 {
                     foreach(string id in (List<string>)action.properties.GetValueOrDefault("subIDs", new List<string>()))
                     {       
