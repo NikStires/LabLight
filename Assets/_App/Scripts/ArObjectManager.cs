@@ -65,21 +65,21 @@ public class ArObjectManager : MonoBehaviour
 
     private void CreateArView(ArObject arObject)
     {
-        if (string.IsNullOrEmpty(arObject.specificPrefabName))
+        if (string.IsNullOrEmpty(arObject.specificObjectName))
         {
-            ServiceRegistry.Logger.LogError($"specificPrefabName cannot be null or empty for ArObject: {arObject.arObjectID}");
+            ServiceRegistry.Logger.LogError($"specificObjectName cannot be null or empty for ArObject: {arObject.arObjectID}");
             return;
         }
 
-        if (!SupportedPrefabs.Contains(arObject.specificPrefabName))
+        if (!SupportedPrefabs.Contains(arObject.specificObjectName))
         {
             ServiceRegistry.Logger.LogWarning(
-                $"Prefab '{arObject.specificPrefabName}' is not currently supported. " +
+                $"Prefab '{arObject.specificObjectName}' is not currently supported. " +
                 $"Supported prefabs are: {string.Join(", ", SupportedPrefabs)}");
             return;
         }
 
-        var prefabPath = "Models/" + arObject.specificPrefabName;
+        var prefabPath = "Models/" + arObject.specificObjectName;
         
         ServiceRegistry.GetService<IMediaProvider>().GetPrefab(prefabPath).Subscribe(
             prefab => {
