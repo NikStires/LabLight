@@ -90,10 +90,10 @@ public class ProtocolState : MonoBehaviour
             .Cast<ModelArDefinition>()
             .ToList();
 
-        if (arModels.Count > 0)
-        {
-            protocolDefinition.steps.Insert(0, CreateLockingStep(arModels));
-        }
+        // if (arModels.Count > 0)
+        // {
+        //     protocolDefinition.steps.Insert(0, CreateLockingStep(arModels));
+        // }
 
         foreach (var step in protocolDefinition.steps)
         {
