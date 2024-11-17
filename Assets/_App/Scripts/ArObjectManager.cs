@@ -140,7 +140,7 @@ public class ArObjectManager : MonoBehaviour
 
         var relevantActions = new List<ArAction>();
         
-        foreach (var action in currentCheckItem.actions)
+        foreach (var action in currentCheckItem.arActions)
         {
             if (action.arObjectID == arObject.arObjectID)
             {
