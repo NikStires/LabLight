@@ -5,15 +5,15 @@ using UnityEngine;
 /// <summary>
 /// Base class for all AR visualizations
 /// 
-/// An ArView is responsible for translating the ArDefinition and optional TrackedObjects to a runtime visualization
+/// An ArView is responsible for translating the ArObject and optional TrackedObjects to a runtime visualization
 /// </summary>
 public class ArElementViewController : MonoBehaviour
 {
-    protected ArDefinition arDefinition;
+    protected ArObject arObject;
 
-    public virtual void Initialize(ArDefinition arDefinition, List<TrackedObject> trackedObjects)
+    public virtual void Initialize(ArObject arObject, List<TrackedObject> trackedObjects)
     {
-        this.arDefinition = arDefinition;
+        this.arObject = arObject;
 
         foreach (var trackedObject in trackedObjects)
         {

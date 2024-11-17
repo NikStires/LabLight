@@ -26,9 +26,9 @@ public class WorldPositionController : ArElementViewController
     public bool hasBeenLocked = false;
 
 
-    public override void Initialize(ArDefinition arDefinition, List<TrackedObject> trackedObjects)
+    public override void Initialize(ArObject arObject, List<TrackedObject> trackedObjects)
     {
-        base.Initialize(arDefinition, trackedObjects);
+        base.Initialize(arObject, trackedObjects);
 
         //implement grabbable objects here
 
@@ -42,7 +42,7 @@ public class WorldPositionController : ArElementViewController
                 {
                     if (!positionLocked)
                     {
-                        transform.localPosition = this.TrackedObjects[0].position;
+                        transform.localPosition = TrackedObjects[0].position;
                         //transform.localRotation = this.TrackedObjects[0].rotation;
                     }
                 }
@@ -58,10 +58,10 @@ public class WorldPositionController : ArElementViewController
                 if(SessionManager.instance.CharucoTransform != null)
                 {
                     transform.position = SessionManager.instance.CharucoTransform.position;
-                }else
-                {
-                    transform.position = ((ModelArDefinition)this.arDefinition).position;
-                }
+                // }else
+                // {
+                //     transform.position = ((ModelArObject)this.arObject).position;
+                // }
             }
         }
         else
@@ -113,32 +113,32 @@ public class WorldPositionController : ArElementViewController
 
     public virtual void Update()
     {
-        Vector3 target;
-        // Position in the middle of the object (z is negative)
-        if(selectedForLocking || this.arDefinition.IsGeneric())
-        {
-            if (TrackedObjects != null && TrackedObjects.Count == 1)
-            {
-                //target = TrackedObjects[0].position;
-                target = (lockedToTablePlane ? NNPostProcessing.roundToCM(new Vector3(TrackedObjects[0].position.x, 0, TrackedObjects[0].position.z)) : NNPostProcessing.roundToCM(TrackedObjects[0].position));
-                Quaternion rotationTarget = TrackedObjects[0].rotation;
-                transform.localRotation = QuaternionUtil.SmoothDamp(transform.localRotation, rotationTarget, ref currentQuaternionVelocity, smoothTime); 
-                transform.localPosition = Vector3.SmoothDamp(transform.localPosition, target, ref currentVelocity, smoothTime);
-            }
-        }else if(!hasBeenLocked && _defaultSlot != null)
-        {
-            target = _defaultSlot.position;
-            transform.localPosition = Vector3.SmoothDamp(transform.localPosition, target, ref currentVelocity, smoothTime);
-        }
+        // Vector3 target; used for object detection, depricated
+        // // Position in the middle of the object (z is negative)
+        // if(selectedForLocking || this.arObject.IsGeneric())
+        // {
+        //     if (TrackedObjects != null && TrackedObjects.Count == 1)
+        //     {
+        //         //target = TrackedObjects[0].position;
+        //         target = (lockedToTablePlane ? NNPostProcessing.roundToCM(new Vector3(TrackedObjects[0].position.x, 0, TrackedObjects[0].position.z)) : NNPostProcessing.roundToCM(TrackedObjects[0].position));
+        //         Quaternion rotationTarget = TrackedObjects[0].rotation;
+        //         transform.localRotation = QuaternionUtil.SmoothDamp(transform.localRotation, rotationTarget, ref currentQuaternionVelocity, smoothTime); 
+        //         transform.localPosition = Vector3.SmoothDamp(transform.localPosition, target, ref currentVelocity, smoothTime);
+        //     }
+        // }else if(!hasBeenLocked && _defaultSlot != null)
+        // {
+        //     target = _defaultSlot.position;
+        //     transform.localPosition = Vector3.SmoothDamp(transform.localPosition, target, ref currentVelocity, smoothTime);
+        // }
     }
 
-    public ArDefinitionType GetArDefinitionType()
-    {
-        return this.arDefinition.arDefinitionType;
-    }
+    // public ArObjectType GetArDefinitionType()
+    // {
+    //     return this.arDefinition.arDefinitionType;
+    // }
 
-    public Condition GetCondition()
-    {
-        return this.arDefinition.condition;
-    }
+    // public Condition GetCondition()
+    // {
+    //     return this.arDefinition.condition;
+    // }
 }

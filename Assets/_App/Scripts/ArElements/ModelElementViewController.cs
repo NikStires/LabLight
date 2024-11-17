@@ -36,16 +36,17 @@ public class ModelElementViewController : WorldPositionController
     [SerializeField]
     public Transform ModelName;
 
-    public override void Initialize(ArDefinition arDefinition, List<TrackedObject> trackedObjects)
+    public override void Initialize(ArObject arObject, List<TrackedObject> trackedObjects)
     {
-        base.Initialize(arDefinition, trackedObjects);
+        base.Initialize(arObject, trackedObjects);
 
         // If not targeted (* or specific id) use target based positioning
-        if (this.arDefinition.condition == null)
-        {
-            transform.localPosition = ((ModelArDefinition)arDefinition).position;
-            transform.localRotation = ((ModelArDefinition)arDefinition).rotation;
-        }
+        // if (this.arObject.condition == null)
+        // {
+        //     var modelArObject = (ModelArObject)arObject;
+        //     transform.localPosition = modelArObject.position;
+        //     transform.localRotation = modelArObject.rotation;
+        // }
 
         this.TrackedObjects.ObserveAdd().Subscribe(_ =>
         {
@@ -85,11 +86,11 @@ public class ModelElementViewController : WorldPositionController
 
     public override void Update()
     {
-        // Use smooth positioning only when targeted (* or specific id)
-        if (arDefinition != null && arDefinition.condition != null)
-        {
-            base.Update();
-        }
+        // // Use smooth positioning only when targeted (* or specific id) used for object detection, depricated
+        // if (arObject != null && arObject.condition != null)
+        // {
+        //     base.Update();
+        // }
     }
 
     public void PlayAnimation(string animationName)
