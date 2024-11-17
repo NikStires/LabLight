@@ -5,7 +5,9 @@ using UniRx;
 
 public class ProtocolManager : MonoBehaviour
 {
-    private Dictionary<ArDefinition, ArElementViewController> specificArViews = new Dictionary<ArDefinition, ArElementViewController>();
+    // private Dictionary<ArDefinition, ArElementViewController> specificArViews = new Dictionary<ArDefinition, ArElementViewController>();
+
+    private Dictionary<ArObject, ArElementViewController> specificArObjectViews = new Dictionary<ArObject, ArElementViewController>();
 
     [SerializeField] GameObject timerPrefab;
 
@@ -30,14 +32,23 @@ public class ProtocolManager : MonoBehaviour
 
     private void OnCheckItemChange()
     {
-        if (ProtocolState.Instance.HasCurrentChecklist())
+        if (!ProtocolState.Instance.HasCurrentChecklist()) return;
+
+        var currentCheckItem = ProtocolState.Instance.CurrentCheckItemDefinition;
+        if (currentCheckItem == null || currentCheckItem == previousCheckItem) return;
+
+        // Check for timer actions in the current checkitem
+        foreach (var action in currentCheckItem.arActions)
         {
-            var currentCheckItem = ProtocolState.Instance.CurrentCheckItemDefinition;
-            if (currentCheckItem != null && currentCheckItem.activateTimer && currentCheckItem != previousCheckItem)
+            if (action.actionType == "timer")
             {
                 var timer = Instantiate(timerPrefab, transform);
-                previousCheckItem = currentCheckItem;
+                // You might want to configure the timer here based on action parameters
+                // timer.GetComponent<TimerController>().SetDuration(action.duration);
+                break;
             }
         }
+
+        previousCheckItem = currentCheckItem;
     }
 }
