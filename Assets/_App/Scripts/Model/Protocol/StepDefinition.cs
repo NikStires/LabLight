@@ -1,42 +1,22 @@
-// using System;
-// using System.Collections.Generic;
-// using UnityEngine;
 
-// /// <summary>
-// /// A single step in a protocol can contain multiple ArDefinitions that are active during that whole step
-// /// It can have substeps each with their own ArDefinitions
-// /// </summary>
-// [Serializable]
-// public class StepDefinition
-// {
-//     public bool isCritical = false;
+using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using UnityEngine;
 
-//     public List<ContentItem> contentItems = new List<ContentItem>();
 
-//     public List<CheckItemDefinition> checklist;
+[Serializable]
+public class StepDefinition
+{
+    [JsonProperty("isCritical")]
+    public bool isCritical { get; set; }
 
-//     //public void SetSelectedCheckItem(int index)
-//     //{
-//     //    ProtocolState.CheckItem = index;
-//     //}
+    [JsonProperty("estimatedDurationInSeconds")]
+    public int estimatedDurationInSeconds { get; set; }
 
-//     public string ListElementLabelName()
-//     {
-//         return "Step";
-//     }
+    [JsonProperty("contentItems")]
+    public List<ContentItem> contentItems { get; set; } = new List<ContentItem>();
 
-//     private void AddEmptyTextItem()
-//     {
-//         contentItems.Add(new TextItem());
-//     }
-    
-//     private void AddEmptyImageItem()
-//     {
-//         contentItems.Add(new ImageItem());
-//     }
-
-//     //private void AddEmptyCheckitem()
-//     //{
-//     //    ProcedureExplorer.AddEmptyCheckitem();
-//     //}
-// }
+    [JsonProperty("checklist")]
+    public List<CheckItemDefinition> checklist { get; set; } = new List<CheckItem>();
+}
