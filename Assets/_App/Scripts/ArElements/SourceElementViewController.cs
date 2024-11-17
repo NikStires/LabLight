@@ -133,10 +133,10 @@ public class SourceElementViewController : ModelElementViewController
         if (action?.properties == null) return;
 
         // Cache property lookups
-        var chainIDs = action.properties.GetValueOrDefault("subIDs", new List<string>());
+        var subIDs = action.properties.GetValueOrDefault("subIDs", new List<string>());
         var colorHex = action.properties.GetValueOrDefault("colorHex", "#FFFFFF").ToString();
 
-        foreach (string id in chainIDs)
+        foreach (string id in (List<string>)subIDs)
         {
             if (debugeEnableAllSettings)
             {
@@ -169,9 +169,9 @@ public class SourceElementViewController : ModelElementViewController
     {
         if (action?.properties == null) return;
 
-        var chainIDs = action.properties.GetValueOrDefault("subIDs", new List<string>());
+        var subIDs = action.properties.GetValueOrDefault("subIDs", new List<string>());
 
-        foreach (string id in chainIDs)
+        foreach (string id in (List<string>)subIDs)
         {
             toggleTransform(Sources, false, id);
             toggleTransform(nameTags, false, id);
@@ -210,8 +210,8 @@ public class SourceElementViewController : ModelElementViewController
         {
             foreach (var action in currActions)
             {
-                var chainIDs = action.properties.GetValueOrDefault("subIDs", new List<string>());
-                foreach (string id in chainIDs)
+                var subIDs = action.properties.GetValueOrDefault("subIDs", new List<string>());
+                foreach (string id in (List<string>)subIDs)
                 {
                     if (debugeEnableAllSettings)
                     {
@@ -261,8 +261,8 @@ public class SourceElementViewController : ModelElementViewController
             {
                 foreach(HighlightAction action in currActions)
                 {
-                    foreach(string id in action.chainIDs)
-                    {
+                    foreach(string id in (List<string>)action.properties.GetValueOrDefault("subIDs", new List<string>()))
+                    {       
                         switch(settingChanged.Item1)
                         {
                             case LablightSettings.Source_Container:

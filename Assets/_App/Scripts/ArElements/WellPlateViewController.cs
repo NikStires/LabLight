@@ -100,44 +100,46 @@ public class WellPlateViewController : ModelElementViewController
     private void InitializeMarkers2D()
     {
         bool firstHighlight = true;
-        if(Markers2D != null && arObject.specificObjectName.Contains("extraction"))
+        if (Markers2D != null && arObject.specificObjectName.Contains("extraction"))
         {
-            Debug.Log("initalizing 2d markers for " + arObject.specificObjectName);
+            Debug.Log("initializing 2d markers for " + arObject.specificObjectName);
             toggleTransform(Plate2D, true);
-            //deactivate all markers
-            foreach(Transform marker in Markers2D)
+            
+            // Deactivate all markers
+            foreach (Transform marker in Markers2D)
             {
                 marker.gameObject.SetActive(false);
             }
-            //activate markers for wells to be highlighted
-            foreach(var checkItem in ProtocolState.Instance.CurrentChecklist)
+
+            // Activate markers for wells to be highlighted
+            foreach (var checkItem in ProtocolState.Instance.CurrentChecklist)
             {
-                foreach(HighlightArOperation highlight in checkItem.operations.Where(op => op.arOperationType == ArOperationType.Highlight))
+                foreach (var operation in checkItem.operations.Where(op => op.arAction?.actionType == "highlight"))
                 {
-                    if(highlight.highlightActions != null)
+                    var action = operation.arAction;
+                    if (action?.Properties != null)
                     {
-                        foreach(var highlightAction in highlight.highlightActions)
+                        var isSource = action.Properties.GetValueOrDefault("isSource", false);
+                        var subIDs = action.Properties.GetValueOrDefault("subIDs", new List<string>());
+
+                        if (isSource is bool && isSource && Markers2D != null)
                         {
-                            foreach(string id in highlightAction.chainIDs)
+                            foreach (string id in (List<string>)subIDs)
                             {
-                                if(highlightAction.isSource && Markers2D != null)
+                                if (firstHighlight)
                                 {
-                                    if(firstHighlight)
-                                    {
-                                        toggleTransform(Markers2D, true, id, Color.green);
-                                        firstHighlight = false;
-                                    }
-                                    else
-                                    {
-                                        toggleTransform(Markers2D, true, id, Color.blue);
-                                    }
+                                    toggleTransform(Markers2D, true, id, Color.green);
+                                    firstHighlight = false;
+                                }
+                                else
+                                {
+                                    toggleTransform(Markers2D, true, id, Color.blue);
                                 }
                             }
                         }
                     }
                 }
             }
-
         }
     }
 
@@ -453,7 +455,7 @@ public class WellPlateViewController : ModelElementViewController
                                 parsedColor.a = 1f;
                             }
                             
-                            foreach(string id in subIDs)
+                            foreach(string id in (List<string>)subIDs)
                             {
                                 if(!settingChanged.Item2 && storedSettings[LablightSettings.RC_Markers])
                                 {
@@ -475,7 +477,7 @@ public class WellPlateViewController : ModelElementViewController
                         foreach(var action in currActions)
                         {
                             var subIDs = action.Properties.GetValueOrDefault("subIDs", new List<string>());
-                            foreach(string id in subIDs)
+                            foreach(string id in (List<string>)subIDs)
                             {
                                 toggleTransform(rowHighlights, settingChanged.Item2, id.Substring(0,1));
                                 toggleTransform(colHighlights, settingChanged.Item2, id.Substring(1));
@@ -500,7 +502,7 @@ public class WellPlateViewController : ModelElementViewController
                                 parsedColor.a = 1f;
                             }
                             
-                            foreach(string id in subIDs)
+                            foreach(string id in (List<string>)subIDs)
                             {
                                 toggleTransform(Markers, settingChanged.Item2, id, parsedColor);
                             }

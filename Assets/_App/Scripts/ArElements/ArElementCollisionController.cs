@@ -23,7 +23,7 @@ public class ArElementCollisionController : MonoBehaviour
     void Start()
     {
         // Get tracked object and name if available
-        var elementViewController = GetComponent<ArElementViewController>();
+        var elementViewController = GetComponent<ArObjectViewController>();
         if (elementViewController != null)
         {
             ThisTrackedObject = elementViewController.TrackedObjects[0];
@@ -69,7 +69,7 @@ public class ArElementCollisionController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // Handle collision with other AR elements
-        var otherViewController = other.gameObject.GetComponent<ArElementViewController>();
+        var otherViewController = other.gameObject.GetComponent<ArObjectViewController>();
         if (otherViewController != null)
         {
             otherObjectName = otherViewController.TrackedObjects[0].label;
@@ -91,7 +91,7 @@ public class ArElementCollisionController : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         // Handle exit collision with other AR elements
-        var otherViewController = other.gameObject.GetComponent<ArElementViewController>();
+        var otherViewController = other.gameObject.GetComponent<ArObjectViewController>();
         if (otherViewController != null)
         {
             otherObjectName = otherViewController.TrackedObjects[0].label;
