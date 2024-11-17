@@ -90,12 +90,13 @@ public class SwiftUIDriver : IUIDriver, IDisposable
         var currentStep = ProtocolState.Instance.CurrentStepDefinition;
         foreach(var contentItem in currentStep.contentItems)
         {
-            switch(contentItem.contentType)
+            if (contentItem.type == "Video")
             {
-                case ContentType.Video:
-                    var videoItem = (VideoItem)contentItem;
-                    DisplayVideoPlayer(videoItem.url);
-                    break;
+                string videoUrl = contentItem.properties["url"]?.ToString();
+                if (!string.IsNullOrEmpty(videoUrl))
+                {
+                    DisplayVideoPlayer(videoUrl);
+                }
             }
         }
     }
@@ -121,12 +122,13 @@ public class SwiftUIDriver : IUIDriver, IDisposable
             }
             foreach (var contentItem in currentCheckItem.contentItems)
             {
-                switch (contentItem.contentType)
+                if (contentItem.type == "Video")
                 {
-                    case ContentType.Video:
-                        var videoItem = (VideoItem)contentItem;
-                        DisplayVideoPlayer(videoItem.url);
-                        break;
+                    string videoUrl = contentItem.properties["url"]?.ToString();
+                    if (!string.IsNullOrEmpty(videoUrl))
+                    {
+                        DisplayVideoPlayer(videoUrl);
+                    }
                 }
             }
         }
