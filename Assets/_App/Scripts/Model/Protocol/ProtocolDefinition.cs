@@ -67,21 +67,21 @@ public class CheckItemDefinition
     public List<ArAction> arActions { get; set; } = new List<ArAction>();
 }
 
-[Serializable]
-public class ContentItem
-{
-    [JsonProperty("contentType")]
-    public string contentType { get; set; } // e.g., "Text", "Image", "Video", "Timer"
+// [Serializable]
+// public class ContentItem
+// {
+//     [JsonProperty("contentType")]
+//     public string contentType { get; set; } // e.g., "Text", "Image", "Video", "Timer"
 
-    [JsonProperty("arObjectID")]
-    public string arObjectID { get; set; } // Used to link to specific ArObject
+//     [JsonProperty("arObjectID")]
+//     public string arObjectID { get; set; } // Used to link to specific ArObject
 
-    [JsonIgnore]
-    public ArObject arObject { get; set; } // Reference to the actual ArObject
+//     [JsonIgnore]
+//     public ArObject arObject { get; set; } // Reference to the actual ArObject
 
-    [JsonProperty("properties")]
-    public Dictionary<string, object> properties { get; set; } = new Dictionary<string, object>();
-}
+//     [JsonProperty("properties")]
+//     public Dictionary<string, object> properties { get; set; } = new Dictionary<string, object>();
+// }
 
 
 [Serializable]
