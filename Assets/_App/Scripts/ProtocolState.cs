@@ -110,24 +110,24 @@ public class ProtocolState : MonoBehaviour
     }
 
     //TODO: move this to a protocol definition class
-    private StepDefinition CreateLockingStep(List<ModelArDefinition> arModels)
-    {
-        var checkList = new List<CheckItemDefinition>
-        {
-            new CheckItemDefinition { Text = "Place the items listed below on your workspace" }
-        };
+    // private StepDefinition CreateLockingStep(List<ModelArDefinition> arModels) remake
+    // {
+    //     var checkList = new List<CheckItemDefinition>
+    //     {
+    //         new CheckItemDefinition { Text = "Place the items listed below on your workspace" }
+    //     };
 
-        checkList.AddRange(arModels.Select(arModel => new CheckItemDefinition
-        {
-            Text = arModel.name,
-            operations = new List<ArOperation> { new AnchorArOperation { arDefinition = arModel } }
-        }));
+    //     checkList.AddRange(arModels.Select(arModel => new CheckItemDefinition
+    //     {
+    //         Text = arModel.name,
+    //         operations = new List<ArOperation> { new AnchorArOperation { arDefinition = arModel } }
+    //     }));
 
-        return new StepDefinition
-        {
-            checklist = checkList
-        };
-    }
+    //     return new StepDefinition
+    //     {
+    //         checklist = checkList
+    //     };
+    // }
 
     public void SetStep(int step)
     {

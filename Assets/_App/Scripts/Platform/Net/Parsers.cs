@@ -92,7 +92,7 @@ public class Parsers
     private static void LinkArObjects(ProtocolDefinition protocol)
     {
         // Link AR objects in steps
-        foreach (var step in protocol.Steps)
+        foreach (var step in protocol.steps)
         {
             // Link content items
             foreach (var contentItem in step.contentItems)
