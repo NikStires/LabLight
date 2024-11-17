@@ -360,14 +360,16 @@ public class SwiftUIDriver : IUIDriver, IDisposable
                     LoadProtocolDescriptions();
                     break;
                 case "requestPDF":
-                    if(!string.IsNullOrEmpty(ProtocolState.Instance.ActiveProtocol.Value.pdfPath))
+                    var protocol = ProtocolState.Instance.ActiveProtocol.Value;
+                    if (protocol.pdfNames != null && protocol.pdfNames.Length > 0)
                     {
-                        Debug.Log("######LABLIGHT SWIFTUIDRIVER displaying PDF: " + Path.GetFileNameWithoutExtension(ProtocolState.Instance.ActiveProtocol.Value.pdfPath));
-                        DisplayPDFReader(Path.GetFileNameWithoutExtension(ProtocolState.Instance.ActiveProtocol.Value.pdfPath));
+                        string pdfName = protocol.pdfNames[0]; // Use first PDF for now
+                        Debug.Log($"######LABLIGHT SWIFTUIDRIVER displaying PDF: {pdfName}");
+                        DisplayPDFReader(pdfName);
                     }
                     else
                     {
-                        Debug.Log("######LABLIGHT SWIFTUIDRIVER no PDF to display");
+                        Debug.Log("######LABLIGHT SWIFTUIDRIVER no PDFs available");
                     }
                     break;
                 // Add more cases as needed
