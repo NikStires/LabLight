@@ -7,7 +7,7 @@ using UnityEngine;
 /// 
 /// An ArView is responsible for translating the ArObject and optional TrackedObjects to a runtime visualization
 /// </summary>
-public class ArElementViewController : MonoBehaviour
+public class ArObjectViewController : MonoBehaviour
 {
     protected ArObject arObject;
 

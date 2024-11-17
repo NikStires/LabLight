@@ -11,11 +11,17 @@ public class ArObjectManager : MonoBehaviour
     public HeadPlacementEventChannel headPlacementEventChannel;
 
     private List<ArObject> activeArObjects = new List<ArObject>();
-    private Dictionary<ArObject, ArElementViewController> arViews = new Dictionary<ArObject, ArElementViewController>();
+    private Dictionary<ArObject, ArObjectViewController> arViews = new Dictionary<ArObject, ArObjectViewController>();
     private Dictionary<string, GameObject> modelPrefabCache = new Dictionary<string, GameObject>();
     
     private Transform workspaceTransform;
     private Coroutine placementCoroutine;
+
+    private static readonly HashSet<string> SupportedPrefabs = new HashSet<string>
+    {
+        "wellPlate",
+        "source"
+    };
 
     void Awake()
     {
@@ -59,11 +65,25 @@ public class ArObjectManager : MonoBehaviour
 
     private void CreateArView(ArObject arObject)
     {
-        var prefabPath = "Models/" + arObject.rootPrefabName;
+        if (string.IsNullOrEmpty(arObject.specificPrefabName))
+        {
+            ServiceRegistry.Logger.LogError($"specificPrefabName cannot be null or empty for ArObject: {arObject.arObjectID}");
+            return;
+        }
+
+        if (!SupportedPrefabs.Contains(arObject.specificPrefabName))
+        {
+            ServiceRegistry.Logger.LogWarning(
+                $"Prefab '{arObject.specificPrefabName}' is not currently supported. " +
+                $"Supported prefabs are: {string.Join(", ", SupportedPrefabs)}");
+            return;
+        }
+
+        var prefabPath = "Models/" + arObject.specificPrefabName;
         
         ServiceRegistry.GetService<IMediaProvider>().GetPrefab(prefabPath).Subscribe(
             prefab => {
-                if (prefab.TryGetComponent<ArElementViewController>(out var arViewPrefab))
+                if (prefab.TryGetComponent<ArObjectViewController>(out var arViewPrefab))
                 {
                     var instance = Instantiate(arViewPrefab, workspaceTransform);
                     
@@ -86,7 +106,8 @@ public class ArObjectManager : MonoBehaviour
                 }
                 else
                 {
-                    ServiceRegistry.Logger.LogError($"Model {prefabPath} missing required ArElementViewController component");
+                    ServiceRegistry.Logger.LogError(
+                        $"Model {prefabPath} missing required ArObjectViewController component");
                 }
             },
             error => ServiceRegistry.Logger.LogError($"Failed to load model {prefabPath}: {error}")
@@ -111,7 +132,7 @@ public class ArObjectManager : MonoBehaviour
         }
     }
 
-    private void ApplyCurrentActions(ArObject arObject, ArElementViewController viewController)
+    private void ApplyCurrentActions(ArObject arObject, ArObjectViewController viewController)
     {
         var currentProtocol = ProtocolState.Instance.ActiveProtocol.Value;
         if (currentProtocol == null || !ProtocolState.Instance.HasCurrentChecklist() || 

@@ -8,7 +8,7 @@ using UnityEngine;
 /// Uses SlotProvider to acquire a free position to place the object when it is not detected yet
 /// </summary>
 
-public class WorldPositionController : ArElementViewController
+public class WorldPositionController : ArObjectViewController
 {
     protected Vector3 currentVelocity;
     protected Quaternion currentQuaternionVelocity;
