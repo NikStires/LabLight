@@ -62,6 +62,7 @@ public class WorldPositionController : ArElementViewController
                 // {
                 //     transform.position = ((ModelArObject)this.arObject).position;
                 // }
+                }
             }
         }
         else
