@@ -35,16 +35,23 @@ public class TimerViewController : LLBasePanel
     // Start is called before the first frame update
     void Start()
     {
-        if(ProtocolState.Instance.HasCurrentChecklist())
+        if (ProtocolState.Instance.HasCurrentChecklist())
         {
             var currentCheckItem = ProtocolState.Instance.CurrentCheckItemDefinition;
-            if(currentCheckItem.activateTimer)
+            // Look for timer action in the checklist item's arActions
+            var timerAction = currentCheckItem.arActions?.Find(action => action.actionType == "timer");
+            
+            if (timerAction != null && timerAction.properties.ContainsKey("duration"))
             {
-                int timeSeconds = (currentCheckItem.hours * 60 * 60) + (currentCheckItem.minutes * 60) + currentCheckItem.seconds;
-                TimeLeft = timeSeconds;
-                TimeDisplay.text = GetTimeString();
+                // Get duration from properties and convert to double
+                if (timerAction.properties["duration"] is long || timerAction.properties["duration"] is int || timerAction.properties["duration"] is double)
+                {
+                    TimeLeft = Convert.ToDouble(timerAction.properties["duration"]);
+                    TimeDisplay.text = GetTimeString();
+                }
             }
-        }else
+        }
+        else
         {
             TimeLeft = StartingTime;
             TimeDisplay.text = GetTimeString();
