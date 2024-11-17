@@ -29,8 +29,7 @@ public class LocalFileDataProvider : IProtocolDataProvider, ITextDataProvider, I
                 list.Add(new ProtocolDescriptor()
                 {
                     name = Path.GetFileNameWithoutExtension(file.Name),
-                    title = file.Name,
-                    description = file.Name
+                    version = file.Name
                 });
             }
         }
@@ -64,7 +63,7 @@ public class LocalFileDataProvider : IProtocolDataProvider, ITextDataProvider, I
             // Create empty definition
             protocol = new ProtocolDefinition()
             {
-                version = 9
+                version = "9"
             };
         }
 
