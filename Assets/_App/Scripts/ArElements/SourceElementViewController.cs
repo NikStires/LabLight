@@ -32,7 +32,8 @@ public class SourceElementViewController : ModelElementViewController
     [SerializeField]
     public Transform Outline;
 
-    public List<HighlightAction> currActions;
+    public List<ArAction> currActions;
+    private List<ArAction> activeHighlights = new List<ArAction>();
 
     private bool disableComponents = false;
 
@@ -131,45 +132,38 @@ public class SourceElementViewController : ModelElementViewController
         }
     }
             //new imp
-    public override void HighlightGroup(List<HighlightAction> actions)
+    public override void HighlightGroup(List<ArAction> actions)
     {
+        if (actions == null || actions.Count == 0 || alignmentTriggered)
+            return;
 
-        this.gameObject.SetActive(true); //debug
-        if (actions != null && !alignmentTriggered)
+        // Reset disableComponents when new highlights are enabled
+        disableComponents = false;
+
+        // Disable previous highlights first
+        disablePreviousHighlight();
+
+        modelActive = true;
+        activeHighlights = actions;
+        currActions = actions;  // Ensure currActions is updated
+
+        foreach (var action in actions)
         {
-            modelActive = true;
-            currActions = actions;
-            enableHighlight(actions[0]);
-            if(actions.Count() == 2) //usually dealing with transfer step on the same plate
-            {
-                enableHighlight(actions[1]);
-            }
+            EnableHighlight(action);
         }
     }
 
-    public override void disablePreviousHighlight()
+    private void EnableHighlight(ArAction action)
     {
-        if(currActions != null)
-        {
-            modelActive = false;
-            disableHighlight(currActions[0]);
-            if(currActions.Count() == 2)
-            {
-                disableHighlight(currActions[1]);
-            }
-        }
-    }
+        if (action?.Properties == null) return;
 
-    private void enableHighlight(HighlightAction action)
-    {
-        if(disableComponents)
+        // Cache property lookups
+        var chainIDs = action.Properties.GetValueOrDefault("subIDs", new List<string>());
+        var colorHex = action.Properties.GetValueOrDefault("colorHex", "#FFFFFF").ToString();
+
+        foreach (string id in chainIDs)
         {
-            toggleActiveComponents(true);
-            disableComponents = false;
-        }
-        foreach(string id in action.chainIDs)
-        {
-            if(debugeEnableAllSettings)
+            if (debugeEnableAllSettings)
             {
                 toggleTransform(Sources, true, id);
                 toggleTransform(nameTags, true, id);
@@ -182,10 +176,27 @@ public class SourceElementViewController : ModelElementViewController
         }
     }
 
-    //new imp
-    private void disableHighlight(HighlightAction action)
+    public override void disablePreviousHighlight()
     {
-        foreach(string id in action.chainIDs)
+        if (activeHighlights == null || activeHighlights.Count == 0) return;
+
+        modelActive = false;
+
+        foreach (var action in activeHighlights)
+        {
+            DisableHighlight(action);
+        }
+
+        activeHighlights.Clear();
+    }
+
+    private void DisableHighlight(ArAction action)
+    {
+        if (action?.Properties == null) return;
+
+        var chainIDs = action.Properties.GetValueOrDefault("subIDs", new List<string>());
+
+        foreach (string id in chainIDs)
         {
             toggleTransform(Sources, false, id);
             toggleTransform(nameTags, false, id);
@@ -220,11 +231,12 @@ public class SourceElementViewController : ModelElementViewController
 
     private void toggleActiveComponents(bool value)
     {
-        if(currActions != null)
+        if (currActions != null)
         {
-            foreach(HighlightAction action in currActions)
+            foreach (var action in currActions)
             {
-                foreach(string id in action.chainIDs)
+                var chainIDs = action.Properties.GetValueOrDefault("subIDs", new List<string>());
+                foreach (string id in chainIDs)
                 {
                     if (debugeEnableAllSettings)
                     {

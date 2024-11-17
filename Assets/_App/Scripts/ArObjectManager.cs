@@ -120,34 +120,32 @@ public class ArObjectManager : MonoBehaviour
         var currentCheckItem = ProtocolState.Instance.CurrentCheckItemDefinition;
         if (currentCheckItem == null || ProtocolState.Instance.CurrentCheckItemState.Value.IsChecked.Value) return;
 
+        var relevantActions = new List<ArAction>();
+        
         foreach (var action in currentCheckItem.actions)
         {
             if (action.arObjectID == arObject.arObjectID)
             {
-                ProcessAction(action, viewController);
+                switch (action.actionType.ToLower())
+                {
+                    case "highlight":
+                        relevantActions.Add(action);
+                        break;
+
+                    case "placement":
+                        if (modelPrefabCache.TryGetValue(action.arObjectID, out var prefab))
+                        {
+                            RequestObjectPlacement(prefab);
+                        }
+                        break;
+                }
             }
         }
-    }
 
-    private void ProcessAction(ArAction action, ArElementViewController viewController)
-    {
-        switch (action.actionType.ToLower())
+        // Apply all highlight actions at once if there are any
+        if (relevantActions.Count > 0 && viewController is ModelElementViewController modelView)
         {
-            case "highlight":
-                if (viewController is ModelElementViewController modelView)
-                {
-                    modelView.HighlightGroup(action.properties);
-                }
-                break;
-
-            case "placement":
-                if (modelPrefabCache.TryGetValue(action.arObjectID, out var prefab))
-                {
-                    RequestObjectPlacement(prefab);
-                }
-                break;
-
-            // Add other action types as needed
+            modelView.HighlightGroup(relevantActions);
         }
     }
 

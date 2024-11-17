@@ -52,7 +52,7 @@ public class WellPlateViewController : ModelElementViewController
 
     public Transform Outline;
 
-    public List<HighlightAction> currActions;
+    public List<ArAction> currActions;
 
     private bool disableComponents = false;
 
@@ -70,6 +70,9 @@ public class WellPlateViewController : ModelElementViewController
     };
 
     private Dictionary<LablightSettings, bool> storedSettings = new Dictionary<LablightSettings, bool>();
+
+    // New property to track active highlights
+    private List<ArAction> activeHighlights = new List<ArAction>();
 
     void Awake()
     {
@@ -162,113 +165,96 @@ public class WellPlateViewController : ModelElementViewController
         }
     }
             //new imp
-    public override void HighlightGroup(List<HighlightAction> actions)
+    public override void HighlightGroup(List<ArAction> actions)
     {
+        if (actions == null || actions.Count == 0 || alignmentTriggered)
+            return;
 
-        this.gameObject.SetActive(true); //debug
-        if (actions != null && !alignmentTriggered)
+        // Reset disableComponents when new highlights are enabled
+        disableComponents = false;
+
+        // Disable previous highlights first
+        disablePreviousHighlight();
+
+        modelActive = true;
+        activeHighlights = actions;
+        currActions = actions;  // Ensure currActions is updated
+
+        foreach (var action in actions)
         {
-            modelActive = true;
-            currActions = actions;
-            enableHighlight(actions[0]);
-            Debug.Log("enabling highlight");
-            if (actions.Count() == 2) //usually dealing with transfer step on the same plate
-            {
-                enableHighlight(actions[1]);
-            }
+            EnableHighlight(action);
+        }
+
+        if (debugEnableAllSettings)
+        {
+            toggleIndicators(true);
+        }
+        else
+        {
+            toggleIndicators(storedSettings[LablightSettings.RC_Markers]);
+        }
+
+        // Information panel handling moved to separate class
+        // toggleInfoPanel(...);
+    }
+
+    private void EnableHighlight(ArAction action)
+    {
+        if (action?.Properties == null) return;
+
+        // Cache property lookups
+        var subIDs = action.Properties.GetValueOrDefault("subIDs", new List<string>());
+        var colorHex = action.Properties.GetValueOrDefault("colorHex", "#FFFFFF");
+        var parsedColor = Color.white;
+        if (ColorUtility.TryParseHtmlString(colorHex, out parsedColor))
+        {
+            parsedColor.a = 1f;
+        }
+
+        // Use cached values
+        foreach (string id in subIDs)
+        {
             if (debugEnableAllSettings)
             {
-                toggleIndicators(true);
-                if (actions[0].chainIDs.Count() > 0)
-                {
-                    toggleInfoPanel(true, actions);
-                }
+                toggleTransform(Markers, true, id, parsedColor);
+                toggleTransform(rowIndicators, true, id[0].ToString(), parsedColor);
+                toggleTransform(colIndicators, true, id.Substring(1), parsedColor);
             }
             else
             {
-                toggleIndicators(storedSettings[LablightSettings.RC_Markers]);
-                if (actions[0].chainIDs.Count() > 0)
-                {
-                    toggleInfoPanel(storedSettings[LablightSettings.Wellplate_Info_Panel], actions);
-                }
+                toggleTransform(Markers, storedSettings[LablightSettings.Well_Indicators], id, parsedColor);
+                toggleTransform(rowIndicators, storedSettings[LablightSettings.Relevant_RC_Only], id[0].ToString(), parsedColor);
+                toggleTransform(colIndicators, storedSettings[LablightSettings.Relevant_RC_Only], id.Substring(1), parsedColor);
             }
         }
     }
 
     public override void disablePreviousHighlight()
     {
-        if(currActions != null)
+        if (activeHighlights == null || activeHighlights.Count == 0) return;
+
+        modelActive = false;
+
+        foreach (var action in activeHighlights)
         {
-            modelActive = false;
-            disableHighlight(currActions[0]);
-            if(currActions.Count() == 2)
-            {
-                disableHighlight(currActions[1]);
-            }
-            toggleIndicators(false);
-            toggleInfoPanel(false, currActions);
+            DisableHighlight(action);
         }
+
+        toggleIndicators(false);
+        activeHighlights.Clear();
     }
 
-    private void enableHighlight(HighlightAction action)
+    private void DisableHighlight(ArAction action)
     {
-        if(disableComponents)
-        { 
-            InitializeMarkers2D();
-            toggleActiveComponents(true);
-        }
-        Color parsedColor;
-        if(ColorUtility.TryParseHtmlString(action.colorInfo.Item1, out parsedColor))
-        {
-            parsedColor.a = 255;
-        }
-        foreach(string id in action.chainIDs)
-        {
-            if(action.isSource && Markers2D != null && ((ModelArDefinition)arDefinition).name.Contains("extraction"))
-            {
-                toggleTransform(Markers2D, true, id, Color.green);
-            }
-            if(debugEnableAllSettings)
-            {
-                toggleTransform(Markers, true, id, parsedColor);
-                toggleTransform(rowIndicators, true, id.Substring(0, 1), parsedColor);
-                toggleTransform(colIndicators, true, id.Substring(1), parsedColor);
-                // toggleTransform(rowHighlights, true, id.Substring(0, 1));
-                // toggleTransform(colHighlights, true, id.Substring(1));
-            }
-            else
-            {
-                toggleTransform(Markers, storedSettings[LablightSettings.Well_Indicators], id, parsedColor);
-                toggleTransform(rowIndicators, storedSettings[LablightSettings.Relevant_RC_Only], id.Substring(0, 1), parsedColor);
-                toggleTransform(colIndicators, storedSettings[LablightSettings.Relevant_RC_Only], id.Substring(1), parsedColor);
-                //toggleTransform(rowHighlights, settingsManagerSO.GetSettingValue(LablightSettings.RCHighlightEnabledSetting), id.Substring(0, 1));
-                //toggleTransform(colHighlights, settingsManagerSO.GetSettingValue(LablightSettings.RCHighlightEnabledSetting), id.Substring(1));
-            }
-        }
-    }
+        if (action?.Properties == null) return;
 
-    //new imp
-    private void disableHighlight(HighlightAction action)
-    {
-        foreach(string id in action.chainIDs)
+        var subIDs = action.Properties.GetValueOrDefault("subIDs", new List<string>());
+
+        foreach (string id in subIDs)
         {
-            if(action.isSource && Markers2D != null && ((ModelArDefinition)arDefinition).name.Contains("extraction"))
-            {
-                if(prevCheckItem == ProtocolState.Instance.CurrentCheckNum + 1)
-                {
-                    toggleTransform(Markers2D, true, id, Color.blue);
-                }
-                else
-                {
-                    toggleTransform(Markers2D, true, id, Color.gray);
-                }
-                prevCheckItem = ProtocolState.Instance.CurrentCheckNum;
-            }
-            toggleTransform(Markers, false, id, Color.green);
-            toggleTransform(rowIndicators, true, id.Substring(0,1), defaultIndicatorColor);
+            toggleTransform(Markers, false, id, Color.white);
+            toggleTransform(rowIndicators, true, id[0].ToString(), defaultIndicatorColor);
             toggleTransform(colIndicators, true, id.Substring(1), defaultIndicatorColor);
-            //toggleTransform(rowHighlights, false, id.Substring(0,1));
-            //toggleTransform(colHighlights, false, id.Substring(1));
         }
     }
 
@@ -339,70 +325,67 @@ public class WellPlateViewController : ModelElementViewController
     }
 
 
-    private void toggleInfoPanel(bool value, List<HighlightAction> actions) //info panel takes in 1-2 actions and prints the necessary info on the information panel based on the information provided in the highlight actions provided
-    {
-        if(infoPanel != null)
-        {
-            infoPanel.gameObject.SetActive(value);
-            if(value && actions != null)
-            {
-                string colorHex = actions[0].colorInfo.Item1;
-                Color color;
-                if(ColorUtility.TryParseHtmlString(actions[0].colorInfo.Item1, out color))
-                {
-                    //color.a = 255;
-                }
-                foreach(Transform child in infoPanel.GetComponentInChildren<Transform>())
-                {
-                    switch(child.name)
-                    {
-                        //ignoring actions = 2 for now
-                        case "InfoDisplay":
-                            if(actions[0].actionName.Contains("transfer") && actions.Count() == 1)
-                            {
-                                if(actions[0].isSource)
-                                {
-                                    child.GetComponent<TextMeshProUGUI>().text = "Aliquot " + actions[0].volume.Item1.ToString("0.00") + actions[0].volume.Item2 + (actions[0].contents.Item2 != "" ? (" of " + "<" + colorHex + ">" + actions[0].contents.Item2 + "</color>") : "") + (actions[0].isSource ? " from " : " into ") + "<" + colorHex + ">" + "Well " + (actions[0].chainIDs.Count() > 1 ? (actions[0].chainIDs[0] + "-" + actions[0].chainIDs[actions[0].chainIDs.Count()-1]) : actions[0].chainIDs[0]) + "</color>";
-                                }
-                                else
-                                {
-                                    child.GetComponent<TextMeshProUGUI>().text = "Transfer " + actions[0].volume.Item1.ToString("0.00") + actions[0].volume.Item2 + (actions[0].contents.Item2 != "" ? (" of " + "<" + colorHex + ">" + actions[0].contents.Item2 + "</color>") : "") + (actions[0].isSource ? " from " : " into ") + "<" + colorHex + ">" + "Well " + (actions[0].chainIDs.Count() > 1 ? (actions[0].chainIDs[0] + "-" + actions[0].chainIDs[actions[0].chainIDs.Count()-1]) : actions[0].chainIDs[0]) + "</color>";
-                                }
-                            }else
-                            {
-                                child.GetComponent<TextMeshProUGUI>().text = "Transfer " + actions[0].volume.Item1.ToString("0.00") + actions[0].volume.Item2 + (actions[0].contents.Item2 != "" ? (" of <" + colorHex + ">" + actions[0].contents.Item2 + "</color>") : "") + (actions[0].isSource ? " from " : " into ") + "<" + colorHex + ">" + "Well " + (actions[0].chainIDs.Count() > 1 ? (actions[0].chainIDs[0] + "-" + actions[0].chainIDs[actions[0].chainIDs.Count()-1]) : actions[0].chainIDs[0]) + "</color>";
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-        }
-    }
+    // private void toggleInfoPanel(bool value, List<HighlightAction> actions) //info panel takes in 1-2 actions and prints the necessary info on the information panel based on the information provided in the highlight actions provided
+    // {
+    //     if(infoPanel != null)
+    //     {
+    //         infoPanel.gameObject.SetActive(value);
+    //         if(value && actions != null)
+    //         {
+    //             string colorHex = actions[0].colorInfo.Item1;
+    //             Color color;
+    //             if(ColorUtility.TryParseHtmlString(actions[0].colorInfo.Item1, out color))
+    //             {
+    //                 //color.a = 255;
+    //             }
+    //             foreach(Transform child in infoPanel.GetComponentInChildren<Transform>())
+    //             {
+    //                 switch(child.name)
+    //                 {
+    //                     //ignoring actions = 2 for now
+    //                     case "InfoDisplay":
+    //                         if(actions[0].actionName.Contains("transfer") && actions.Count() == 1)
+    //                         {
+    //                             if(actions[0].isSource)
+    //                             {
+    //                                 child.GetComponent<TextMeshProUGUI>().text = "Aliquot " + actions[0].volume.Item1.ToString("0.00") + actions[0].volume.Item2 + (actions[0].contents.Item2 != "" ? (" of " + "<" + colorHex + ">" + actions[0].contents.Item2 + "</color>") : "") + (actions[0].isSource ? " from " : " into ") + "<" + colorHex + ">" + "Well " + (actions[0].chainIDs.Count() > 1 ? (actions[0].chainIDs[0] + "-" + actions[0].chainIDs[actions[0].chainIDs.Count()-1]) : actions[0].chainIDs[0]) + "</color>";
+    //                             }
+    //                             else
+    //                             {
+    //                                 child.GetComponent<TextMeshProUGUI>().text = "Transfer " + actions[0].volume.Item1.ToString("0.00") + actions[0].volume.Item2 + (actions[0].contents.Item2 != "" ? (" of " + "<" + colorHex + ">" + actions[0].contents.Item2 + "</color>") : "") + (actions[0].isSource ? " from " : " into ") + "<" + colorHex + ">" + "Well " + (actions[0].chainIDs.Count() > 1 ? (actions[0].chainIDs[0] + "-" + actions[0].chainIDs[actions[0].chainIDs.Count()-1]) : actions[0].chainIDs[0]) + "</color>";
+    //                             }
+    //                         }else
+    //                         {
+    //                             child.GetComponent<TextMeshProUGUI>().text = "Transfer " + actions[0].volume.Item1.ToString("0.00") + actions[0].volume.Item2 + (actions[0].contents.Item2 != "" ? (" of <" + colorHex + ">" + actions[0].contents.Item2 + "</color>") : "") + (actions[0].isSource ? " from " : " into ") + "<" + colorHex + ">" + "Well " + (actions[0].chainIDs.Count() > 1 ? (actions[0].chainIDs[0] + "-" + actions[0].chainIDs[actions[0].chainIDs.Count()-1]) : actions[0].chainIDs[0]) + "</color>";
+    //                         }
+    //                         break;
+    //                     default:
+    //                         break;
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 
     private void toggleActiveComponents(bool value)
     {
         if(currActions != null)
         {
-            foreach(HighlightAction action in currActions)
+            foreach(var action in currActions)
             {
-                foreach(string id in action.chainIDs)
+                var subIDs = action.Properties.GetValueOrDefault("subIDs", new List<string>());
+                foreach(string id in subIDs)
                 {
                     if (debugEnableAllSettings)
                     {
                         toggleTransform(rowIndicators, (true && value), id.Substring(0, 1));
                         toggleTransform(colIndicators, (true && value), id.Substring(1));
-                        //toggleTransform(rowHighlights, (true && value), id.Substring(0, 1));
-                        //toggleTransform(colHighlights, (true && value), id.Substring(1));
                         toggleTransform(Markers, (true && value), id);
                     }
                     else
                     {
                         toggleTransform(rowIndicators, storedSettings[LablightSettings.Relevant_RC_Only] && value, id.Substring(0, 1));
                         toggleTransform(colIndicators, storedSettings[LablightSettings.Relevant_RC_Only] && value, id.Substring(1));
-                        //toggleTransform(rowHighlights, settingsManagerSO.GetSettingValue(LablightSettings.RCHighlightEnabledSetting) && value, id.Substring(0, 1));
-                        //toggleTransform(colHighlights, settingsManagerSO.GetSettingValue(LablightSettings.RCHighlightEnabledSetting) && value, id.Substring(1));
                         toggleTransform(Markers, storedSettings[LablightSettings.Well_Indicators] && value, id);
                     }
                 }
@@ -411,12 +394,12 @@ public class WellPlateViewController : ModelElementViewController
         toggleTransform(ModelName, value);
         if(debugEnableAllSettings)
         {
-            toggleInfoPanel((true && value), currActions);
+            // toggleInfoPanel((true && value), currActions); // Info panel handling moved to separate class
             toggleIndicators((true && value));
         }
         else
         {
-            toggleInfoPanel(storedSettings[LablightSettings.Wellplate_Info_Panel] && value, currActions);
+            // toggleInfoPanel(storedSettings[LablightSettings.Wellplate_Info_Panel] && value, currActions); // Info panel handling moved to separate class
             toggleIndicators(storedSettings[LablightSettings.RC_Markers] && value);
         }
     }
@@ -459,21 +442,25 @@ public class WellPlateViewController : ModelElementViewController
                 case LablightSettings.Relevant_RC_Only:
                     if(currActions != null)
                     {
-                        Color parsedColor;
-
-                        foreach(HighlightAction action in currActions)
+                        foreach(var action in currActions)
                         {
-                            if(ColorUtility.TryParseHtmlString(action.colorInfo.Item1, out parsedColor))
+                            var colorHex = action.Properties.GetValueOrDefault("colorHex", "#FFFFFF").ToString();
+                            var subIDs = action.Properties.GetValueOrDefault("subIDs", new List<string>());
+                            
+                            Color parsedColor;
+                            if(ColorUtility.TryParseHtmlString(colorHex, out parsedColor))
                             {
-                                parsedColor.a = 255;
+                                parsedColor.a = 1f;
                             }
-                            foreach(string id in action.chainIDs)
+                            
+                            foreach(string id in subIDs)
                             {
-                                if(!settingChanged.Item2 && storedSettings[LablightSettings.RC_Markers]) //if indicators should be changed to default color and stay enabled if indicators are enabled
+                                if(!settingChanged.Item2 && storedSettings[LablightSettings.RC_Markers])
                                 {
                                     toggleTransform(rowIndicators, true, id.Substring(0,1), defaultIndicatorColor); 
                                     toggleTransform(colIndicators, true, id.Substring(1), defaultIndicatorColor);
-                                }else
+                                }
+                                else
                                 {
                                     toggleTransform(rowIndicators, settingChanged.Item2, id.Substring(0,1), parsedColor);
                                     toggleTransform(colIndicators, settingChanged.Item2, id.Substring(1), parsedColor);
@@ -485,9 +472,10 @@ public class WellPlateViewController : ModelElementViewController
                 case LablightSettings.RC_Highlights:
                     if(currActions != null)
                     {
-                        foreach(HighlightAction action in currActions)
+                        foreach(var action in currActions)
                         {
-                            foreach(string id in action.chainIDs)
+                            var subIDs = action.Properties.GetValueOrDefault("subIDs", new List<string>());
+                            foreach(string id in subIDs)
                             {
                                 toggleTransform(rowHighlights, settingChanged.Item2, id.Substring(0,1));
                                 toggleTransform(colHighlights, settingChanged.Item2, id.Substring(1));
@@ -496,19 +484,23 @@ public class WellPlateViewController : ModelElementViewController
                     }
                     break;
                 case LablightSettings.Wellplate_Info_Panel:
-                    toggleInfoPanel(settingChanged.Item2, currActions);
+                    // toggleInfoPanel(settingChanged.Item2, currActions); // Info panel handling moved to separate class
                     break;
                 case LablightSettings.Well_Indicators:
                     if(currActions != null)
                     {
-                        foreach(HighlightAction action in currActions)
+                        foreach(var action in currActions)
                         {
+                            var colorHex = action.Properties.GetValueOrDefault("colorHex", "#FFFFFF").ToString();
+                            var subIDs = action.Properties.GetValueOrDefault("subIDs", new List<string>());
+                            
                             Color parsedColor;
-                            if(ColorUtility.TryParseHtmlString(action.colorInfo.Item1, out parsedColor))
+                            if(ColorUtility.TryParseHtmlString(colorHex, out parsedColor))
                             {
-                                parsedColor.a = 255;
+                                parsedColor.a = 1f;
                             }
-                            foreach(string id in action.chainIDs)
+                            
+                            foreach(string id in subIDs)
                             {
                                 toggleTransform(Markers, settingChanged.Item2, id, parsedColor);
                             }
