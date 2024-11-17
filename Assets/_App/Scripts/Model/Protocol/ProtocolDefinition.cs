@@ -54,7 +54,7 @@ public class StepDefinition
     public List<ContentItem> ContentItems { get; set; } = new List<ContentItem>();
 
     [JsonProperty("Checklist")]
-    public List<CheckItem> Checklist { get; set; } = new List<CheckItem>();
+    public List<CheckItemDefinition> Checklist { get; set; } = new List<CheckItem>();
 }
 
 [Serializable]
