@@ -10,15 +10,15 @@ using Newtonsoft.Json;
 /// </summary>
 public class Parsers
 {
-    public static JsonSerializerSettings oldSerializerSettings = new JsonSerializerSettings
-    {
-        PreserveReferencesHandling = PreserveReferencesHandling.Objects,
-        ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
-        NullValueHandling = NullValueHandling.Ignore,
-        Converters = { new ArDefinitionConverter(),
-                       new ArOperationConverter(),
-                       new ContentItemConverter(),}
-    };
+    // public static JsonSerializerSettings oldSerializerSettings = new JsonSerializerSettings
+    // {
+    //     PreserveReferencesHandling = PreserveReferencesHandling.Objects,
+    //     ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
+    //     NullValueHandling = NullValueHandling.Ignore,
+    //     Converters = { new ArDefinitionConverter(),
+    //                    new ArOperationConverter(),
+    //                    new ContentItemConverter(),}
+    // };
 
     public static JsonSerializerSettings serializerSettings = new JsonSerializerSettings
     {
@@ -292,7 +292,7 @@ public class Parsers
 
             if (anchorData.version >= 1)
             {
-                anchorData = JsonConvert.DeserializeObject<AnchorData>(json, oldSerializerSettings);
+                anchorData = JsonConvert.DeserializeObject<AnchorData>(json, serializerSettings);
             }
             else
             {
