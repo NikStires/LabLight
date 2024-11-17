@@ -118,7 +118,7 @@ public class SwiftUIDriver : IUIDriver, IDisposable
             foreach (var contentItem in currentCheckItem.contentItems)
             {
 
-                else if (contentItem.contentType == "Video")
+                if (contentItem.contentType == "Video")
                 {
                     string videoUrl = contentItem.properties["url"]?.ToString();
                     if (!string.IsNullOrEmpty(videoUrl))

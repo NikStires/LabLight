@@ -88,7 +88,7 @@ public class ContentItem
 public class ArAction
 {
     [JsonProperty("actionType")]
-    public string actionType { get; set; } // e.g., "Highlight", "Activate Timer"
+    public string actionType { get; set; } // e.g., "highlight", "timer"
 
     [JsonProperty("arObjectID")]
     public string arObjectID { get; set; } // Reference to the target ArObject
