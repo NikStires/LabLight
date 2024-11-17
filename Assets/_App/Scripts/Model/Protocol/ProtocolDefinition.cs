@@ -27,12 +27,12 @@ public class ProtocolDefinition
 
     public void BuildArObjectLookup()
     {
-        ArObjectLookup = new Dictionary<string, ArObject>();
-        foreach (var arObject in GlobalArObjects)
+        arObjectLookup = new Dictionary<string, ArObject>();
+        foreach (var arObject in globalArObjects)
         {
-            if (!string.IsNullOrEmpty(arObject.ArObjectID))
+            if (!string.IsNullOrEmpty(arObject.arObjectID))
             {
-                ArObjectLookup[arObject.ArObjectID] = arObject;
+                arObjectLookup[arObject.arObjectID] = arObject;
             }
         }
     }
