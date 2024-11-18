@@ -15,19 +15,29 @@ public class ProtocolPanelViewController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI procedureTitle;
     [SerializeField] private Transform contentFrame;
     [SerializeField] private XRSimpleInteractable openPDFButton;
-    [SerializeField] private ContentItemController contentItemController;
 
     private UnityUIDriver uiDriver;
     private List<ContentItem> currentContentItems = new List<ContentItem>();
+    private ContentItemController contentItemController;
 
     void Start()
     {
         uiDriver = (UnityUIDriver)ServiceRegistry.GetService<IUIDriver>();
         procedureTitle.text = ProtocolState.Instance.ActiveProtocol.Value.title;
-        contentItemController = new ContentItemController();
+        
+        var protocolManager = FindObjectOfType<ProtocolManager>();
+        if (protocolManager != null)
+        {
+            contentItemController = protocolManager.GetContentItemController();
+        }
+        
+        if (contentItemController == null)
+        {
+            contentItemController = new ContentItemController();
+        }
+        
         UpdateContentItems();
         openPDFButton.selectExited.AddListener(_ => OnOpenPDFButtonClicked());
-        
     }
 
     public void UpdateContentItems()
