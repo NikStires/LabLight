@@ -130,7 +130,6 @@ GameObject:
   - component: {fileID: 75180033}
   - component: {fileID: 75180036}
   - component: {fileID: 75180039}
-  - component: {fileID: 75180040}
   m_Layer: 0
   m_Name: ProtocolManager
   m_TagString: Untagged
@@ -193,22 +192,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   headPlacementEventChannel: {fileID: 11400000, guid: 2e9cc040273c143bd9bb9c3be51cd7e6, type: 2}
---- !u!114 &75180040
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 75180032}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f379e8a2e98948c4aafec6b3db1bd7b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  textPrefab: {fileID: 7527683253692566170, guid: 90f27cbef998f514ab4eea03c89030b5, type: 3}
-  imagePrefab: {fileID: 3080854611571875890, guid: a5fa03f1256a0c14b9d8b69657722a35, type: 3}
-  videoPrefab: {fileID: 9168045537378301419, guid: 21a45794f4d284c4eaf19afa2e4cf88e, type: 3}
-  soundPrefab: {fileID: 7552326126931628008, guid: c3b74db44d45a0c4aa833aad37863f4a, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
