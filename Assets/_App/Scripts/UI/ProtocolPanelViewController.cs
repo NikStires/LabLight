@@ -22,25 +22,61 @@ public class ProtocolPanelViewController : MonoBehaviour
 
     private UnityUIDriver uiDriver;
     private List<ContentItem> currentContentItems = new List<ContentItem>();
-    private ContentItemController contentItemController;
+    private List<MonoBehaviour> contentItemInstances = new List<MonoBehaviour>();
 
     void Start()
     {
         uiDriver = (UnityUIDriver)ServiceRegistry.GetService<IUIDriver>();
         procedureTitle.text = ProtocolState.Instance.ActiveProtocol.Value.title;
-        contentItemController = new GameObject("ContentItemController")
-            .AddComponent<ContentItemController>();
-        InitializeContentItemController(contentItemController);
         UpdateContentItems();
         openPDFButton.selectExited.AddListener(_ => OnOpenPDFButtonClicked());
     }
 
-    private void InitializeContentItemController(ContentItemController controller)
+    private void CreateContentItem(ContentItem contentItem, LayoutGroup container)
     {
-        controller.TextPrefab = textPrefab;
-        controller.ImagePrefab = imagePrefab;
-        controller.VideoPrefab = videoPrefab;
-        controller.SoundPrefab = soundPrefab;
+        MonoBehaviour controller = null;
+
+        switch (contentItem.contentType.ToLower())
+        {
+            case "text":
+                var textController = Instantiate(textPrefab, container.transform);
+                textController.ContentItem = contentItem;
+                controller = textController;
+                break;
+
+            case "image":
+                var imageController = Instantiate(imagePrefab, container.transform);
+                imageController.ContentItem = contentItem;
+                controller = imageController;
+                break;
+
+            case "sound":
+                var soundController = Instantiate(soundPrefab, container.transform);
+                soundController.ContentItem = contentItem;
+                controller = soundController;
+                break;
+
+            case "weburl":
+                if (contentItem.properties.TryGetValue("url", out object url))
+                {
+                    uiDriver.DisplayWebPage(url.ToString());
+                }
+                break;
+        }
+
+        if (controller != null)
+        {
+            contentItemInstances.Add(controller);
+        }
+    }
+
+    private void ClearContentItems()
+    {
+        foreach (var contentItem in contentItemInstances)
+        {
+            Destroy(contentItem.gameObject);
+        }
+        contentItemInstances.Clear();
     }
 
     public void UpdateContentItems()
@@ -73,8 +109,11 @@ public class ProtocolPanelViewController : MonoBehaviour
         }
         else
         {
-            contentItemController.ClearContentItems();
-            contentItemController.CreateContentItems(newContentItems, contentFrame.GetComponent<LayoutGroup>());
+            ClearContentItems();
+            foreach (var contentItem in newContentItems)
+            {
+                CreateContentItem(contentItem, contentFrame.GetComponent<LayoutGroup>());
+            }
             currentContentItems = newContentItems;
             
             foreach(Transform child in transform)
