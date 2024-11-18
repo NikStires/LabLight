@@ -48,10 +48,10 @@ public class Parsers
                 {
                     throw new Exception("Protocol descriptor missing required Title field");
                 }
-                if (string.IsNullOrEmpty(protocol.version))
-                {
-                    throw new Exception("Protocol descriptor missing required Version field");
-                }
+                // if (string.IsNullOrEmpty(protocol.version))
+                // {
+                //     throw new Exception("Protocol descriptor missing required Version field");
+                // }
             }
 
             return protocols;
