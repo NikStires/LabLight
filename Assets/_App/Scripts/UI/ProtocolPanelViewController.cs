@@ -15,6 +15,7 @@ public class ProtocolPanelViewController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI procedureTitle;
     [SerializeField] private Transform contentFrame;
     [SerializeField] private XRSimpleInteractable openPDFButton;
+    [SerializeField] private ProtocolManager protocolManager;
 
     private UnityUIDriver uiDriver;
     private List<ContentItem> currentContentItems = new List<ContentItem>();
@@ -25,14 +26,13 @@ public class ProtocolPanelViewController : MonoBehaviour
         uiDriver = (UnityUIDriver)ServiceRegistry.GetService<IUIDriver>();
         procedureTitle.text = ProtocolState.Instance.ActiveProtocol.Value.title;
         
-        var protocolManager = FindObjectOfType<ProtocolManager>();
         if (protocolManager != null)
         {
             contentItemController = protocolManager.GetContentItemController();
         }
-        
-        if (contentItemController == null)
+        else
         {
+            Debug.LogWarning("ProtocolManager reference is missing. Please assign it in the inspector.");
             contentItemController = new ContentItemController();
         }
         
