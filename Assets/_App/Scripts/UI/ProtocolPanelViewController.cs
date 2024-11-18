@@ -71,15 +71,8 @@ public class ProtocolPanelViewController : MonoBehaviour
 
     private void OnOpenPDFButtonClicked()
     {
-        var protocol;
-        if(string.IsNullOrEmpty(ProtocolState.Instance.ActiveProtocol.Value.protocolPDFNames))
-        {
-            return;
-        }
-
-        protocol = ProtocolState.Instance.ActiveProtocol.Value;
-
-        if (protocol.protocolPDFNames != null && protocol.protocolPDFNames.Count > 0)
+        var protocol = ProtocolState.Instance.ActiveProtocol.Value;
+        if (protocol.protocolPDFNames?.Count > 0)
         {
             string pdfName = protocol.protocolPDFNames[0]; // Use first PDF for now
             Debug.Log($"displaying PDF: {pdfName}");
