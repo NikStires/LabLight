@@ -85,10 +85,10 @@ public class ProtocolState : MonoBehaviour
 
     private void InitializeSteps(ProtocolDefinition protocolDefinition)
     {
-        var arModels = protocolDefinition.globalArElements
-            .Where(x => x.arDefinitionType == ArDefinitionType.Model)
-            .Cast<ModelArDefinition>()
-            .ToList();
+        // var arModels = protocolDefinition.globalArObjects
+        //     .Where(x => x.arDefinitionType == ArDefinitionType.Model)
+        //     .Cast<ModelArDefinition>()
+        //     .ToList();
 
         // if (arModels.Count > 0)
         // {

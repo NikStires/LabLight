@@ -28,7 +28,7 @@ public class LocalFileDataProvider : IProtocolDataProvider, ITextDataProvider, I
                 Debug.Log("Found file: " + file.Name);
                 list.Add(new ProtocolDescriptor()
                 {
-                    name = Path.GetFileNameWithoutExtension(file.Name),
+                    title = Path.GetFileNameWithoutExtension(file.Name),
                     version = file.Name
                 });
             }
