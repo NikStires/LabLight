@@ -72,7 +72,7 @@ public class ProtocolPanelViewController : MonoBehaviour
     private void OnOpenPDFButtonClicked()
     {
         var protocol;
-        if(string.IsNullOrEmpty(ProtocolState.Instance.ActiveProtocol.Value.pdfPath))
+        if(string.IsNullOrEmpty(ProtocolState.Instance.ActiveProtocol.Value.protocolPDFNames))
         {
             return;
         }

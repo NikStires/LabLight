@@ -31,9 +31,18 @@ public class TestUi : MonoBehaviour
         for(int i = 0; i < num; i++)
         {
             StepDefinition newStep = new StepDefinition();
-            TextItem newTextItem = new TextItem();
-            newTextItem.text = "text item on step " + i;
-            newStep.contentItems.Add(newTextItem);
+            
+            // Create a ContentItem for text instead of TextItem
+            ContentItem textContent = new ContentItem
+            {
+                contentType = "Text",
+                properties = new Dictionary<string, object>
+                {
+                    { "text", $"text item on step {i}" }
+                }
+            };
+            
+            newStep.contentItems.Add(textContent);
             newStep.checklist = CreateCheckItems(10);
             steps.Add(newStep);
         }
