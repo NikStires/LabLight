@@ -22,7 +22,7 @@ public class ResourceFileDataProvider : IProtocolDataProvider, IMediaProvider
 {
     public Task<List<ProtocolDescriptor>> GetProtocolList()
     {
-        return LoadTextAsset("Protocol/index").Select(jsonString =>
+        return LoadTextAsset("ProtocolV2/index").Select(jsonString =>
         {
             try
             {
