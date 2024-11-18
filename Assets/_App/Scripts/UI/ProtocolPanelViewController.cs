@@ -24,8 +24,10 @@ public class ProtocolPanelViewController : MonoBehaviour
     {
         uiDriver = (UnityUIDriver)ServiceRegistry.GetService<IUIDriver>();
         procedureTitle.text = ProtocolState.Instance.ActiveProtocol.Value.title;
+        contentItemController = gameObject.AddComponent<ContentItemController>();
         UpdateContentItems();
         openPDFButton.selectExited.AddListener(_ => OnOpenPDFButtonClicked());
+        
     }
 
     public void UpdateContentItems()
