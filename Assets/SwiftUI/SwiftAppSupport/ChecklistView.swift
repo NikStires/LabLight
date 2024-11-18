@@ -6,13 +6,20 @@ struct ChecklistView: View {
     var body: some View {
         ScrollViewReader { proxy in
             List {
-                ForEach(Array(viewModel.checklistItems.enumerated()), id: \.element.id) { index, item in
-                    CheckItemView(checklistItem: item)
-                        .id(index)
+                ForEach(viewModel.checklistItems) { item in
+                    CheckItemView(
+                        definition: item,
+                        isChecked: viewModel.currentStates.first { 
+                            $0.checkIndex == viewModel.getIndex(for: item) 
+                        }?.isChecked ?? false
+                    )
+                    .id(viewModel.getIndex(for: item))
                 }
             }
             .onChange(of: viewModel.lastCheckedItemIndex) { _, newIndex in
-                if let nextUncheckedIndex = viewModel.checklistItems.firstIndex(where: { !$0.isChecked }) {
+                if let nextUncheckedIndex = viewModel.checklistItems.indices.first(where: { index in
+                    !(viewModel.currentStates.first { $0.checkIndex == index }?.isChecked ?? false)
+                }) {
                     withAnimation {
                         proxy.scrollTo(nextUncheckedIndex, anchor: .center)
                     }

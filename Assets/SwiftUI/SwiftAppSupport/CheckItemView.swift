@@ -1,14 +1,15 @@
 import SwiftUI
 
 struct CheckItemView: View {
-    @ObservedObject var checklistItem: ChecklistItem
+    let definition: CheckItemDefinition
+    let isChecked: Bool
     
     var body: some View {
         HStack {
-            Toggle(isOn: $checklistItem.isChecked) {
-                Text(checklistItem.text)
-                    .strikethrough(checklistItem.isChecked, color: .white)
-                    .foregroundColor(checklistItem.isChecked ? .gray : .white)
+            Toggle(isOn: .constant(isChecked)) {
+                Text(definition.text)
+                    .strikethrough(isChecked, color: .white)
+                    .foregroundColor(isChecked ? .gray : .white)
             }
             .toggleStyle(CheckBoxToggleStyle())
             .disabled(true)

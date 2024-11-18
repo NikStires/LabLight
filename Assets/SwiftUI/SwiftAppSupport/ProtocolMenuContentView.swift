@@ -18,12 +18,12 @@ struct ProtocolMenuContentView: View {
                 } else {
                     List(viewModel.protocols) { protocolItem in
                         Button(action: {
-                            viewModel.selectProtocol(protocolItem.name)
+                            viewModel.selectProtocol(protocolItem.title)
                         }) {
                             VStack(alignment: .leading) {
                                 Text(formatText(protocolItem.title))
                                     .font(.headline)
-                                Text(formatText(protocolItem.description))
+                                Text(formatText(protocolItem.version))
                                     .font(.subheadline)
                             }
                         }
@@ -82,6 +82,7 @@ class ProtocolMenuViewModel: ObservableObject {
         if let message = notification.userInfo?["message"] as? String,
            message.hasPrefix("protocolChange:") {
             let protocolJson = String(message.dropFirst("protocolChange:".count))
+            print("######LABLIGHT Received protocol JSON: \(protocolJson)")
             do {
                 guard let data = protocolJson.data(using: .utf8) else {
                     print("######LABLIGHT Invalid JSON encoding")
@@ -129,14 +130,12 @@ class ProtocolMenuViewModel: ObservableObject {
 struct ProtocolDescriptor: Codable, Identifiable {
     let id: String
     let title: String
-    let name: String
-    let description: String
+    let version: String
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         title = try container.decode(String.self, forKey: .title)
-        name = try container.decode(String.self, forKey: .name)
-        description = try container.decode(String.self, forKey: .description)
-        id = name // Use name as the id
+        version = try container.decode(String.self, forKey: .version)
+        id = title // Use title as the id
     }
 }

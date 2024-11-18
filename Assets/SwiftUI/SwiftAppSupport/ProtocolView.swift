@@ -63,7 +63,7 @@ struct ProtocolView: View {
                 Button(action: viewModel.openPDF) {
                     Image(systemName: "doc.richtext")
                 }
-                .disabled(viewModel.selectedProtocol.pdfPath == nil)
+                .disabled(viewModel.selectedProtocol.protocolPDFNames.isEmpty)
                 .padding(EdgeInsets(top: 4, leading: 8, bottom: 4,trailing: 8))
 
             }
@@ -76,7 +76,6 @@ struct ProtocolView: View {
     
 class ProtocolViewModel: ObservableObject {
     let selectedProtocol: ProtocolDefinition
-
     @Published var selectedStepIndex: Int = 0 {
         didSet {
             if selectedStepIndex != oldValue {
@@ -84,8 +83,8 @@ class ProtocolViewModel: ObservableObject {
             }
         }
     }
-    @Published var checklistItems: [ChecklistItem] = []
-
+    @Published var checklistItems: [CheckItemDefinition] = []
+    @Published var currentStates: [CheckItemStateData] = []
     @Published var lastCheckedItemIndex: Int?
 
     init(selectedProtocol: ProtocolDefinition) {
@@ -95,58 +94,73 @@ class ProtocolViewModel: ObservableObject {
         NotificationCenter.default.addObserver(self, selector: #selector(handleCheckItemChange(_:)), name: Notification.Name("CheckItemChange"), object: nil)
     }
 
+    func getItemState(for item: CheckItemDefinition) -> CheckItemStateData {
+        let index = getIndex(for: item)
+        let isChecked = currentStates.first { $0.checkIndex == index }?.isChecked ?? false
+        return CheckItemStateData(isChecked: isChecked, checkIndex: index)
+    }
+    
+    func getIndex(for item: CheckItemDefinition) -> Int {
+        checklistItems.firstIndex(of: item) ?? 0
+    }
+
     @objc func handleStepChange(_ notification: Notification) {
-        if let message = notification.userInfo?["message"] as? String,
-           message.hasPrefix("stepChange:") {
-            let stepStateData = try? JSONDecoder().decode(StepStateData.self, from: message.dropFirst("stepChange:".count).data(using: .utf8)!)
-            if let stepStateData = stepStateData {
-                selectedStepIndex = stepStateData.currentStepIndex
-                updateChecklistItemStates(stepStateData.checklistState)
-            } else {
-                print("Invalid stepChange message format")
-            }
+        guard let message = notification.userInfo?["message"] as? String,
+              message.hasPrefix("stepChange:"),
+              let data = message.dropFirst("stepChange:".count).data(using: .utf8),
+              let stepStateData = try? JSONDecoder().decode(StepStateData.self, from: data)
+        else {
+            print("Invalid step change message format")
+            return
         }
+        
+        selectedStepIndex = stepStateData.currentStepIndex
+        checklistItems = currentStep.checklist
+        currentStates = stepStateData.checklistState ?? []
+        lastCheckedItemIndex = currentStates.last { $0.isChecked }?.checkIndex
     }
 
     @objc func handleCheckItemChange(_ notification: Notification) {
-        if let message = notification.userInfo?["message"] as? String,
-           message.hasPrefix("checkItemChange:") {
-            let checkItemStateDataList = try? JSONDecoder().decode([CheckItemStateData].self, from: message.dropFirst("checkItemChange:".count).data(using: .utf8)!)
-            if let checkItemStateDataList = checkItemStateDataList {
-                updateChecklistItemStates(checkItemStateDataList)
-            } else {
-                print("Invalid checkItemChange message format")
-            }
+        guard let message = notification.userInfo?["message"] as? String,
+              message.hasPrefix("checkItemChange:"),
+              let data = message.dropFirst("checkItemChange:".count).data(using: .utf8),
+              let checkItemStateDataList = try? JSONDecoder().decode([CheckItemStateData].self, from: data)
+        else {
+            print("Invalid check item change message format")
+            return
         }
+        
+        currentStates = checkItemStateDataList
+        lastCheckedItemIndex = checkItemStateDataList.last { $0.isChecked }?.checkIndex
     }
 
-    func updateChecklistItemStates(_ checklistState: [CheckItemStateData]?) {
-        checklistItems = currentStep.checklist
-        for checkItemState in checklistState ?? [] {
-            updateCheckItemState(checkItemState)
-        }
-    }
-
-    func updateCheckItemState(_ checkItemState: CheckItemStateData) {
-        print("######LABLIGHT Updating checklist item \(checkItemState.checkIndex) to \(checkItemState.isChecked)")
-        checklistItems[checkItemState.checkIndex].isChecked = checkItemState.isChecked
-        if checkItemState.isChecked {
-            lastCheckedItemIndex = checkItemState.checkIndex
-        }
-    }
-
-    var currentStep: Step {
+    var currentStep: StepDefinition {
         selectedProtocol.steps[selectedStepIndex]
     }
 
+    func nextUncheckedItem() -> CheckItemDefinition? {
+        return checklistItems.enumerated()
+            .first { index, _ in 
+                !(currentStates.first { $0.checkIndex == index }?.isChecked ?? false)
+            }?.element
+    }
+
+    func lastCheckedItem() -> CheckItemDefinition? {
+        return checklistItems.enumerated()
+            .filter { index, _ in 
+                currentStates.first { $0.checkIndex == index }?.isChecked ?? false
+            }
+            .last?.element
+    }
+    
     func checkNextItem() {
-        guard let nextItemIndex = checklistItems.firstIndex(where: { !$0.isChecked }) else { return }
-        CallCSharpCallback("checkItem:" + String(nextItemIndex))
+        guard let nextItem = nextUncheckedItem() else { return }
+        CallCSharpCallback("checkItem:" + String(getIndex(for: nextItem)))
     }
 
     func uncheckLastItem() {
-        guard let lastItemIndex = checklistItems.lastIndex(where: { $0.isChecked }) else { return }
-        CallCSharpCallback("uncheckItem:" + String(lastItemIndex))
+        guard let lastItem = lastCheckedItem() else { return }
+        CallCSharpCallback("uncheckItem:" + String(getIndex(for: lastItem)))
     }
 
     func goToNextStep() {
@@ -162,15 +176,8 @@ class ProtocolViewModel: ObservableObject {
     }
 
     func openPDF() {
-        CallCSharpCallback("requestPDF:")
-    }
-
-    func nextUncheckedItem() -> ChecklistItem? {
-        return checklistItems.first(where: { !$0.isChecked })
-    }
-
-    func lastCheckedItem() -> ChecklistItem? {
-        return checklistItems.last(where: { $0.isChecked })
+        guard let pdfName = selectedProtocol.protocolPDFNames.first else { return }
+        CallCSharpCallback("requestPDF:" + pdfName)
     }
 }
 

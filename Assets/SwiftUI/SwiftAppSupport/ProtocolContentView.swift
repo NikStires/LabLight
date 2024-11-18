@@ -17,28 +17,40 @@ struct ProtocolContentView: View {
     
     @ViewBuilder
     private func contentView(for item: ContentItem) -> some View {
-        switch item.contentType?.lowercased() {
+        switch item.contentType.lowercased() {
         case "text":
-            TextContentView(text: item.text ?? "")
-        
-        case "image":
-            if let imageName = item.text { // Assuming 'text' holds the image name or URL
-                ImageContentView(imageName: imageName)
+            if let text = item.properties["text"], !text.isEmpty {
+                TextContentView(text: text)
             }
         
-        case "pdf":
-            if let pdfURLString = item.text, let url = URL(string: pdfURLString) {
-                PDFContentView(pdfURLString)
+        case "image":
+            if let url = item.properties["url"], !url.isEmpty {
+                ImageContentView(imageName: url)
             }
         
         case "video":
-            if let videoURLString = item.text, let url = URL(string: videoURLString) {
-                VideoContentView(videoURLString)
+            if let url = item.properties["url"], !url.isEmpty {
+                VideoContentView(url)
             }
         
+        case "timer":
+            if let durationStr = item.properties["durationInSeconds"],
+               let duration = Int(durationStr),
+               duration > 0 {
+                TimerContentView(duration)
+            }
+        
+        case "webpage":
+            if let url = item.properties["url"], !url.isEmpty {
+                SafariContentView(defaultUrlString: url)
+            }
+            
         default:
             Text("Unsupported content type: \(item.contentType)")
                 .foregroundColor(.red)
+                .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(8)
         }
     }
 }
