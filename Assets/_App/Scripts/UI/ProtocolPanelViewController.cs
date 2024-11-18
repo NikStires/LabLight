@@ -59,8 +59,7 @@ public class ProtocolPanelViewController : MonoBehaviour
         else
         {
             contentItemController.ClearContentItems();
-            contentItemController.CreateContentItems(newContentItems, 
-                contentFrame.GetComponent<LayoutGroup>(), null);
+            contentItemController.CreateContentItems(newContentItems, contentFrame.GetComponent<LayoutGroup>());
             currentContentItems = newContentItems;
             
             foreach(Transform child in transform)
