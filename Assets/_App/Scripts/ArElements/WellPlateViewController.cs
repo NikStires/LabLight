@@ -205,8 +205,8 @@ public class WellPlateViewController : ModelElementViewController
 
         // Cache property lookups
         var subIDs = action.properties.GetValueOrDefault("subIDs", new List<string>());
-        var colorHex = action.properties.GetValueOrDefault("colorHex", "#FFFFFF");
-        var parsedColor = Color.white;
+        string colorHex = action.properties.GetValueOrDefault("colorHex", "#FFFFFF");
+        Color parsedColor = Color.white;
         if (ColorUtility.TryParseHtmlString(colorHex, out parsedColor))
         {
             parsedColor.a = 1f;
