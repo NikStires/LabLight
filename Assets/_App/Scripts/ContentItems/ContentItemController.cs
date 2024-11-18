@@ -4,13 +4,15 @@ using System.Collections.Generic;
 
 public class ContentItemController : MonoBehaviour
 {
-    // [SerializeField] private LayoutController containerHorizontalPrefab;
-    // [SerializeField] private LayoutController containerVerticalPrefab;
-    [SerializeField] private TextController textPrefab;
-    //[SerializeField] private PropertyTextController propertyPrefab;
-    [SerializeField] private ImageController imagePrefab;
-    [SerializeField] private VideoController videoPrefab;
-    [SerializeField] private SoundController soundPrefab;
+    private TextController textPrefab;
+    private ImageController imagePrefab;
+    private VideoController videoPrefab;
+    private SoundController soundPrefab;
+
+    public TextController TextPrefab { set => textPrefab = value; }
+    public ImageController ImagePrefab { set => imagePrefab = value; }
+    public VideoController VideoPrefab { set => videoPrefab = value; }
+    public SoundController SoundPrefab { set => soundPrefab = value; }
 
     private List<MonoBehaviour> contentItemInstances = new List<MonoBehaviour>();
     private UnityUIDriver uiDriver;

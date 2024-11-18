@@ -15,7 +15,10 @@ public class ProtocolPanelViewController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI procedureTitle;
     [SerializeField] private Transform contentFrame;
     [SerializeField] private XRSimpleInteractable openPDFButton;
-    [SerializeField] private ProtocolManager protocolManager;
+    [SerializeField] private TextController textPrefab;
+    [SerializeField] private ImageController imagePrefab;
+    [SerializeField] private VideoController videoPrefab;
+    [SerializeField] private SoundController soundPrefab;
 
     private UnityUIDriver uiDriver;
     private List<ContentItem> currentContentItems = new List<ContentItem>();
@@ -26,18 +29,21 @@ public class ProtocolPanelViewController : MonoBehaviour
         uiDriver = (UnityUIDriver)ServiceRegistry.GetService<IUIDriver>();
         procedureTitle.text = ProtocolState.Instance.ActiveProtocol.Value.title;
         
-        if (protocolManager != null)
-        {
-            contentItemController = protocolManager.GetContentItemController();
-        }
-        else
-        {
-            Debug.LogWarning("ProtocolManager reference is missing. Please assign it in the inspector.");
+
             contentItemController = new ContentItemController();
-        }
+            InitializeContentItemController(contentItemController);
+        
         
         UpdateContentItems();
         openPDFButton.selectExited.AddListener(_ => OnOpenPDFButtonClicked());
+    }
+
+    private void InitializeContentItemController(ContentItemController controller)
+    {
+        controller.TextPrefab = textPrefab;
+        controller.ImagePrefab = imagePrefab;
+        controller.VideoPrefab = videoPrefab;
+        controller.SoundPrefab = soundPrefab;
     }
 
     public void UpdateContentItems()
