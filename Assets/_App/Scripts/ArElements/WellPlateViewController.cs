@@ -213,7 +213,7 @@ public class WellPlateViewController : ModelElementViewController
         }
 
         // Use cached values
-        foreach (string id in subIDs)
+        foreach (string id in (List<string>)subIDs)
         {
             if (debugEnableAllSettings)
             {
@@ -251,7 +251,7 @@ public class WellPlateViewController : ModelElementViewController
 
         var subIDs = action.properties.GetValueOrDefault("subIDs", new List<string>());
 
-        foreach (string id in subIDs)
+        foreach (string id in (List<string>)subIDs)
         {
             toggleTransform(Markers, false, id, Color.white);
             toggleTransform(rowIndicators, true, id[0].ToString(), defaultIndicatorColor);
