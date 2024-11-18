@@ -82,16 +82,16 @@ public class SpatialVideoPanelViewController : LLBasePanel
     void UpdateContent()
     {
         //Get new content items
-        VideoItem newVideoItem = null;
+        ContentItem newVideoItem = null;
 
         //check the current check item for a video then check the step, only one video will be shown at a time
         if(ProtocolState.Instance.CurrentStepDefinition.contentItems.Count > 0)
         {
-            newVideoItem = (VideoItem)ProtocolState.Instance.CurrentStepDefinition.contentItems.Where(x => x.contentType == "video").FirstOrDefault();
+            newVideoItem = ProtocolState.Instance.CurrentStepDefinition.contentItems.Where(x => x.contentType == "video").FirstOrDefault();
         }
         if(ProtocolState.Instance.HasCurrentChecklist() && ProtocolState.Instance.CurrentCheckItemDefinition.contentItems.Count > 0)
         {
-            newVideoItem = (VideoItem)ProtocolState.Instance.CurrentCheckItemDefinition.contentItems.Where(x => x.contentType == "video").FirstOrDefault();
+            newVideoItem = ProtocolState.Instance.CurrentCheckItemDefinition.contentItems.Where(x => x.contentType == "video").FirstOrDefault();
         }
 
         if(newVideoItem == null)
@@ -99,15 +99,15 @@ public class SpatialVideoPanelViewController : LLBasePanel
             //if there are no video items disable view
             _view.SetActive(false);
         }
-        else if(newVideoItem != null && currentVideoItem == newVideoItem.url)
+        else if(newVideoItem != null && newVideoItem.properties.TryGetValue("url", out object urlValue) && currentVideoItem == urlValue.ToString())
         {
             //if video item is the same as the previous video item do nothing
             return;
         }
-        else
+        else if(newVideoItem.properties.TryGetValue("url", out object videoUrl))
         {
             //if we have a new video item then load the video
-            LoadVideo(newVideoItem.url);
+            LoadVideo(videoUrl.ToString());
         }
     }
 
