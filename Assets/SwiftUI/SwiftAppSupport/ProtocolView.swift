@@ -3,6 +3,7 @@ import UnityFramework
 
 struct ProtocolView: View {
     @StateObject private var viewModel: ProtocolViewModel
+    @Namespace private var animation
     
     init(selectedProtocol: ProtocolDefinition) {
         _viewModel = StateObject(wrappedValue: ProtocolViewModel(selectedProtocol: selectedProtocol))
@@ -21,17 +22,24 @@ struct ProtocolView: View {
             HStack(spacing: 0) {
                 ChecklistView(viewModel: viewModel)
                     .frame(maxWidth: viewModel.currentStep.contentItems.isEmpty ? .infinity : 400)
-                    .animation(.spring(), value: viewModel.currentStep.contentItems.isEmpty)
+                    .animation(.spring(response: 0.3, dampingFraction: 0.8), value: viewModel.currentStep.contentItems.isEmpty)
                 
                 if !viewModel.currentStep.contentItems.isEmpty {
-                    ProtocolContentView(contentItems: viewModel.currentStep.contentItems)
-                        .frame(maxWidth: .infinity)
-                        .padding(.leading, 10)
-                        .transition(.move(edge: .trailing))
+                    ProtocolContentView(
+                        contentItems: viewModel.currentStep.contentItems,
+                        selectedChecklistItem: viewModel.selectedChecklistItem
+                    )
+                    .frame(maxWidth: .infinity)
+                    .padding(.leading, 10)
+                    .transition(.asymmetric(
+                        insertion: .opacity.combined(with: .move(edge: .trailing)),
+                        removal: .opacity.combined(with: .move(edge: .trailing))
+                    ))
                 }
             }
             .padding(.horizontal)
         }
+        .animation(.spring(response: 0.3, dampingFraction: 0.8), value: viewModel.currentStep.contentItems.isEmpty)
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle(viewModel.selectedProtocol.title)
         .ornament(visibility: .visible, attachmentAnchor: .scene(.leading)) {
@@ -86,6 +94,7 @@ class ProtocolViewModel: ObservableObject {
     @Published var checklistItems: [CheckItemDefinition] = []
     @Published var currentStates: [CheckItemStateData] = []
     @Published var lastCheckedItemIndex: Int?
+    @Published var selectedChecklistItem: CheckItemDefinition?
 
     init(selectedProtocol: ProtocolDefinition) {
         self.selectedProtocol = selectedProtocol
@@ -118,6 +127,8 @@ class ProtocolViewModel: ObservableObject {
         checklistItems = currentStep.checklist
         currentStates = stepStateData.checklistState ?? []
         lastCheckedItemIndex = currentStates.last { $0.isChecked }?.checkIndex
+        
+        selectedChecklistItem = nil
     }
 
     @objc func handleCheckItemChange(_ notification: Notification) {
@@ -132,6 +143,11 @@ class ProtocolViewModel: ObservableObject {
         
         currentStates = checkItemStateDataList
         lastCheckedItemIndex = checkItemStateDataList.last { $0.isChecked }?.checkIndex
+        
+        if let lastIndex = lastCheckedItemIndex,
+           lastIndex < checklistItems.count {
+            selectedChecklistItem = checklistItems[lastIndex]
+        }
     }
 
     var currentStep: StepDefinition {

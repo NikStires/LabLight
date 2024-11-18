@@ -3,12 +3,26 @@ import AVKit
 
 struct ProtocolContentView: View {
     let contentItems: [ContentItem]
+    let selectedChecklistItem: CheckItemDefinition?
     
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 ForEach(contentItems) { item in
                     contentView(for: item)
+                }
+                
+                if let checklistItem = selectedChecklistItem,
+                   !checklistItem.contentItems.isEmpty {
+                    Divider()
+                        .padding(.vertical)
+                    
+                    Text(checklistItem.text)
+                        .font(.headline)
+                    
+                    ForEach(checklistItem.contentItems) { item in
+                        contentView(for: item)
+                    }
                 }
             }
             .padding()
@@ -19,17 +33,17 @@ struct ProtocolContentView: View {
     private func contentView(for item: ContentItem) -> some View {
         switch item.contentType.lowercased() {
         case "text":
-            if let text = item.properties["text"], !text.isEmpty {
+            if let text = item.properties["Text"], !text.isEmpty {
                 TextContentView(text: text)
             }
         
         case "image":
-            if let url = item.properties["url"], !url.isEmpty {
+            if let url = item.properties["URL"], !url.isEmpty {
                 ImageContentView(imageName: url)
             }
         
         case "video":
-            if let url = item.properties["url"], !url.isEmpty {
+            if let url = item.properties["URL"], !url.isEmpty {
                 VideoContentView(url)
             }
         
@@ -41,7 +55,7 @@ struct ProtocolContentView: View {
             }
         
         case "webpage":
-            if let url = item.properties["url"], !url.isEmpty {
+            if let url = item.properties["URL"], !url.isEmpty {
                 SafariContentView(defaultUrlString: url)
             }
             

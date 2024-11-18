@@ -52,9 +52,6 @@ public class PropertiesConverter : JsonConverter
 
             case JTokenType.String:
                 var stringValue = token.Value<string>();
-                // Handle color strings (e.g., "#FFD700")
-                // if (stringValue.StartsWith("#") && ColorUtility.TryParseHtmlString(stringValue, out var htmlColor))
-                //     return htmlColor;
                 return stringValue;
 
             case JTokenType.Boolean:

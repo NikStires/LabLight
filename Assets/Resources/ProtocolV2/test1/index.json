@@ -19,6 +19,12 @@
             "Text": "Test patient sample"
           }
         },
+        {
+          "contentType": "Image",
+          "properties": {
+            "URL": "step1.png"
+          }
+        }
       ],
       "checklist": [
         {
@@ -49,7 +55,60 @@
               }
             }
           ]
+        }
+      ]
+    },
+    {
+      "isCritical": true,
+      "contentItems": [
+        {
+          "contentType": "Text",
+          "properties": {
+            "Text": "Important step information: Make sure to maintain proper temperature throughout this process."
+          }
         },
+        {
+          "contentType": "Text",
+          "properties": {
+            "Text": "Note: Wear appropriate PPE during this step."
+          }
+        }
+      ],
+      "checklist": [
+        {
+          "text": "Check temperature is at 37°C",
+          "contentItems": [
+            {
+              "contentType": "Text",
+              "properties": {
+                "Text": "Temperature must be precise for optimal results"
+              }
+            }
+          ]
+        },
+        {
+          "text": "Incubate for 15 minutes",
+          "contentItems": [
+            {
+              "contentType": "Text",
+              "properties": {
+                "Text": "Set a timer to ensure accurate timing"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "isCritical": true,
+      "contentItems": [],
+      "checklist": [
+        {
+          "text": "Final verification step"
+        },
+        {
+          "text": "Sign off on procedure"
+        }
       ]
     }
   ]
