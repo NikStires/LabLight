@@ -90,13 +90,13 @@ public class AnchoredObjectController : MonoBehaviour
     private void UpdateView()
     {
         // Enable UI for editMode, delete button, grab interaction etc.
-        foreach (var obj in editModeUI)
+        foreach (GameObject obj in editModeUI)
         {
             obj.SetActive(editMode);
         }
 
         // Enable UI for debugMode, show trackableId, show anchor position, show anchor rotation etc.
-        foreach (var obj in debugModeUI)
+        foreach (GameObject obj in debugModeUI)
         {
             obj.SetActive(debugMode);
         }
