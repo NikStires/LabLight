@@ -26,7 +26,7 @@ public class VideoController : ContentController<ContentItem>
 
     private void UpdateView()
     {
-        if (ContentItem == null || !ContentItem.properties.TryGetValue("url", out object urlValue)) 
+        if (ContentItem == null || !ContentItem.properties.TryGetValue("URL", out object urlValue)) 
         {
             return;
         }

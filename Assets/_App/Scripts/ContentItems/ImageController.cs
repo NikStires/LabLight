@@ -30,7 +30,7 @@ public class ImageController : ContentController<ContentItem>
 
     private void UpdateView()
     {
-        if (ContentItem == null || !ContentItem.properties.TryGetValue("url", out object urlValue)) 
+        if (ContentItem == null || !ContentItem.properties.TryGetValue("URL", out object urlValue)) 
         {
             Debug.LogError("ImageController: No URL found in properties");
             return;

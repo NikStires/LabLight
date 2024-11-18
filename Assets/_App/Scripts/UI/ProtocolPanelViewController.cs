@@ -57,9 +57,15 @@ public class ProtocolPanelViewController : MonoBehaviour
                 break;
 
             case "weburl":
-                if (contentItem.properties.TryGetValue("url", out object url))
+                if (contentItem.properties.TryGetValue("url", out object webURL))
                 {
-                    uiDriver.DisplayWebPage(url.ToString());
+                    uiDriver.DisplayWebPage(webURL.ToString());
+                }
+                break;
+            case "video":
+                if(contentItem.properties.TryGetValue("url", out object videoURL))
+                {
+                    uiDriver.DisplayVideoPlayer(videoURL.ToString());
                 }
                 break;
         }
@@ -82,18 +88,18 @@ public class ProtocolPanelViewController : MonoBehaviour
     public void UpdateContentItems()
     {
         var newContentItems = new List<ContentItem>();
-        if(ProtocolState.Instance.HasCurrentChecklist() && 
-           ProtocolState.Instance.CurrentCheckItemDefinition.contentItems.Count > 0)
+        
+        // Check if current step has content items
+        if (ProtocolState.Instance.CurrentStepDefinition.contentItems?.Any() == true)
         {
-            newContentItems.AddRange(ProtocolState.Instance.CurrentStepDefinition.contentItems
-                .Where(item => item.contentType.ToLower() != "video"));
-            newContentItems.AddRange(ProtocolState.Instance.CurrentCheckItemDefinition.contentItems
-                .Where(item => item.contentType.ToLower() != "video"));
+            newContentItems.AddRange(ProtocolState.Instance.CurrentStepDefinition.contentItems);
         }
-        else
+
+        // If there's a checklist, add its content items too
+        if (ProtocolState.Instance.HasCurrentChecklist() && 
+            ProtocolState.Instance.CurrentCheckItemDefinition.contentItems?.Any() == true)
         {
-            newContentItems.AddRange(ProtocolState.Instance.CurrentStepDefinition.contentItems
-                .Where(item => item.contentType.ToLower() != "video"));
+            newContentItems.AddRange(ProtocolState.Instance.CurrentCheckItemDefinition.contentItems);
         }
 
         if(newContentItems.Count == 0)

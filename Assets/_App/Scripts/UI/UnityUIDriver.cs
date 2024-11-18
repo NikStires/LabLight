@@ -95,6 +95,7 @@ public class UnityUIDriver : MonoBehaviour, IUIDriver
     //TODO: implement Unity web browser
     public void DisplayWebPage(string url)
     {
+        Debug.Log("Displaying web page at " + url);
         return;
         //webBrowserPanel.gameObject.SetActive(true);
         //webBrowserPanel.LoadUrl(url);
@@ -108,6 +109,7 @@ public class UnityUIDriver : MonoBehaviour, IUIDriver
     //TODO: implement Unity video player
     public void DisplayVideoPlayer(string url)
     {
+        Debug.Log("Displaying video at " + url);
         return;
         //videoPlayerPanel.gameObject.SetActive(true);
         //videoPlayerPanel.LoadVideo(url);

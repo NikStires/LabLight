@@ -27,14 +27,14 @@
       "EstimatedDuration": 300,
       "ContentItems": [
         {
-          "Type": "Video",
+          "contentType": "Video",
           "ArObjectID": "bsc_01",
           "Properties": {
             "URL": "bsc_startup_procedure.mp4"
           }
         },
         {
-          "Type": "Timer",
+          "contentType": "Timer",
           "ArObjectID": "bsc_01",
           "Properties": {
             "DurationInSeconds": 900
@@ -62,7 +62,7 @@
       "EstimatedDuration": 600,
       "ContentItems": [
         {
-          "Type": "Webpage",
+          "contentType": "Webpage",
           "ArObjectID": "",
           "Properties": {
             "URL": "www.labprotocols.com/media-warming-guidelines"
@@ -88,14 +88,14 @@
       "EstimatedDuration": 300,
       "ContentItems": [
         {
-          "Type": "Image",
+          "contentType": "Image",
           "ArObjectID": "microscope_01",
           "Properties": {
             "URL": "confluence_examples.png"
           }
         },
         {
-          "Type": "Text",
+          "contentType": "Text",
           "ArObjectID": "microscope_01",
           "Properties": {
             "Text": "Check for 80-90% confluence and cell morphology"

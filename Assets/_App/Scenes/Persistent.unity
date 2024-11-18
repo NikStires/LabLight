@@ -4854,6 +4854,17 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!114 &1011570536 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7509394597875673700, guid: 655c7e5182b2d48bcbb3bf8a139e214b, type: 3}
+  m_PrefabInstance: {fileID: 1725938588}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1012291883 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4746eb242c8684817a5dc1bbc3b0e3aa, type: 3}
@@ -9911,6 +9922,10 @@ PrefabInstance:
       propertyPath: videoPrefab
       value: 
       objectReference: {fileID: 9168045537378301419, guid: 21a45794f4d284c4eaf19afa2e4cf88e, type: 3}
+    - target: {fileID: 4807137659637386413, guid: 655c7e5182b2d48bcbb3bf8a139e214b, type: 3}
+      propertyPath: openPDFButton
+      value: 
+      objectReference: {fileID: 1011570536}
     - target: {fileID: 4807137659637386413, guid: 655c7e5182b2d48bcbb3bf8a139e214b, type: 3}
       propertyPath: contentItemController
       value: 
