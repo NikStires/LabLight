@@ -118,10 +118,10 @@ public class WellPlateViewController : ModelElementViewController
                 {
                     if (action?.properties != null)
                     {
-                        var isSource = action.properties.GetValueOrDefault("isSource", false);
+                        bool isSource = (bool)action.properties.GetValueOrDefault("isSource", false);
                         var subIDs = action.properties.GetValueOrDefault("subIDs", new List<string>());
 
-                        if (isSource is bool && isSource && Markers2D != null)
+                        if (isSource && Markers2D != null)
                         {
                             foreach (string id in (List<string>)subIDs)
                             {
