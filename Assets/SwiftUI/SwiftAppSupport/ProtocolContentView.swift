@@ -51,8 +51,19 @@ struct ProtocolContentView: View {
                     HStack {
                         Image(systemName: "play.circle.fill")
                             .font(.largeTitle)
-                        Text("Play Video")
-                            .font(.headline)
+                        VStack(alignment: .leading) {
+                            Text("Play Video")
+                                .font(.headline)
+                            if let text = item.properties["Text"] {
+                                Text(text)
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                            } else {
+                                Text(url)
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
                     }
                     .padding()
                     .frame(maxWidth: .infinity)
@@ -97,6 +108,34 @@ struct ProtocolContentView: View {
                                 .font(.headline)
                             if let text = item.properties["Text"] {
                                 Text(text)
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .cornerRadius(8)
+                }
+            }
+        
+        case "pdf":
+            if let url = item.properties["URL"], !url.isEmpty {
+                Button(action: {
+                    CallCSharpCallback("requestPDF|" + url)
+                }) {
+                    HStack {
+                        Image(systemName: "doc.text.fill")
+                            .font(.largeTitle)
+                        VStack(alignment: .leading) {
+                            Text("Open PDF")
+                                .font(.headline)
+                            if let text = item.properties["Text"] {
+                                Text(text)
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                            } else {
+                                Text(url)
                                     .font(.subheadline)
                                     .foregroundColor(.secondary)
                             }

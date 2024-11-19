@@ -233,6 +233,54 @@
     },
     {
       "isCritical": true,
+      "contentItems": [
+        {
+          "contentType": "Text",
+          "properties": {
+            "Text": "Review the safety documentation"
+          }
+        },
+        {
+          "contentType": "PDF",
+          "properties": {
+            "URL": "sample.pdf",
+            "Text": "Safety Guidelines and Procedures"
+          }
+        },
+        {
+          "contentType": "Text",
+          "properties": {
+            "Text": "Make sure you understand all safety procedures before proceeding"
+          }
+        }
+      ],
+      "checklist": [
+        {
+          "text": "Read safety guidelines",
+          "contentItems": [
+            {
+              "contentType": "Text",
+              "properties": {
+                "Text": "Ensure you understand all safety procedures"
+              }
+            }
+          ]
+        },
+        {
+          "text": "Confirm PPE requirements",
+          "contentItems": [
+            {
+              "contentType": "Text",
+              "properties": {
+                "Text": "Verify you have all required safety equipment"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "isCritical": true,
       "contentItems": [],
       "checklist": [
         {
