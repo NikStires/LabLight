@@ -4,6 +4,7 @@ import UnityFramework
 struct ProtocolView: View {
     @StateObject private var viewModel: ProtocolViewModel
     @Namespace private var animation
+    @State private var showingPDFMenu = false
     
     init(selectedProtocol: ProtocolDefinition) {
         _viewModel = StateObject(wrappedValue: ProtocolViewModel(selectedProtocol: selectedProtocol))
@@ -48,32 +49,38 @@ struct ProtocolView: View {
                     Image(systemName: "checkmark")
                 }
                 .disabled(viewModel.nextUncheckedItem() == nil)
-                .padding(EdgeInsets(top: 4, leading: 8, bottom: 4,trailing: 8))
+                .padding(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8))
                 
                 Button(action: viewModel.uncheckLastItem) {
                     Image(systemName: "xmark")
                 }
                 .disabled(viewModel.lastCheckedItem() == nil)
-                .padding(EdgeInsets(top: 4, leading: 8, bottom: 4,trailing: 8))
+                .padding(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8))
                 
                 Button(action: viewModel.goToPreviousStep) {
                     Image(systemName: "chevron.left")
                 }
                 .disabled(viewModel.selectedStepIndex == 0)
-                .padding(EdgeInsets(top: 4, leading: 8, bottom: 4,trailing: 8))
+                .padding(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8))
 
                 Button(action: viewModel.goToNextStep) {
                     Image(systemName: "chevron.right")
                 }
                 .disabled(viewModel.selectedStepIndex >= viewModel.selectedProtocol.steps.count - 1)
-                .padding(EdgeInsets(top: 4, leading: 8, bottom: 4,trailing: 8))
+                .padding(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8))
 
-                Button(action: viewModel.openPDF) {
-                    Image(systemName: "doc.richtext")
+                if !viewModel.selectedProtocol.protocolPDFNames.isEmpty {
+                    Menu {
+                        ForEach(viewModel.selectedProtocol.protocolPDFNames, id: \.self) { pdfName in
+                            Button(action: { viewModel.openPDF(pdfName) }) {
+                                Label(pdfName, systemImage: "doc.richtext")
+                            }
+                        }
+                    } label: {
+                        Image(systemName: "doc.richtext")
+                            .padding(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8))
+                    }
                 }
-                .disabled(viewModel.selectedProtocol.protocolPDFNames.isEmpty)
-                .padding(EdgeInsets(top: 4, leading: 8, bottom: 4,trailing: 8))
-
             }
             .padding()
             .buttonStyle(.plain)
@@ -191,9 +198,13 @@ class ProtocolViewModel: ObservableObject {
         }
     }
 
+    func openPDF(_ pdfName: String) {
+        CallCSharpCallback("requestPDF|" + pdfName)
+    }
+
     func openPDF() {
         guard let pdfName = selectedProtocol.protocolPDFNames.first else { return }
-        CallCSharpCallback("requestPDF|" + pdfName)
+        openPDF(pdfName)
     }
 }
 
