@@ -46,7 +46,7 @@ struct ProtocolContentView: View {
         case "video":
             if let url = item.properties["URL"], !url.isEmpty {
                 Button(action: {
-                    CallCSharpCallback("requestVideo:" + url)
+                    CallCSharpCallback("requestVideo|" + url)
                 }) {
                     HStack {
                         Image(systemName: "play.circle.fill")
@@ -65,7 +65,7 @@ struct ProtocolContentView: View {
                let duration = Int(durationStr),
                duration > 0 {
                 Button(action: {
-                    CallCSharpCallback("requestTimer:" + durationStr)
+                    CallCSharpCallback("requestTimer|" + durationStr)
                 }) {
                     HStack {
                         Image(systemName: "timer")
@@ -86,9 +86,28 @@ struct ProtocolContentView: View {
         
         case "webpage":
             if let url = item.properties["URL"], !url.isEmpty {
-                SafariContentView(defaultUrlString: url)
+                Button(action: {
+                    CallCSharpCallback("requestWebpage|" + url)
+                }) {
+                    HStack {
+                        Image(systemName: "safari.fill")
+                            .font(.largeTitle)
+                        VStack(alignment: .leading) {
+                            Text("Open Documentation")
+                                .font(.headline)
+                            if let text = item.properties["Text"] {
+                                Text(text)
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .cornerRadius(8)
+                }
             }
-            
+        
         default:
             Text("Unsupported content type: \(item.contentType)")
                 .foregroundColor(.red)
@@ -140,6 +159,9 @@ struct ImageContentView: View {
                 }
             }
             .frame(maxWidth: .infinity)
+            .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(8)
         } else {
             // Local image
             if let uiImage = UIImage(named: cleanImageName) {
@@ -147,12 +169,18 @@ struct ImageContentView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color(.systemGray6))
+                    .cornerRadius(8)
             } else {
                 Image(systemName: "photo")
                     .resizable()
                     .scaledToFit()
                     .foregroundColor(.gray)
                     .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color(.systemGray6))
+                    .cornerRadius(8)
                     .onAppear {
                         print("⚠️ Failed to load image: \(cleanImageName)")
                         print("Available assets: \(UIImage.assetNames())")

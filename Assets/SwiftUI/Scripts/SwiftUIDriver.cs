@@ -69,7 +69,7 @@ public class SwiftUIDriver : IUIDriver, IDisposable
     {
         Debug.Log("######LABLIGHT SWIFTUIDRIVER OnProtocolChange: " + protocol.title);
         string protocolJson = JsonConvert.SerializeObject(protocol);
-        SendMessageToSwiftUI($"protocolChange:{protocolJson}");
+        SendMessageToSwiftUI($"protocolChange|{protocolJson}");
     }
 
     public void OnStepChange(ProtocolState.StepState stepState)
@@ -85,7 +85,7 @@ public class SwiftUIDriver : IUIDriver, IDisposable
             }).ToList()
         };
         string stepStateJson = JsonConvert.SerializeObject(stepStateData);
-        SendMessageToSwiftUI($"stepChange:{stepStateJson}");
+        SendMessageToSwiftUI($"stepChange|{stepStateJson}");
     }
 
     public void OnCheckItemChange(List<ProtocolState.CheckItemState> checkItemStates)
@@ -97,7 +97,7 @@ public class SwiftUIDriver : IUIDriver, IDisposable
         }).ToList();
 
         string checkItemStatesJson = JsonConvert.SerializeObject(checkItemStateDataList);
-        SendMessageToSwiftUI($"checkItemChange:{checkItemStatesJson}");
+        SendMessageToSwiftUI($"checkItemChange|{checkItemStatesJson}");
 
         var currentCheckItem = ProtocolState.Instance.CurrentCheckItemDefinition;
         if (currentCheckItem != null)
@@ -118,13 +118,13 @@ public class SwiftUIDriver : IUIDriver, IDisposable
 
     public void OnChatMessageReceived(string message)
     {
-        SendMessageToSwiftUI($"LLMChatMessage:{message}");
+        SendMessageToSwiftUI($"LLMChatMessage|{message}");
     }
 
     public void SendAuthStatus(bool isAuthenticated)
     {
         Debug.Log("######LABLIGHT SWIFTUIDRIVER sending auth status to Swift: " + isAuthenticated);
-        SendMessageToSwiftUI($"authStatus:{isAuthenticated}");
+        SendMessageToSwiftUI($"authStatus|{isAuthenticated}");
     }
 
     //Swift UI Display methods
@@ -296,7 +296,7 @@ public class SwiftUIDriver : IUIDriver, IDisposable
             return;
         }
 
-        string[] parts = message.Split(':');
+        string[] parts = message.Split('|');
         if (parts.Length < 2)
         {
             return;
@@ -366,6 +366,10 @@ public class SwiftUIDriver : IUIDriver, IDisposable
                         Debug.LogError($"######LABLIGHT SWIFTUIDRIVER invalid timer duration: {data}");
                     }
                     break;
+                case "requestWebpage":
+                    Debug.Log($"######LABLIGHT SWIFTUIDRIVER opening webpage: {data}");
+                    DisplayWebPage(data);
+                    break;
                 // Add more cases as needed
             }
         }
@@ -388,7 +392,7 @@ public class SwiftUIDriver : IUIDriver, IDisposable
         {
             var protocols = await protocolDataProvider.GetProtocolList();
             string protocolsJson = JsonConvert.SerializeObject(protocols);
-            SendMessageToSwiftUI($"protocolDescriptions:{protocolsJson}");
+            SendMessageToSwiftUI($"protocolDescriptions|{protocolsJson}");
         }
         catch (Exception ex)
         {

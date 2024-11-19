@@ -87,7 +87,7 @@ class ProtocolViewModel: ObservableObject {
     @Published var selectedStepIndex: Int = 0 {
         didSet {
             if selectedStepIndex != oldValue {
-                CallCSharpCallback("stepNavigation:" + String(selectedStepIndex))
+                CallCSharpCallback("stepNavigation|" + String(selectedStepIndex))
             }
         }
     }
@@ -115,8 +115,8 @@ class ProtocolViewModel: ObservableObject {
 
     @objc func handleStepChange(_ notification: Notification) {
         guard let message = notification.userInfo?["message"] as? String,
-              message.hasPrefix("stepChange:"),
-              let data = message.dropFirst("stepChange:".count).data(using: .utf8),
+              message.hasPrefix("stepChange|"),
+              let data = message.dropFirst("stepChange|".count).data(using: .utf8),
               let stepStateData = try? JSONDecoder().decode(StepStateData.self, from: data)
         else {
             print("Invalid step change message format")
@@ -133,8 +133,8 @@ class ProtocolViewModel: ObservableObject {
 
     @objc func handleCheckItemChange(_ notification: Notification) {
         guard let message = notification.userInfo?["message"] as? String,
-              message.hasPrefix("checkItemChange:"),
-              let data = message.dropFirst("checkItemChange:".count).data(using: .utf8),
+              message.hasPrefix("checkItemChange|"),
+              let data = message.dropFirst("checkItemChange|".count).data(using: .utf8),
               let checkItemStateDataList = try? JSONDecoder().decode([CheckItemStateData].self, from: data)
         else {
             print("Invalid check item change message format")
@@ -171,12 +171,12 @@ class ProtocolViewModel: ObservableObject {
     
     func checkNextItem() {
         guard let nextItem = nextUncheckedItem() else { return }
-        CallCSharpCallback("checkItem:" + String(getIndex(for: nextItem)))
+        CallCSharpCallback("checkItem|" + String(getIndex(for: nextItem)))
     }
 
     func uncheckLastItem() {
         guard let lastItem = lastCheckedItem() else { return }
-        CallCSharpCallback("uncheckItem:" + String(getIndex(for: lastItem)))
+        CallCSharpCallback("uncheckItem|" + String(getIndex(for: lastItem)))
     }
 
     func goToNextStep() {
@@ -193,7 +193,7 @@ class ProtocolViewModel: ObservableObject {
 
     func openPDF() {
         guard let pdfName = selectedProtocol.protocolPDFNames.first else { return }
-        CallCSharpCallback("requestPDF:" + pdfName)
+        CallCSharpCallback("requestPDF|" + pdfName)
     }
 }
 

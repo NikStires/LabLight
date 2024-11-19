@@ -13,14 +13,14 @@ class LLMChatViewModel: ObservableObject {
     @objc func handleMessage(_ notification: Notification) {
         if let message = notification.userInfo?["message"] as? String {
             DispatchQueue.main.async {
-                if message.hasPrefix("authStatus:") {
-                    let status = message.dropFirst("authStatus:".count)
+                if message.hasPrefix("authStatus|") {
+                    let status = message.dropFirst("authStatus|".count)
                     self.isAuthenticated = (status == "True")
                     if !self.isAuthenticated {
                         self.loginError = "Authentication failed. Please try again."
                     }
                 } else {
-                    let chatMessage = message.replacingOccurrences(of: "LLMChatMessage:", with: "")
+                    let chatMessage = message.replacingOccurrences(of: "LLMChatMessage|", with: "")
                     self.addMessage(chatMessage, isUser: false)
                 }
             }
@@ -65,7 +65,7 @@ struct LLMChatContentView: View {
                 .textFieldStyle(RoundedBorderTextFieldStyle())
             Button("Login") {
                 if isValidEmail(email) && !password.isEmpty {
-                    CallCSharpCallback("login:" + email + "," + password)
+                    CallCSharpCallback("login|" + email + "," + password)
                 } else {
                     viewModel.loginError = "Please enter a valid email and password."
                 }
@@ -100,7 +100,7 @@ struct LLMChatContentView: View {
                 
                 Button("Send") {
                     if !inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                        CallCSharpCallback("sendMessage:" + inputText)
+                        CallCSharpCallback("sendMessage|" + inputText)
                         viewModel.addMessage(inputText, isUser: true)
                         inputText = ""
                     }

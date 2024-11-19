@@ -65,8 +65,8 @@ class ProtocolMenuViewModel: ObservableObject {
     
     @objc func handleProtocolDescriptions(_ notification: Notification) {
         if let message = notification.userInfo?["message"] as? String,
-           message.hasPrefix("protocolDescriptions:") {
-            let protocolsJson = String(message.dropFirst("protocolDescriptions:".count))
+           message.hasPrefix("protocolDescriptions|") {
+            let protocolsJson = String(message.dropFirst("protocolDescriptions|".count))
             if let data = protocolsJson.data(using: .utf8),
                let decodedProtocols = try? JSONDecoder().decode([ProtocolDescriptor].self, from: data) {
                 DispatchQueue.main.async {
@@ -80,8 +80,8 @@ class ProtocolMenuViewModel: ObservableObject {
     
     @objc func handleProtocolChange(_ notification: Notification) {
         if let message = notification.userInfo?["message"] as? String,
-           message.hasPrefix("protocolChange:") {
-            let protocolJson = String(message.dropFirst("protocolChange:".count))
+           message.hasPrefix("protocolChange|") {
+            let protocolJson = String(message.dropFirst("protocolChange|".count))
             print("######LABLIGHT Received protocol JSON: \(protocolJson)")
             do {
                 guard let data = protocolJson.data(using: .utf8) else {
@@ -119,11 +119,11 @@ class ProtocolMenuViewModel: ObservableObject {
     }
     
     func requestProtocolDescriptions() {
-        CallCSharpCallback("requestProtocolDescriptions:")
+        CallCSharpCallback("requestProtocolDescriptions|")
     }
     
     func selectProtocol(_ name: String) {
-        CallCSharpCallback("selectProtocol:" + name)
+        CallCSharpCallback("selectProtocol|" + name)
     }
 }
 

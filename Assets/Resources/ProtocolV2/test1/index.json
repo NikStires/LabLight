@@ -185,6 +185,54 @@
     },
     {
       "isCritical": true,
+      "contentItems": [
+        {
+          "contentType": "Text",
+          "properties": {
+            "Text": "Review the protocol documentation"
+          }
+        },
+        {
+          "contentType": "Webpage",
+          "properties": {
+            "URL": "https://www.protocols.io/view/dna-extraction-protocol-standard-method-n2bdgan",
+            "Text": "DNA Extraction Protocol Reference"
+          }
+        },
+        {
+          "contentType": "Text",
+          "properties": {
+            "Text": "Make sure to follow all safety guidelines outlined in the documentation"
+          }
+        }
+      ],
+      "checklist": [
+        {
+          "text": "Review safety guidelines",
+          "contentItems": [
+            {
+              "contentType": "Text",
+              "properties": {
+                "Text": "Ensure you understand all safety procedures"
+              }
+            }
+          ]
+        },
+        {
+          "text": "Check required materials",
+          "contentItems": [
+            {
+              "contentType": "Text",
+              "properties": {
+                "Text": "Verify all materials are available before starting"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "isCritical": true,
       "contentItems": [],
       "checklist": [
         {
