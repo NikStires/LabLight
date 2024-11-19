@@ -355,6 +355,17 @@ public class SwiftUIDriver : IUIDriver, IDisposable
                         Debug.Log("######LABLIGHT SWIFTUIDRIVER no PDFs available");
                     }
                     break;
+                case "requestTimer":
+                    if (int.TryParse(data, out int seconds))
+                    {
+                        Debug.Log($"######LABLIGHT SWIFTUIDRIVER displaying timer: {seconds} seconds");
+                        DisplayTimer(seconds);
+                    }
+                    else
+                    {
+                        Debug.LogError($"######LABLIGHT SWIFTUIDRIVER invalid timer duration: {data}");
+                    }
+                    break;
                 // Add more cases as needed
             }
         }

@@ -137,6 +137,54 @@
     },
     {
       "isCritical": true,
+      "contentItems": [
+        {
+          "contentType": "Text",
+          "properties": {
+            "Text": "Incubate the sample"
+          }
+        },
+        {
+          "contentType": "Timer",
+          "properties": {
+            "durationInSeconds": "900",
+            "Text": "Incubation Timer"
+          }
+        },
+        {
+          "contentType": "Text",
+          "properties": {
+            "Text": "Keep the temperature stable during incubation"
+          }
+        }
+      ],
+      "checklist": [
+        {
+          "text": "Start incubation timer",
+          "contentItems": [
+            {
+              "contentType": "Text",
+              "properties": {
+                "Text": "Make sure to wait for the full duration"
+              }
+            }
+          ]
+        },
+        {
+          "text": "Monitor temperature",
+          "contentItems": [
+            {
+              "contentType": "Text",
+              "properties": {
+                "Text": "Temperature should remain at 37°C"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "isCritical": true,
       "contentItems": [],
       "checklist": [
         {

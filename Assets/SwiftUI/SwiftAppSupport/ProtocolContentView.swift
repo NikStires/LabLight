@@ -64,7 +64,24 @@ struct ProtocolContentView: View {
             if let durationStr = item.properties["durationInSeconds"],
                let duration = Int(durationStr),
                duration > 0 {
-                TimerContentView(duration)
+                Button(action: {
+                    CallCSharpCallback("requestTimer:" + durationStr)
+                }) {
+                    HStack {
+                        Image(systemName: "timer")
+                            .font(.largeTitle)
+                        VStack(alignment: .leading) {
+                            Text("Start Timer")
+                                .font(.headline)
+                            Text("\(duration / 60) minutes")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .cornerRadius(8)
+                }
             }
         
         case "webpage":
