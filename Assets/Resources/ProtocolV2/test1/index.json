@@ -1,7 +1,7 @@
 {
   "version": 1,
   "title": "DNA Extraction Protocol",
-  "protocolPDFNames": ["DNA_Extraction_SOP.pdf"],
+  "protocolPDFNames": ["sample.pdf"],
   "globalArObjects": [
     {
       "specificObjectName": "Reaction Plate",
@@ -93,6 +93,42 @@
               "contentType": "Text",
               "properties": {
                 "Text": "Set a timer to ensure accurate timing"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "isCritical": true,
+      "contentItems": [
+        {
+          "contentType": "Text",
+          "properties": {
+            "Text": "Watch this demonstration video carefully"
+          }
+        },
+        {
+          "contentType": "Video",
+          "properties": {
+            "URL": "exampleVideo.mp4"
+          }
+        },
+        {
+          "contentType": "Text",
+          "properties": {
+            "Text": "Follow the steps shown in the video above"
+          }
+        }
+      ],
+      "checklist": [
+        {
+          "text": "Watch the entire demonstration video",
+          "contentItems": [
+            {
+              "contentType": "Text",
+              "properties": {
+                "Text": "Make sure you understand each step before proceeding"
               }
             }
           ]

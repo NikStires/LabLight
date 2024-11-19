@@ -86,19 +86,6 @@ public class SwiftUIDriver : IUIDriver, IDisposable
         };
         string stepStateJson = JsonConvert.SerializeObject(stepStateData);
         SendMessageToSwiftUI($"stepChange:{stepStateJson}");
-
-        var currentStep = ProtocolState.Instance.CurrentStepDefinition;
-        foreach(var contentItem in currentStep.contentItems)
-        {
-            if (contentItem.contentType == "Video")
-            {
-                string videoUrl = contentItem.properties["url"]?.ToString();
-                if (!string.IsNullOrEmpty(videoUrl))
-                {
-                    DisplayVideoPlayer(videoUrl);
-                }
-            }
-        }
     }
 
     public void OnCheckItemChange(List<ProtocolState.CheckItemState> checkItemStates)
@@ -115,18 +102,6 @@ public class SwiftUIDriver : IUIDriver, IDisposable
         var currentCheckItem = ProtocolState.Instance.CurrentCheckItemDefinition;
         if (currentCheckItem != null)
         {
-            foreach (var contentItem in currentCheckItem.contentItems)
-            {
-
-                if (contentItem.contentType == "Video")
-                {
-                    string videoUrl = contentItem.properties["url"]?.ToString();
-                    if (!string.IsNullOrEmpty(videoUrl))
-                    {
-                        DisplayVideoPlayer(videoUrl);
-                    }
-                }
-            }
             foreach(var arAction in currentCheckItem.arActions)
             {
                 if (arAction.actionType == "Timer")
@@ -363,11 +338,15 @@ public class SwiftUIDriver : IUIDriver, IDisposable
                 case "requestProtocolDescriptions":
                     LoadProtocolDescriptions();
                     break;
+                case "requestVideo":
+                    Debug.Log($"######LABLIGHT SWIFTUIDRIVER displaying video: {data}");
+                    DisplayVideoPlayer(data);
+                    break;
                 case "requestPDF":
                     var protocol = ProtocolState.Instance.ActiveProtocol.Value;
                     if (protocol.protocolPDFNames != null && protocol.protocolPDFNames.Count > 0)
                     {
-                        string pdfName = protocol.protocolPDFNames[0]; // Use first PDF for now
+                        string pdfName = protocol.protocolPDFNames[0];
                         Debug.Log($"######LABLIGHT SWIFTUIDRIVER displaying PDF: {pdfName}");
                         DisplayPDFReader(pdfName);
                     }

@@ -1,5 +1,6 @@
 import SwiftUI
 import AVKit
+import UnityFramework
 
 struct ProtocolContentView: View {
     let contentItems: [ContentItem]
@@ -44,7 +45,19 @@ struct ProtocolContentView: View {
         
         case "video":
             if let url = item.properties["URL"], !url.isEmpty {
-                VideoContentView(url)
+                Button(action: {
+                    CallCSharpCallback("requestVideo:" + url)
+                }) {
+                    HStack {
+                        Image(systemName: "play.circle.fill")
+                            .font(.largeTitle)
+                        Text("Play Video")
+                            .font(.headline)
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .cornerRadius(8)
+                }
             }
         
         case "timer":
@@ -85,6 +98,11 @@ struct ImageContentView: View {
     let imageName: String
     
     var body: some View {
+        let cleanImageName = imageName
+            .replacingOccurrences(of: ".png", with: "")
+            .replacingOccurrences(of: ".jpg", with: "")
+            .replacingOccurrences(of: ".jpeg", with: "")
+        
         if let url = URL(string: imageName), UIApplication.shared.canOpenURL(url) {
             // Remote Image
             AsyncImage(url: url) { phase in
@@ -106,11 +124,33 @@ struct ImageContentView: View {
             }
             .frame(maxWidth: .infinity)
         } else {
-            // Local Image
-            Image(imageName)
-                .resizable()
-                .scaledToFit()
-                .frame(maxWidth: .infinity)
+            // Local image
+            if let uiImage = UIImage(named: cleanImageName) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: .infinity)
+            } else {
+                Image(systemName: "photo")
+                    .resizable()
+                    .scaledToFit()
+                    .foregroundColor(.gray)
+                    .frame(maxWidth: .infinity)
+                    .onAppear {
+                        print("⚠️ Failed to load image: \(cleanImageName)")
+                        print("Available assets: \(UIImage.assetNames())")
+                    }
+            }
         }
+    }
+}
+
+// Helper extension for debugging
+extension UIImage {
+    static func assetNames() -> [String] {
+        let bundle = Bundle.main
+        let assets = bundle.urls(forResourcesWithExtension: "imageset", subdirectory: "Media.xcassets")?
+            .map { $0.deletingPathExtension().lastPathComponent } ?? []
+        return assets
     }
 }

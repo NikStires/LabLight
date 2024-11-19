@@ -11,7 +11,6 @@ struct VideoContentView: View {
 
     init(_ videoUrlString: String) {
         self.videoUrlString = videoUrlString
-        _player = State(initialValue: nil)
     }
 
     var body: some View {
@@ -78,9 +77,18 @@ struct VideoContentView: View {
                     }  
                 }
             } else if let errorMessage = errorMessage {
-                Text(errorMessage)
-                    .foregroundColor(.red)
-                    .padding()
+                VStack {
+                    Image(systemName: "video.slash")
+                        .font(.largeTitle)
+                        .foregroundColor(.red)
+                    Text(errorMessage)
+                        .foregroundColor(.red)
+                        .padding()
+                }
+                .frame(height: 200)
+                .frame(maxWidth: .infinity)
+                .background(Color(.systemGray6))
+                .cornerRadius(8)
             } else {
                 ProgressView()
                     .padding()
@@ -92,11 +100,42 @@ struct VideoContentView: View {
     }
 
     private func setupPlayer() {
-        guard let url = Bundle.main.url(forResource: "Data/Raw/videos/" + videoUrlString, withExtension: "MOV") else {
-            errorMessage = "Video file not found"
+        // Try different file locations and extensions
+        let possibleExtensions = ["mp4", "mov", "m4v", "MOV", "MP4"]
+        let possiblePaths = [
+            "Data/Resources/Protocol",  // Asset catalog path
+            "Data/Raw/videos",         // Raw videos path
+            ""                         // Root path
+        ]
+        
+        // First try remote URL
+        if let url = URL(string: videoUrlString), UIApplication.shared.canOpenURL(url) {
+            player = AVPlayer(url: url)
             return
         }
-        player = AVPlayer(url: url)
+        
+        // Then try local files
+        let cleanFileName = videoUrlString.replacingOccurrences(of: ".mp4", with: "")
+                                        .replacingOccurrences(of: ".mov", with: "")
+                                        .replacingOccurrences(of: ".m4v", with: "")
+        
+        for path in possiblePaths {
+            for ext in possibleExtensions {
+                let filePath = path.isEmpty ? cleanFileName : "\(path)/\(cleanFileName)"
+                if let url = Bundle.main.url(forResource: filePath, withExtension: ext) {
+                    player = AVPlayer(url: url)
+                    return
+                }
+            }
+        }
+        
+        // If we get here, we couldn't find the video
+        errorMessage = "Video not found: \(videoUrlString)"
+        print("⚠️ \(errorMessage ?? "")")
+        print("Bundle paths searched:")
+        for path in possiblePaths {
+            print("- \(path)")
+        }
     }
 
     private func setupPlayerObserver() {
