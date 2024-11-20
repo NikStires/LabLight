@@ -9,24 +9,32 @@ struct ProtocolContentView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
+                // Main content items
                 ForEach(contentItems) { item in
                     contentView(for: item)
                 }
                 
+                // Checklist item content
                 if let checklistItem = selectedChecklistItem,
                    !checklistItem.contentItems.isEmpty {
-                    Divider()
-                        .padding(.vertical)
-                    
-                    Text(checklistItem.text)
-                        .font(.headline)
-                    
-                    ForEach(checklistItem.contentItems) { item in
-                        contentView(for: item)
-                    }
+                    checklistItemContent(for: checklistItem)
                 }
             }
             .padding()
+        }
+    }
+    
+    private func checklistItemContent(for checklistItem: CheckItemDefinition) -> some View {
+        VStack(alignment: .leading) {
+            Divider()
+                .padding(.vertical)
+            
+            Text(checklistItem.text)
+                .font(.headline)
+            
+            ForEach(checklistItem.contentItems) { item in
+                contentView(for: item)
+            }
         }
     }
     
@@ -34,126 +42,143 @@ struct ProtocolContentView: View {
     private func contentView(for item: ContentItem) -> some View {
         switch item.contentType.lowercased() {
         case "text":
-            if let text = item.properties["Text"], !text.isEmpty {
-                TextContentView(text: text)
-            }
-        
+            textContent(for: item)
         case "image":
-            if let url = item.properties["URL"], !url.isEmpty {
-                ImageContentView(imageName: url)
-            }
-        
+            imageContent(for: item)
         case "video":
-            if let url = item.properties["URL"], !url.isEmpty {
+            videoContent(for: item)
+        case "timer":
+            timerContent(for: item)
+        case "webpage":
+            webpageContent(for: item)
+        case "pdf":
+            pdfContent(for: item)
+        default:
+            unsupportedContent(for: item)
+        }
+    }
+    
+    // MARK: - Content Type Views
+    
+    private func textContent(for item: ContentItem) -> some View {
+        if let text = item.properties["Text"], !text.isEmpty {
+            return AnyView(TextContentView(text: text))
+        }
+        return AnyView(EmptyView())
+    }
+    
+    private func imageContent(for item: ContentItem) -> some View {
+        if let url = item.properties["URL"], !url.isEmpty {
+            return AnyView(ImageContentView(imageName: url))
+        }
+        return AnyView(EmptyView())
+    }
+    
+    private func videoContent(for item: ContentItem) -> some View {
+        if let url = item.properties["URL"], !url.isEmpty {
+            return AnyView(
                 Button(action: {
                     CallCSharpCallback("requestVideo|" + url)
                 }) {
-                    HStack {
-                        Image(systemName: "play.circle.fill")
-                            .font(.largeTitle)
-                        VStack(alignment: .leading) {
-                            Text("Play Video")
-                                .font(.headline)
-                            if let text = item.properties["Text"] {
-                                Text(text)
-                                    .font(.subheadline)
-                                    .foregroundColor(.secondary)
-                            } else {
-                                Text(url)
-                                    .font(.subheadline)
-                                    .foregroundColor(.secondary)
-                            }
-                        }
-                    }
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .cornerRadius(8)
+                    ContentButton(
+                        icon: "play.circle.fill",
+                        title: "Play Video",
+                        subtitle: item.properties["Text"] ?? url
+                    )
                 }
-            }
-        
-        case "timer":
-            if let durationStr = item.properties["durationInSeconds"],
-               let duration = Int(durationStr),
-               duration > 0 {
+            )
+        }
+        return AnyView(EmptyView())
+    }
+    
+    private func timerContent(for item: ContentItem) -> some View {
+        if let durationStr = item.properties["durationInSeconds"],
+           let duration = Int(durationStr),
+           duration > 0 {
+            return AnyView(
                 Button(action: {
                     CallCSharpCallback("requestTimer|" + durationStr)
                 }) {
-                    HStack {
-                        Image(systemName: "timer")
-                            .font(.largeTitle)
-                        VStack(alignment: .leading) {
-                            Text("Start Timer")
-                                .font(.headline)
-                            Text("\(duration / 60) minutes")
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
-                        }
-                    }
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .cornerRadius(8)
+                    ContentButton(
+                        icon: "timer",
+                        title: "Start Timer",
+                        subtitle: "\(duration / 60) minutes"
+                    )
                 }
-            }
-        
-        case "webpage":
-            if let url = item.properties["URL"], !url.isEmpty {
+            )
+        }
+        return AnyView(EmptyView())
+    }
+    
+    private func webpageContent(for item: ContentItem) -> some View {
+        if let url = item.properties["URL"], !url.isEmpty {
+            return AnyView(
                 Button(action: {
                     CallCSharpCallback("requestWebpage|" + url)
                 }) {
-                    HStack {
-                        Image(systemName: "safari.fill")
-                            .font(.largeTitle)
-                        VStack(alignment: .leading) {
-                            Text("Open Documentation")
-                                .font(.headline)
-                            if let text = item.properties["Text"] {
-                                Text(text)
-                                    .font(.subheadline)
-                                    .foregroundColor(.secondary)
-                            }
-                        }
-                    }
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .cornerRadius(8)
+                    ContentButton(
+                        icon: "safari.fill",
+                        title: "Open Documentation",
+                        subtitle: item.properties["Text"]
+                    )
                 }
-            }
-        
-        case "pdf":
-            if let url = item.properties["URL"], !url.isEmpty {
+            )
+        }
+        return AnyView(EmptyView())
+    }
+    
+    private func pdfContent(for item: ContentItem) -> some View {
+        if let url = item.properties["URL"], !url.isEmpty {
+            return AnyView(
                 Button(action: {
                     CallCSharpCallback("requestPDF|" + url)
                 }) {
-                    HStack {
-                        Image(systemName: "doc.text.fill")
-                            .font(.largeTitle)
-                        VStack(alignment: .leading) {
-                            Text("Open PDF")
-                                .font(.headline)
-                            if let text = item.properties["Text"] {
-                                Text(text)
-                                    .font(.subheadline)
-                                    .foregroundColor(.secondary)
-                            } else {
-                                Text(url)
-                                    .font(.subheadline)
-                                    .foregroundColor(.secondary)
-                            }
-                        }
-                    }
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .cornerRadius(8)
+                    ContentButton(
+                        icon: "doc.text.fill",
+                        title: "Open PDF",
+                        subtitle: item.properties["Text"] ?? url
+                    )
                 }
-            }
-        
-        default:
+            )
+        }
+        return AnyView(EmptyView())
+    }
+    
+    private func unsupportedContent(for item: ContentItem) -> some View {
+        AnyView(
             Text("Unsupported content type: \(item.contentType)")
                 .foregroundColor(.red)
                 .padding()
                 .background(Color(.systemGray6))
                 .cornerRadius(8)
+        )
+    }
+}
+
+// MARK: - Supporting Views
+
+struct ContentButton: View {
+    let icon: String
+    let title: String
+    let subtitle: String?
+    
+    var body: some View {
+        HStack {
+            Image(systemName: icon)
+                .font(.largeTitle)
+            VStack(alignment: .leading) {
+                Text(title)
+                    .font(.headline)
+                if let subtitle = subtitle {
+                    Text(subtitle)
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                }
+            }
         }
+        .padding()
+        .frame(maxWidth: .infinity)
+        .cornerRadius(8)
     }
 }
 
@@ -178,58 +203,62 @@ struct ImageContentView: View {
             .replacingOccurrences(of: ".jpg", with: "")
             .replacingOccurrences(of: ".jpeg", with: "")
         
-        if let url = URL(string: imageName), UIApplication.shared.canOpenURL(url) {
-            // Remote Image
-            AsyncImage(url: url) { phase in
-                switch phase {
-                case .empty:
-                    ProgressView()
-                case .success(let image):
-                    image
-                        .resizable()
-                        .scaledToFit()
-                case .failure:
-                    Image(systemName: "photo")
-                        .resizable()
-                        .scaledToFit()
-                        .foregroundColor(.gray)
-                @unknown default:
-                    EmptyView()
-                }
+        Group {
+            if let url = URL(string: imageName), UIApplication.shared.canOpenURL(url) {
+                remoteImage(url: url)
+            } else {
+                localImage(name: cleanImageName)
             }
-            .frame(maxWidth: .infinity)
-            .padding()
-            .background(Color(.systemGray6))
-            .cornerRadius(8)
-        } else {
-            // Local image
-            if let uiImage = UIImage(named: cleanImageName) {
+        }
+        .frame(maxWidth: .infinity)
+        .padding()
+        .background(Color(.systemGray6))
+        .cornerRadius(8)
+    }
+    
+    private func remoteImage(url: URL) -> some View {
+        AsyncImage(url: url) { phase in
+            switch phase {
+            case .empty:
+                ProgressView()
+            case .success(let image):
+                image
+                    .resizable()
+                    .scaledToFit()
+            case .failure:
+                failureImage
+            @unknown default:
+                EmptyView()
+            }
+        }
+    }
+    
+    private func localImage(name: String) -> some View {
+        Group {
+            if let uiImage = UIImage(named: name) {
                 Image(uiImage: uiImage)
                     .resizable()
                     .scaledToFit()
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color(.systemGray6))
-                    .cornerRadius(8)
             } else {
-                Image(systemName: "photo")
-                    .resizable()
-                    .scaledToFit()
-                    .foregroundColor(.gray)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color(.systemGray6))
-                    .cornerRadius(8)
+                failureImage
                     .onAppear {
-                        print("⚠️ Failed to load image: \(cleanImageName)")
+                        print("⚠️ Failed to load image: \(name)")
                         print("Available assets: \(UIImage.assetNames())")
                     }
             }
         }
     }
+    
+    private var failureImage: some View {
+        Image(systemName: "photo")
+            .resizable()
+            .scaledToFit()
+            .foregroundColor(.gray)
+    }
 }
 
-// Helper extension for debugging
+// MARK: - Helper Extensions
+
 extension UIImage {
     static func assetNames() -> [String] {
         let bundle = Bundle.main
