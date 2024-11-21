@@ -340,59 +340,6 @@ public class ResourceFileDataProvider : IProtocolDataProvider, IMediaProvider
         observer.OnCompleted();
     }
 
-    public IObservable<List<MediaDescriptor>> GetMediaList(string mediaBasePath)
-    {
-        List<MediaDescriptor> mediaItems = new List<MediaDescriptor>();
-        string path = @"Assets/Resources/" + mediaBasePath;
-
-        if (Directory.Exists(path))
-        {
-            var fileInfo = Directory.GetFiles(path);
-
-            foreach (var filePath in fileInfo)
-            {
-                string filename = Path.GetFileName(filePath).ToLowerInvariant();
-                if (!filename.EndsWith(".meta"))
-                {
-                    if (filename.EndsWith(".jpg") || filename.EndsWith(".png"))
-                    {
-                        mediaItems.Add(new MediaDescriptor()
-                        {
-                            type = MediaDescriptorType.Image,
-                            path = filename
-                        });
-                    }
-                    else if (filename.EndsWith(".mp4") || filename.EndsWith(".mov"))
-                    {
-                        mediaItems.Add(new MediaDescriptor()
-                        {
-                            type = MediaDescriptorType.Video,
-                            path = filename
-                        });
-                    }
-                    else if (filename.EndsWith(".mp3") || filename.EndsWith(".ogg"))
-                    {
-                        mediaItems.Add(new MediaDescriptor()
-                        {
-                            type = MediaDescriptorType.Sound,
-                            path = filename
-                        });
-                    }
-                    else if (filename.EndsWith(".prefab"))
-                    {
-                        mediaItems.Add(new MediaDescriptor()
-                        {
-                            type = MediaDescriptorType.Prefab,
-                            path = filename
-                        });
-                    }
-                }
-            }
-        }
-
-        return Observable.Return<List<MediaDescriptor>>(mediaItems);
-    }
-
     /// <summary>
     /// Save protocol to resources folder (can only be done inside Unity editor)
     /// </summary>
