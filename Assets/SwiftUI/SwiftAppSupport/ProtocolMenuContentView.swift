@@ -67,7 +67,7 @@ class ProtocolMenuViewModel: ObservableObject {
         if let message = notification.userInfo?["message"] as? String,
            message.hasPrefix("protocolDescriptions|") {
             let protocolsJson = String(message.dropFirst("protocolDescriptions|".count))
-            if let data = protocolsJson.data(using: .utf8),
+            if let data: Data = protocolsJson.data(using: .utf8),
                let decodedProtocols = try? JSONDecoder().decode([ProtocolDescriptor].self, from: data) {
                 DispatchQueue.main.async {
                     self.protocols = decodedProtocols

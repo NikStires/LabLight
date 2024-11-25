@@ -90,16 +90,16 @@ struct ProtocolView: View {
     
     private var navigationButtons: some View {
         Group {
-            Button(action: viewModel.goToPreviousStep) {
-                Image(systemName: "chevron.left")
-            }
-            .disabled(viewModel.selectedStepIndex == 0)
-            .padding(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8))
-
             Button(action: viewModel.goToNextStep) {
                 Image(systemName: "chevron.right")
             }
             .disabled(viewModel.selectedStepIndex >= viewModel.selectedProtocol.steps.count - 1)
+            .padding(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8))
+            
+            Button(action: viewModel.goToPreviousStep) {
+                Image(systemName: "chevron.left")
+            }
+            .disabled(viewModel.selectedStepIndex == 0)
             .padding(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8))
         }
     }
