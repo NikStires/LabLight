@@ -78,11 +78,11 @@ public class SwiftUIDriver : IUIDriver, IDisposable
         {
             CurrentStepIndex = ProtocolState.Instance.CurrentStep.Value,
             IsSignedOff = stepState.SignedOff.Value,
-            ChecklistState = stepState.Checklist.Select(item => new CheckItemStateData
+            ChecklistState = stepState.Checklist?.Select(item => new CheckItemStateData
             {
                 IsChecked = item.IsChecked.Value,
                 CheckIndex = ProtocolState.Instance.CurrentStepState.Value.Checklist.IndexOf(item)
-            }).ToList()
+            }).ToList() ?? new List<CheckItemStateData>()
         };
         string stepStateJson = JsonConvert.SerializeObject(stepStateData);
         SendMessageToSwiftUI($"stepChange|{stepStateJson}");
@@ -90,10 +90,12 @@ public class SwiftUIDriver : IUIDriver, IDisposable
 
     public void OnCheckItemChange(List<ProtocolState.CheckItemState> checkItemStates)
     {
-        var checkItemStateDataList = checkItemStates.Select(checkItemState => new CheckItemStateData
+        if (checkItemStates == null) return;
+        
+        var checkItemStateDataList = checkItemStates.Select((checkItemState, index) => new CheckItemStateData
         {
             IsChecked = checkItemState.IsChecked.Value,
-            CheckIndex = ProtocolState.Instance.CurrentStepState.Value.Checklist.IndexOf(checkItemState)
+            CheckIndex = index
         }).ToList();
 
         string checkItemStatesJson = JsonConvert.SerializeObject(checkItemStateDataList);
@@ -211,6 +213,20 @@ public class SwiftUIDriver : IUIDriver, IDisposable
     public void SignOffChecklistCallback()
     {
         ProtocolState.Instance.SignOff();
+        var currentStep = ProtocolState.Instance.CurrentStepState.Value;
+        var stepStateData = new StepStateData
+        {
+            CurrentStepIndex = ProtocolState.Instance.CurrentStep.Value,
+            IsSignedOff = currentStep.SignedOff.Value,
+            ChecklistState = currentStep.Checklist?.Select(item => new CheckItemStateData
+            {
+                IsChecked = item.IsChecked.Value,
+                CheckIndex = currentStep.Checklist.IndexOf(item)
+            }).ToList()
+        };
+        
+        string json = JsonConvert.SerializeObject(stepStateData);
+        SendMessageToSwiftUI($"stepChange|{json}");
     }
 
     public void ProtocolSelectionCallback(string protocolTitle)
@@ -233,14 +249,6 @@ public class SwiftUIDriver : IUIDriver, IDisposable
                 Debug.Log("Error fetching protocol from local files");
             });
         });
-    }
-
-    public void ChecklistSignOffCallback(bool isSignedOff)
-    {
-        if(isSignedOff)
-        {
-            ProtocolState.Instance.SignOff();
-        }
     }
 
     public void CloseProtocolCallback()
@@ -295,15 +303,10 @@ public class SwiftUIDriver : IUIDriver, IDisposable
             Debug.LogError("######LABLIGHT SWIFTUIDRIVER HandleMessage - ProtocolState.Instance is null");
             return;
         }
-
+        
         string[] parts = message.Split('|');
-        if (parts.Length < 2)
-        {
-            return;
-        }
-
         string command = parts[0];
-        string data = parts[1];
+        string data = parts.Length > 1 ? parts[1] : string.Empty;
 
         try
         {
@@ -322,7 +325,7 @@ public class SwiftUIDriver : IUIDriver, IDisposable
                     ProtocolSelectionCallback(data);
                     break;
                 case "checklistSignOff":
-                    ChecklistSignOffCallback(bool.Parse(data));
+                    SignOffChecklistCallback();
                     break;
                 case "sendMessage":
                     ChatMessageCallback(data);
