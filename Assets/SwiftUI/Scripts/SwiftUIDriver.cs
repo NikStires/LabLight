@@ -346,17 +346,8 @@ public class SwiftUIDriver : IUIDriver, IDisposable
                     DisplayVideoPlayer(data);
                     break;
                 case "requestPDF":
-                    var protocol = ProtocolState.Instance.ActiveProtocol.Value;
-                    if (protocol.protocolPDFNames != null && protocol.protocolPDFNames.Count > 0)
-                    {
-                        string pdfName = protocol.protocolPDFNames[0];
-                        Debug.Log($"######LABLIGHT SWIFTUIDRIVER displaying PDF: {pdfName}");
-                        DisplayPDFReader(pdfName);
-                    }
-                    else
-                    {
-                        Debug.Log("######LABLIGHT SWIFTUIDRIVER no PDFs available");
-                    }
+                    Debug.Log($"######LABLIGHT SWIFTUIDRIVER displaying PDF: {data}");
+                    DisplayPDFReader(data);
                     break;
                 case "requestTimer":
                     if (int.TryParse(data, out int seconds))
