@@ -47,7 +47,8 @@ struct ProtocolView: View {
             if !viewModel.currentStep.contentItems.isEmpty {
                 ProtocolContentView(
                     contentItems: viewModel.currentStep.contentItems,
-                    selectedChecklistItem: viewModel.selectedChecklistItem
+                    selectedChecklistItem: viewModel.selectedChecklistItem,
+                    nextUncheckedItem: viewModel.nextUncheckedItem()
                 )
                 .frame(maxWidth: .infinity)
                 .padding(.leading, 10)
