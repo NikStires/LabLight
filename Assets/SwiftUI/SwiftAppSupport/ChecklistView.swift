@@ -21,7 +21,7 @@ struct ChecklistView: View {
             .padding(.horizontal)
             .padding(.top, 8)
             
-            // Existing checklist
+            // checklist
             ScrollViewReader { proxy in
                 List {
                     ForEach(viewModel.checklistItems) { item in

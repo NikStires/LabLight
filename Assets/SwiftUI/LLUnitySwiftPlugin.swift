@@ -113,5 +113,3 @@ func openSwiftScientificCalculatorWindow() {
 }
 
 // MARK: - Any additional functionality...
-
-// You can add more sections here for other plugin functionalities

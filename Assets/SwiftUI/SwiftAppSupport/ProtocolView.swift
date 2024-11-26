@@ -6,6 +6,8 @@ struct ProtocolView: View {
     @StateObject private var viewModel: ProtocolViewModel
     @Namespace private var animation
     @State private var showingPDFMenu = false
+    @Environment(\.dismiss) private var dismiss
+    @State private var showingCloseConfirmation = false
     
     // MARK: - Initialization
     init(selectedProtocol: ProtocolDefinition) {
@@ -14,16 +16,39 @@ struct ProtocolView: View {
     
     // MARK: - Body
     var body: some View {
-        VStack(spacing: 16) {
-            stepPicker
-            
-            contentArea
+        ZStack {
+            VStack(spacing: 16) {
+                stepPicker
+                
+                contentArea
+            }
+            .animation(.spring(response: 0.3, dampingFraction: 0.8), value: viewModel.currentStep.contentItems.isEmpty)
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle(viewModel.selectedProtocol.title)
+            .navigationBarBackButtonHidden(true)
+            .ornament(visibility: .visible, attachmentAnchor: .scene(.leading)) {
+                controlPanel
+            }
+            .interactiveDismissDisabled()
         }
-        .animation(.spring(response: 0.3, dampingFraction: 0.8), value: viewModel.currentStep.contentItems.isEmpty)
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationTitle(viewModel.selectedProtocol.title)
-        .ornament(visibility: .visible, attachmentAnchor: .scene(.leading)) {
-            controlPanel
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button("Close") {
+                    showingCloseConfirmation = true
+                }
+            }
+        }
+        .confirmationDialog(
+            "Are you sure you want to close?",
+            isPresented: $showingCloseConfirmation,
+            titleVisibility: .visible
+        ) {
+            Button("Close Protocol", role: .destructive) {
+                dismiss()
+            }
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("Any unsaved progress will be lost")
         }
     }
     
