@@ -20,6 +20,7 @@ public class ActionCenterPanelViewController : MonoBehaviour
     [SerializeField] XRSimpleInteractable chatButton;
     [SerializeField] XRSimpleInteractable timerButton;
     [SerializeField] XRSimpleInteractable calculatorButton;
+    [SerializeField] XRSimpleInteractable closeAppButton;
 
     void Start()
     {
@@ -29,6 +30,7 @@ public class ActionCenterPanelViewController : MonoBehaviour
         calculatorButton.selectExited.AddListener(_ => ServiceRegistry.GetService<IUIDriver>().DisplayCalculator());
         chatButton.selectExited.AddListener(_ => ServiceRegistry.GetService<IUIDriver>().DisplayLLMChat());
         timerButton.selectExited.AddListener(_ => ServiceRegistry.GetService<IUIDriver>().DisplayTimer(30));
+        closeAppButton.selectExited.AddListener(_ => Application.Quit());
     }
 
     public void SpawnHazardZonePanel()
