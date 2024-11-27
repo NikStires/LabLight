@@ -253,7 +253,8 @@ public class SwiftUIDriver : IUIDriver, IDisposable
 
     public void CloseProtocolCallback()
     {
-        SendMessageToSwiftUI("closeProtocol");
+        ProtocolState.Instance.ActiveProtocol.Value = null;
+        SceneLoader.Instance.LoadSceneClean("ProtocolMenu");
     }
 
     public void ChatMessageCallback(string message)
@@ -363,6 +364,9 @@ public class SwiftUIDriver : IUIDriver, IDisposable
                 case "requestWebpage":
                     Debug.Log($"######LABLIGHT SWIFTUIDRIVER opening webpage: {data}");
                     DisplayWebPage(data);
+                    break;
+                case "closeProtocol":
+                    CloseProtocolCallback();
                     break;
                 // Add more cases as needed
             }

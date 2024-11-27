@@ -50,6 +50,9 @@ struct ProtocolView: View {
         } message: {
             Text("Any unsaved progress will be lost")
         }
+        .onDisappear {
+            CallCSharpCallback("closeProtocol|true")
+        }
     }
     
     // MARK: - View Components
