@@ -18,17 +18,15 @@ public class PlaneInteractionManager : MonoBehaviour
     [SerializeField] Material planeMaterial;
 
     [SerializeField] Material invisiblePlaneMaterial;
-    List<ARPlane> availablePlanes;
+    public List<ARPlane> availablePlanes;
 
     ARPlane currentPlane; //used for head reticle placement
 
-    public static List<PlaneClassification> planeClassifications = new List<PlaneClassification>
-    {
-        PlaneClassification.Wall,
-        PlaneClassification.Table,
-        PlaneClassification.Seat,
-        PlaneClassification.None
-    };
+    public static PlaneClassifications allowedPlaneClassifications = 
+        PlaneClassifications.Table | 
+        PlaneClassifications.Seat | 
+        PlaneClassifications.None |
+        PlaneClassifications.Floor;
     private bool delayOn = false;
     private bool prefabTemporarilyLocked = false; //use to track whether the focused prefab should be tracked to the position of the head. This is used to prevent the prefab from being placed on the plane when the user is not ready to place it
 
@@ -125,9 +123,9 @@ public class PlaneInteractionManager : MonoBehaviour
                 currentPlane.GetComponent<MeshRenderer>().SetMaterials(new List<Material>() {invisiblePlaneMaterial});
                 currentPlane = null;
             }
-        }else if(availablePlanes == null || availablePlanes.Count == 0) //attempt to get list of planes if we don't have one already
+        }else if(availablePlanes == null || availablePlanes.Count == 0)
         {
-            availablePlanes = ARPlaneViewController.instance.GetPlanesByClassification(planeClassifications);
+            availablePlanes = ARPlaneViewController.instance.GetPlanesByClassification(allowedPlaneClassifications);
         }
     }
 

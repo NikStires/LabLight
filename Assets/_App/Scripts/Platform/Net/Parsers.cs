@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System;
 using System.IO;
 using Newtonsoft.Json;
+using System.Linq;
 
 /// <summary>
 /// Static helper methods to convert parsed JSON data into instanced classes
@@ -77,6 +78,13 @@ public class Parsers
             // Build lookup dictionary for AR objects
             protocol.BuildArObjectLookup();
 
+            // Debug print the arObjectLookup dictionary
+            Debug.Log("AR Object Lookup Dictionary contents:");
+            foreach (var kvp in protocol.arObjectLookup)
+            {
+                Debug.Log($"Key: {kvp.Key}, Value: {kvp.Value?.GetType().Name ?? "null"} - ID: {kvp.Value?.arObjectID ?? "null"}");
+            }
+
             // Link AR objects to their references in content items and actions
             LinkArObjects(protocol);
 
@@ -120,6 +128,20 @@ public class Parsers
                 // Link AR actions
                 foreach (var arAction in checkItem.arActions)
                 {
+                    // Handle Lock action type with empty arIDList
+                    if(arAction.actionType == "Lock" && arAction.properties.ContainsKey("arIDList"))
+                    {
+                        var tempList = arAction.properties["arIDList"] as List<object>;
+                        if(tempList != null)
+                        {
+                            var stringList = tempList.Select(x => x?.ToString()).ToList();
+                            if(stringList.Count == 0)
+                            {
+                                arAction.properties["arIDList"] = protocol.arObjectLookup.Keys.ToList();
+                            }
+                        }
+                    }
+
                     if (!string.IsNullOrEmpty(arAction.arObjectID) && 
                         protocol.arObjectLookup.TryGetValue(arAction.arObjectID, out var arObject))
                     {

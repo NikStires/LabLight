@@ -6,10 +6,33 @@
     {
       "specificObjectName": "Reaction Plate",
       "arObjectID": "wellplate_01",
-      "rootPrefabName": "Well Plate"
+      "rootPrefabName": "horizontalwellplate96"
+    },
+    {
+        "specificObjectName": "Water res",
+        "arObjectID": "reservoir_01",
+        "rootPrefabName": "reservoir"
     }
   ],
   "steps": [
+    {
+      "isCritical": true,
+      "contentItems":[],
+      "checklist": [
+        {
+          "text": "Prepare materials",
+          "arActions": [
+            {
+              "actionType": "Lock",
+              "arObjectID": "",
+              "properties": {
+                "arIDList": []
+              }
+            }
+          ]
+        }
+      ]
+    },
     {
       "isCritical": true,
       "contentItems": [
@@ -34,7 +57,6 @@
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
               "properties": {
-                "actionName": "Pipette",
                 "subIDs": ["A1"],
                 "colorHex": "#FFD700",
                 "colorName": "Gold"

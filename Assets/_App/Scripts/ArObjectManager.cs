@@ -10,169 +10,273 @@ public class ArObjectManager : MonoBehaviour
     public ProtocolItemLockingManager lockingManager;
     public HeadPlacementEventChannel headPlacementEventChannel;
 
-    private List<ArObject> activeArObjects = new List<ArObject>();
-    private Dictionary<ArObject, ArObjectViewController> arViews = new Dictionary<ArObject, ArObjectViewController>();
-    private Dictionary<string, GameObject> modelPrefabCache = new Dictionary<string, GameObject>();
+    private readonly Dictionary<ArObject, ArObjectViewController> arViews = new Dictionary<ArObject, ArObjectViewController>();
+    private readonly Dictionary<string, GameObject> modelPrefabCache = new Dictionary<string, GameObject>();
+    private readonly HashSet<string> lockedObjectIds = new HashSet<string>();
     
     private Transform workspaceTransform;
     private Coroutine placementCoroutine;
+    private bool isInitialized;
+    private int pendingArViewInitializations = 0;
 
-    private static readonly HashSet<string> SupportedPrefabs = new HashSet<string>
+    private void Awake()
     {
-        "wellPlate",
-        "source"
-    };
-
-    void Awake()
-    {
-        // Subscribe to protocol state changes
-        ProtocolState.Instance.ProtocolStream.Subscribe(_ => InitializeArObjects()).AddTo(this);
-        ProtocolState.Instance.StepStream.Subscribe(_ => RebuildArObjects()).AddTo(this);
-        ProtocolState.Instance.ChecklistStream.Subscribe(_ => RebuildArObjects()).AddTo(this);
-
-        // Commented out tracked object handling for future implementation
-        /*
-        SessionState.TrackedObjects.ObserveAdd().Subscribe(x => ProcessAddedObject(x.Value)).AddTo(this);
-        SessionState.TrackedObjects.ObserveRemove().Subscribe(x => ProcessRemovedObject(x.Value)).AddTo(this);
-        */
+        InitializeSubscriptions();
     }
 
-    void Start()
+    private void Start()
     {
         lockingManager = GetComponent<ProtocolItemLockingManager>();
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
-        ClearScene();
-        ProtocolState.Instance.AlignmentTriggered.Value = false;
+        ClearScene(true);
     }
 
-    private void InitializeArObjects()
+    private void InitializeSubscriptions()
     {
-        workspaceTransform = SessionManager.instance.WorkspaceTransform;
-        
-        var currentProtocol = ProtocolState.Instance.ActiveProtocol.Value;
-        if (currentProtocol?.globalArObjects != null)
+        if (ProtocolState.Instance == null) return;
+
+        ProtocolState.Instance.ProtocolStream
+            .Subscribe(protocol => HandleProtocolChange(protocol))
+            .AddTo(this);
+
+        ProtocolState.Instance.StepStream
+            .Subscribe(_ => UpdateArActions())
+            .AddTo(this);
+
+        ProtocolState.Instance.ChecklistStream
+            .Subscribe(_ => UpdateArActions())
+            .AddTo(this);
+        HandleProtocolChange(ProtocolState.Instance.ActiveProtocol.Value);
+    }
+
+    private void HandleProtocolChange(ProtocolDefinition protocol)
+    {
+        Debug.Log($"[ArObjectManager] Protocol change detected: {protocol?.title ?? "null"}");
+        ClearScene(true);
+        if (protocol?.globalArObjects != null)
         {
-            foreach (var arObject in currentProtocol.globalArObjects)
+            Debug.Log($"[ArObjectManager] Initializing {protocol.globalArObjects.Count} global AR objects");
+            pendingArViewInitializations = protocol.globalArObjects.Count;
+            InitializeArObjects(protocol.globalArObjects);
+        }
+    }
+
+    private void InitializeArObjects(List<ArObject> arObjects)
+    {
+        if (!TryGetWorkspaceTransform()) return;
+
+        foreach (var arObject in arObjects)
+        {
+            if (ValidateArObject(arObject))
             {
-                activeArObjects.Add(arObject);
                 CreateArView(arObject);
             }
         }
+        isInitialized = true;
+    }
+
+    private bool TryGetWorkspaceTransform()
+    {
+        workspaceTransform = SessionManager.instance?.CharucoTransform;
+        if (workspaceTransform == null)
+        {
+            Debug.LogError("WorkspaceTransform not found");
+            return false;
+        }
+        return true;
+    }
+
+    private bool ValidateArObject(ArObject arObject)
+    {
+        if (string.IsNullOrEmpty(arObject.rootPrefabName))
+        {
+            Debug.LogWarning($"Invalid ArObject: Missing rootPrefabName");
+            return false;
+        }
+        return true;
     }
 
     private void CreateArView(ArObject arObject)
     {
-        if (string.IsNullOrEmpty(arObject.specificObjectName))
-        {
-            Debug.Log("arObject.specificObjectName: " + arObject.specificObjectName + " is null or empty");
-            return;
-        }
-
-        if (!SupportedPrefabs.Contains(arObject.specificObjectName))
-        {
-            Debug.Log("arObject.specificObjectName: " + arObject.specificObjectName + " is not supported");
-            Debug.Log("SupportedPrefabs: " + string.Join(", ", SupportedPrefabs));
-            return;
-        }
-
-        var prefabPath = "Models/" + arObject.specificObjectName;
+        var prefabPath = $"Models/{arObject.rootPrefabName}.prefab";
+        Debug.Log($"[ArObjectManager] Creating AR view for {arObject.rootPrefabName} at path: {prefabPath}");
         
-        ServiceRegistry.GetService<IMediaProvider>().GetPrefab(prefabPath).Subscribe(
-            prefab => {
-                if (prefab.TryGetComponent<ArObjectViewController>(out var arViewPrefab))
-                {
-                    var instance = Instantiate(arViewPrefab, workspaceTransform);
-                    
-                    // Create a dummy tracked object if needed
-                    // TODO: Replace with actual tracking implementation
-                    var dummyTrackedObject = new TrackedObject();
-                    
-                    instance.Initialize(arObject, new List<TrackedObject> { dummyTrackedObject });
-                    instance.gameObject.SetActive(false);
-                    
-                    if (arViews.ContainsKey(arObject))
+        ServiceRegistry.GetService<IMediaProvider>()?.GetPrefab(prefabPath)
+            .Subscribe(
+                prefab => InstantiateArView(prefab, arObject),
+                error => Debug.LogError($"[ArObjectManager] Failed to load prefab {prefabPath}: {error}")
+            )
+            .AddTo(this);
+    }
+
+    private void InstantiateArView(GameObject prefab, ArObject arObject)
+    {
+        Debug.Log($"[ArObjectManager] Instantiating AR view for {arObject.rootPrefabName}");
+        
+        if (!prefab.TryGetComponent<ArObjectViewController>(out var arViewPrefab))
+        {
+            Debug.LogError($"[ArObjectManager] Prefab {prefab.name} missing ArObjectViewController component");
+            pendingArViewInitializations--;
+            CheckInitializationComplete();
+            return;
+        }
+
+        if (arViews.ContainsKey(arObject))
+        {
+            Destroy(arViews[arObject].gameObject);
+        }
+
+        var instance = Instantiate(arViewPrefab, workspaceTransform);
+        instance.Initialize(arObject, new List<TrackedObject> { new TrackedObject() });
+        instance.gameObject.SetActive(false);
+
+        arViews[arObject] = instance;
+        modelPrefabCache[arObject.arObjectID] = instance.gameObject;
+
+        pendingArViewInitializations--;
+        CheckInitializationComplete();
+    }
+
+    private void CheckInitializationComplete()
+    {
+        if (pendingArViewInitializations == 0)
+        {
+            isInitialized = true;
+            UpdateArActions();
+        }
+    }
+
+    private void UpdateArActions()
+    {
+        if (!isInitialized || !ProtocolState.Instance.HasCurrentCheckItem()) return;
+
+        var currentCheckItem = ProtocolState.Instance.CurrentCheckItemDefinition;
+        if (currentCheckItem == null) return;
+
+        ProcessArActions(currentCheckItem.arActions);
+    }
+
+    private void ProcessArActions(List<ArAction> actions)
+    {
+        Debug.Log($"[ArObjectManager] Processing {actions.Count} AR actions");
+        
+        var lockActions = actions.Where(a => a.actionType.ToLower() == "lock").ToList();
+        var highlightActions = new Dictionary<string, List<ArAction>>();
+        var placementActions = new List<ArAction>();
+
+        foreach (var action in actions)
+        {
+            Debug.Log($"[ArObjectManager] Processing action: {action.actionType} for object {action.arObjectID}");
+            switch (action.actionType.ToLower())
+            {
+                case "highlight":
+                    if (!string.IsNullOrEmpty(action.arObjectID))
                     {
-                        Destroy(arViews[arObject].gameObject);
+                        if (!highlightActions.ContainsKey(action.arObjectID))
+                            highlightActions[action.arObjectID] = new List<ArAction>();
+                        highlightActions[action.arObjectID].Add(action);
                     }
-                    
-                    arViews[arObject] = instance;
-                    modelPrefabCache[arObject.arObjectID] = instance.gameObject;
-                    
-                    ApplyCurrentActions(arObject, instance);
+                    break;
+                case "placement":
+                    placementActions.Add(action);
+                    break;
+            }
+        }
+
+        ProcessLockActions(lockActions);
+        ProcessHighlightActions(highlightActions);
+        ProcessPlacementActions(placementActions);
+    }
+
+    private void ProcessLockActions(List<ArAction> lockActions)
+    {
+        Debug.Log($"[ArObjectManager] Processing {lockActions.Count} lock actions");
+        var objectsToLock = new List<GameObject>();
+
+        foreach (var action in lockActions)
+        {
+            if (!ValidateLockAction(action, out var arIDList)) continue;
+
+            foreach (string id in arIDList)
+            {
+                Debug.Log($"[ArObjectManager] Locking object with ID: {id}");
+                if (modelPrefabCache.TryGetValue(id, out var prefab))
+                {
+                    objectsToLock.Add(prefab);
+                    lockedObjectIds.Add(id);
+                }
+            }
+        }
+
+        if (objectsToLock.Count > 0)
+        {
+            Debug.Log($"[ArObjectManager] Enqueuing {objectsToLock.Count} objects to locking manager");
+            lockingManager.EnqueueObjects(objectsToLock);
+        }
+    }
+
+    private bool ValidateLockAction(ArAction action, out List<string> arIDList)
+    {
+        arIDList = null;
+
+        if (action.properties == null)
+        {
+            Debug.LogWarning($"Lock action properties are null: {action.arObjectID}");
+            return false;
+        }
+
+        if (!action.properties.TryGetValue("arIDList", out var arIDListObj) || arIDListObj == null)
+        {
+            Debug.LogWarning($"Invalid arIDList in lock action: {action.arObjectID}");
+            return false;
+        }
+
+        arIDList = (arIDListObj as List<string>)?.Where(id => !string.IsNullOrEmpty(id)).ToList();
+        return arIDList != null && arIDList.Count > 0;
+    }
+
+    private void ProcessHighlightActions(Dictionary<string, List<ArAction>> highlightActions)
+    {
+        Debug.Log($"[ArObjectManager] Processing highlights for {highlightActions.Count} objects");
+        foreach (var arView in arViews)
+        {
+            if (arView.Value is ModelElementViewController modelView)
+            {
+                var arObjectId = arView.Key.arObjectID;
+                if (highlightActions.TryGetValue(arObjectId, out var actions))
+                {
+                    modelView.HighlightGroup(actions);
                 }
                 else
                 {
-                    Debug.Log("Model " + prefabPath + " missing required ArObjectViewController component");
+                    modelView.disablePreviousHighlight();
                 }
-            }
-        );
-    }
-
-    private void RebuildArObjects()
-    {
-        if (activeArObjects.Count == 0)
-        {
-            InitializeArObjects();
-        }
-
-        // Apply current actions to all models
-        foreach (var view in arViews)
-        {
-            if (view.Value is ModelElementViewController modelView)
-            {
-                modelView.disablePreviousHighlight();
-                ApplyCurrentActions(view.Key, view.Value);
             }
         }
     }
 
-    private void ApplyCurrentActions(ArObject arObject, ArObjectViewController viewController)
+    private void ProcessPlacementActions(List<ArAction> placementActions)
     {
-        var currentProtocol = ProtocolState.Instance.ActiveProtocol.Value;
-        if (currentProtocol == null || !ProtocolState.Instance.HasCurrentChecklist() || 
-            !ProtocolState.Instance.HasCurrentCheckItem()) return;
-
-        var currentCheckItem = ProtocolState.Instance.CurrentCheckItemDefinition;
-        if (currentCheckItem == null || ProtocolState.Instance.CurrentCheckItemState.Value.IsChecked.Value) return;
-
-        var relevantActions = new List<ArAction>();
-        
-        foreach (var action in currentCheckItem.arActions)
+        Debug.Log($"[ArObjectManager] Processing {placementActions.Count} placement actions");
+        foreach (var action in placementActions)
         {
-            if (action.arObjectID == arObject.arObjectID)
+            if (modelPrefabCache.TryGetValue(action.arObjectID, out var prefab))
             {
-                switch (action.actionType.ToLower())
-                {
-                    case "highlight":
-                        relevantActions.Add(action);
-                        break;
-
-                    case "placement":
-                        if (modelPrefabCache.TryGetValue(action.arObjectID, out var prefab))
-                        {
-                            RequestObjectPlacement(prefab);
-                        }
-                        break;
-                }
+                RequestObjectPlacement(prefab);
             }
-        }
-
-        // Apply all highlight actions at once if there are any
-        if (relevantActions.Count > 0 && viewController is ModelElementViewController modelView)
-        {
-            modelView.HighlightGroup(relevantActions);
         }
     }
 
     private void RequestObjectPlacement(GameObject model)
     {
-        if (placementCoroutine == null)
+        if (placementCoroutine != null)
         {
-            placementCoroutine = StartCoroutine(StartObjectPlacement(model));
+            StopCoroutine(placementCoroutine);
         }
+        placementCoroutine = StartCoroutine(StartObjectPlacement(model));
     }
 
     private IEnumerator StartObjectPlacement(GameObject model)
@@ -185,8 +289,10 @@ public class ArObjectManager : MonoBehaviour
         placementCoroutine = null;
     }
 
-    private void ClearScene()
+    private void ClearScene(bool clearLockedObjects = false)
     {
+        Debug.Log($"[ArObjectManager] Clearing scene (clearLockedObjects: {clearLockedObjects})");
+        Debug.Log($"[ArObjectManager] Destroying {arViews.Count} AR views");
         foreach (var view in arViews.Values)
         {
             if (view != null)
@@ -196,7 +302,32 @@ public class ArObjectManager : MonoBehaviour
         }
         
         arViews.Clear();
-        activeArObjects.Clear();
         modelPrefabCache.Clear();
+        
+        if (clearLockedObjects)
+        {
+            lockedObjectIds.Clear();
+            ProtocolState.Instance.AlignmentTriggered.Value = false;
+        }
+        
+        isInitialized = false;
+    }
+
+    private void UpdateArActionsForObject(ArObject arObject, ArObjectViewController instance)
+    {
+        if (!ProtocolState.Instance.HasCurrentCheckItem()) return;
+
+        var currentCheckItem = ProtocolState.Instance.CurrentCheckItemDefinition;
+        if (currentCheckItem == null) return;
+
+        // Filter actions that target this specific object
+        var relevantActions = currentCheckItem.arActions
+            .Where(action => action.arObjectID == arObject.arObjectID)
+            .ToList();
+
+        if (relevantActions.Count > 0)
+        {
+            ProcessArActions(relevantActions);
+        }
     }
 }

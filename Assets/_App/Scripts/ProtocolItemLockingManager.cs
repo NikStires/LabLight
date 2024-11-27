@@ -41,26 +41,36 @@ public class ProtocolItemLockingManager : MonoBehaviour
     public void EnqueueObjects(List<GameObject> objectsToLock)
     {
         Debug.Log("Added " + objectsToLock.Count + " objects to lock");
-        if(objectsQueue.Count == 0 && objectsToLock.Count > 0)
+        
+        // Clear existing queue if any
+        objectsQueue.Clear();
+        
+        if (objectsToLock.Count > 0)
         {
+            // Start with first object
             headPlacementEventChannel.SetHeadtrackedObject.Invoke(objectsToLock[0]);
-            objectsToLock.RemoveAt(0);
-        }
-        foreach (GameObject obj in objectsToLock)
-        {
-            objectsQueue.Enqueue(obj);
+            
+            // Queue remaining objects
+            for (int i = 1; i < objectsToLock.Count; i++)
+            {
+                objectsQueue.Enqueue(objectsToLock[i]);
+            }
+            
+            // Enable locking state in ProtocolState
+            ProtocolState.Instance.LockingTriggered.Value = true;
         }
     }
 
     private void ObjectLocked()
     {
-        if(objectsQueue.Count > 0)
+        if (objectsQueue.Count > 0)
         {
             headPlacementEventChannel.SetHeadtrackedObject.Invoke(objectsQueue.Dequeue());
         }
-        if(objectsQueue.Count == 0)
+        else
         {
             headPlacementEventChannel.RequestDisablePlaneInteractionManager.Invoke();
+            ProtocolState.Instance.LockingTriggered.Value = false;
         }
     }
 }

@@ -108,15 +108,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -188,6 +190,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -276,15 +281,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 0
   m_isCullingEnabled: 0
@@ -359,6 +366,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -447,15 +457,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 0
   m_isCullingEnabled: 0
@@ -562,6 +574,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -650,15 +665,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 0
   m_isCullingEnabled: 0
@@ -743,6 +760,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -895,10 +915,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1d926f5e35a248ae8199f7bc4b02e68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  positionRotationButton: {fileID: 0}
-  negativeRotationButton: {fileID: 0}
-  mainPrefab: {fileID: 8428204375765503367}
-  outlinePrefab: {fileID: 8877460458673681008}
+  model: {fileID: 5772745084466100175}
 --- !u!114 &2836263648965314751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -911,6 +928,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bec180ed0ef74440b93237e826654f13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Type: 0
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_IntensityMultiplier: 1
+  m_FadeInDuration: 0
+  m_FadeOutDuration: 0
 --- !u!1 &3127615815982186147
 GameObject:
   m_ObjectHideFlags: 0
@@ -974,6 +996,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1127,6 +1152,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bec180ed0ef74440b93237e826654f13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Type: 0
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_IntensityMultiplier: 1
+  m_FadeInDuration: 0
+  m_FadeOutDuration: 0
 --- !u!1 &3225692630091718449
 GameObject:
   m_ObjectHideFlags: 0
@@ -1190,6 +1220,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1343,6 +1376,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bec180ed0ef74440b93237e826654f13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Type: 0
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_IntensityMultiplier: 1
+  m_FadeInDuration: 0
+  m_FadeOutDuration: 0
 --- !u!1 &3397883040551768848
 GameObject:
   m_ObjectHideFlags: 0
@@ -1401,6 +1439,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1480,6 +1521,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1568,15 +1612,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 0
   m_isCullingEnabled: 0
@@ -1660,6 +1706,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1812,10 +1861,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f4164798f4b245928666b0bfa7fe508, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  planeInteractionManagerSO: {fileID: 11400000, guid: 0e4c22905642e492a9c661e3e6ed89b8, type: 2}
-  relockButton: {fileID: 8397374515777126629}
-  rotationButton: {fileID: 1927796351548984531}
-  toggleOutlineButton: {fileID: 5274161525062729857}
+  toggleOnAnimation: {fileID: 0}
+  toggleOffAnimation: {fileID: 0}
+  toggleOffMaterial: {fileID: 0}
+  toggleOnMaterial: {fileID: 0}
 --- !u!1 &4632930197215995624
 GameObject:
   m_ObjectHideFlags: 0
@@ -1911,6 +1960,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2064,6 +2116,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bec180ed0ef74440b93237e826654f13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Type: 0
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_IntensityMultiplier: 1
+  m_FadeInDuration: 0
+  m_FadeOutDuration: 0
 --- !u!1 &5274161525062729857
 GameObject:
   m_ObjectHideFlags: 0
@@ -2128,6 +2185,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2280,6 +2340,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bec180ed0ef74440b93237e826654f13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Type: 0
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_IntensityMultiplier: 1
+  m_FadeInDuration: 0
+  m_FadeOutDuration: 0
 --- !u!114 &6169502839671759203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2292,8 +2357,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9ac001e484ce4613aa635d110ba980b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  planeInteractionManagerSO: {fileID: 11400000, guid: 0e4c22905642e492a9c661e3e6ed89b8, type: 2}
   outline: {fileID: 8877460458673681008}
+  toggleOffMaterial: {fileID: 0}
+  toggleOnMaterial: {fileID: 0}
+  toggleOnSprite: {fileID: 0}
+  toggleOffSprite: {fileID: 0}
+  image: {fileID: 0}
 --- !u!1 &5314022747380402633
 GameObject:
   m_ObjectHideFlags: 0
@@ -2357,6 +2426,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2510,6 +2582,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bec180ed0ef74440b93237e826654f13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Type: 0
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_IntensityMultiplier: 1
+  m_FadeInDuration: 0
+  m_FadeOutDuration: 0
 --- !u!1 &5336408838413429112
 GameObject:
   m_ObjectHideFlags: 0
@@ -2559,6 +2636,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2727,6 +2807,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2820,6 +2903,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -2954,15 +3040,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -3128,6 +3216,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3280,7 +3371,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2891798cba5f249219bf7ed932a33d5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  planeInteractionManagerSO: {fileID: 11400000, guid: 0e4c22905642e492a9c661e3e6ed89b8, type: 2}
+  headPlacementEventChannel: {fileID: 11400000, guid: 2e9cc040273c143bd9bb9c3be51cd7e6, type: 2}
   parentModel: {fileID: 8428204375765503367}
 --- !u!1 &8428204375765503367
 GameObject:
@@ -3339,9 +3430,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedForLocking: 0
-  positionLocked: 1
-  lockedToTablePlane: 0
   positionValid: 1
+  positionLocked: 1
   hasBeenLocked: 0
   ObjectName: Reservoir
   HighlightGroups:
@@ -3362,6 +3452,7 @@ MonoBehaviour:
   nameTags: {fileID: 4841286306786178919}
   Sources: {fileID: 6390326650368408008}
   Outline: {fileID: 0}
+  currActions: []
 --- !u!136 &7539425435044081780
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3396,6 +3487,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: d6252c9736dd3514dae1fc4563f27d43, type: 3}
+  m_Resource: {fileID: 8300000, guid: d6252c9736dd3514dae1fc4563f27d43, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -3540,6 +3632,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3645,6 +3740,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

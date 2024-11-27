@@ -35,11 +35,9 @@ public class HandCalibrationViewController : MonoBehaviour
         XRHandJointID.LittleProximal
     };
 
-    public static List<PlaneClassification> calibrationPlanesClassification = new List<PlaneClassification>()
-    {
-        PlaneClassification.Table,
-        PlaneClassification.None
-    }; 
+    public static PlaneClassifications calibrationPlanesClassifications = 
+        PlaneClassifications.Table | 
+        PlaneClassifications.None;
 
     List<ARPlane> availableCalibrationPlanes;
 
@@ -103,7 +101,7 @@ public class HandCalibrationViewController : MonoBehaviour
         }
         //start calibration
         calibrationManager.UpdateCalibrationStatus("Looking for planes");
-        availableCalibrationPlanes = ARPlaneViewController.instance.GetPlanesByClassification(calibrationPlanesClassification);
+        availableCalibrationPlanes = ARPlaneViewController.instance.GetPlanesByClassification(calibrationPlanesClassifications);
         //if calibration completed successfully, send calibration data to lighthouse and exit calibration mode
         //store started lighthouse origin and current plane in session manager
     }
@@ -145,7 +143,7 @@ public class HandCalibrationViewController : MonoBehaviour
                         {
                             if(hit.collider.TryGetComponent<ARPlane>(out ARPlane hitPlane))
                             {
-                                if(availableCalibrationPlanes.Contains(hitPlane))
+                                if((hitPlane.classifications & calibrationPlanesClassifications) != 0)
                                 {
                                     if(planeSelected == null)
                                     {
