@@ -7,7 +7,7 @@ struct ProtocolMenuContentView: View {
     @State private var path = NavigationPath()  // Navigation Path State
     
     var body: some View {
-        NavigationStack(path: $path) {  // Wrap content in NavigationStack
+        NavigationStack(path: $path) {
             VStack {
                 Text("Select a Protocol")
                     .font(.largeTitle)
@@ -45,11 +45,8 @@ struct ProtocolMenuContentView: View {
     }
     
     func formatText(_ text: String) -> String {
-        // Remove special characters
         var formatted = text.components(separatedBy: CharacterSet.alphanumerics.inverted).joined()
-        // Add spaces before capital letters (for camel case)
         formatted = formatted.replacingOccurrences(of: "([a-z])([A-Z])", with: "$1 $2", options: .regularExpression, range: nil)
-        // Capitalize the first letter
         return formatted.prefix(1).uppercased() + formatted.dropFirst()
     }
 }
@@ -67,7 +64,7 @@ class ProtocolMenuViewModel: ObservableObject {
         if let message = notification.userInfo?["message"] as? String,
            message.hasPrefix("protocolDescriptions|") {
             let protocolsJson = String(message.dropFirst("protocolDescriptions|".count))
-            if let data = protocolsJson.data(using: .utf8),
+            if let data: Data = protocolsJson.data(using: .utf8),
                let decodedProtocols = try? JSONDecoder().decode([ProtocolDescriptor].self, from: data) {
                 DispatchQueue.main.async {
                     self.protocols = decodedProtocols
@@ -95,7 +92,6 @@ class ProtocolMenuViewModel: ObservableObject {
                 }
             } catch {
                 print("Failed to decode JSON: \(error.localizedDescription)")
-                // For more detailed error information:
                 if let decodingError = error as? DecodingError {
                     switch decodingError {
                     case .typeMismatch(let type, let context):
@@ -136,6 +132,6 @@ struct ProtocolDescriptor: Codable, Identifiable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         title = try container.decode(String.self, forKey: .title)
         version = try container.decode(String.self, forKey: .version)
-        id = title // Use title as the id
+        id = title
     }
 }

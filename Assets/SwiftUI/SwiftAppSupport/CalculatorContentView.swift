@@ -217,7 +217,7 @@ struct CalculatorButtonView: View {
     private func buttonWidth(for button: CalculatorButton) -> CGFloat {
         switch button {
         case .zero:
-            return 156 // Two button widths + one spacing
+            return 156
         default:
             return 72
         }

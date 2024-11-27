@@ -6,6 +6,8 @@ struct ProtocolView: View {
     @StateObject private var viewModel: ProtocolViewModel
     @Namespace private var animation
     @State private var showingPDFMenu = false
+    @Environment(\.dismiss) private var dismiss
+    @State private var showingCloseConfirmation = false
     
     // MARK: - Initialization
     init(selectedProtocol: ProtocolDefinition) {
@@ -14,16 +16,39 @@ struct ProtocolView: View {
     
     // MARK: - Body
     var body: some View {
-        VStack(spacing: 16) {
-            stepPicker
-            
-            contentArea
+        ZStack {
+            VStack(spacing: 16) {
+                stepPicker
+                
+                contentArea
+            }
+            .animation(.spring(response: 0.3, dampingFraction: 0.8), value: viewModel.currentStep.contentItems.isEmpty)
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle(viewModel.selectedProtocol.title)
+            .navigationBarBackButtonHidden(true)
+            .ornament(visibility: .visible, attachmentAnchor: .scene(.leading)) {
+                controlPanel
+            }
+            .interactiveDismissDisabled()
         }
-        .animation(.spring(response: 0.3, dampingFraction: 0.8), value: viewModel.currentStep.contentItems.isEmpty)
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationTitle(viewModel.selectedProtocol.title)
-        .ornament(visibility: .visible, attachmentAnchor: .scene(.leading)) {
-            controlPanel
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button("Close") {
+                    showingCloseConfirmation = true
+                }
+            }
+        }
+        .confirmationDialog(
+            "Are you sure you want to close?",
+            isPresented: $showingCloseConfirmation,
+            titleVisibility: .visible
+        ) {
+            Button("Close Protocol", role: .destructive) {
+                dismiss()
+            }
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("Any unsaved progress will be lost")
         }
     }
     
@@ -47,7 +72,8 @@ struct ProtocolView: View {
             if !viewModel.currentStep.contentItems.isEmpty {
                 ProtocolContentView(
                     contentItems: viewModel.currentStep.contentItems,
-                    selectedChecklistItem: viewModel.selectedChecklistItem
+                    selectedChecklistItem: viewModel.selectedChecklistItem,
+                    nextUncheckedItem: viewModel.nextUncheckedItem()
                 )
                 .frame(maxWidth: .infinity)
                 .padding(.leading, 10)
@@ -65,6 +91,7 @@ struct ProtocolView: View {
             checkButton
             uncheckButton
             navigationButtons
+            signOffButton
             pdfButton
         }
         .padding()
@@ -76,7 +103,7 @@ struct ProtocolView: View {
         Button(action: viewModel.checkNextItem) {
             Image(systemName: "checkmark")
         }
-        .disabled(viewModel.nextUncheckedItem() == nil)
+        .disabled(viewModel.nextUncheckedItem() == nil || viewModel.isStepSignedOff)
         .padding(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8))
     }
     
@@ -84,24 +111,32 @@ struct ProtocolView: View {
         Button(action: viewModel.uncheckLastItem) {
             Image(systemName: "xmark")
         }
-        .disabled(viewModel.lastCheckedItem() == nil)
+        .disabled(viewModel.lastCheckedItem() == nil || viewModel.isStepSignedOff)
         .padding(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8))
     }
     
     private var navigationButtons: some View {
         Group {
-            Button(action: viewModel.goToPreviousStep) {
-                Image(systemName: "chevron.left")
-            }
-            .disabled(viewModel.selectedStepIndex == 0)
-            .padding(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8))
-
             Button(action: viewModel.goToNextStep) {
                 Image(systemName: "chevron.right")
             }
             .disabled(viewModel.selectedStepIndex >= viewModel.selectedProtocol.steps.count - 1)
             .padding(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8))
+            
+            Button(action: viewModel.goToPreviousStep) {
+                Image(systemName: "chevron.left")
+            }
+            .disabled(viewModel.selectedStepIndex == 0)
+            .padding(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8))
         }
+    }
+    
+    private var signOffButton: some View {
+        Button(action: viewModel.signOffStep) {
+            Image(systemName: "checkmark.seal")
+        }
+        .disabled(!viewModel.canSignOff)
+        .padding(EdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8))
     }
     
     private var pdfButton: some View {
@@ -137,6 +172,8 @@ class ProtocolViewModel: ObservableObject {
     @Published var currentStates: [CheckItemStateData] = []
     @Published var lastCheckedItemIndex: Int?
     @Published var selectedChecklistItem: CheckItemDefinition?
+    @Published var isStepSignedOff: Bool = false
+    @Published var canSignOff: Bool = false
     
     // MARK: - Initialization
     init(selectedProtocol: ProtocolDefinition) {
@@ -178,29 +215,30 @@ class ProtocolViewModel: ObservableObject {
     }
     
     func nextUncheckedItem() -> CheckItemDefinition? {
-        return checklistItems.enumerated()
-            .first { index, _ in 
-                !(currentStates.first { $0.checkIndex == index }?.isChecked ?? false)
-            }?.element
+        return checklistItems.first { item in
+            let index = getIndex(for: item)
+            return !(currentStates.first { $0.checkIndex == index }?.isChecked ?? false)
+        }
     }
 
     func lastCheckedItem() -> CheckItemDefinition? {
-        return checklistItems.enumerated()
-            .filter { index, _ in 
-                currentStates.first { $0.checkIndex == index }?.isChecked ?? false
-            }
-            .last?.element
+        return checklistItems.last { item in
+            let index = getIndex(for: item)
+            return currentStates.first { $0.checkIndex == index }?.isChecked ?? false
+        }
     }
     
     // MARK: - Actions
     func checkNextItem() {
-        guard let nextItem = nextUncheckedItem() else { return }
-        CallCSharpCallback("checkItem|" + String(getIndex(for: nextItem)))
+        if let nextItem = nextUncheckedItem() {
+            CallCSharpCallback("checkItem|" + String(getIndex(for: nextItem)))
+        }
     }
 
     func uncheckLastItem() {
-        guard let lastItem = lastCheckedItem() else { return }
-        CallCSharpCallback("uncheckItem|" + String(getIndex(for: lastItem)))
+        if let lastItem = lastCheckedItem() {
+            CallCSharpCallback("uncheckItem|" + String(getIndex(for: lastItem)))
+        }
     }
 
     func goToNextStep() {
@@ -230,11 +268,15 @@ class ProtocolViewModel: ObservableObject {
             return
         }
         
-        selectedStepIndex = stepStateData.currentStepIndex
-        checklistItems = currentStep.checklist
-        currentStates = stepStateData.checklistState ?? []
-        lastCheckedItemIndex = currentStates.last { $0.isChecked }?.checkIndex
-        selectedChecklistItem = nil
+        DispatchQueue.main.async {
+            self.selectedStepIndex = stepStateData.currentStepIndex
+            self.checklistItems = self.currentStep.checklist
+            self.currentStates = stepStateData.checklistState ?? []
+            self.lastCheckedItemIndex = self.currentStates.last { $0.isChecked }?.checkIndex
+            self.selectedChecklistItem = nil
+            self.isStepSignedOff = stepStateData.isSignedOff
+            self.updateCanSignOff()
+        }
     }
 
     @objc func handleCheckItemChange(_ notification: Notification) {
@@ -247,12 +289,35 @@ class ProtocolViewModel: ObservableObject {
             return
         }
         
-        currentStates = checkItemStateDataList
-        lastCheckedItemIndex = checkItemStateDataList.last { $0.isChecked }?.checkIndex
-        
-        if let lastIndex = lastCheckedItemIndex,
-           lastIndex < checklistItems.count {
-            selectedChecklistItem = checklistItems[lastIndex]
+        DispatchQueue.main.async {
+            self.currentStates = checkItemStateDataList
+            self.lastCheckedItemIndex = checkItemStateDataList.last { $0.isChecked }?.checkIndex
+            
+            if let lastIndex = self.lastCheckedItemIndex,
+               lastIndex < self.checklistItems.count {
+                self.selectedChecklistItem = self.checklistItems[lastIndex]
+            }
+            
+            self.updateCanSignOff()
+        }
+    }
+    
+    private func updateCanSignOff() {
+        canSignOff = !isStepSignedOff && 
+                    currentStates.count == checklistItems.count && 
+                    currentStates.allSatisfy { $0.isChecked }
+    }
+    
+    func signOffStep() {
+        CallCSharpCallback("checklistSignOff|true")
+        // Optimistically update both the sign-off state and checklist states
+        DispatchQueue.main.async {
+            self.isStepSignedOff = true
+            
+            // Update all current checklist items to show as checked
+            self.currentStates = self.checklistItems.enumerated().map { index, _ in
+                CheckItemStateData(isChecked: true, checkIndex: index)
+            }
         }
     }
 }

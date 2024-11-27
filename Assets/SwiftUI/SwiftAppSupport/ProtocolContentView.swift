@@ -5,35 +5,55 @@ import UnityFramework
 struct ProtocolContentView: View {
     let contentItems: [ContentItem]
     let selectedChecklistItem: CheckItemDefinition?
+    let nextUncheckedItem: CheckItemDefinition?
     
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
-                // Main content items
-                ForEach(contentItems) { item in
-                    contentView(for: item)
+                // Step content items
+                if !contentItems.isEmpty {
+                    stepContent
                 }
                 
-                // Checklist item content
-                if let checklistItem = selectedChecklistItem,
-                   !checklistItem.contentItems.isEmpty {
-                    checklistItemContent(for: checklistItem)
+                // Next unchecked item content
+                if let nextItem = nextUncheckedItem,
+                   !nextItem.contentItems.isEmpty {
+                    nextItemContent(for: nextItem)
                 }
             }
             .padding()
         }
     }
     
-    private func checklistItemContent(for checklistItem: CheckItemDefinition) -> some View {
-        VStack(alignment: .leading) {
+    // MARK: - Content Sections
+    
+    private var stepContent: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("Step Instructions")
+                .font(.headline)
+                .foregroundColor(.primary)
+            
+            ForEach(contentItems) { item in
+                contentView(for: item)
+            }
+        }
+    }
+    
+    private func nextItemContent(for item: CheckItemDefinition) -> some View {
+        VStack(alignment: .leading, spacing: 16) {
             Divider()
                 .padding(.vertical)
             
-            Text(checklistItem.text)
+            Text("Next Task")
                 .font(.headline)
+                .foregroundColor(.primary)
             
-            ForEach(checklistItem.contentItems) { item in
-                contentView(for: item)
+            Text(item.text)
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+            
+            ForEach(item.contentItems) { contentItem in
+                contentView(for: contentItem)
             }
         }
     }
