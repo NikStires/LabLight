@@ -42,9 +42,9 @@ public class ArObjectManager : MonoBehaviour
             .Subscribe(protocol => HandleProtocolChange(protocol))
             .AddTo(this);
 
-        ProtocolState.Instance.StepStream
-            .Subscribe(_ => UpdateArActions())
-            .AddTo(this);
+        // ProtocolState.Instance.StepStream
+        //     .Subscribe(_ => UpdateArActions())
+        //     .AddTo(this);
 
         ProtocolState.Instance.ChecklistStream
             .Subscribe(_ => UpdateArActions())
@@ -163,7 +163,7 @@ public class ArObjectManager : MonoBehaviour
     {
         Debug.Log($"[ArObjectManager] Processing {actions.Count} AR actions");
         
-        var lockActions = actions.Where(a => a.actionType.ToLower() == "lock").ToList();
+        var lockActions = new List<ArAction>(); //actions.Where(a => a.actionType.ToLower() == "lock").ToList();
         var highlightActions = new Dictionary<string, List<ArAction>>();
         var placementActions = new List<ArAction>();
 
@@ -172,6 +172,9 @@ public class ArObjectManager : MonoBehaviour
             Debug.Log($"[ArObjectManager] Processing action: {action.actionType} for object {action.arObjectID}");
             switch (action.actionType.ToLower())
             {
+                case "lock":
+                    lockActions.Add(action);
+                    break;
                 case "highlight":
                     if (!string.IsNullOrEmpty(action.arObjectID))
                     {
@@ -185,10 +188,18 @@ public class ArObjectManager : MonoBehaviour
                     break;
             }
         }
-
-        ProcessLockActions(lockActions);
-        ProcessHighlightActions(highlightActions);
-        ProcessPlacementActions(placementActions);
+        if(lockActions.Count > 0)   
+        {
+            ProcessLockActions(lockActions);
+        }
+        if(highlightActions.Count > 0)  
+        {
+            ProcessHighlightActions(highlightActions);
+        }
+        if(placementActions.Count > 0)
+        {
+            ProcessPlacementActions(placementActions);
+        }
     }
 
     private void ProcessLockActions(List<ArAction> lockActions)

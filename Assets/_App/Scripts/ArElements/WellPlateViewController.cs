@@ -204,28 +204,58 @@ public class WellPlateViewController : ModelElementViewController
         if (action?.properties == null) return;
 
         // Cache property lookups
-        var subIDs = action.properties.GetValueOrDefault("subIDs", new List<string>());
-        var colorHex = action.properties.GetValueOrDefault("colorHex", "#FFFFFF");
-        Color parsedColor = Color.white;
-        if (ColorUtility.TryParseHtmlString((string)colorHex, out parsedColor))
+        var colorHexObj = action.properties.GetValueOrDefault("colorHex", "#FFFFFF");
+        string colorHex = colorHexObj.ToString();
+
+        Color parsedColor;
+        if (ColorUtility.TryParseHtmlString(colorHex, out parsedColor))
         {
+            // Ensure alpha is set to 1
             parsedColor.a = 1f;
         }
 
-        // Use cached values
-        foreach (string id in (List<string>)subIDs)
+        var subIDsObj = action.properties.GetValueOrDefault("subIDs", null);
+
+        if (subIDsObj != null)
         {
-            if (debugEnableAllSettings)
+            if (subIDsObj is IEnumerable subIDsEnumerable)
             {
-                toggleTransform(Markers, true, id, parsedColor);
-                toggleTransform(rowIndicators, true, id[0].ToString(), parsedColor);
-                toggleTransform(colIndicators, true, id.Substring(1), parsedColor);
+                foreach (var idObj in subIDsEnumerable)
+                {
+                    string id = idObj.ToString();
+
+                    // Your existing logic to toggle transforms
+                    if (debugEnableAllSettings)
+                    {
+                        toggleTransform(Markers, true, id, parsedColor);
+                        toggleTransform(rowIndicators, true, id[0].ToString(), parsedColor);
+                        toggleTransform(colIndicators, true, id.Substring(1), parsedColor);
+                    }
+                    else
+                    {
+                        toggleTransform(Markers, storedSettings[LablightSettings.Well_Indicators], id, parsedColor);
+                        toggleTransform(rowIndicators, storedSettings[LablightSettings.Relevant_RC_Only], id[0].ToString(), parsedColor);
+                        toggleTransform(colIndicators, storedSettings[LablightSettings.Relevant_RC_Only], id.Substring(1), parsedColor);
+                    }
+                }
             }
             else
             {
-                toggleTransform(Markers, storedSettings[LablightSettings.Well_Indicators], id, parsedColor);
-                toggleTransform(rowIndicators, storedSettings[LablightSettings.Relevant_RC_Only], id[0].ToString(), parsedColor);
-                toggleTransform(colIndicators, storedSettings[LablightSettings.Relevant_RC_Only], id.Substring(1), parsedColor);
+                string id = subIDsObj.ToString();
+
+                // Your existing logic to toggle transforms
+                if (debugEnableAllSettings)
+                {
+                    toggleTransform(Markers, true, id, parsedColor);
+                    toggleTransform(rowIndicators, true, id[0].ToString(), parsedColor);
+                    toggleTransform(colIndicators, true, id.Substring(1), parsedColor);
+                }
+                else
+                {
+                    toggleTransform(Markers, storedSettings[LablightSettings.Well_Indicators], id, parsedColor);
+                    toggleTransform(rowIndicators, storedSettings[LablightSettings.Relevant_RC_Only], id[0].ToString(), parsedColor);
+                    toggleTransform(colIndicators, storedSettings[LablightSettings.Relevant_RC_Only], id.Substring(1), parsedColor);
+                }
             }
         }
     }
@@ -249,13 +279,30 @@ public class WellPlateViewController : ModelElementViewController
     {
         if (action?.properties == null) return;
 
-        var subIDs = action.properties.GetValueOrDefault("subIDs", new List<string>());
+        var subIDsObj = action.properties.GetValueOrDefault("subIDs", null);
 
-        foreach (string id in (List<string>)subIDs)
+        if (subIDsObj != null)
         {
-            toggleTransform(Markers, false, id, Color.white);
-            toggleTransform(rowIndicators, true, id[0].ToString(), defaultIndicatorColor);
-            toggleTransform(colIndicators, true, id.Substring(1), defaultIndicatorColor);
+            if (subIDsObj is IEnumerable subIDsEnumerable)
+            {
+                foreach (var idObj in subIDsEnumerable)
+                {
+                    string id = idObj.ToString();
+
+                    // Your existing logic to toggle transforms
+                    toggleTransform(Markers, false, id);
+                    toggleTransform(rowIndicators, true, id[0].ToString(), defaultIndicatorColor);
+                    toggleTransform(colIndicators, true, id.Substring(1), defaultIndicatorColor);
+                }
+            }
+            else
+            {
+                string id = subIDsObj.ToString();
+
+                toggleTransform(Markers, false, id);
+                toggleTransform(rowIndicators, true, id[0].ToString(), defaultIndicatorColor);
+                toggleTransform(colIndicators, true, id.Substring(1), defaultIndicatorColor);
+            }
         }
     }
 

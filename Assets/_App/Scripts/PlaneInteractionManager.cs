@@ -174,6 +174,8 @@ public class PlaneInteractionManager : MonoBehaviour
 
     private void TestObjectPlacement()
     {
+        headPlacementEventChannel.CurrentPrefabLocked.Invoke();
+        StartCoroutine(DelayNextPlacement());
         if(delayOn || currentPlane == null || currentPrefab == null)
         {
             if(currentPrefab == null)
@@ -183,9 +185,9 @@ public class PlaneInteractionManager : MonoBehaviour
             return;
         }
         Debug.Log("PlaneInteractionManager: Placing object on plane");
-        StartCoroutine(DelayNextPlacement());
+        //StartCoroutine(DelayNextPlacement());
         currentPrefab = null;
-        headPlacementEventChannel.CurrentPrefabLocked.Invoke();
+        //headPlacementEventChannel.CurrentPrefabLocked.Invoke();
         currentPlane.GetComponent<MeshRenderer>().SetMaterials(new List<Material>() {invisiblePlaneMaterial});
         currentPlane = null;
     }
@@ -193,7 +195,10 @@ public class PlaneInteractionManager : MonoBehaviour
     public void SetPrefab(GameObject prefab)
     {
         currentPrefab = prefab;
-        currentPrefab.SetActive(true);
+        if(currentPrefab != null)
+        {
+            currentPrefab.SetActive(true);
+        }
         if(currentPlane != null)
         {
             currentPlane.gameObject.SetActive(true);

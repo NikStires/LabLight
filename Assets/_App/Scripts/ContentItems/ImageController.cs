@@ -30,39 +30,39 @@ public class ImageController : ContentController<ContentItem>
 
     private void UpdateView()
     {
-        if (ContentItem == null || !ContentItem.properties.TryGetValue("URL", out object urlValue)) 
-        {
-            Debug.LogError("ImageController: No URL found in properties");
-            return;
-        }
+        // if (ContentItem == null || !ContentItem.properties.TryGetValue("URL", out object urlValue)) 
+        // {
+        //     Debug.LogError("ImageController: No URL found in properties");
+        //     return;
+        // }
 
-        var imagePath = ProtocolState.Instance.ActiveProtocol.Value.mediaBasePath + "/" + urlValue.ToString();
+        // var imagePath = ProtocolState.Instance.ActiveProtocol.Value.mediaBasePath + "/" + urlValue.ToString();
 
-        downloadSubscription?.Dispose();
-        downloadSubscription = null;
-        Image.enabled = false;
+        // downloadSubscription?.Dispose();
+        // downloadSubscription = null;
+        // Image.enabled = false;
 
         // Start new download
-        downloadSubscription = ServiceRegistry.GetService<IMediaProvider>().GetSprite(imagePath).Subscribe(sprite =>
-        {
-            if (sprite == null)
-            {
-                return;
-            }
+        // downloadSubscription = ServiceRegistry.GetService<IMediaProvider>().GetSprite(imagePath).Subscribe(sprite =>
+        // {
+        //     if (sprite == null)
+        //     {
+        //         return;
+        //     }
 
-            Image.sprite = sprite;
-            Image.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, transform.parent.GetComponent<RectTransform>().rect.width);
-            Image.enabled = true;
+        //     Image.sprite = sprite;
+        //     Image.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, transform.parent.GetComponent<RectTransform>().rect.width);
+        //     Image.enabled = true;
 
-            var fitter = this.GetComponent<AspectRatioFitter>();
-            if (fitter != null)
-            {
-               var ratio = (float)Image.sprite.rect.width / (float)Image.sprite.rect.height;
-               fitter.aspectRatio = ratio;
-            }
-        }, (e) =>
-        {
-            ServiceRegistry.Logger.LogError("Could not load image " + imagePath + ". " + e.ToString());
-        });
+        //     var fitter = this.GetComponent<AspectRatioFitter>();
+        //     if (fitter != null)
+        //     {
+        //        var ratio = (float)Image.sprite.rect.width / (float)Image.sprite.rect.height;
+        //        fitter.aspectRatio = ratio;
+        //     }
+        // }, (e) =>
+        // {
+        //     ServiceRegistry.Logger.LogError("Could not load image " + imagePath + ". " + e.ToString());
+        // });
     }
 }

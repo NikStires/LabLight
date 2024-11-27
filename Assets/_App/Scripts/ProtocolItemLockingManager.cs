@@ -57,6 +57,7 @@ public class ProtocolItemLockingManager : MonoBehaviour
             }
             
             // Enable locking state in ProtocolState
+            Debug.Log("Enabling locking state");
             ProtocolState.Instance.LockingTriggered.Value = true;
         }
     }
@@ -70,6 +71,7 @@ public class ProtocolItemLockingManager : MonoBehaviour
         else
         {
             headPlacementEventChannel.RequestDisablePlaneInteractionManager.Invoke();
+            Debug.Log("No more objects to lock, disabling plane interaction manager");
             ProtocolState.Instance.LockingTriggered.Value = false;
         }
     }

@@ -65,15 +65,15 @@
           ]
         },
         {
-          "text": "Pipette 100µl of the reaction mix into well A1",
+          "text": "Pipette 100µl of the reaction mix into well A2",
           "arActions": [
             {
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
               "properties": {
-                "subIDs": ["A1"],
-                "colorHex": "#FFD700",
-                "colorName": "Gold"
+                "subIDs": ["A2"],
+                "colorHex": "#FFFF00",
+                "colorName": "Green"
               }
             }
           ]
