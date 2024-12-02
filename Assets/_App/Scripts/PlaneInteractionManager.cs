@@ -30,6 +30,8 @@ public class PlaneInteractionManager : MonoBehaviour
     private bool delayOn = false;
     private bool prefabTemporarilyLocked = false; //use to track whether the focused prefab should be tracked to the position of the head. This is used to prevent the prefab from being placed on the plane when the user is not ready to place it
 
+    private CheckItemDefinition previousCheckItem;
+
     // Start is called before the first frame update
     //tips for each finger so that we can detect position of 
 
@@ -158,6 +160,16 @@ public class PlaneInteractionManager : MonoBehaviour
 
     private void OnNextCheckItem()
     {
+        var currentCheckItem = ProtocolState.Instance.CurrentCheckItemDefinition;
+        
+        // Return early if this is the same checklist item
+        if (previousCheckItem != null && previousCheckItem == currentCheckItem)
+        {
+            return;
+        }
+        
+        previousCheckItem = currentCheckItem;
+
         if(currentPrefab != null)
         {
             currentPrefab = null;

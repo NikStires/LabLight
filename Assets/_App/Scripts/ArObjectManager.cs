@@ -149,9 +149,13 @@ public class ArObjectManager : MonoBehaviour
         }
     }
 
+    private CheckItemDefinition previousCheckItem;
     private void UpdateArActions()
     {
-        if (!isInitialized || !ProtocolState.Instance.HasCurrentCheckItem()) return;
+        if(previousCheckItem != null && previousCheckItem == ProtocolState.Instance.CurrentCheckItemDefinition) return;
+        previousCheckItem = ProtocolState.Instance.CurrentCheckItemDefinition;
+
+        if (!isInitialized || !ProtocolState.Instance.HasCurrentCheckItem() || ProtocolState.Instance.CurrentStepState.Value.SignedOff.Value) return;
 
         var currentCheckItem = ProtocolState.Instance.CurrentCheckItemDefinition;
         if (currentCheckItem == null) return;
@@ -324,12 +328,17 @@ public class ArObjectManager : MonoBehaviour
         isInitialized = false;
     }
 
+
     private void UpdateArActionsForObject(ArObject arObject, ArObjectViewController instance)
     {
         if (!ProtocolState.Instance.HasCurrentCheckItem()) return;
 
         var currentCheckItem = ProtocolState.Instance.CurrentCheckItemDefinition;
         if (currentCheckItem == null) return;
+
+        // Return early if check item hasn't changed
+        if (previousCheckItem != null && previousCheckItem == currentCheckItem) return;
+        previousCheckItem = currentCheckItem;
 
         // Filter actions that target this specific object
         var relevantActions = currentCheckItem.arActions
