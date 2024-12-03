@@ -221,6 +221,7 @@ public class PlaneInteractionManager : MonoBehaviour
 
     private void ResetObjects()
     {
+        Debug.Log("PlaneInteractionManager: Resetting objects");
         if(currentPrefab != null)
         {
             Destroy(currentPrefab);
