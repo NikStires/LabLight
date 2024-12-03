@@ -70,7 +70,6 @@ struct ProtocolView: View {
         HStack(spacing: 0) {
             ChecklistView(viewModel: viewModel)
                 .frame(maxWidth: viewModel.currentStep.contentItems.isEmpty ? .infinity : 400)
-                .animation(.spring(response: 0.3, dampingFraction: 0.8), value: viewModel.currentStep.contentItems.isEmpty)
             
             if !viewModel.currentStep.contentItems.isEmpty {
                 ProtocolContentView(
@@ -81,12 +80,13 @@ struct ProtocolView: View {
                 .frame(maxWidth: .infinity)
                 .padding(.leading, 10)
                 .transition(.asymmetric(
-                    insertion: .opacity.combined(with: .move(edge: .trailing)),
-                    removal: .opacity.combined(with: .move(edge: .trailing))
+                    insertion: .opacity.combined(with: .move(edge: .trailing)).animation(.easeInOut(duration: 0.3)),
+                    removal: .opacity.combined(with: .move(edge: .trailing)).animation(.easeInOut(duration: 0.3))
                 ))
             }
         }
         .padding(.horizontal)
+        .animation(.easeInOut(duration: 0.3), value: viewModel.currentStep.contentItems.isEmpty)
     }
     
     private var controlPanel: some View {

@@ -11,12 +11,14 @@ struct ChecklistView: View {
                     "checkmark.seal.fill" : "checkmark.seal")
                     .foregroundColor(viewModel.isStepSignedOff ? 
                         .green : .gray)
+                    .animation(nil, value: viewModel.isStepSignedOff)
                 
                 Text(viewModel.isStepSignedOff ? 
                     "Step Signed Off" : "Step Not Signed Off")
                     .font(.subheadline)
                     .foregroundColor(viewModel.isStepSignedOff ? 
                         .green : .gray)
+                    .animation(nil, value: viewModel.isStepSignedOff)
             }
             .padding(.horizontal)
             .padding(.top, 8)
@@ -32,19 +34,24 @@ struct ChecklistView: View {
                             }?.isChecked ?? false
                         )
                         .id(viewModel.getIndex(for: item))
-                        .disabled(viewModel.isStepSignedOff) // Disable interaction when signed off
+                        .disabled(viewModel.isStepSignedOff)
+                        .animation(nil, value: viewModel.isStepSignedOff)
                     }
                 }
+                .animation(.default, value: viewModel.checklistItems)
                 .onChange(of: viewModel.lastCheckedItemIndex) { _, newIndex in
                     if let nextUncheckedIndex = viewModel.checklistItems.indices.first(where: { index in
                         !(viewModel.currentStates.first { $0.checkIndex == index }?.isChecked ?? false)
                     }) {
-                        withAnimation {
+                        withAnimation(.easeInOut(duration: 0.3)) {
                             proxy.scrollTo(nextUncheckedIndex, anchor: .center)
                         }
                     }
                 }
             }
+        }
+        .transaction { transaction in
+            transaction.animation = nil
         }
     }
 }

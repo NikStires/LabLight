@@ -13,15 +13,19 @@ struct ProtocolContentView: View {
                 // Step content items
                 if !contentItems.isEmpty {
                     stepContent
+                        .transition(.opacity)
                 }
                 
                 // Next unchecked item content
                 if let nextItem = nextUncheckedItem,
                    !nextItem.contentItems.isEmpty {
                     nextItemContent(for: nextItem)
+                        .transition(.opacity)
                 }
             }
             .padding()
+            .animation(.easeInOut(duration: 0.3), value: contentItems)
+            .animation(.easeInOut(duration: 0.3), value: nextUncheckedItem)
         }
     }
     
