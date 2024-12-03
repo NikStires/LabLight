@@ -144,6 +144,7 @@ public class PlaneInteractionManager : MonoBehaviour
             audioSource.Play();
         }
         //place object on plane, stop plane interaction requests
+        Debug.Log("PlaneInteractionManager: Placing object on plane" + currentPrefab.name);
         currentPlane.gameObject.SetActive(false);
         currentPrefab = null;
         // prefabTemporarilyLocked = !prefabTemporarilyLocked;
@@ -154,7 +155,7 @@ public class PlaneInteractionManager : MonoBehaviour
         // {
         //     currentPlane.GetComponent<MeshRenderer>().SetMaterials(new List<Material>() {planeMaterial});
         // }
-        Debug.Log("PlaneInteractionManager: Object locked = " + prefabTemporarilyLocked);
+        //Debug.Log("PlaneInteractionManager: Object locked = " + prefabTemporarilyLocked);
 
     }
 
@@ -206,6 +207,7 @@ public class PlaneInteractionManager : MonoBehaviour
 
     public void SetPrefab(GameObject prefab)
     {
+        Debug.Log("PlaneInteractionManager: Setting prefab to " + prefab.name);
         currentPrefab = prefab;
         if(currentPrefab != null)
         {
