@@ -70,7 +70,7 @@ public class PlaneInteractionManager : MonoBehaviour
         headPlacementEventChannel.PlanePlacementRequested.AddListener(obj => OnPlanePlacementRequested(obj));
         headPlacementEventChannel.RequestDisablePlaneInteractionManager.AddListener(ResetObjects);
         ProtocolState.Instance.ProtocolStream.Subscribe(_ => OnProtocolExit()).AddTo(this);
-        ProtocolState.Instance.ChecklistStream.Subscribe(_ => OnNextCheckItem()).AddTo(this);
+        //ProtocolState.Instance.ChecklistStream.Subscribe(_ => OnNextCheckItem()).AddTo(this);
     }
 
     private void RemoveSubscriptions()
@@ -79,7 +79,7 @@ public class PlaneInteractionManager : MonoBehaviour
         headPlacementEventChannel.PlanePlacementRequested.RemoveListener(OnPlanePlacementRequested);
         headPlacementEventChannel.RequestDisablePlaneInteractionManager.RemoveListener(ResetObjects);
         ProtocolState.Instance.ProtocolStream.Subscribe(_ => OnProtocolExit()).Dispose();   
-        ProtocolState.Instance.ChecklistStream.Subscribe(_ => OnNextCheckItem()).Dispose();
+        //ProtocolState.Instance.ChecklistStream.Subscribe(_ => OnNextCheckItem()).Dispose();
     }
     
 
@@ -145,8 +145,19 @@ public class PlaneInteractionManager : MonoBehaviour
         }
         //place object on plane, stop plane interaction requests
         Debug.Log("PlaneInteractionManager: Placing object on plane" + currentPrefab.name);
-        currentPlane.gameObject.SetActive(false);
-        currentPrefab = null;
+        var currentCheckItem = ProtocolState.Instance.CurrentCheckItemDefinition;
+
+        if(currentPrefab != null)
+        {
+            currentPrefab = null;
+            StartCoroutine(DelayNextPlacement());
+            headPlacementEventChannel.CurrentPrefabLocked.Invoke();
+            if(currentPlane != null)
+            {
+                currentPlane.GetComponent<MeshRenderer>().SetMaterials(new List<Material>() {invisiblePlaneMaterial});
+                currentPlane = null;
+            }
+        }
         // prefabTemporarilyLocked = !prefabTemporarilyLocked;
         // if(prefabTemporarilyLocked)
         // {
@@ -159,31 +170,31 @@ public class PlaneInteractionManager : MonoBehaviour
 
     }
 
-    private void OnNextCheckItem()
-    {
-        var currentCheckItem = ProtocolState.Instance.CurrentCheckItemDefinition;
+    // private void OnNextCheckItem()
+    // {
+    //     var currentCheckItem = ProtocolState.Instance.CurrentCheckItemDefinition;
         
-        // Return early if this is the same checklist item
-        if (previousCheckItem != null && previousCheckItem == currentCheckItem)
-        {
-            return;
-        }
+    //     // Return early if this is the same checklist item
+    //     if (previousCheckItem != null && previousCheckItem == currentCheckItem)
+    //     {
+    //         return;
+    //     }
         
-        previousCheckItem = currentCheckItem;
+    //     previousCheckItem = currentCheckItem;
 
-        if(currentPrefab != null)
-        {
-            currentPrefab = null;
-            StartCoroutine(DelayNextPlacement());
-            headPlacementEventChannel.CurrentPrefabLocked.Invoke();
-            if(currentPlane != null)
-            {
-                currentPlane.GetComponent<MeshRenderer>().SetMaterials(new List<Material>() {invisiblePlaneMaterial});
-                currentPlane = null;
-            }
-            prefabTemporarilyLocked = false;
-        }
-    }
+    //     if(currentPrefab != null)
+    //     {
+    //         currentPrefab = null;
+    //         StartCoroutine(DelayNextPlacement());
+    //         headPlacementEventChannel.CurrentPrefabLocked.Invoke();
+    //         if(currentPlane != null)
+    //         {
+    //             currentPlane.GetComponent<MeshRenderer>().SetMaterials(new List<Material>() {invisiblePlaneMaterial});
+    //             currentPlane = null;
+    //         }
+    //         prefabTemporarilyLocked = false;
+    //     }
+    // }
 
     private void TestObjectPlacement()
     {
