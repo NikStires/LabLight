@@ -54,6 +54,7 @@ public class ProtocolItemLockingManager : MonoBehaviour
             for (int i = 1; i < objectsToLock.Count; i++)
             {
                 objectsQueue.Enqueue(objectsToLock[i]);
+                Debug.Log("Enqueued remaining object: " + objectsToLock[i].name);
             }
             
             // Enable locking state in ProtocolState
@@ -64,8 +65,10 @@ public class ProtocolItemLockingManager : MonoBehaviour
 
     private void ObjectLocked()
     {
+        Debug.Log("ObjectLocked " + objectsQueue.Count + " objects remaining");
         if (objectsQueue.Count > 0)
         {
+            Debug.Log("Dequeuing object: " + objectsQueue.Peek().name);
             headPlacementEventChannel.SetHeadtrackedObject.Invoke(objectsQueue.Dequeue());
         }
         else
