@@ -10,5 +10,9 @@
   {
     "title": "cell-culture-protocol",
     "version": "1.2.0"
+  },
+  {
+      "title": "demo-protocol",
+      "version": "1.0.0"
   }
 ]
