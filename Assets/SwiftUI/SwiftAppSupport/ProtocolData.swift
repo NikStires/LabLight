@@ -102,12 +102,22 @@ struct CheckItemDefinition: Codable, Identifiable, Equatable, Hashable {
 struct ContentItem: Codable, Identifiable, Equatable, Hashable {
     let contentType: String
     let properties: [String: String]
+    let arObjectID: String
     
     let id: UUID = UUID()
     
     private enum CodingKeys: String, CodingKey {
         case contentType
         case properties
+        case arObjectID
+    }
+    
+    // Add init to handle missing arObjectID
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        contentType = try container.decode(String.self, forKey: .contentType)
+        properties = try container.decode([String: String].self, forKey: .properties)
+        arObjectID = try container.decodeIfPresent(String.self, forKey: .arObjectID) ?? ""
     }
     
     // MARK: Hashable
@@ -119,7 +129,8 @@ struct ContentItem: Codable, Identifiable, Equatable, Hashable {
     static func == (lhs: ContentItem, rhs: ContentItem) -> Bool {
         return lhs.id == rhs.id &&
                lhs.contentType == rhs.contentType &&
-               lhs.properties == rhs.properties
+               lhs.properties == rhs.properties &&
+               lhs.arObjectID == rhs.arObjectID
     }
 }
 

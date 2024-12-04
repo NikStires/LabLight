@@ -9,15 +9,15 @@
       "rootPrefabName": "horizontalwellplate96"
     },
     {
-        "specificObjectName": "Water res",
-        "arObjectID": "reservoir_01",
-        "rootPrefabName": "reservoir"
+      "specificObjectName": "Water res",
+      "arObjectID": "reservoir_01",
+      "rootPrefabName": "reservoir"
     }
   ],
   "steps": [
     {
       "isCritical": true,
-      "contentItems":[],
+      "contentItems": [],
       "checklist": [
         {
           "text": "Prepare materials",
@@ -43,9 +43,10 @@
           }
         },
         {
-          "contentType": "Image",
+          "contentType": "Text",
+          "arObjectID": "wellplate_01",
           "properties": {
-            "URL": "step1.png"
+            "Text": "This is your reaction plate for the protocol"
           }
         }
       ],
@@ -62,6 +63,15 @@
                 "colorName": "Gold"
               }
             }
+          ],
+          "contentItems": [
+            {
+              "contentType": "Text",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "Text": "Pipette 100µl of patient sample into well A1"
+              }
+            }
           ]
         },
         {
@@ -74,6 +84,15 @@
                 "subIDs": ["A2"],
                 "colorHex": "#FFFF00",
                 "colorName": "Green"
+              }
+            }
+          ],
+          "contentItems": [
+            {
+              "contentType": "Text",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "Text": "Pipette 100µl of the reaction mix into well A2"
               }
             }
           ]

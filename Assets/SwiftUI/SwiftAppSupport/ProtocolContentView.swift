@@ -7,18 +7,26 @@ struct ProtocolContentView: View {
     let selectedChecklistItem: CheckItemDefinition?
     let nextUncheckedItem: CheckItemDefinition?
     
+    private var filteredContentItems: [ContentItem] {
+        contentItems.filter { $0.arObjectID.isEmpty }
+    }
+    
+    private func filterContentItems(_ items: [ContentItem]) -> [ContentItem] {
+        items.filter { $0.arObjectID.isEmpty }
+    }
+    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 // Step content items
-                if !contentItems.isEmpty {
+                if !filteredContentItems.isEmpty {
                     stepContent
                         .transition(.opacity)
                 }
                 
                 // Next unchecked item content
                 if let nextItem = nextUncheckedItem,
-                   !nextItem.contentItems.isEmpty {
+                   !filterContentItems(nextItem.contentItems).isEmpty {
                     nextItemContent(for: nextItem)
                         .transition(.opacity)
                 }
@@ -37,7 +45,7 @@ struct ProtocolContentView: View {
                 .font(.headline)
                 .foregroundColor(.primary)
             
-            ForEach(contentItems) { item in
+            ForEach(filteredContentItems) { item in
                 contentView(for: item)
             }
         }
@@ -56,7 +64,7 @@ struct ProtocolContentView: View {
                 .font(.subheadline)
                 .foregroundColor(.secondary)
             
-            ForEach(item.contentItems) { contentItem in
+            ForEach(filterContentItems(item.contentItems)) { contentItem in
                 contentView(for: contentItem)
             }
         }

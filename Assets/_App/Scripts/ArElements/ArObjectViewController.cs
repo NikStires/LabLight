@@ -9,7 +9,7 @@ using UnityEngine;
 /// </summary>
 public class ArObjectViewController : MonoBehaviour
 {
-    protected ArObject arObject;
+    public ArObject arObject;
 
     public virtual void Initialize(ArObject arObject, List<TrackedObject> trackedObjects)
     {
