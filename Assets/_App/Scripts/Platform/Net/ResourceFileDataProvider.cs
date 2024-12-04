@@ -154,14 +154,9 @@ public class ResourceFileDataProvider : IProtocolDataProvider, IMediaProvider
     /// <returns></returns>
     private static IEnumerator LoadTextAssetCoroutine(string url, IObserver<string> observer, CancellationToken cancel)
     {
+        // First try direct loading
         ResourceRequest resourceRequest = Resources.LoadAsync<TextAsset>(url);
-
-        //yield return new WaitForSeconds(5);
-
-        while (!resourceRequest.isDone)
-        {
-            yield return 0;
-        }
+        yield return new WaitUntil(() => resourceRequest.isDone);
 
         if (cancel.IsCancellationRequested)
         {
@@ -169,6 +164,22 @@ public class ResourceFileDataProvider : IProtocolDataProvider, IMediaProvider
         }
 
         TextAsset textAsset = resourceRequest.asset as TextAsset;
+
+        // If direct loading failed, search through all Resources
+        if (textAsset == null)
+        {
+            string fileName = Path.GetFileName(url);
+            TextAsset[] allAssets = Resources.LoadAll<TextAsset>("");
+
+            foreach (var asset in allAssets)
+            {
+                if (asset.name.Equals(fileName, StringComparison.OrdinalIgnoreCase))
+                {
+                    textAsset = asset;
+                    break;
+                }
+            }
+        }
 
         if (textAsset == null || string.IsNullOrEmpty(textAsset.text))
         {
@@ -190,10 +201,7 @@ public class ResourceFileDataProvider : IProtocolDataProvider, IMediaProvider
     {
         var fileName = Path.ChangeExtension(url, null);
         ResourceRequest resourceRequest = Resources.LoadAsync<Texture2D>(fileName);
-        while (!resourceRequest.isDone)
-        {
-            yield return 0;
-        }
+        yield return new WaitUntil(() => resourceRequest.isDone);
 
         if (cancel.IsCancellationRequested)
         {
@@ -201,6 +209,22 @@ public class ResourceFileDataProvider : IProtocolDataProvider, IMediaProvider
         }
 
         Texture2D textureAsset = resourceRequest.asset as Texture2D;
+
+        // If direct loading failed, search through all Resources
+        if (textureAsset == null)
+        {
+            string searchName = Path.GetFileName(fileName);
+            Texture2D[] allAssets = Resources.LoadAll<Texture2D>("");
+
+            foreach (var asset in allAssets)
+            {
+                if (asset.name.Equals(searchName, StringComparison.OrdinalIgnoreCase))
+                {
+                    textureAsset = asset;
+                    break;
+                }
+            }
+        }
 
         if (textureAsset == null)
         {
@@ -221,11 +245,7 @@ public class ResourceFileDataProvider : IProtocolDataProvider, IMediaProvider
     {
         var fileName = Path.ChangeExtension(url, null);
         ResourceRequest resourceRequest = Resources.LoadAsync<Sprite>(fileName);
-
-        while (!resourceRequest.isDone)
-        {
-            yield return 0;
-        }
+        yield return new WaitUntil(() => resourceRequest.isDone);
 
         if (cancel.IsCancellationRequested)
         {
@@ -233,6 +253,22 @@ public class ResourceFileDataProvider : IProtocolDataProvider, IMediaProvider
         }
 
         Sprite spriteAsset = resourceRequest.asset as Sprite;
+
+        // If direct loading failed, search through all Resources
+        if (spriteAsset == null)
+        {
+            string searchName = Path.GetFileName(fileName);
+            Sprite[] allAssets = Resources.LoadAll<Sprite>("");
+
+            foreach (var asset in allAssets)
+            {
+                if (asset.name.Equals(searchName, StringComparison.OrdinalIgnoreCase))
+                {
+                    spriteAsset = asset;
+                    break;
+                }
+            }
+        }
 
         if (spriteAsset == null)
         {
@@ -254,11 +290,7 @@ public class ResourceFileDataProvider : IProtocolDataProvider, IMediaProvider
     {
         var fileName = Path.ChangeExtension(url, null);
         ResourceRequest resourceRequest = Resources.LoadAsync<AudioClip>(fileName);
-
-        while (!resourceRequest.isDone)
-        {
-            yield return 0;
-        }
+        yield return new WaitUntil(() => resourceRequest.isDone);
 
         if (cancel.IsCancellationRequested)
         {
@@ -266,6 +298,22 @@ public class ResourceFileDataProvider : IProtocolDataProvider, IMediaProvider
         }
 
         AudioClip audioClipAsset = resourceRequest.asset as AudioClip;
+
+        // If direct loading failed, search through all Resources
+        if (audioClipAsset == null)
+        {
+            string searchName = Path.GetFileName(fileName);
+            AudioClip[] allAssets = Resources.LoadAll<AudioClip>("");
+
+            foreach (var asset in allAssets)
+            {
+                if (asset.name.Equals(searchName, StringComparison.OrdinalIgnoreCase))
+                {
+                    audioClipAsset = asset;
+                    break;
+                }
+            }
+        }
 
         if (audioClipAsset == null)
         {
@@ -286,11 +334,7 @@ public class ResourceFileDataProvider : IProtocolDataProvider, IMediaProvider
     {
         var fileName = Path.ChangeExtension(url, null);
         ResourceRequest resourceRequest = Resources.LoadAsync<VideoClip>(fileName);
-
-        while (!resourceRequest.isDone)
-        {
-            yield return 0;
-        }
+        yield return new WaitUntil(() => resourceRequest.isDone);
 
         if (cancel.IsCancellationRequested)
         {
@@ -298,6 +342,22 @@ public class ResourceFileDataProvider : IProtocolDataProvider, IMediaProvider
         }
 
         VideoClip videoClipAsset = resourceRequest.asset as VideoClip;
+
+        // If direct loading failed, search through all Resources
+        if (videoClipAsset == null)
+        {
+            string searchName = Path.GetFileName(fileName);
+            VideoClip[] allAssets = Resources.LoadAll<VideoClip>("");
+
+            foreach (var asset in allAssets)
+            {
+                if (asset.name.Equals(searchName, StringComparison.OrdinalIgnoreCase))
+                {
+                    videoClipAsset = asset;
+                    break;
+                }
+            }
+        }
 
         if (videoClipAsset == null)
         {
@@ -318,10 +378,7 @@ public class ResourceFileDataProvider : IProtocolDataProvider, IMediaProvider
     {
         var fileName = Path.ChangeExtension(url, null);
         ResourceRequest resourceRequest = Resources.LoadAsync<GameObject>(fileName);
-        while (!resourceRequest.isDone)
-        {
-            yield return 0;
-        }
+        yield return new WaitUntil(() => resourceRequest.isDone);
 
         if (cancel.IsCancellationRequested)
         {
@@ -329,6 +386,22 @@ public class ResourceFileDataProvider : IProtocolDataProvider, IMediaProvider
         }
 
         GameObject prefabAsset = resourceRequest.asset as GameObject;
+
+        // If direct loading failed, search through all Resources
+        if (prefabAsset == null)
+        {
+            string searchName = Path.GetFileName(fileName);
+            GameObject[] allAssets = Resources.LoadAll<GameObject>("");
+
+            foreach (var asset in allAssets)
+            {
+                if (asset.name.Equals(searchName, StringComparison.OrdinalIgnoreCase))
+                {
+                    prefabAsset = asset;
+                    break;
+                }
+            }
+        }
 
         if (prefabAsset == null)
         {

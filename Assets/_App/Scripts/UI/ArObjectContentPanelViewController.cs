@@ -16,18 +16,10 @@ public class ArObjectContentPanelViewController : MonoBehaviour
     private List<ContentItem> currentContentItems = new List<ContentItem>();
     private List<MonoBehaviour> contentItemInstances = new List<MonoBehaviour>();
     private IUIDriver uiDriver;
+    [SerializeField] private TextMeshProUGUI titleText;
 
     private void Awake()
     {
-        // Get the associated ArObject from the parent GameObject
-        associatedArObject = GetComponentInParent<ArObjectViewController>()?.arObject;
-        
-        if (associatedArObject == null)
-        {
-            Debug.LogError("[ArObjectContentPanelViewController] No ArObject found in parent hierarchy");
-            return;
-        }
-
         uiDriver = ServiceRegistry.GetService<IUIDriver>();
         InitializeSubscriptions();
     }
@@ -62,6 +54,7 @@ public class ArObjectContentPanelViewController : MonoBehaviour
                 Debug.LogError("[ArObjectContentPanelViewController] No valid AR object found after attempting to get it from parent");
                 return;
             }
+            titleText.text = associatedArObject.specificObjectName;
         }
 
         // Get current step content items

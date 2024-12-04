@@ -94,6 +94,13 @@
               "properties": {
                 "Text": "Pipette 100µl of the reaction mix into well A2"
               }
+            },
+            {
+              "contentType": "Image",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "URL": "step1.png"
+              }
             }
           ]
         }
