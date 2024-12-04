@@ -30822,6 +30822,18 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 730224192104095841, guid: bc78b0210e15747e6ad15c05de343aeb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 730224192104095841, guid: bc78b0210e15747e6ad15c05de343aeb, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 836403016830309958, guid: bc78b0210e15747e6ad15c05de343aeb, type: 3}
+      propertyPath: scrollSpeed
+      value: 0.01
+      objectReference: {fileID: 0}
     - target: {fileID: 1300103686893836861, guid: bc78b0210e15747e6ad15c05de343aeb, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -30840,7 +30852,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7494666482846262771, guid: bc78b0210e15747e6ad15c05de343aeb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.1161
+      value: -0.1564
       objectReference: {fileID: 0}
     - target: {fileID: 7494666482846262771, guid: bc78b0210e15747e6ad15c05de343aeb, type: 3}
       propertyPath: m_LocalRotation.w
