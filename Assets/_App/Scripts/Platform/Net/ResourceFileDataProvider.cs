@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using UniRx;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Video;
 
 /// <summary>

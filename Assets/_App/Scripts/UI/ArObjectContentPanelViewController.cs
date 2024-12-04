@@ -120,12 +120,14 @@ public class ArObjectContentPanelViewController : MonoBehaviour
         {
             case "text":
                 var textController = Instantiate(textPrefab, container.transform);
+                SetupRectTransform(textController.GetComponent<RectTransform>());
                 textController.ContentItem = contentItem;
                 controller = textController;
                 break;
 
             case "image":
                 var imageController = Instantiate(imagePrefab, container.transform);
+                SetupRectTransform(imageController.GetComponent<RectTransform>());
                 imageController.ContentItem = contentItem;
                 controller = imageController;
                 break;
@@ -172,6 +174,33 @@ public class ArObjectContentPanelViewController : MonoBehaviour
             Debug.Log($"[ArObjectContentPanelViewController] Successfully created controller for content type: {contentItem.contentType}");
             contentItemInstances.Add(controller);
         }
+    }
+
+    private void SetupRectTransform(RectTransform rect)
+    {
+        if (rect == null) return;
+
+        // Set anchors to stretch horizontally
+        rect.anchorMin = new Vector2(0, 0);
+        rect.anchorMax = new Vector2(1, 0);
+        rect.pivot = new Vector2(0.5f, 0);
+        
+        // Set a smaller default height
+        float preferredHeight = 0.04f;
+        
+        var layoutElement = rect.GetComponent<LayoutElement>();
+        if (layoutElement == null)
+        {
+            layoutElement = rect.gameObject.AddComponent<LayoutElement>();
+        }
+        layoutElement.minHeight = preferredHeight;
+        layoutElement.preferredHeight = preferredHeight;
+        
+        // Reset position
+        rect.anchoredPosition = new Vector2(0, 0);
+        
+        // Set size delta (only height needs to be set since width is controlled by anchors)
+        rect.sizeDelta = new Vector2(0, preferredHeight);
     }
 
     private void ClearContent()
