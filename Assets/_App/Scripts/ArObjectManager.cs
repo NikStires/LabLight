@@ -263,6 +263,7 @@ public class ArObjectManager : MonoBehaviour
                 var arObjectId = arView.Key.arObjectID;
                 if (highlightActions.TryGetValue(arObjectId, out var actions))
                 {
+                    Debug.Log($"[ArObjectManager] Highlighting {actions.Count} actions for object {arObjectId}");
                     modelView.HighlightGroup(actions);
                 }
                 else

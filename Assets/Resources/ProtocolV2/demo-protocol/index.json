@@ -2,7 +2,7 @@
   "version": "1.0",
   "title": "Dilution Series Preparation Using a 96-Well Plate",
   "Description": "Prepare a 1:7.5 serial dilution series of a stock solution across a row of a 96-well plate.",
-  "estimatedDurationInSeconds": 0,
+  "estimatedDurationInSeconds": "0",
   "protocolPDFNames": ["LabSafety.pdf", "SerialDilutionGuide.pdf"],
   "globalArObjects": [
     {
@@ -20,7 +20,7 @@
     {
       "isCritical": false,
       "title": "Setup Laboratory AR Objects",
-      "estimatedDurationInSeconds": 0,
+      "estimatedDurationInSeconds": "0",
       "checklist": [
         {
           "Text": "Place the 96-Well Plate on the lab bench.",
@@ -51,7 +51,7 @@
     {
       "isCritical": false,
       "title": "Start Procedure Timer",
-      "estimatedDurationInSeconds": 0,
+      "estimatedDurationInSeconds": "0",
       "checklist" : [
           {
               "Text": "Start the timer to track how long the procedure takes",
@@ -59,7 +59,7 @@
                 {
                   "contentType": "Timer",
                   "properties": {
-                    "DurationInSeconds": 0
+                    "durationInSeconds": "0"
                   }
                 }
               ]
@@ -69,7 +69,7 @@
     {
       "isCritical": false,
       "title": "Review Safety and Procedure Guidelines",
-      "estimatedDurationInSeconds": 0,
+      "estimatedDurationInSeconds": "0",
       "checklist" : [
           {
               "Text": "Review the Lab Safety Guidelines",
@@ -98,7 +98,7 @@
     {
       "isCritical": true,
       "title": "Prepare the Plate",
-      "estimatedDurationInSeconds": 0,
+      "estimatedDurationInSeconds": "0",
       "contentItems": [
         {
           "contentType": "Text",
@@ -109,7 +109,7 @@
         {
           "contentType": "Image",
           "properties": {
-            "url": "plate_row_A_highlighted.png",
+            "url": "water_platemap.png",
             "Text": "Row A highlighted for dilution series."
           }
         }
@@ -122,7 +122,7 @@
                 "actionType": "Highlight",
                 "arObjectID": "reservoir_01",
                 "properties": {
-                  "subIDs": ["1"],
+                  "subIDs": [""],
                   "colorHex": "#FFD700",
                   "colorName": "Gold"
                 }
@@ -164,7 +164,7 @@
               "contentType": "Image",
               "arObjectID": "wellplate_01",
               "properties": {
-                "url": "distilled_water_platemap.png",
+                "url": "water_platemap.png",
                 "Text": "Image of the 96-well plate"
               }
             }
@@ -175,7 +175,7 @@
     {
       "isCritical": true,
       "title": "Add Stock Solution",
-      "estimatedDurationInSeconds": 0,
+      "estimatedDurationInSeconds": "0",
       "checklist": [
         {
           "Text": "Add 200 µL of the stock solution to well A1.",
@@ -202,7 +202,7 @@
               "contentType": "Image",
               "arObjectID": "wellplate_01",
               "properties": {
-                "url": "stock_solution_platemap.png",
+                "url": "stock_platemap.png",
                 "Text": "Image of the 96-well plate"
               }
             }
@@ -213,7 +213,7 @@
     {
       "isCritical": false,
       "title": "Calculate the Dilution Volume",
-      "estimatedDurationInSeconds": 0,
+      "estimatedDurationInSeconds": "0",
       "contentItems": [
         {
           "contentType": "Text",
@@ -244,7 +244,7 @@
     {
       "isCritical": true,
       "title": "Perform Serial Dilutions",
-      "estimatedDurationInSeconds": 0,
+      "estimatedDurationInSeconds": "0",
       "contentItems": [
         {
           "contentType": "Video",
@@ -663,7 +663,7 @@
     {
       "isCritical": false,
       "title": "Observe and Document",
-      "estimatedDurationInSeconds": 0,
+      "estimatedDurationInSeconds": "0",
       "checklist": [
         {
           "Text": "Record changes in color intensity across the row."
@@ -685,7 +685,7 @@
     {
       "isCritical": false,
       "title": "Clean Up",
-      "estimatedDurationInSeconds": 0,
+      "estimatedDurationInSeconds": "0",
       "checklist": [
         {
           "Text": "Dispose of used tips properly."

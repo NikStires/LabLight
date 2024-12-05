@@ -106,7 +106,7 @@ public class SourceElementViewController : ModelElementViewController
             }
         }
     }
-            //new imp
+    //new imp
     public override void HighlightGroup(List<ArAction> actions)
     {
         if (actions == null || actions.Count == 0 || alignmentTriggered)
@@ -132,11 +132,10 @@ public class SourceElementViewController : ModelElementViewController
     {
         if (action?.properties == null) return;
 
-        // Cache property lookups
-        var subIDs = action.properties.GetValueOrDefault("subIDs", new List<string>());
-        var colorHex = action.properties.GetValueOrDefault("colorHex", "#FFFFFF").ToString();
+        var subIDs = GetSubIDs(action);
+        if (subIDs == null) return;
 
-        foreach (string id in (List<string>)subIDs)
+        foreach (string id in subIDs)
         {
             if (debugeEnableAllSettings)
             {
@@ -169,9 +168,10 @@ public class SourceElementViewController : ModelElementViewController
     {
         if (action?.properties == null) return;
 
-        var subIDs = action.properties.GetValueOrDefault("subIDs", new List<string>());
+        var subIDs = GetSubIDs(action);
+        if (subIDs == null) return;
 
-        foreach (string id in (List<string>)subIDs)
+        foreach (string id in subIDs)
         {
             toggleTransform(Sources, false, id);
             toggleTransform(nameTags, false, id);
@@ -210,18 +210,21 @@ public class SourceElementViewController : ModelElementViewController
         {
             foreach (var action in currActions)
             {
-                var subIDs = action.properties.GetValueOrDefault("subIDs", new List<string>());
-                foreach (string id in (List<string>)subIDs)
+                var subIDs = GetSubIDs(action);
+                if (subIDs != null)
                 {
-                    if (debugeEnableAllSettings)
+                    foreach (string id in subIDs)
                     {
-                        toggleTransform(Sources, (true && value), id);
-                        toggleTransform(nameTags, (true && value), id);
-                    }
-                    else
-                    {
-                        toggleTransform(Sources, settingsManagerSO.GetSettingValue(LablightSettings.Source_Container) && value, id);
-                        toggleTransform(nameTags, settingsManagerSO.GetSettingValue(LablightSettings.Source_Contents) && value, id);
+                        if (debugeEnableAllSettings)
+                        {
+                            toggleTransform(Sources, (true && value), id);
+                            toggleTransform(nameTags, (true && value), id);
+                        }
+                        else
+                        {
+                            toggleTransform(Sources, settingsManagerSO.GetSettingValue(LablightSettings.Source_Container) && value, id);
+                            toggleTransform(nameTags, settingsManagerSO.GetSettingValue(LablightSettings.Source_Contents) && value, id);
+                        }
                     }
                 }
             }
@@ -261,23 +264,53 @@ public class SourceElementViewController : ModelElementViewController
             {
                 foreach(var action in currActions)
                 {
-                    foreach(string id in (List<string>)action.properties.GetValueOrDefault("subIDs", new List<string>()))
-                    {       
-                        switch(settingChanged.Item1)
-                        {
-                            case LablightSettings.Source_Container:
-                                toggleTransform(Sources, settingChanged.Item2, id);
-                                break;
-                            case LablightSettings.Source_Contents:
-                                toggleTransform(nameTags, settingChanged.Item2, id);
-                                break;
+                    var subIDs = GetSubIDs(action);
+                    if(subIDs != null)
+                    {
+                        foreach(string id in subIDs)
+                        {       
+                            switch(settingChanged.Item1)
+                            {
+                                case LablightSettings.Source_Container:
+                                    toggleTransform(Sources, settingChanged.Item2, id);
+                                    break;
+                                case LablightSettings.Source_Contents:
+                                    toggleTransform(nameTags, settingChanged.Item2, id);
+                                    break;
+                            }
                         }
                     }
                 }
             }
         });
     }
-    
+
+    private List<string> GetSubIDs(ArAction action)
+    {
+        if (action == null || action.properties == null)
+            return null;
+
+        var subIDsObj = action.properties.GetValueOrDefault("subIDs", null);
+        if (subIDsObj == null)
+            return null;
+
+        if (subIDsObj is IEnumerable subIDsEnumerable && !(subIDsObj is string))
+        {
+            var subIDsList = new List<string>();
+            foreach (var idObj in subIDsEnumerable)
+            {
+                if (idObj != null)
+                {
+                    subIDsList.Add(idObj.ToString());
+                }
+            }
+            return subIDsList;
+        }
+        else
+        {
+            return new List<string> { subIDsObj.ToString() };
+        }
+    }
 
 }
 /* Original contentsToColors implementation for reference:

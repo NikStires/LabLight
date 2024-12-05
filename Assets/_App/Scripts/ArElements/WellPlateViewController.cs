@@ -119,11 +119,11 @@ public class WellPlateViewController : ModelElementViewController
                     if (action?.properties != null)
                     {
                         bool isSource = (bool)action.properties.GetValueOrDefault("isSource", false);
-                        var subIDs = action.properties.GetValueOrDefault("subIDs", new List<string>());
+                        var subIDs = GetSubIDs(action);
 
-                        if (isSource && Markers2D != null)
+                        if (isSource && Markers2D != null && subIDs != null)
                         {
-                            foreach (string id in (List<string>)subIDs)
+                            foreach (string id in subIDs)
                             {
                                 if (firstHighlight)
                                 {
@@ -214,36 +214,11 @@ public class WellPlateViewController : ModelElementViewController
             parsedColor.a = 1f;
         }
 
-        var subIDsObj = action.properties.GetValueOrDefault("subIDs", null);
-
-        if (subIDsObj != null)
+        var subIDs = GetSubIDs(action);
+        if(subIDs != null)
         {
-            if (subIDsObj is IEnumerable subIDsEnumerable)
+            foreach(string id in subIDs)
             {
-                foreach (var idObj in subIDsEnumerable)
-                {
-                    string id = idObj.ToString();
-
-                    // Your existing logic to toggle transforms
-                    if (debugEnableAllSettings)
-                    {
-                        toggleTransform(Markers, true, id, parsedColor);
-                        toggleTransform(rowIndicators, true, id[0].ToString(), parsedColor);
-                        toggleTransform(colIndicators, true, id.Substring(1), parsedColor);
-                    }
-                    else
-                    {
-                        toggleTransform(Markers, storedSettings[LablightSettings.Well_Indicators], id, parsedColor);
-                        toggleTransform(rowIndicators, storedSettings[LablightSettings.Relevant_RC_Only], id[0].ToString(), parsedColor);
-                        toggleTransform(colIndicators, storedSettings[LablightSettings.Relevant_RC_Only], id.Substring(1), parsedColor);
-                    }
-                }
-            }
-            else
-            {
-                string id = subIDsObj.ToString();
-
-                // Your existing logic to toggle transforms
                 if (debugEnableAllSettings)
                 {
                     toggleTransform(Markers, true, id, parsedColor);
@@ -279,26 +254,11 @@ public class WellPlateViewController : ModelElementViewController
     {
         if (action?.properties == null) return;
 
-        var subIDsObj = action.properties.GetValueOrDefault("subIDs", null);
-
-        if (subIDsObj != null)
+        var subIDs = GetSubIDs(action);
+        if (subIDs != null)
         {
-            if (subIDsObj is IEnumerable subIDsEnumerable)
+            foreach (string id in subIDs)
             {
-                foreach (var idObj in subIDsEnumerable)
-                {
-                    string id = idObj.ToString();
-
-                    // Your existing logic to toggle transforms
-                    toggleTransform(Markers, false, id);
-                    toggleTransform(rowIndicators, true, id[0].ToString(), defaultIndicatorColor);
-                    toggleTransform(colIndicators, true, id.Substring(1), defaultIndicatorColor);
-                }
-            }
-            else
-            {
-                string id = subIDsObj.ToString();
-
                 toggleTransform(Markers, false, id);
                 toggleTransform(rowIndicators, true, id[0].ToString(), defaultIndicatorColor);
                 toggleTransform(colIndicators, true, id.Substring(1), defaultIndicatorColor);
@@ -415,30 +375,34 @@ public class WellPlateViewController : ModelElementViewController
     //     }
     // }
 
-    private void toggleActiveComponents(bool value)
+    public void toggleActiveComponents(bool value)
     {
-        if(currActions != null)
+        if (currActions != null)
         {
-            foreach(var action in currActions)
+            foreach (var action in currActions)
             {
-                var subIDs = action.properties.GetValueOrDefault("subIDs", new List<string>());
-                foreach(string id in (List<string>)subIDs)
+                var subIDs = GetSubIDs(action);
+                if (subIDs != null)
                 {
-                    if (debugEnableAllSettings)
+                    foreach (string id in subIDs)
                     {
-                        toggleTransform(rowIndicators, (true && value), id.Substring(0, 1));
-                        toggleTransform(colIndicators, (true && value), id.Substring(1));
-                        toggleTransform(Markers, (true && value), id);
-                    }
-                    else
-                    {
-                        toggleTransform(rowIndicators, storedSettings[LablightSettings.Relevant_RC_Only] && value, id.Substring(0, 1));
-                        toggleTransform(colIndicators, storedSettings[LablightSettings.Relevant_RC_Only] && value, id.Substring(1));
-                        toggleTransform(Markers, storedSettings[LablightSettings.Well_Indicators] && value, id);
+                        if (debugEnableAllSettings)
+                        {
+                            toggleTransform(rowIndicators, true && value, id.Substring(0, 1));
+                            toggleTransform(colIndicators, true && value, id.Substring(1));
+                            toggleTransform(Markers, true && value, id);
+                        }
+                        else
+                        {
+                            toggleTransform(rowIndicators, storedSettings[LablightSettings.Relevant_RC_Only] && value, id.Substring(0, 1));
+                            toggleTransform(colIndicators, storedSettings[LablightSettings.Relevant_RC_Only] && value, id.Substring(1));
+                            toggleTransform(Markers, storedSettings[LablightSettings.Well_Indicators] && value, id);
+                        }
                     }
                 }
             }
         }
+
         toggleTransform(ModelName, value);
         if(debugEnableAllSettings)
         {
@@ -493,25 +457,28 @@ public class WellPlateViewController : ModelElementViewController
                         foreach(var action in currActions)
                         {
                             var colorHex = action.properties.GetValueOrDefault("colorHex", "#FFFFFF").ToString();
-                            var subIDs = action.properties.GetValueOrDefault("subIDs", new List<string>());
-                            
+            
                             Color parsedColor;
                             if(ColorUtility.TryParseHtmlString(colorHex, out parsedColor))
                             {
                                 parsedColor.a = 1f;
                             }
                             
-                            foreach(string id in (List<string>)subIDs)
+                            var subIDs = GetSubIDs(action);
+                            if(subIDs != null)
                             {
-                                if(!settingChanged.Item2 && storedSettings[LablightSettings.RC_Markers])
+                                foreach(string id in subIDs)
                                 {
-                                    toggleTransform(rowIndicators, true, id.Substring(0,1), defaultIndicatorColor); 
-                                    toggleTransform(colIndicators, true, id.Substring(1), defaultIndicatorColor);
-                                }
-                                else
-                                {
-                                    toggleTransform(rowIndicators, settingChanged.Item2, id.Substring(0,1), parsedColor);
-                                    toggleTransform(colIndicators, settingChanged.Item2, id.Substring(1), parsedColor);
+                                    if(!settingChanged.Item2 && storedSettings[LablightSettings.RC_Markers])
+                                    {
+                                        toggleTransform(rowIndicators, true, id.Substring(0,1), defaultIndicatorColor); 
+                                        toggleTransform(colIndicators, true, id.Substring(1), defaultIndicatorColor);
+                                    }
+                                    else
+                                    {
+                                        toggleTransform(rowIndicators, settingChanged.Item2, id.Substring(0,1), parsedColor);
+                                        toggleTransform(colIndicators, settingChanged.Item2, id.Substring(1), parsedColor);
+                                    }                                    
                                 }
                             }
                         }
@@ -522,11 +489,14 @@ public class WellPlateViewController : ModelElementViewController
                     {
                         foreach(var action in currActions)
                         {
-                            var subIDs = action.properties.GetValueOrDefault("subIDs", new List<string>());
-                            foreach(string id in (List<string>)subIDs)
+                            var subIDs = GetSubIDs(action);
+                            if(subIDs != null)
                             {
-                                toggleTransform(rowHighlights, settingChanged.Item2, id.Substring(0,1));
-                                toggleTransform(colHighlights, settingChanged.Item2, id.Substring(1));
+                                foreach(string id in subIDs)
+                                {
+                                    toggleTransform(rowHighlights, settingChanged.Item2, id.Substring(0,1));
+                                    toggleTransform(colHighlights, settingChanged.Item2, id.Substring(1));
+                                }
                             }
                         }
                     }
@@ -540,17 +510,19 @@ public class WellPlateViewController : ModelElementViewController
                         foreach(var action in currActions)
                         {
                             var colorHex = action.properties.GetValueOrDefault("colorHex", "#FFFFFF").ToString();
-                            var subIDs = action.properties.GetValueOrDefault("subIDs", new List<string>());
                             
                             Color parsedColor;
                             if(ColorUtility.TryParseHtmlString(colorHex, out parsedColor))
                             {
                                 parsedColor.a = 1f;
                             }
-                            
-                            foreach(string id in (List<string>)subIDs)
+                            var subIDs = GetSubIDs(action);
+                            if(subIDs != null)
                             {
-                                toggleTransform(Markers, settingChanged.Item2, id, parsedColor);
+                                foreach(string id in subIDs)
+                                {
+                                    toggleTransform(Markers, settingChanged.Item2, id, parsedColor);
+                                }
                             }
                         }
                     }
@@ -572,4 +544,33 @@ public class WellPlateViewController : ModelElementViewController
             indicator.Rotate(Vector3.forward, degrees);
         }
     }
+
+
+    private List<string> GetSubIDs(ArAction action)
+    {
+        if (action == null || action.properties == null)
+            return null;
+
+        var subIDsObj = action.properties.GetValueOrDefault("subIDs", null);
+        if (subIDsObj == null)
+            return null;
+
+        if (subIDsObj is IEnumerable subIDsEnumerable && !(subIDsObj is string))
+        {
+            var subIDsList = new List<string>();
+            foreach (var idObj in subIDsEnumerable)
+            {
+                if (idObj != null)
+                {
+                    subIDsList.Add(idObj.ToString());
+                }
+            }
+            return subIDsList;
+        }
+        else
+        {
+            return new List<string> { subIDsObj.ToString() };
+        }
+    }
+
 }
