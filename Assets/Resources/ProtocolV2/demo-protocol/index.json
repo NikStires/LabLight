@@ -1,5 +1,5 @@
 {
-  "version": 1.0,
+  "version": "1.0",
   "title": "Dilution Series Preparation Using a 96-Well Plate",
   "Description": "Prepare a 1:7.5 serial dilution series of a stock solution across a row of a 96-well plate.",
   "estimatedDurationInSeconds": 0,
