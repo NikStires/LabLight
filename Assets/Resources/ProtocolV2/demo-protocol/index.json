@@ -8,7 +8,7 @@
     {
       "specificObjectName": "96-Well Plate",
       "arObjectID": "wellplate_01",
-      "rootPrefabName": "horizontalwellplate"
+      "rootPrefabName": "horizontalwellplate96"
     },
     {
       "specificObjectName": "Reservoir",
@@ -24,23 +24,27 @@
       "checklist": [
         {
           "Text": "Place the 96-Well Plate on the lab bench.",
-          "arActions": {
-            "actionType": "Lock",
-            "arObjectID": "wellplate_01",
-            "properties": {
-              "arIDList": ["wellplate_01"]
+          "arActions": [
+            {
+                "actionType": "Lock",
+                "arObjectID": "",
+                "properties": {
+                  "arIDList": ["wellplate_01"]
+                }
             }
-          }
+          ]
         },
         {
           "Text": "Place the Reservoir on the lab bench.",
-          "arActions": {
-            "actionType": "Lock",
-            "arObjectID": "reservoir_01",
-            "properties": {
-              "arIDList": ["reservoir_01"]
+          "arActions": [
+            {
+                "actionType": "Lock",
+                "arObjectID": "",
+                "properties": {
+                  "arIDList": ["reservoir_01"]
+                }
             }
-          }
+          ]
         }
       ]
     },
@@ -106,15 +110,17 @@
       "checklist": [
         {
           "Text": "Locate the reservoir containing distilled water.",
-          "arActions": {
-            "actionType": "Highlight",
-            "arObjectID": "reservoir_01",
-            "properties": {
-              "subIDs": ["1"],
-              "colorHex": "#FFD700",
-              "colorName": "Gold"
+          "arActions": [
+            {
+                "actionType": "Highlight",
+                "arObjectID": "reservoir_01",
+                "properties": {
+                  "subIDs": ["1"],
+                  "colorHex": "#FFD700",
+                  "colorName": "Gold"
+                }
             }
-          },
+          ],
           "contentItems": [
             {
               "contentType": "Text",
@@ -127,15 +133,18 @@
         },
         {
           "Text": "Add 175 µL of distilled water from the reservoir to each well from A2 to A12.",
-          "arActions": {
-            "actionType": "Highlight",
-            "arObjectID": "wellplate_01",
-            "properties": {
-              "subIDs": ["A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10", "A11", "A12"],
-              "colorHex": "#AAFF00",
-              "colorName": "Green"
+          "arActions": [
+            {
+                "actionType": "Highlight",
+                "arObjectID": "wellplate_01",
+                "properties": {
+                  "subIDs": ["A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10", "A11", "A12"],
+                  "colorHex": "#AAFF00",
+                  "colorName": "Green"
+                }
             }
-          },
+          ]
+          ,
           "contentItems": [
             {
               "contentType": "Text",
@@ -163,15 +172,17 @@
       "checklist": [
         {
           "Text": "Add 200 µL of the stock solution to well A1.",
-          "arAction": {
-            "actionType": "Highlight",
-            "arObjectID": "wellplate_01",
-            "properties": {
-              "subIDs": ["A1"],
-              "colorHex": "#FFD700",
-              "colorName": "Gold"
+          "arActions": [
+            {
+                "actionType": "Highlight",
+                "arObjectID": "wellplate_01",
+                "properties": {
+                  "subIDs": ["A1"],
+                  "colorHex": "#FFD700",
+                  "colorName": "Gold"
+                }
             }
-          },
+          ],
           "contentItems": [
             {
               "contentType": "Text",
@@ -308,11 +319,12 @@
               }
             },
             {
-              "contentType": "Image",
-              "arObjectID": "wellplate_01",
-              "properties": {
-                "url": "plate_map_A2_to_A3.png",
-                "Text": "Plate map showing transfer from A2 to A3"
+                  "contentType": "Image",
+                  "arObjectID": "wellplate_01",
+                  "properties": {
+                    "url": "plate_map_A2_to_A3.png",
+                    "Text": "Plate map showing transfer from A2 to A3"
+                }
             }
           ]
         },
