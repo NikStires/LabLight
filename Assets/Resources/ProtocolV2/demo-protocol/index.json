@@ -52,42 +52,49 @@
       "isCritical": false,
       "title": "Start Procedure Timer",
       "estimatedDurationInSeconds": 0,
-      "contentItems": [
-        {
-          "contentType": "Timer",
-          "properties": {
-            "DurationInSeconds": 0
+      "checklist" : [
+          {
+              "Text": "Start the timer to track how long the procedure takes",
+              "contentItems": [
+                {
+                  "contentType": "Timer",
+                  "properties": {
+                    "DurationInSeconds": 0
+                  }
+                }
+              ]
           }
-        },
-        {
-          "contentType": "Text",
-          "properties": {
-            "Text": "Start the timer to track how long the procedure takes."
-          }
-        }
       ]
     },
     {
       "isCritical": false,
       "title": "Review Safety and Procedure Guidelines",
       "estimatedDurationInSeconds": 0,
-      "contentItems": [
-        {
-          "contentType": "PDF",
-          "properties": {
-            "url": "LabSafety.pdf",
-            "Text": "Review the Lab Safety Guidelines."
+      "checklist" : [
+          {
+              "Text": "Review the Lab Safety Guidelines",
+              "contentItems": [
+                  {
+                      "contentType" : "PDF",
+                      "properties" : {
+                          "url" : "LabSafety.pdf"
+                      }
+                  }
+              ]
+          },
+          {
+              "Text" : "Review the Serial Dilution Guide.",
+              "contentItems" : [
+                  {
+                      "contentType" : "PDF",
+                      "properties" : {
+                          "url" : "SerialDilutionGuide.pdf"
+                      }
+                  }
+              ]
           }
-        },
-        {
-          "contentType": "PDF",
-          "properties": {
-            "url": "SerialDilutionGuide.pdf",
-            "Text": "Review the Serial Dilution Guide."
-          }
-        }
-      ]
-    },
+        ]
+      },
     {
       "isCritical": true,
       "title": "Prepare the Plate",
