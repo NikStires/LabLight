@@ -8,7 +8,7 @@
     {
       "SpecificObjectName": "96-Well Plate",
       "arObjectID": "wellplate_01",
-      "RootPrefabName": "horizontalwellplate96"
+      "RootPrefabName": "horizontalwellplate"
     },
     {
       "SpecificObjectName": "Reservoir",
@@ -51,13 +51,13 @@
       "ContentItems": [
         {
           "Type": "Timer",
-          "Properties": {
+          "properties": {
             "DurationInSeconds": 0
           }
         },
         {
           "Type": "Text",
-          "Properties": {
+          "properties": {
             "Text": "Start the timer to track how long the procedure takes."
           }
         }
@@ -70,14 +70,14 @@
       "ContentItems": [
         {
           "Type": "PDF",
-          "Properties": {
+          "properties": {
             "URL": "LabSafety.pdf",
             "Text": "Review the Lab Safety Guidelines."
           }
         },
         {
           "Type": "PDF",
-          "Properties": {
+          "properties": {
             "URL": "SerialDilutionGuide.pdf",
             "Text": "Review the Serial Dilution Guide."
           }
@@ -91,33 +91,15 @@
       "ContentItems": [
         {
           "Type": "Text",
-          "Properties": {
+          "properties": {
             "Text": "Designate Row A for the dilution series."
           }
         },
         {
           "Type": "Image",
-          "Properties": {
+          "properties": {
             "URL": "plate_row_A_highlighted.png",
             "Text": "Row A highlighted for dilution series."
-          }
-        },
-        {
-          "Type": "InformationPanel",
-          "Properties": {
-            "arObjectID": "reservoir_01",
-            "Text": "Pipette from reservoir",
-            "ImageURL": "",
-            "Volume": "175 µL"
-          }
-        },
-        {
-          "Type": "InformationPanel",
-          "Properties": {
-            "arObjectID": "wellplate_01",
-            "Text": "Pipette into wells A2 to A12",
-            "ImageURL": "wellplate.png",
-            "Volume": "175 µL"
           }
         }
       ],
@@ -132,7 +114,16 @@
               "colorHex": "#FFD700",
               "colorName": "Gold"
             }
-          }
+          },
+          "ContentItems": [
+            {
+              "Type": "Text",
+              "arObjectID": "reservoir_01",
+              "properties": {
+                "Text": "Pipette from the reservoir (Volume: 175 µL)"
+              }
+            }
+          ]
         },
         {
           "Text": "Add 175 µL of distilled water from the reservoir to each well from A2 to A12.",
@@ -144,7 +135,24 @@
               "colorHex": "#AAFF00",
               "colorName": "Green"
             }
-          }
+          },
+          "ContentItems": [
+            {
+              "Type": "Text",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "Text": "Pipette into wells A2 to A12 (Volume: 175 µL)"
+              }
+            },
+            {
+              "Type": "Image",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "URL": "distilled_water_platemap.png",
+                "Text": "Image of the 96-well plate"
+              }
+            }
+          ]
         }
       ]
     },
@@ -152,17 +160,6 @@
       "IsCritical": true,
       "Title": "Add Stock Solution",
       "EstimatedDuration": 0,
-      "ContentItems": [
-        {
-          "Type": "InformationPanel",
-          "Properties": {
-            "arObjectID": "wellplate_01",
-            "Text": "Pipette into Well A1",
-            "ImageURL": "wellplate.png",
-            "Volume": "200 µL"
-          }
-        }
-      ],
       "Checklist": [
         {
           "Text": "Add 200 µL of the stock solution to well A1.",
@@ -174,7 +171,24 @@
               "colorHex": "#FFD700",
               "colorName": "Gold"
             }
-          }
+          },
+          "ContentItems": [
+            {
+              "Type": "Text",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "Text": "Pipette into Well A1 (Volume: 200 µL)"
+              }
+            },
+            {
+              "Type": "Image",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "URL": "stock_solution_platemap.png",
+                "Text": "Image of the 96-well plate"
+              }
+            }
+          ]
         }
       ]
     },
@@ -185,13 +199,13 @@
       "ContentItems": [
         {
           "Type": "Text",
-          "Properties": {
+          "properties": {
             "Text": "The dilution factor is 1:7.5. Calculate the volume of solution to transfer for each dilution step."
           }
         },
         {
           "Type": "Webpage",
-          "Properties": {
+          "properties": {
             "URL": "https://example.com/calculator",
             "Text": "Use the calculator to compute dilution volumes."
           }
@@ -216,7 +230,7 @@
       "ContentItems": [
         {
           "Type": "Video",
-          "Properties": {
+          "properties": {
             "URL": "serial_dilution_spatial_video.mp4",
             "Text": "Watch the spatial video demonstrating the serial dilution process."
           }
@@ -245,15 +259,23 @@
               }
             }
           ],
-          "ContentItem": {
-            "Type": "InformationPanel",
-            "Properties": {
+          "ContentItems": [
+            {
+              "Type": "Text",
               "arObjectID": "wellplate_01",
-              "Text": "Pipette 26.67 µL from A1 to A2",
-              "ImageURL": "plate_map_A1_to_A2.png",
-              "Volume": "26.67 µL"
+              "properties": {
+                "Text": "Pipette 26.67 µL from A1 to A2"
+              }
+            },
+            {
+              "Type": "Image",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "URL": "plate_map_A1_to_A2.png",
+                "Text": "Plate map showing transfer from A1 to A2"
+              }
             }
-          }
+          ]
         },
         {
           "Text": "Transfer 26.67 µL from A2 to A3. Mix thoroughly.",
@@ -277,15 +299,22 @@
               }
             }
           ],
-          "ContentItem": {
-            "Type": "InformationPanel",
-            "Properties": {
+          "ContentItems": [
+            {
+              "Type": "Text",
               "arObjectID": "wellplate_01",
-              "Text": "Pipette 26.67 µL from A2 to A3",
-              "ImageURL": "plate_map_A2_to_A3.png",
-              "Volume": "26.67 µL"
+              "properties": {
+                "Text": "Pipette 26.67 µL from A2 to A3"
+              }
+            },
+            {
+              "Type": "Image",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "URL": "plate_map_A2_to_A3.png",
+                "Text": "Plate map showing transfer from A2 to A3"
             }
-          }
+          ]
         },
         {
           "Text": "Transfer 26.67 µL from A3 to A4. Mix thoroughly.",
@@ -309,15 +338,23 @@
               }
             }
           ],
-          "ContentItem": {
-            "Type": "InformationPanel",
-            "Properties": {
+          "ContentItems": [
+            {
+              "Type": "Text",
               "arObjectID": "wellplate_01",
-              "Text": "Pipette 26.67 µL from A3 to A4",
-              "ImageURL": "plate_map_A3_to_A4.png",
-              "Volume": "26.67 µL"
+              "properties": {
+                "Text": "Pipette 26.67 µL from A3 to A4"
+              }
+            },
+            {
+              "Type": "Image",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "URL": "plate_map_A3_to_A4.png",
+                "Text": "Plate map showing transfer from A3 to A4"
+              }
             }
-          }
+          ]
         },
         {
           "Text": "Transfer 26.67 µL from A4 to A5. Mix thoroughly.",
@@ -341,15 +378,23 @@
               }
             }
           ],
-          "ContentItem": {
-            "Type": "InformationPanel",
-            "Properties": {
+          "ContentItems": [
+            {
+              "Type": "Text",
               "arObjectID": "wellplate_01",
-              "Text": "Pipette 26.67 µL from A4 to A5",
-              "ImageURL": "plate_map_A4_to_A5.png",
-              "Volume": "26.67 µL"
+              "properties": {
+                "Text": "Pipette 26.67 µL from A4 to A5"
+              }
+            },
+            {
+              "Type": "Image",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "URL": "plate_map_A4_to_A5.png",
+                "Text": "Plate map showing transfer from A4 to A5"
+              }
             }
-          }
+          ]
         },
         {
           "Text": "Transfer 26.67 µL from A5 to A6. Mix thoroughly.",
@@ -373,15 +418,23 @@
               }
             }
           ],
-          "ContentItem": {
-            "Type": "InformationPanel",
-            "Properties": {
+          "ContentItems": [
+            {
+              "Type": "Text",
               "arObjectID": "wellplate_01",
-              "Text": "Pipette 26.67 µL from A5 to A6",
-              "ImageURL": "plate_map_A5_to_A6.png",
-              "Volume": "26.67 µL"
+              "properties": {
+                "Text": "Pipette 26.67 µL from A5 to A6"
+              }
+            },
+            {
+              "Type": "Image",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "URL": "plate_map_A5_to_A6.png",
+                "Text": "Plate map showing transfer from A5 to A6"
+              }
             }
-          }
+          ]
         },
         {
           "Text": "Transfer 26.67 µL from A6 to A7. Mix thoroughly.",
@@ -405,15 +458,23 @@
               }
             }
           ],
-          "ContentItem": {
-            "Type": "InformationPanel",
-            "Properties": {
+          "ContentItems": [
+            {
+              "Type": "Text",
               "arObjectID": "wellplate_01",
-              "Text": "Pipette 26.67 µL from A6 to A7",
-              "ImageURL": "plate_map_A6_to_A7.png",
-              "Volume": "26.67 µL"
+              "properties": {
+                "Text": "Pipette 26.67 µL from A6 to A7"
+              }
+            },
+            {
+              "Type": "Image",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "URL": "plate_map_A6_to_A7.png",
+                "Text": "Plate map showing transfer from A6 to A7"
+              }
             }
-          }
+          ]
         },
         {
           "Text": "Transfer 26.67 µL from A7 to A8. Mix thoroughly.",
@@ -437,15 +498,23 @@
               }
             }
           ],
-          "ContentItem": {
-            "Type": "InformationPanel",
-            "Properties": {
+          "ContentItems": [
+            {
+              "Type": "Text",
               "arObjectID": "wellplate_01",
-              "Text": "Pipette 26.67 µL from A7 to A8",
-              "ImageURL": "plate_map_A7_to_A8.png",
-              "Volume": "26.67 µL"
+              "properties": {
+                "Text": "Pipette 26.67 µL from A7 to A8"
+              }
+            },
+            {
+              "Type": "Image",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "URL": "plate_map_A7_to_A8.png",
+                "Text": "Plate map showing transfer from A7 to A8"
+              }
             }
-          }
+          ]
         },
         {
           "Text": "Transfer 26.67 µL from A8 to A9. Mix thoroughly.",
@@ -469,15 +538,23 @@
               }
             }
           ],
-          "ContentItem": {
-            "Type": "InformationPanel",
-            "Properties": {
+          "ContentItems": [
+            {
+              "Type": "Text",
               "arObjectID": "wellplate_01",
-              "Text": "Pipette 26.67 µL from A8 to A9",
-              "ImageURL": "plate_map_A8_to_A9.png",
-              "Volume": "26.67 µL"
+              "properties": {
+                "Text": "Pipette 26.67 µL from A8 to A9"
+              }
+            },
+            {
+              "Type": "Image",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "URL": "plate_map_A8_to_A9.png",
+                "Text": "Plate map showing transfer from A8 to A9"
+              }
             }
-          }
+          ]
         },
         {
           "Text": "Transfer 26.67 µL from A9 to A10. Mix thoroughly.",
@@ -501,15 +578,23 @@
               }
             }
           ],
-          "ContentItem": {
-            "Type": "InformationPanel",
-            "Properties": {
+          "ContentItems": [
+            {
+              "Type": "Text",
               "arObjectID": "wellplate_01",
-              "Text": "Pipette 26.67 µL from A9 to A10",
-              "ImageURL": "plate_map_A9_to_A10.png",
-              "Volume": "26.67 µL"
+              "properties": {
+                "Text": "Pipette 26.67 µL from A9 to A10"
+              }
+            },
+            {
+              "Type": "Image",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "URL": "plate_map_A9_to_A10.png",
+                "Text": "Plate map showing transfer from A9 to A10"
+              }
             }
-          }
+          ]
         },
         {
           "Text": "Transfer 26.67 µL from A10 to A11. Mix thoroughly.",
@@ -533,15 +618,23 @@
               }
             }
           ],
-          "ContentItem": {
-            "Type": "InformationPanel",
-            "Properties": {
+          "ContentItems": [
+            {
+              "Type": "Text",
               "arObjectID": "wellplate_01",
-              "Text": "Pipette 26.67 µL from A10 to A11",
-              "ImageURL": "plate_map_A10_to_A11.png",
-              "Volume": "26.67 µL"
+              "properties": {
+                "Text": "Pipette 26.67 µL from A10 to A11"
+              }
+            },
+            {
+              "Type": "Image",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "URL": "plate_map_A10_to_A11.png",
+                "Text": "Plate map showing transfer from A10 to A11"
+              }
             }
-          }
+          ]
         },
         {
           "Text": "Do not transfer from A12 to maintain it as the most diluted well."
@@ -563,7 +656,7 @@
       "ContentItems": [
         {
           "Type": "Image",
-          "Properties": {
+          "properties": {
             "URL": "expected_results.png",
             "Text": "Expected gradient of color intensity."
           }
