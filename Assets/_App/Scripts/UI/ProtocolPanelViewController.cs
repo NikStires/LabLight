@@ -68,6 +68,30 @@ public class ProtocolPanelViewController : MonoBehaviour
                     uiDriver.DisplayVideoPlayer(videoURL.ToString());
                 }
                 break;
+            case "informationpanel":
+                /* based on these properties 
+                 "Properties": 
+                    "arObjectID": "wellplate_01",
+                    "Text": "Pipette into Well A1",
+                    "ImageURL": "wellplate.png",
+                    "Volume": "5 uL"*/
+                if(contentItem.properties.TryGetValue("arObjectID", out object arObjectID))
+                {
+                    Debug.Log("arObjectID: " + arObjectID);
+                }
+                if(contentItem.properties.TryGetValue("Text", out object text))
+                {
+                    Debug.Log("Text: " + text);
+                }
+                if(contentItem.properties.TryGetValue("ImageURL", out object imageURL))
+                {
+                    Debug.Log("ImageURL: " + imageURL);
+                }
+                if(contentItem.properties.TryGetValue("Volume", out object volume))
+                {
+                    Debug.Log("Volume: " + volume);
+                }
+                break;
         }
 
         if (controller != null)
