@@ -1,30 +1,30 @@
 {
-  "Version": 1.0,
-  "Title": "Dilution Series Preparation Using a 96-Well Plate",
+  "version": 1.0,
+  "title": "Dilution Series Preparation Using a 96-Well Plate",
   "Description": "Prepare a 1:7.5 serial dilution series of a stock solution across a row of a 96-well plate.",
-  "EstimatedDuration": 0,
-  "ProtocolPDFNames": ["LabSafety.pdf", "SerialDilutionGuide.pdf"],
-  "GlobalArObjects": [
+  "estimatedDurationInSeconds": 0,
+  "protocolPDFNames": ["LabSafety.pdf", "SerialDilutionGuide.pdf"],
+  "globalArObjects": [
     {
-      "SpecificObjectName": "96-Well Plate",
+      "specificObjectName": "96-Well Plate",
       "arObjectID": "wellplate_01",
-      "RootPrefabName": "horizontalwellplate"
+      "rootPrefabName": "horizontalwellplate"
     },
     {
-      "SpecificObjectName": "Reservoir",
+      "specificObjectName": "Reservoir",
       "arObjectID": "reservoir_01",
-      "RootPrefabName": "reservoir"
+      "rootPrefabName": "reservoir"
     }
   ],
-  "Steps": [
+  "steps": [
     {
-      "IsCritical": false,
-      "Title": "Setup Laboratory AR Objects",
-      "EstimatedDuration": 0,
-      "Checklist": [
+      "isCritical": false,
+      "title": "Setup Laboratory AR Objects",
+      "estimatedDurationInSeconds": 0,
+      "checklist": [
         {
           "Text": "Place the 96-Well Plate on the lab bench.",
-          "ArAction": {
+          "arActions": {
             "actionType": "Lock",
             "arObjectID": "wellplate_01",
             "properties": {
@@ -34,7 +34,7 @@
         },
         {
           "Text": "Place the Reservoir on the lab bench.",
-          "ArAction": {
+          "arActions": {
             "actionType": "Lock",
             "arObjectID": "reservoir_01",
             "properties": {
@@ -45,18 +45,18 @@
       ]
     },
     {
-      "IsCritical": false,
-      "Title": "Start Procedure Timer",
-      "EstimatedDuration": 0,
-      "ContentItems": [
+      "isCritical": false,
+      "title": "Start Procedure Timer",
+      "estimatedDurationInSeconds": 0,
+      "contentItems": [
         {
-          "Type": "Timer",
+          "contentType": "Timer",
           "properties": {
             "DurationInSeconds": 0
           }
         },
         {
-          "Type": "Text",
+          "contentType": "Text",
           "properties": {
             "Text": "Start the timer to track how long the procedure takes."
           }
@@ -64,49 +64,49 @@
       ]
     },
     {
-      "IsCritical": false,
-      "Title": "Review Safety and Procedure Guidelines",
-      "EstimatedDuration": 0,
-      "ContentItems": [
+      "isCritical": false,
+      "title": "Review Safety and Procedure Guidelines",
+      "estimatedDurationInSeconds": 0,
+      "contentItems": [
         {
-          "Type": "PDF",
+          "contentType": "PDF",
           "properties": {
-            "URL": "LabSafety.pdf",
+            "url": "LabSafety.pdf",
             "Text": "Review the Lab Safety Guidelines."
           }
         },
         {
-          "Type": "PDF",
+          "contentType": "PDF",
           "properties": {
-            "URL": "SerialDilutionGuide.pdf",
+            "url": "SerialDilutionGuide.pdf",
             "Text": "Review the Serial Dilution Guide."
           }
         }
       ]
     },
     {
-      "IsCritical": true,
-      "Title": "Prepare the Plate",
-      "EstimatedDuration": 0,
-      "ContentItems": [
+      "isCritical": true,
+      "title": "Prepare the Plate",
+      "estimatedDurationInSeconds": 0,
+      "contentItems": [
         {
-          "Type": "Text",
+          "contentType": "Text",
           "properties": {
             "Text": "Designate Row A for the dilution series."
           }
         },
         {
-          "Type": "Image",
+          "contentType": "Image",
           "properties": {
-            "URL": "plate_row_A_highlighted.png",
+            "url": "plate_row_A_highlighted.png",
             "Text": "Row A highlighted for dilution series."
           }
         }
       ],
-      "Checklist": [
+      "checklist": [
         {
           "Text": "Locate the reservoir containing distilled water.",
-          "ArAction": {
+          "arActions": {
             "actionType": "Highlight",
             "arObjectID": "reservoir_01",
             "properties": {
@@ -115,9 +115,9 @@
               "colorName": "Gold"
             }
           },
-          "ContentItems": [
+          "contentItems": [
             {
-              "Type": "Text",
+              "contentType": "Text",
               "arObjectID": "reservoir_01",
               "properties": {
                 "Text": "Pipette from the reservoir (Volume: 175 µL)"
@@ -127,7 +127,7 @@
         },
         {
           "Text": "Add 175 µL of distilled water from the reservoir to each well from A2 to A12.",
-          "ArAction": {
+          "arActions": {
             "actionType": "Highlight",
             "arObjectID": "wellplate_01",
             "properties": {
@@ -136,19 +136,19 @@
               "colorName": "Green"
             }
           },
-          "ContentItems": [
+          "contentItems": [
             {
-              "Type": "Text",
+              "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
                 "Text": "Pipette into wells A2 to A12 (Volume: 175 µL)"
               }
             },
             {
-              "Type": "Image",
+              "contentType": "Image",
               "arObjectID": "wellplate_01",
               "properties": {
-                "URL": "distilled_water_platemap.png",
+                "url": "distilled_water_platemap.png",
                 "Text": "Image of the 96-well plate"
               }
             }
@@ -157,13 +157,13 @@
       ]
     },
     {
-      "IsCritical": true,
-      "Title": "Add Stock Solution",
-      "EstimatedDuration": 0,
-      "Checklist": [
+      "isCritical": true,
+      "title": "Add Stock Solution",
+      "estimatedDurationInSeconds": 0,
+      "checklist": [
         {
           "Text": "Add 200 µL of the stock solution to well A1.",
-          "ArAction": {
+          "arAction": {
             "actionType": "Highlight",
             "arObjectID": "wellplate_01",
             "properties": {
@@ -172,19 +172,19 @@
               "colorName": "Gold"
             }
           },
-          "ContentItems": [
+          "contentItems": [
             {
-              "Type": "Text",
+              "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
                 "Text": "Pipette into Well A1 (Volume: 200 µL)"
               }
             },
             {
-              "Type": "Image",
+              "contentType": "Image",
               "arObjectID": "wellplate_01",
               "properties": {
-                "URL": "stock_solution_platemap.png",
+                "url": "stock_solution_platemap.png",
                 "Text": "Image of the 96-well plate"
               }
             }
@@ -193,25 +193,25 @@
       ]
     },
     {
-      "IsCritical": false,
-      "Title": "Calculate the Dilution Volume",
-      "EstimatedDuration": 0,
-      "ContentItems": [
+      "isCritical": false,
+      "title": "Calculate the Dilution Volume",
+      "estimatedDurationInSeconds": 0,
+      "contentItems": [
         {
-          "Type": "Text",
+          "contentType": "Text",
           "properties": {
             "Text": "The dilution factor is 1:7.5. Calculate the volume of solution to transfer for each dilution step."
           }
         },
         {
-          "Type": "Webpage",
+          "contentType": "Webpage",
           "properties": {
-            "URL": "https://example.com/calculator",
+            "url": "https://example.com/calculator",
             "Text": "Use the calculator to compute dilution volumes."
           }
         }
       ],
-      "Checklist": [
+      "checklist": [
         {
           "Text": "Calculate the dilution volume using the calculator."
         },
@@ -224,22 +224,22 @@
       ]
     },
     {
-      "IsCritical": true,
-      "Title": "Perform Serial Dilutions",
-      "EstimatedDuration": 0,
-      "ContentItems": [
+      "isCritical": true,
+      "title": "Perform Serial Dilutions",
+      "estimatedDurationInSeconds": 0,
+      "contentItems": [
         {
-          "Type": "Video",
+          "contentType": "Video",
           "properties": {
-            "URL": "serial_dilution_spatial_video.mp4",
+            "url": "serial_dilution_spatial_video.mp4",
             "Text": "Watch the spatial video demonstrating the serial dilution process."
           }
         }
       ],
-      "Checklist": [
+      "checklist": [
         {
           "Text": "Transfer 26.67 µL from A1 to A2. Mix thoroughly by pipetting up and down 5-6 times.",
-          "ArActions": [
+          "arActions": [
             {
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
@@ -259,19 +259,19 @@
               }
             }
           ],
-          "ContentItems": [
+          "contentItems": [
             {
-              "Type": "Text",
+              "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
                 "Text": "Pipette 26.67 µL from A1 to A2"
               }
             },
             {
-              "Type": "Image",
+              "contentType": "Image",
               "arObjectID": "wellplate_01",
               "properties": {
-                "URL": "plate_map_A1_to_A2.png",
+                "url": "plate_map_A1_to_A2.png",
                 "Text": "Plate map showing transfer from A1 to A2"
               }
             }
@@ -279,7 +279,7 @@
         },
         {
           "Text": "Transfer 26.67 µL from A2 to A3. Mix thoroughly.",
-          "ArActions": [
+          "arActions": [
             {
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
@@ -299,26 +299,26 @@
               }
             }
           ],
-          "ContentItems": [
+          "contentItems": [
             {
-              "Type": "Text",
+              "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
                 "Text": "Pipette 26.67 µL from A2 to A3"
               }
             },
             {
-              "Type": "Image",
+              "contentType": "Image",
               "arObjectID": "wellplate_01",
               "properties": {
-                "URL": "plate_map_A2_to_A3.png",
+                "url": "plate_map_A2_to_A3.png",
                 "Text": "Plate map showing transfer from A2 to A3"
             }
           ]
         },
         {
           "Text": "Transfer 26.67 µL from A3 to A4. Mix thoroughly.",
-          "ArActions": [
+          "arActions": [
             {
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
@@ -338,19 +338,19 @@
               }
             }
           ],
-          "ContentItems": [
+          "contentItems": [
             {
-              "Type": "Text",
+              "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
                 "Text": "Pipette 26.67 µL from A3 to A4"
               }
             },
             {
-              "Type": "Image",
+              "contentType": "Image",
               "arObjectID": "wellplate_01",
               "properties": {
-                "URL": "plate_map_A3_to_A4.png",
+                "url": "plate_map_A3_to_A4.png",
                 "Text": "Plate map showing transfer from A3 to A4"
               }
             }
@@ -358,7 +358,7 @@
         },
         {
           "Text": "Transfer 26.67 µL from A4 to A5. Mix thoroughly.",
-          "ArActions": [
+          "arActions": [
             {
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
@@ -378,19 +378,19 @@
               }
             }
           ],
-          "ContentItems": [
+          "contentItems": [
             {
-              "Type": "Text",
+              "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
                 "Text": "Pipette 26.67 µL from A4 to A5"
               }
             },
             {
-              "Type": "Image",
+              "contentType": "Image",
               "arObjectID": "wellplate_01",
               "properties": {
-                "URL": "plate_map_A4_to_A5.png",
+                "url": "plate_map_A4_to_A5.png",
                 "Text": "Plate map showing transfer from A4 to A5"
               }
             }
@@ -398,7 +398,7 @@
         },
         {
           "Text": "Transfer 26.67 µL from A5 to A6. Mix thoroughly.",
-          "ArActions": [
+          "arActions": [
             {
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
@@ -418,19 +418,19 @@
               }
             }
           ],
-          "ContentItems": [
+          "contentItems": [
             {
-              "Type": "Text",
+              "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
                 "Text": "Pipette 26.67 µL from A5 to A6"
               }
             },
             {
-              "Type": "Image",
+              "contentType": "Image",
               "arObjectID": "wellplate_01",
               "properties": {
-                "URL": "plate_map_A5_to_A6.png",
+                "url": "plate_map_A5_to_A6.png",
                 "Text": "Plate map showing transfer from A5 to A6"
               }
             }
@@ -438,7 +438,7 @@
         },
         {
           "Text": "Transfer 26.67 µL from A6 to A7. Mix thoroughly.",
-          "ArActions": [
+          "arActions": [
             {
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
@@ -458,19 +458,19 @@
               }
             }
           ],
-          "ContentItems": [
+          "contentItems": [
             {
-              "Type": "Text",
+              "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
                 "Text": "Pipette 26.67 µL from A6 to A7"
               }
             },
             {
-              "Type": "Image",
+              "contentType": "Image",
               "arObjectID": "wellplate_01",
               "properties": {
-                "URL": "plate_map_A6_to_A7.png",
+                "url": "plate_map_A6_to_A7.png",
                 "Text": "Plate map showing transfer from A6 to A7"
               }
             }
@@ -478,7 +478,7 @@
         },
         {
           "Text": "Transfer 26.67 µL from A7 to A8. Mix thoroughly.",
-          "ArActions": [
+          "arActions": [
             {
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
@@ -498,19 +498,19 @@
               }
             }
           ],
-          "ContentItems": [
+          "contentItems": [
             {
-              "Type": "Text",
+              "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
                 "Text": "Pipette 26.67 µL from A7 to A8"
               }
             },
             {
-              "Type": "Image",
+              "contentType": "Image",
               "arObjectID": "wellplate_01",
               "properties": {
-                "URL": "plate_map_A7_to_A8.png",
+                "url": "plate_map_A7_to_A8.png",
                 "Text": "Plate map showing transfer from A7 to A8"
               }
             }
@@ -518,7 +518,7 @@
         },
         {
           "Text": "Transfer 26.67 µL from A8 to A9. Mix thoroughly.",
-          "ArActions": [
+          "arActions": [
             {
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
@@ -538,19 +538,19 @@
               }
             }
           ],
-          "ContentItems": [
+          "contentItems": [
             {
-              "Type": "Text",
+              "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
                 "Text": "Pipette 26.67 µL from A8 to A9"
               }
             },
             {
-              "Type": "Image",
+              "contentType": "Image",
               "arObjectID": "wellplate_01",
               "properties": {
-                "URL": "plate_map_A8_to_A9.png",
+                "url": "plate_map_A8_to_A9.png",
                 "Text": "Plate map showing transfer from A8 to A9"
               }
             }
@@ -558,7 +558,7 @@
         },
         {
           "Text": "Transfer 26.67 µL from A9 to A10. Mix thoroughly.",
-          "ArActions": [
+          "arActions": [
             {
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
@@ -578,19 +578,19 @@
               }
             }
           ],
-          "ContentItems": [
+          "contentItems": [
             {
-              "Type": "Text",
+              "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
                 "Text": "Pipette 26.67 µL from A9 to A10"
               }
             },
             {
-              "Type": "Image",
+              "contentType": "Image",
               "arObjectID": "wellplate_01",
               "properties": {
-                "URL": "plate_map_A9_to_A10.png",
+                "url": "plate_map_A9_to_A10.png",
                 "Text": "Plate map showing transfer from A9 to A10"
               }
             }
@@ -598,7 +598,7 @@
         },
         {
           "Text": "Transfer 26.67 µL from A10 to A11. Mix thoroughly.",
-          "ArActions": [
+          "arActions": [
             {
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
@@ -618,19 +618,19 @@
               }
             }
           ],
-          "ContentItems": [
+          "contentItems": [
             {
-              "Type": "Text",
+              "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
                 "Text": "Pipette 26.67 µL from A10 to A11"
               }
             },
             {
-              "Type": "Image",
+              "contentType": "Image",
               "arObjectID": "wellplate_01",
               "properties": {
-                "URL": "plate_map_A10_to_A11.png",
+                "url": "plate_map_A10_to_A11.png",
                 "Text": "Plate map showing transfer from A10 to A11"
               }
             }
@@ -642,10 +642,10 @@
       ]
     },
     {
-      "IsCritical": false,
-      "Title": "Observe and Document",
-      "EstimatedDuration": 0,
-      "Checklist": [
+      "isCritical": false,
+      "title": "Observe and Document",
+      "estimatedDurationInSeconds": 0,
+      "checklist": [
         {
           "Text": "Record changes in color intensity across the row."
         },
@@ -653,21 +653,21 @@
           "Text": "Take a photo or note observations in your lab notebook."
         }
       ],
-      "ContentItems": [
+      "contentItems": [
         {
-          "Type": "Image",
+          "contentType": "Image",
           "properties": {
-            "URL": "expected_results.png",
+            "url": "expected_results.png",
             "Text": "Expected gradient of color intensity."
           }
         }
       ]
     },
     {
-      "IsCritical": false,
-      "Title": "Clean Up",
-      "EstimatedDuration": 0,
-      "Checklist": [
+      "isCritical": false,
+      "title": "Clean Up",
+      "estimatedDurationInSeconds": 0,
+      "checklist": [
         {
           "Text": "Dispose of used tips properly."
         },

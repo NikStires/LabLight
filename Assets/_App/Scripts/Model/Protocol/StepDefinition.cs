@@ -10,6 +10,8 @@ public class StepDefinition
 {
     [JsonProperty("isCritical")]
     public bool isCritical { get; set; }
+    [JsonProperty("title")]
+    public string title { get; set; }
 
     [JsonProperty("estimatedDurationInSeconds")]
     public int estimatedDurationInSeconds { get; set; }

@@ -12,6 +12,12 @@ public class ProtocolDefinition
     [JsonProperty("title")]
     public string title { get; set; } // Title of the protocol
 
+    [JsonProperty("description")]
+    public string description { get; set; } // Description of the protocol
+    
+    [JsonProperty("estimatedDurationInSeconds")]
+    public int estimatedDurationInSeconds { get; set; }
+
     [JsonProperty("protocolPDFNames")]
     public List<string> protocolPDFNames { get; set; } = new List<string>(); // List of PDF file names
 

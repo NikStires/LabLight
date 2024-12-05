@@ -1,7 +1,7 @@
 {
   "version": 1,
   "title": "DNA Extraction Protocol",
-  "protocolPDFNames": ["sample.pdf", "giraffe.pdf"],
+  "protocolPDFNames": ["LabSafety.pdf", "SerialDilutionGuide.pdf"],
   "globalArObjects": [
     {
       "specificObjectName": "Reaction Plate",
