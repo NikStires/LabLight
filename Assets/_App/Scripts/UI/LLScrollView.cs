@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class LLScrollView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class LLScrollView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerDownHandler, IPointerUpHandler
 {
     [Header("References")]
     [SerializeField] private RectTransform contentRectTransform;
@@ -23,6 +23,7 @@ public class LLScrollView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     private RectTransform viewportRectTransform;
     private LayoutGroup contentLayoutGroup;
     private ContentSizeFitter contentSizeFitter;
+    private bool isPointerDown;
 
     private void Awake()
     {
@@ -30,6 +31,7 @@ public class LLScrollView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         ConfigureLayoutGroup();
         ConfigureContentSizeFitter();
         ConfigureContentTransform();
+        EnsureRaycasterSetup();
     }
 
     private void InitializeComponents()
@@ -41,6 +43,9 @@ public class LLScrollView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     private void EnsureRequiredComponents()
     {
         var canvasGroup = GetComponent<CanvasGroup>() ?? gameObject.AddComponent<CanvasGroup>();
+        canvasGroup.blocksRaycasts = true;
+        canvasGroup.interactable = true;
+        
         var mask = GetComponent<Mask>() ?? gameObject.AddComponent<Mask>();
         
         if (!GetComponent<Image>())
@@ -90,9 +95,112 @@ public class LLScrollView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         contentRectTransform.sizeDelta = new Vector2(0, 0);
     }
 
+    private void EnsureRaycasterSetup()
+    {
+        // Get the Canvas component
+        Canvas canvas = GetComponentInParent<Canvas>();
+        if (canvas == null)
+        {
+            Debug.LogError("[LLScrollView] No Canvas found in parents!");
+            return;
+        }
+
+        // Ensure GraphicRaycaster exists and is configured
+        GraphicRaycaster raycaster = canvas.GetComponent<GraphicRaycaster>();
+        if (raycaster == null)
+        {
+            raycaster = canvas.gameObject.AddComponent<GraphicRaycaster>();
+        }
+
+        // Configure raycaster settings
+        raycaster.ignoreReversedGraphics = true;
+        raycaster.blockingObjects = GraphicRaycaster.BlockingObjects.None;
+
+        // Ensure it stays enabled
+        raycaster.enabled = true;
+    }
+
+    private void OnEnable()
+    {
+        // Double-check raycaster when object is enabled
+        EnsureRaycasterSetup();
+    }
+
+    private void Update()
+    {
+        // Periodically check if raycaster is still active
+        if (Time.frameCount % 60 == 0) // Check every 60 frames
+        {
+            Canvas canvas = GetComponentInParent<Canvas>();
+            if (canvas != null)
+            {
+                GraphicRaycaster raycaster = canvas.GetComponent<GraphicRaycaster>();
+                if (raycaster != null && !raycaster.enabled)
+                {
+                    Debug.LogWarning("[LLScrollView] GraphicRaycaster was disabled - re-enabling");
+                    raycaster.enabled = true;
+                }
+            }
+        }
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        isPointerDown = true;
+        OnBeginDrag(eventData);
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        isPointerDown = false;
+        OnEndDrag(eventData);
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        isDragging = true;
+        dragStartPosition = GetInputPosition(eventData);
+        contentStartPosition = contentRectTransform.anchoredPosition;
+        currentVelocity = Vector2.zero;
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (!isDragging && !isPointerDown) return;
+
+        Vector2 currentPosition = GetInputPosition(eventData);
+        Vector2 difference = (currentPosition - dragStartPosition) * scrollSpeed;
+        Vector2 targetPosition = contentStartPosition;
+
+        if (enableVerticalScroll)
+            targetPosition.y += difference.y;
+        if (enableHorizontalScroll)
+            targetPosition.x += difference.x;
+
+        contentRectTransform.anchoredPosition = ClampScrollPosition(targetPosition);
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        isDragging = false;
+    }
+
+    private Vector2 GetInputPosition(PointerEventData eventData)
+    {
+        #if UNITY_IOS || UNITY_VISIONOS
+            // For visionOS/iOS, we might need to handle touch input differently
+            if (eventData.pointerId >= 0) // Touch input
+            {
+                return eventData.position;
+            }
+        #endif
+        
+        return eventData.position;
+    }
+
     private void LateUpdate()
     {
-        if (!isDragging)
+        if (!isDragging && !isPointerDown)
         {
             ApplySmoothScrolling();
         }
@@ -120,33 +228,5 @@ public class LLScrollView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
             Mathf.Clamp(position.x, minX, 0),
             Mathf.Clamp(position.y, 0, maxY)
         );
-    }
-
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        isDragging = true;
-        dragStartPosition = eventData.position;
-        contentStartPosition = contentRectTransform.anchoredPosition;
-        currentVelocity = Vector2.zero;
-    }
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        if (!isDragging) return;
-
-        Vector2 difference = (eventData.position - dragStartPosition) * scrollSpeed;
-        Vector2 targetPosition = contentStartPosition;
-
-        if (enableVerticalScroll)
-            targetPosition.y += difference.y;
-        if (enableHorizontalScroll)
-            targetPosition.x += difference.x;
-
-        contentRectTransform.anchoredPosition = ClampScrollPosition(targetPosition);
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        isDragging = false;
     }
 }

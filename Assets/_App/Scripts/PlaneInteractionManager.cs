@@ -149,7 +149,7 @@ public class PlaneInteractionManager : MonoBehaviour
 
         if(currentPrefab != null)
         {
-            currentPrefab.transform.position = new Vector3(currentPrefab.transform.position.x, currentPrefab.transform.position.y + 0.51f, currentPrefab.transform.position.z);
+            currentPrefab.transform.position = new Vector3(currentPrefab.transform.position.x, currentPrefab.transform.position.y, currentPrefab.transform.position.z);
             currentPrefab = null;
             StartCoroutine(DelayNextPlacement());
             headPlacementEventChannel.CurrentPrefabLocked.Invoke();
