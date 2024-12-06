@@ -1,12 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UniRx;
 using MoreMountains.Feedbacks;
+using Newtonsoft.Json;
 
 /// <summary>
 /// Represents a button in the protocol menu.
@@ -14,17 +13,16 @@ using MoreMountains.Feedbacks;
 [RequireComponent(typeof(UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable))]
 public class ProtocolMenuButton : MonoBehaviour
 {
+    private ProtocolDescriptor protocolDescriptor;
+    public TextMeshProUGUI titleText;
+    public TextMeshProUGUI descriptionText;
 
-    private ProtocolDescriptor protocol;
-    public TextMeshProUGUI title;
-    public TextMeshProUGUI description;
-
-    XRSimpleInteractable interactable;
-    Renderer buttonRenderer;
-    Material defaultMaterial;
-    [SerializeField] Material redFillShader;
-    float progress = -0.09f;
-    [SerializeField] MMF_Player animationPlayer;
+    private XRSimpleInteractable interactable;
+    private Renderer buttonRenderer;
+    private Material defaultMaterial;
+    [SerializeField] private Material progressFillMaterial;
+    private float fillProgress = -0.09f;
+    [SerializeField] private MMF_Player animationPlayer;
 
     void Awake()
     {
@@ -40,61 +38,47 @@ public class ProtocolMenuButton : MonoBehaviour
     }
 
     /// <summary>
-    /// Initializes the protocol menu button with the specified protocol.
+    /// Initializes the protocol menu button with the specified protocol descriptor.
     /// </summary>
-    /// <param name="protocol">The protocol to initialize the button with.</param>
-    public void Initialize(ProtocolDescriptor protocol)
+    /// <param name="protocolDescriptor">The protocol descriptor to initialize the button with.</param>
+    public void Initialize(ProtocolDescriptor protocolDescriptor)
     {
-        this.protocol = protocol;
-        title.text = Path.GetFileNameWithoutExtension(protocol.title);
-        description.text = protocol.version; 
+        this.protocolDescriptor = protocolDescriptor;
+        titleText.text = protocolDescriptor.title;
+        descriptionText.text = protocolDescriptor.description.Length > 100 
+            ? protocolDescriptor.description.Substring(0, 97) + "..." 
+            : protocolDescriptor.description;
 
         interactable.selectEntered.AddListener(_ => {
             StartCoroutine(ChangeMaterialAfterDelay(1f));
-            InvokeRepeating("incrementShaderFill", 1.1f, 0.05f);
+            InvokeRepeating(nameof(IncrementProgressFill), 1.1f, 0.05f);
         });
 
         interactable.selectExited.AddListener(_ => {
-            ServiceRegistry.GetService<IProtocolDataProvider>().GetOrCreateProtocolDefinition(protocol.title).First().Subscribe(protocol =>
-            {
-                CancelInvoke();
-                buttonRenderer.material = defaultMaterial;
-                Debug.Log(protocol.title + " loaded");
-                ProtocolState.Instance.SetProtocolDefinition(protocol);
-                SceneLoader.Instance.LoadSceneClean("Protocol");
-            }, (e) =>
-            {
-                Debug.Log("Error fetching protocol from resources, checking local files");
-                var lfdp = new LocalFileDataProvider();
-                lfdp.LoadProtocolDefinitionAsync(protocol.title).ToObservable<ProtocolDefinition>().Subscribe(protocol =>
-                {
-                    ProtocolState.Instance.SetProtocolDefinition(protocol);
-                    SceneLoader.Instance.LoadSceneClean("Protocol");
-                }, (e) =>
-                {
-                    Debug.Log("Error fetching protocol from local files");
-                });
-            });
+            CancelInvoke();
+            buttonRenderer.material = defaultMaterial;
+            
+            string protocolDescriptorJson = JsonConvert.SerializeObject(protocolDescriptor);
+            ServiceRegistry.GetService<IUIDriver>().ProtocolSelectionCallback(protocolDescriptorJson);
         });
     }
 
     private IEnumerator ChangeMaterialAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        buttonRenderer.material = redFillShader;
-        progress = -0.09f;
-        buttonRenderer.material.SetFloat("_FillRate", progress);
+        buttonRenderer.material = progressFillMaterial;
+        fillProgress = -0.09f;
+        buttonRenderer.material.SetFloat("_FillRate", fillProgress);
     }
 
-    private void incrementShaderFill()
+    private void IncrementProgressFill()
     {
-        buttonRenderer.material.SetFloat("_FillRate", progress += 0.0075f);
-        if(progress >= 0.09f)
+        buttonRenderer.material.SetFloat("_FillRate", fillProgress += 0.0075f);
+        if(fillProgress >= 0.09f)
         {
             interactable.selectExited.RemoveAllListeners();
-            var lfdp = new LocalFileDataProvider();
-            lfdp.DeleteProtocolDefinition(title.text);
-            //ServiceRegistry.GetService<IProtocolDataProvider>().DeleteProtocolDefinition(title.text);
+            var localFileProvider = new LocalFileDataProvider();
+            localFileProvider.DeleteProtocolDefinition(titleText.text);
             Destroy(gameObject);
         }
     }

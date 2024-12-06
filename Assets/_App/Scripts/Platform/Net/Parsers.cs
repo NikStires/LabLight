@@ -32,34 +32,42 @@ public class Parsers
         }
     };
 
-    public static List<ProtocolDescriptor> ParseProtocols(string jsonString)
+    public static List<ProtocolDescriptor> ParseProtocolDescriptions(List<string> jsonStrings)
     {
         try
         {
-            var protocols = JsonConvert.DeserializeObject<List<ProtocolDescriptor>>(jsonString, serializerSettings);
-            if (protocols == null)
+            var protocolDescriptions = new List<ProtocolDescriptor>();
+            
+            foreach (var jsonString in jsonStrings)
             {
-                throw new Exception("Failed to parse protocol list - result was null");
-            }
+                var protocolDescription = JsonConvert.DeserializeObject<ProtocolDescriptor>(jsonString, serializerSettings);
+                if (protocolDescription == null)
+                {
+                    throw new Exception("Failed to parse protocol - result was null");
+                }
 
-            // Validate required fields
-            foreach (var protocol in protocols)
-            {
-                if (string.IsNullOrEmpty(protocol.title))
+                // Validate required fields
+                if (string.IsNullOrEmpty(protocolDescription.title))
                 {
                     throw new Exception("Protocol descriptor missing required Title field");
                 }
-                // if (string.IsNullOrEmpty(protocol.version))
-                // {
-                //     throw new Exception("Protocol descriptor missing required Version field");
-                // }
+                if (string.IsNullOrEmpty(protocolDescription.description))
+                {
+                    throw new Exception("Protocol descriptor missing required Description field"); 
+                }
+                if (string.IsNullOrEmpty(protocolDescription.version))
+                {
+                    throw new Exception("Protocol descriptor missing required Version field");
+                }
+
+                protocolDescriptions.Add(protocolDescription);
             }
 
-            return protocols;
+            return protocolDescriptions;
         }
         catch (Exception e)
         {
-            Debug.LogError($"Error parsing protocol list: {e.Message}");
+            Debug.LogError($"Error parsing protocols: {e.Message}");
             throw;
         }
     }
@@ -329,4 +337,4 @@ public class Parsers
             throw;
         }
     }
-}
+} 

@@ -4,7 +4,7 @@ import UnityFramework
 struct ProtocolMenuContentView: View {
     @StateObject private var viewModel = ProtocolMenuViewModel()
     @Environment(\.dismiss) private var dismiss
-    @State private var path = NavigationPath()  // Navigation Path State
+    @State private var path = NavigationPath()
     
     var body: some View {
         NavigationStack(path: $path) {
@@ -18,14 +18,20 @@ struct ProtocolMenuContentView: View {
                 } else {
                     List(viewModel.protocols) { protocolItem in
                         Button(action: {
-                            viewModel.selectProtocol(protocolItem.title)
+                            viewModel.selectProtocol(protocolItem)
                         }) {
-                            VStack(alignment: .leading) {
+                            VStack(alignment: .leading, spacing: 4) {
                                 Text(formatText(protocolItem.title))
                                     .font(.headline)
-                                Text(formatText(protocolItem.version))
+                                Text("Version: \(formatText(protocolItem.version))")
                                     .font(.subheadline)
+                                    .foregroundColor(.gray)
+                                Text(protocolItem.description)
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                    .lineLimit(2)
                             }
+                            .padding(.vertical, 4)
                         }
                     }
                 }
@@ -34,11 +40,11 @@ struct ProtocolMenuContentView: View {
                 viewModel.requestProtocolDescriptions()
             }
             .navigationDestination(for: ProtocolDefinition.self) { protocolDef in
-                ProtocolView(selectedProtocol: protocolDef)  // Navigate to ProtocolView
+                ProtocolView(selectedProtocol: protocolDef)
             }
             .onReceive(viewModel.$selectedProtocol) { selected in
                 if let selected = selected {
-                    path.append(selected)  // Append to navigation path to trigger navigation
+                    path.append(selected)
                 }
             }
         }
@@ -86,7 +92,6 @@ class ProtocolMenuViewModel: ObservableObject {
                     return
                 }
                 let protocolDefinition = try JSONDecoder().decode(ProtocolDefinition.self, from: data)
-                // Successfully decoded, assign to selectedProtocol to trigger navigation
                 DispatchQueue.main.async {
                     self.selectedProtocol = protocolDefinition
                 }
@@ -114,12 +119,17 @@ class ProtocolMenuViewModel: ObservableObject {
         }
     }
     
-    func requestProtocolDescriptions() {
-        CallCSharpCallback("requestProtocolDescriptions|")
+    func selectProtocol(_ protocolDescriptor: ProtocolDescriptor) {
+        if let jsonData = try? JSONEncoder().encode(protocolDescriptor),
+           let jsonString = String(data: jsonData, encoding: .utf8) {
+            CallCSharpCallback("selectProtocol|" + jsonString)
+        } else {
+            print("######LABLIGHT Failed to encode protocol descriptor")
+        }
     }
     
-    func selectProtocol(_ name: String) {
-        CallCSharpCallback("selectProtocol|" + name)
+    func requestProtocolDescriptions() {
+        CallCSharpCallback("requestProtocolDescriptions|")
     }
 }
 
@@ -127,11 +137,13 @@ struct ProtocolDescriptor: Codable, Identifiable {
     let id: String
     let title: String
     let version: String
+    let description: String
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         title = try container.decode(String.self, forKey: .title)
         version = try container.decode(String.self, forKey: .version)
+        description = try container.decode(String.self, forKey: .description)
         id = title
     }
 }

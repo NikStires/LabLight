@@ -1,55 +1,56 @@
 {
-  "Version": 2,
-  "Title": "Cell Culture Passaging Protocol",
-  "EstimatedDuration": 1800,
-  "ProtocolPDFNames": ["Cell_Culture_SOP.pdf", "BSC_Guidelines.pdf"],
-  "GlobalArObjects": [
+  "version": 2,
+  "title": "Cell Culture Passaging",
+  "description": "Standard operating procedure for passaging adherent cell cultures, including safety measures and critical steps for maintaining cell viability.",
+  "estimatedDuration": 1800,
+  "protocolPdfNames": ["Cell_Culture_SOP.pdf", "BSC_Guidelines.pdf"],
+  "globalArObjects": [
     {
-      "SpecificObjectName": "Biosafety Cabinet",
-      "ArObjectID": "bsc_01",
-      "RootPrefabName": "BSC_ClassII"
+      "specificObjectName": "Biosafety Cabinet",
+      "arObjectId": "bsc_01",
+      "rootPrefabName": "BSC_ClassII"
     },
     {
-      "SpecificObjectName": "CO2 Incubator",
-      "ArObjectID": "incubator_01",
-      "RootPrefabName": "Incubator_Standard"
+      "specificObjectName": "CO2 Incubator",
+      "arObjectId": "incubator_01",
+      "rootPrefabName": "Incubator_Standard"
     },
     {
-      "SpecificObjectName": "Microscope",
-      "ArObjectID": "microscope_01",
-      "RootPrefabName": "Microscope_Inverted"
+      "specificObjectName": "Microscope",
+      "arObjectId": "microscope_01",
+      "rootPrefabName": "Microscope_Inverted"
     }
   ],
-  "Steps": [
+  "steps": [
     {
-      "IsCritical": true,
-      "Title": "Preparation",
-      "EstimatedDuration": 300,
-      "ContentItems": [
+      "isCritical": true,
+      "title": "Preparation",
+      "estimatedDuration": 300,
+      "contentItems": [
         {
           "contentType": "Video",
-          "ArObjectID": "bsc_01",
-          "Properties": {
-            "URL": "bsc_startup_procedure.mp4"
+          "arObjectId": "bsc_01",
+          "properties": {
+            "url": "bsc_startup_procedure.mp4"
           }
         },
         {
           "contentType": "Timer",
-          "ArObjectID": "bsc_01",
-          "Properties": {
-            "DurationInSeconds": 900
+          "arObjectId": "bsc_01",
+          "properties": {
+            "durationInSeconds": 900
           }
         }
       ],
-      "Checklist": [
+      "checklist": [
         {
-          "Text": "Turn on BSC and allow 15 minutes for air purge",
-          "ArActions": [
+          "text": "Turn on BSC and allow 15 minutes for air purge",
+          "arActions": [
             {
-              "Type": "Animation",
-              "ArObjectID": "bsc_01",
-              "Properties": {
-                "AnimationName": "startup_sequence"
+              "type": "Animation",
+              "arObjectId": "bsc_01",
+              "properties": {
+                "animationName": "startup_sequence"
               }
             }
           ]
@@ -57,59 +58,59 @@
       ]
     },
     {
-      "IsCritical": false,
-      "Title": "Media Warming",
-      "EstimatedDuration": 600,
-      "ContentItems": [
+      "isCritical": false,
+      "title": "Media Warming",
+      "estimatedDuration": 600,
+      "contentItems": [
         {
           "contentType": "Webpage",
-          "ArObjectID": "",
-          "Properties": {
-            "URL": "www.labprotocols.com/media-warming-guidelines"
+          "arObjectId": "",
+          "properties": {
+            "url": "www.labprotocols.com/media-warming-guidelines"
           }
         }
       ],
-      "Checklist": [
+      "checklist": [
         {
-          "Text": "Retrieve media from storage",
-          "ArActions": [
+          "text": "Retrieve media from storage",
+          "arActions": [
             {
-              "Type": "Waypoint",
-              "ArObjectID": "refrigerator_01",
-              "Properties": {}
+              "type": "Waypoint",
+              "arObjectId": "refrigerator_01",
+              "properties": {}
             }
           ]
         }
       ]
     },
     {
-      "IsCritical": true,
-      "Title": "Cell Examination",
-      "EstimatedDuration": 300,
-      "ContentItems": [
+      "isCritical": true,
+      "title": "Cell Examination",
+      "estimatedDuration": 300,
+      "contentItems": [
         {
           "contentType": "Image",
-          "ArObjectID": "microscope_01",
-          "Properties": {
-            "URL": "confluence_examples.png"
+          "arObjectId": "microscope_01",
+          "properties": {
+            "url": "confluence_examples.png"
           }
         },
         {
           "contentType": "Text",
-          "ArObjectID": "microscope_01",
-          "Properties": {
-            "Text": "Check for 80-90% confluence and cell morphology"
+          "arObjectId": "microscope_01",
+          "properties": {
+            "text": "Check for 80-90% confluence and cell morphology"
           }
         }
       ],
-      "Checklist": [
+      "checklist": [
         {
-          "Text": "Examine cells under microscope",
-          "ArActions": [
+          "text": "Examine cells under microscope",
+          "arActions": [
             {
-              "Type": "Highlight",
-              "ArObjectID": "microscope_01",
-              "Properties": {
+              "type": "Highlight",
+              "arObjectId": "microscope_01",
+              "properties": {
                 "subIDs": ["Objective_10x"],
                 "colorHex": "#00FF00",
                 "colorName": "Green"

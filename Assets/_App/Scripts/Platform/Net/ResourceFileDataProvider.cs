@@ -13,7 +13,7 @@ using UnityEngine.Video;
 
 /// <summary>
 /// Originally known as Api 
-/// 
+///  
 /// Loads data from Resources folder (builtin readonly Unity folder)
 /// 
 /// Implements IDataProvider interface for accessing available procedures and updating runtime state
@@ -23,117 +23,85 @@ public class ResourceFileDataProvider : IProtocolDataProvider, IMediaProvider
 {
     public Task<List<ProtocolDescriptor>> GetProtocolList()
     {
-        return LoadTextAsset("ProtocolV2/index").Select(jsonString =>
+        try
         {
-            try
+            var protocolJsonFiles = new List<string>();
+            var protocolsPath = "ProtocolV2/";
+
+            // Get all JSON files recursively from Resources/ProtocolV2 folder
+            var resourceFiles = Resources.LoadAll(protocolsPath, typeof(TextAsset));
+            foreach (var file in resourceFiles)
             {
-                return Parsers.ParseProtocols(jsonString);
+                var textAsset = file as TextAsset;
+                if (textAsset != null)
+                {
+                    Debug.Log($"Found protocol file: {textAsset.name}");
+                    protocolJsonFiles.Add(textAsset.text);
+                }
             }
-            catch (Exception e)
+
+            if (protocolJsonFiles.Count == 0)
             {
-                ServiceRegistry.Logger.LogError("Could not create procedures " + e.ToString());
-                throw;
+                Debug.LogWarning($"No files found in Resources/{protocolsPath}");
             }
-        }).ToTask();
+
+            return Task.FromResult(Parsers.ParseProtocolDescriptions(protocolJsonFiles));
+        }
+        catch (Exception e)
+        {
+            ServiceRegistry.Logger.LogError("Could not create procedures " + e.ToString());
+            throw;
+        }
     }
 
-    public IObservable<ProtocolDefinition> GetOrCreateProtocolDefinition(string protocolName)
+    public IObservable<ProtocolDefinition> GetOrCreateProtocolDefinition(ProtocolDescriptor protocolDescriptor)
     {
-        var basePath = "ProtocolV2/" + protocolName;
-        var systemIoPath = @"Assets/Resources/" + basePath;
-
-        return LoadTextAsset(basePath + "/index").Select(jsonString =>
+        return Observable.Create<ProtocolDefinition>(observer =>
         {
             try
             {
-                var protocol = Parsers.ParseProtocol(jsonString);
+                var allProtocolFiles = Resources.LoadAll<TextAsset>("ProtocolV2");
+                foreach (var file in allProtocolFiles)
+                {
+                    if (file.name == "index")
+                    {
+                        try
+                        {
+                            var candidateProtocol = Parsers.ParseProtocol(file.text);
+                            if (candidateProtocol.title == protocolDescriptor.title &&
+                                candidateProtocol.description == protocolDescriptor.description &&
+                                candidateProtocol.version == protocolDescriptor.version)
+                            {
+                                //NOTE: I DONT THINK WE USE THIS ANYMORE? NS
+                                // var relativePath = AssetDatabase.GetAssetPath(file);
+                                // var protocolFolder = Path.GetDirectoryName(relativePath)
+                                //     .Replace("Assets/Resources/", "")
+                                //     .Replace("\\", "/");
+                                // candidateProtocol.mediaBasePath = protocolFolder;
+                                
+                                observer.OnNext(candidateProtocol);
+                                observer.OnCompleted();
+                                return Disposable.Empty;
+                            }
+                        }
+                        catch
+                        {
+                            // Skip files that can't be parsed
+                            continue;
+                        }
+                    }
+                }
 
-                // if (protocol.version < 9)
-                // {
-                //     UpdateProtocolVersion(protocol);
-                // }
-
-                // Set basepath for media to the same path
-                protocol.mediaBasePath = basePath;
-
-                return protocol;
+                observer.OnError(new Exception($"No matching protocol found for {protocolDescriptor.title}"));
             }
             catch (Exception e)
             {
-                ServiceRegistry.Logger.LogError("Parsing protocol definition " + e.ToString());
-                throw;
+                observer.OnError(e);
             }
+
+            return Disposable.Empty;
         });
     }
-
-    // public void DeleteProtocolDefinition(string protocolName)
-    // {
-    //     string indexPath;
-    //     #if UNITY_EDITOR
-    //         indexPath = Application.dataPath + "/Resources/Protocol/index.json";
-    //     #else
-    //         indexPath = Application.persistentDataPath + "/Resources/Protocol/index.json";
-    //     #endif
-
-    //     string jsonString = File.ReadAllText(indexPath);
-    //     Debug.Log(jsonString);
-    //     var protocols = JsonConvert.DeserializeObject<List<ProtocolDescriptor>>(jsonString);
-    //     var protocolToDelete = protocols.Find(p => p.title == protocolName);
-    //     protocols.Remove(protocolToDelete);
-    //     string updatedIndex = JsonConvert.SerializeObject(protocols, Formatting.Indented);
-    //     Debug.Log(updatedIndex);
-    //     File.WriteAllText(indexPath, updatedIndex);
-    // }
-
-    /// <summary>
-    /// Version 1 switched to automatic serialization/deserialization withouth manual parsing
-    /// Version 2 introduces Containers with ContentItems, SlideArdDefinitions and LabelArDefinitions are obsolete and need to be replaced with containers and content 
-    /// Version 3 introduces SoundItems that replace the SoundArDefinitions
-    /// Version 4 replaces font size with enumeration for header or block 
-    /// Version 5 renamed action to arDefinitionType, added globalArDefinitions array, removed frame from ArDefinition; everything is now assumed in Charuco frame, but behaviour depends on targetId (eg. container without target goes to slide frame)
-    /// Version 6 model, prefab name is now renamed to url to have the same structure as content items
-    /// Version 7 propertyitem, new contentitem that shows a trackedobject property as string
-    /// Version 8 removed target from ArDefinition and replaced with condition to handle more flexible visualization conditions
-    /// Version 9 all ArDefinitions are now global at the procedureDef level, removed ArDefinitions from steps and checkItems, seperated ArDefintions and ContentItems
-    /// 
-    /// LabelARDefitions are converted to containers with TextItem
-    /// SlideARDefinitions are converted to containers with TextItems, Images and Videos where applicable
-    /// </summary>
-    /// <param name="protocol"></param>
-    // private static void UpdateProtocolVersion(ProtocolDefinition protocol)
-    // {
-    //     // Convert to version 9 content
-    //     protocol.version = 9;
-
-    //     Debug.Log("Updating '" + protocol.title + "'  to file version " + protocol.version);
-
-    //     var newList = new List<ArDefinition>();
-    //     UpdateArDefinitions(protocol.globalArElements, newList);
-    //     protocol.globalArElements = newList;
-    // }
-
-    // private static void UpdateArDefinitions(List<ArDefinition> oldList, List<ArDefinition> newList)
-    // {
-    //     foreach (var ar in oldList)
-    //     {
-    //         ArDefinition updatedItem = ar;
-
-    //         var containerDef = ar as ContainerArDefinition;
-    //         if (containerDef != null)
-    //         {
-    //             foreach (var content in containerDef.layout.contentItems)
-    //             {
-    //                 var textItem = content as TextItem;
-    //                 if (textItem != null)
-    //                 {
-    //                     textItem.textType = (textItem.fontsize < 10) ? TextType.Block : TextType.Header;
-    //                 }
-    //             }
-    //         }
-
-    //         newList.Add(updatedItem);
-    //     }
-    // }
 
     /// <summary>
     /// Some jumping through hoops to match the HttpDataProvider way of working

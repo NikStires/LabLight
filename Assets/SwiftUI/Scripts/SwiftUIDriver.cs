@@ -229,26 +229,34 @@ public class SwiftUIDriver : IUIDriver, IDisposable
         SendMessageToSwiftUI($"stepChange|{json}");
     }
 
-    public void ProtocolSelectionCallback(string protocolTitle)
+    public void ProtocolSelectionCallback(string protocolDescriptorJson)
     {
-         ServiceRegistry.GetService<IProtocolDataProvider>().GetOrCreateProtocolDefinition(protocolTitle).First().Subscribe(protocol =>
+        try
         {
-            Debug.Log(protocol.title + " loaded");
-            ProtocolState.Instance.SetProtocolDefinition(protocol);
-            SceneLoader.Instance.LoadSceneClean("Protocol");
-        }, (e) =>
-        {
-            Debug.Log("Error fetching protocol from resources, checking local files");
-            var lfdp = new LocalFileDataProvider();
-            lfdp.LoadProtocolDefinitionAsync(protocolTitle).ToObservable<ProtocolDefinition>().Subscribe(protocol =>
+            var protocolDescriptor = JsonConvert.DeserializeObject<ProtocolDescriptor>(protocolDescriptorJson);
+            ServiceRegistry.GetService<IProtocolDataProvider>().GetOrCreateProtocolDefinition(protocolDescriptor).First().Subscribe(protocol =>
             {
+                Debug.Log(protocol.title + " loaded");
                 ProtocolState.Instance.SetProtocolDefinition(protocol);
                 SceneLoader.Instance.LoadSceneClean("Protocol");
             }, (e) =>
             {
-                Debug.Log("Error fetching protocol from local files");
+                Debug.Log("Error fetching protocol from resources, checking local files");
+                var lfdp = new LocalFileDataProvider();
+                lfdp.LoadProtocolDefinitionAsync(protocolDescriptor).ToObservable<ProtocolDefinition>().Subscribe(protocol =>
+                {
+                    ProtocolState.Instance.SetProtocolDefinition(protocol);
+                    SceneLoader.Instance.LoadSceneClean("Protocol");
+                }, (e) =>
+                {
+                    Debug.Log("Error fetching protocol from local files");
+                });
             });
-        });
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error deserializing protocol descriptor: {e.Message}");
+        }
     }
 
     public void CloseProtocolCallback()
@@ -388,9 +396,9 @@ public class SwiftUIDriver : IUIDriver, IDisposable
 
         try
         {
-            var protocols = await protocolDataProvider.GetProtocolList();
-            string protocolsJson = JsonConvert.SerializeObject(protocols);
-            SendMessageToSwiftUI($"protocolDescriptions|{protocolsJson}");
+            var protocolDescriptions = await protocolDataProvider.GetProtocolList();
+            string protocolDescriptionsJson = JsonConvert.SerializeObject(protocolDescriptions);
+            SendMessageToSwiftUI($"protocolDescriptions|{protocolDescriptionsJson}");
         }
         catch (Exception ex)
         {

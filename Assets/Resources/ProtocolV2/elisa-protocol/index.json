@@ -1,55 +1,56 @@
 {
-  "Version": 2,
-  "Title": "ELISA Protocol - IL-6 Detection",
-  "EstimatedDuration": 14400,
-  "ProtocolPDFNames": ["ELISA_Manual.pdf", "IL6_Detection_Guide.pdf"],
-  "GlobalArObjects": [
+  "version": 2,
+  "title": "ELISA Protocol - IL-6 Detection",
+  "description": "Standard operating procedure for detecting and quantifying IL-6 using enzyme-linked immunosorbent assay (ELISA). Includes preparation of standard curve, sample incubation, and plate reading steps.",
+  "estimatedDuration": 14400,
+  "protocolPdfNames": ["ELISA_Manual.pdf", "IL6_Detection_Guide.pdf"],
+  "globalArObjects": [
     {
-      "SpecificObjectName": "Microplate Reader",
-      "ArObjectID": "plate_reader_01",
-      "RootPrefabName": "PlateReader_Model340"
+      "specificObjectName": "Microplate Reader",
+      "arObjectID": "plate_reader_01",
+      "rootPrefabName": "PlateReader_Model340"
     },
     {
-      "SpecificObjectName": "Multichannel Pipette",
-      "ArObjectID": "multichannel_01",
-      "RootPrefabName": "Pipette_8Channel"
+      "specificObjectName": "Multichannel Pipette",
+      "arObjectID": "multichannel_01",
+      "rootPrefabName": "Pipette_8Channel"
     },
     {
-      "SpecificObjectName": "Plate Washer",
-      "ArObjectID": "washer_01",
-      "RootPrefabName": "PlateWasher_Auto"
+      "specificObjectName": "Plate Washer",
+      "arObjectID": "washer_01",
+      "rootPrefabName": "PlateWasher_Auto"
     }
   ],
-  "Steps": [
+  "steps": [
     {
-      "IsCritical": true,
-      "Title": "Standard Curve Preparation",
-      "EstimatedDuration": 1800,
-      "ContentItems": [
+      "isCritical": true,
+      "title": "Standard Curve Preparation",
+      "estimatedDuration": 1800,
+      "contentItems": [
         {
-          "Type": "Image",
-          "ArObjectID": "",
-          "Properties": {
-            "URL": "standard_curve_layout.png"
+          "type": "Image",
+          "arObjectID": "",
+          "properties": {
+            "url": "standard_curve_layout.png"
           }
         },
         {
-          "Type": "Text",
-          "ArObjectID": "multichannel_01",
-          "Properties": {
-            "Text": "Prepare 7 standard dilutions: 1000, 500, 250, 125, 62.5, 31.25, 15.625 pg/mL"
+          "type": "Text",
+          "arObjectID": "multichannel_01",
+          "properties": {
+            "text": "Prepare 7 standard dilutions: 1000, 500, 250, 125, 62.5, 31.25, 15.625 pg/mL"
           }
         }
       ],
-      "Checklist": [
+      "checklist": [
         {
-          "Text": "Perform serial dilutions for standard curve",
-          "ContentItems": [
+          "text": "Perform serial dilutions for standard curve",
+          "contentItems": [
             {
-              "Type": "Video",
-              "ArObjectID": "",
-              "Properties": {
-                "URL": "serial_dilution_technique.mp4"
+              "type": "Video",
+              "arObjectID": "",
+              "properties": {
+                "url": "serial_dilution_technique.mp4"
               }
             }
           ]
@@ -57,38 +58,38 @@
       ]
     },
     {
-      "IsCritical": true,
-      "Title": "Sample Incubation",
-      "EstimatedDuration": 7200,
-      "ContentItems": [
+      "isCritical": true,
+      "title": "Sample Incubation",
+      "estimatedDuration": 7200,
+      "contentItems": [
         {
-          "Type": "Timer",
-          "ArObjectID": "",
-          "Properties": {
-            "DurationInSeconds": 7200
+          "type": "Timer",
+          "arObjectID": "",
+          "properties": {
+            "durationInSeconds": 7200
           }
         }
       ],
-      "Checklist": [
+      "checklist": [
         {
-          "Text": "Add 100µL of samples to designated wells",
-          "ArActions": [
+          "text": "Add 100µL of samples to designated wells",
+          "arActions": [
             {
-              "Type": "Animation",
-              "ArObjectID": "multichannel_01",
-              "Properties": {
-                "AnimationName": "multichannel_dispensing"
+              "type": "Animation",
+              "arObjectID": "multichannel_01",
+              "properties": {
+                "animationName": "multichannel_dispensing"
               }
             }
           ]
         },
         {
-          "Text": "Seal plate and incubate for 2 hours at room temperature",
-          "ArActions": [
+          "text": "Seal plate and incubate for 2 hours at room temperature",
+          "arActions": [
             {
-              "Type": "Highlight",
-              "ArObjectID": "plate_sealer_01",
-              "Properties": {
+              "type": "Highlight",
+              "arObjectID": "plate_sealer_01",
+              "properties": {
                 "subIDs": ["SealingArea"],
                 "colorHex": "#FF0000",
                 "colorName": "Red"
@@ -99,27 +100,27 @@
       ]
     },
     {
-      "IsCritical": true,
-      "Title": "Plate Reading",
-      "EstimatedDuration": 300,
-      "ContentItems": [
+      "isCritical": true,
+      "title": "Plate Reading",
+      "estimatedDuration": 300,
+      "contentItems": [
         {
-          "Type": "Webpage",
-          "ArObjectID": "plate_reader_01",
-          "Properties": {
-            "URL": "www.platereader.com/software-guide"
+          "type": "Webpage",
+          "arObjectID": "plate_reader_01",
+          "properties": {
+            "url": "www.platereader.com/software-guide"
           }
         }
       ],
-      "Checklist": [
+      "checklist": [
         {
-          "Text": "Read plate at 450nm with wavelength correction at 570nm",
-          "ArActions": [
+          "text": "Read plate at 450nm with wavelength correction at 570nm",
+          "arActions": [
             {
-              "Type": "Animation",
-              "ArObjectID": "plate_reader_01",
-              "Properties": {
-                "AnimationName": "plate_reading_sequence"
+              "type": "Animation",
+              "arObjectID": "plate_reader_01",
+              "properties": {
+                "animationName": "plate_reading_sequence"
               }
             }
           ]

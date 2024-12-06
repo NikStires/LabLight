@@ -1,7 +1,8 @@
 {
   "version": 1,
-  "title": "DNA Extraction Protocol",
-  "protocolPDFNames": ["LabSafety.pdf", "SerialDilutionGuide.pdf"],
+  "title": "Test Protocol",
+  "description": "A test protocol demonstrating patient sample testing procedures using a reaction plate and water reservoir.",
+  "protocolPdfNames": ["LabSafety.pdf", "SerialDilutionGuide.pdf"],
   "globalArObjects": [
     {
       "specificObjectName": "Reaction Plate",

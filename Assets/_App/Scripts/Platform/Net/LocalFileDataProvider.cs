@@ -36,9 +36,9 @@ public class LocalFileDataProvider : IProtocolDataProvider, ITextDataProvider, I
         return list;
     }
 
-    public IObservable<ProtocolDefinition> GetOrCreateProtocolDefinition(string protocolName)
+    public IObservable<ProtocolDefinition> GetOrCreateProtocolDefinition(ProtocolDescriptor protocolDescriptor)
     {
-        return LoadProtocolDefinitionAsync(protocolName + ".json").ToObservable<ProtocolDefinition>();
+        return LoadProtocolDefinitionAsync(protocolDescriptor).ToObservable<ProtocolDefinition>();
     }
 
 
@@ -47,29 +47,45 @@ public class LocalFileDataProvider : IProtocolDataProvider, ITextDataProvider, I
     /// </summary>
     /// <param name="procedureName"></param>
     /// <param name="protocol"></param>
-    public async Task<ProtocolDefinition> LoadProtocolDefinitionAsync(string protocolFile)
+    public async Task<ProtocolDefinition> LoadProtocolDefinitionAsync(ProtocolDescriptor protocolDescriptor)
     {
-        Debug.Log("Local file data provider trying to load " + Path.Combine(Application.persistentDataPath, protocolFile));
-        ProtocolDefinition protocol = null;
-        using (StreamReader streamReader = new StreamReader(Path.Combine(Application.persistentDataPath, protocolFile)))
-        {
-            protocol = Parsers.ParseProtocol(streamReader.ReadToEnd());
-            Debug.LogFormat("Data loaded from file '{0}'", protocolFile);
-        }
+        var directoryInfo = new DirectoryInfo(Application.persistentDataPath);
+        var jsonFiles = directoryInfo.GetFiles("*.json");
 
-        if (protocol == null)
+        foreach (var file in jsonFiles)
         {
-            Debug.Log("protocol not found, creating empty protocol");
-            // Create empty definition
-            protocol = new ProtocolDefinition()
+            try
             {
-                version = "9"
-            };
+                using (StreamReader streamReader = new StreamReader(file.FullName))
+                {
+                    var protocol = Parsers.ParseProtocol(streamReader.ReadToEnd());
+                    
+                    // Check if this protocol matches our descriptor
+                    if (protocol.title == protocolDescriptor.title &&
+                        protocol.description == protocolDescriptor.description &&
+                        protocol.version == protocolDescriptor.version)
+                    {
+                        protocol.mediaBasePath = "CSV";
+                        return protocol;
+                    }
+                }
+            }
+            catch
+            {
+                // Skip files that can't be parsed
+                continue;
+            }
         }
 
-        protocol.mediaBasePath = "CSV";
-
-        return protocol;
+        Debug.Log("Matching protocol not found, creating empty protocol with descriptor values");
+        // Create empty definition with descriptor values
+        return new ProtocolDefinition()
+        {
+            title = protocolDescriptor.title,
+            description = protocolDescriptor.description,
+            version = protocolDescriptor.version,
+            mediaBasePath = "CSV"
+        };
     }
 
 

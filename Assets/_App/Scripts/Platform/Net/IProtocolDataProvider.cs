@@ -18,7 +18,7 @@ public interface IProtocolDataProvider
     /// </summary>
     /// <param name="protocolName"></param>
     /// <returns></returns>
-    IObservable<ProtocolDefinition> GetOrCreateProtocolDefinition(string protocolName);
+    IObservable<ProtocolDefinition> GetOrCreateProtocolDefinition(ProtocolDescriptor protocolDescription);
 
     /// <summary>
     /// Save the protocol 
