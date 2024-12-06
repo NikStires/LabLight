@@ -4,15 +4,14 @@ import UnityFramework
 
 struct ProtocolContentView: View {
     let contentItems: [ContentItem]
-    let selectedChecklistItem: CheckItemDefinition?
     let nextUncheckedItem: CheckItemDefinition?
     
     private var filteredContentItems: [ContentItem] {
-        contentItems.filter { $0.arObjectID.isEmpty }
+        contentItems.filter { $0.arObjectID == nil || $0.arObjectID.isEmpty }
     }
     
     private func filterContentItems(_ items: [ContentItem]) -> [ContentItem] {
-        items.filter { $0.arObjectID.isEmpty }
+        items.filter { $0.arObjectID == nil || $0.arObjectID.isEmpty }
     }
     
     var body: some View {
@@ -93,21 +92,21 @@ struct ProtocolContentView: View {
     // MARK: - Content Type Views
     
     private func textContent(for item: ContentItem) -> some View {
-        if let text = item.properties["Text"], !text.isEmpty {
+        if let text = item.properties["text"], !text.isEmpty {
             return AnyView(TextContentView(text: text))
         }
         return AnyView(EmptyView())
     }
     
     private func imageContent(for item: ContentItem) -> some View {
-        if let url = item.properties["URL"], !url.isEmpty {
+        if let url = item.properties["url"], !url.isEmpty {
             return AnyView(ImageContentView(imageName: url))
         }
         return AnyView(EmptyView())
     }
     
     private func videoContent(for item: ContentItem) -> some View {
-        if let url = item.properties["URL"], !url.isEmpty {
+        if let url = item.properties["url"], !url.isEmpty {
             return AnyView(
                 Button(action: {
                     CallCSharpCallback("requestVideo|" + url)
@@ -115,7 +114,7 @@ struct ProtocolContentView: View {
                     ContentButton(
                         icon: "play.circle.fill",
                         title: "Play Video",
-                        subtitle: item.properties["Text"] ?? url
+                        subtitle: item.properties["text"] ?? url
                     )
                 }
             )
@@ -143,7 +142,7 @@ struct ProtocolContentView: View {
     }
     
     private func webpageContent(for item: ContentItem) -> some View {
-        if let url = item.properties["URL"], !url.isEmpty {
+        if let url = item.properties["url"], !url.isEmpty {
             return AnyView(
                 Button(action: {
                     CallCSharpCallback("requestWebpage|" + url)
@@ -160,7 +159,7 @@ struct ProtocolContentView: View {
     }
     
     private func pdfContent(for item: ContentItem) -> some View {
-        if let url = item.properties["URL"], !url.isEmpty {
+        if let url = item.properties["url"], !url.isEmpty {
             return AnyView(
                 Button(action: {
                     CallCSharpCallback("requestPDF|" + url)

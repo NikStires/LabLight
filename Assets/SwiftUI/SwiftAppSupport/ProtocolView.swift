@@ -69,12 +69,11 @@ struct ProtocolView: View {
     private var contentArea: some View {
         HStack(spacing: 0) {
             ChecklistView(viewModel: viewModel)
-                .frame(maxWidth: viewModel.currentStep.contentItems.isEmpty ? .infinity : 400)
+                .frame(maxWidth: shouldShowContent ? 400 : .infinity)
             
-            if !viewModel.currentStep.contentItems.isEmpty {
+            if shouldShowContent {
                 ProtocolContentView(
-                    contentItems: viewModel.currentStep.contentItems,
-                    selectedChecklistItem: viewModel.selectedChecklistItem,
+                    contentItems: viewModel.currentStep.contentItems ?? [],
                     nextUncheckedItem: viewModel.nextUncheckedItem()
                 )
                 .frame(maxWidth: .infinity)
@@ -86,7 +85,19 @@ struct ProtocolView: View {
             }
         }
         .padding(.horizontal)
-        .animation(.easeInOut(duration: 0.3), value: viewModel.currentStep.contentItems.isEmpty)
+        .animation(.easeInOut(duration: 0.3), value: shouldShowContent)
+    }
+    
+    private var shouldShowContent: Bool {
+        // Filter step content items
+        let hasStepContent = (viewModel.currentStep.contentItems ?? [])
+            .contains { $0.arObjectID == nil || $0.arObjectID.isEmpty }
+        
+        // Check next item's content items (if any exist and aren't AR-related)
+        let hasNextItemContent = viewModel.nextUncheckedItem()?.contentItems
+            .contains { $0.arObjectID == nil || $0.arObjectID.isEmpty } ?? false
+        
+        return hasStepContent || hasNextItemContent
     }
     
     private var controlPanel: some View {
@@ -174,7 +185,6 @@ class ProtocolViewModel: ObservableObject {
     @Published var checklistItems: [CheckItemDefinition] = []
     @Published var currentStates: [CheckItemStateData] = []
     @Published var lastCheckedItemIndex: Int?
-    @Published var selectedChecklistItem: CheckItemDefinition?
     @Published var isStepSignedOff: Bool = false
     @Published var canSignOff: Bool = false
     
@@ -276,7 +286,6 @@ class ProtocolViewModel: ObservableObject {
             self.checklistItems = self.currentStep.checklist
             self.currentStates = stepStateData.checklistState ?? []
             self.lastCheckedItemIndex = self.currentStates.last { $0.isChecked }?.checkIndex
-            self.selectedChecklistItem = nil
             self.isStepSignedOff = stepStateData.isSignedOff
             self.updateCanSignOff()
         }
@@ -294,13 +303,7 @@ class ProtocolViewModel: ObservableObject {
         
         DispatchQueue.main.async {
             self.currentStates = checkItemStateDataList
-            self.lastCheckedItemIndex = checkItemStateDataList.last { $0.isChecked }?.checkIndex
-            
-            if let lastIndex = self.lastCheckedItemIndex,
-               lastIndex < self.checklistItems.count {
-                self.selectedChecklistItem = self.checklistItems[lastIndex]
-            }
-            
+            self.lastCheckedItemIndex = checkItemStateDataList.last { $0.isChecked }?.checkIndex    
             self.updateCanSignOff()
         }
     }

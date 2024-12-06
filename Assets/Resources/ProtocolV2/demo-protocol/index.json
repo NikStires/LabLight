@@ -26,11 +26,11 @@
           "Text": "Place the 96-Well Plate on the lab bench.",
           "arActions": [
             {
-                "actionType": "Lock",
-                "arObjectID": "",
-                "properties": {
-                  "arIDList": ["wellplate_01"]
-                }
+              "actionType": "Lock",
+              "arObjectID": "",
+              "properties": {
+                "arIDList": ["wellplate_01"]
+              }
             }
           ]
         },
@@ -38,11 +38,11 @@
           "Text": "Place the Reservoir on the lab bench.",
           "arActions": [
             {
-                "actionType": "Lock",
-                "arObjectID": "",
-                "properties": {
-                  "arIDList": ["reservoir_01"]
-                }
+              "actionType": "Lock",
+              "arObjectID": "",
+              "properties": {
+                "arIDList": ["reservoir_01"]
+              }
             }
           ]
         }
@@ -52,49 +52,50 @@
       "isCritical": false,
       "title": "Start Procedure Timer",
       "estimatedDurationInSeconds": "0",
-      "checklist" : [
-          {
-              "Text": "Start the timer to track how long the procedure takes",
-              "contentItems": [
-                {
-                  "contentType": "Timer",
-                  "properties": {
-                    "durationInSeconds": "0"
-                  }
-                }
-              ]
-          }
+      "checklist": [
+        {
+          "Text": "Start the timer to track how long the procedure takes",
+          "contentItems": [
+            {
+              "contentType": "Timer",
+              "properties": {
+                "durationInSeconds": "900",
+                "text": "Procedure Timer"
+              }
+            }
+          ]
+        }
       ]
     },
     {
       "isCritical": false,
       "title": "Review Safety and Procedure Guidelines",
       "estimatedDurationInSeconds": "0",
-      "checklist" : [
-          {
-              "Text": "Review the Lab Safety Guidelines",
-              "contentItems": [
-                  {
-                      "contentType" : "PDF",
-                      "properties" : {
-                          "url" : "LabSafety.pdf"
-                      }
-                  }
-              ]
-          },
-          {
-              "Text" : "Review the Serial Dilution Guide.",
-              "contentItems" : [
-                  {
-                      "contentType" : "PDF",
-                      "properties" : {
-                          "url" : "SerialDilutionGuide.pdf"
-                      }
-                  }
-              ]
-          }
-        ]
-      },
+      "checklist": [
+        {
+          "Text": "Review the Lab Safety Guidelines",
+          "contentItems": [
+            {
+              "contentType": "PDF",
+              "properties": {
+                "url": "LabSafety.pdf"
+              }
+            }
+          ]
+        },
+        {
+          "Text": "Review the Serial Dilution Guide.",
+          "contentItems": [
+            {
+              "contentType": "PDF",
+              "properties": {
+                "url": "SerialDilutionGuide.pdf"
+              }
+            }
+          ]
+        }
+      ]
+    },
     {
       "isCritical": true,
       "title": "Prepare the Plate",
@@ -119,13 +120,13 @@
           "Text": "Locate the reservoir containing distilled water.",
           "arActions": [
             {
-                "actionType": "Highlight",
-                "arObjectID": "reservoir_01",
-                "properties": {
-                  "subIDs": [""],
-                  "colorHex": "#FFD700",
-                  "colorName": "Gold"
-                }
+              "actionType": "Highlight",
+              "arObjectID": "reservoir_01",
+              "properties": {
+                "subIDs": [""],
+                "colorHex": "#FFD700",
+                "colorName": "Gold"
+              }
             }
           ],
           "contentItems": [
@@ -142,16 +143,27 @@
           "Text": "Add 175 µL of distilled water from the reservoir to each well from A2 to A12.",
           "arActions": [
             {
-                "actionType": "Highlight",
-                "arObjectID": "wellplate_01",
-                "properties": {
-                  "subIDs": ["A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10", "A11", "A12"],
-                  "colorHex": "#AAFF00",
-                  "colorName": "Green"
-                }
+              "actionType": "Highlight",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "subIDs": [
+                  "A2",
+                  "A3",
+                  "A4",
+                  "A5",
+                  "A6",
+                  "A7",
+                  "A8",
+                  "A9",
+                  "A10",
+                  "A11",
+                  "A12"
+                ],
+                "colorHex": "#AAFF00",
+                "colorName": "Green"
+              }
             }
-          ]
-          ,
+          ],
           "contentItems": [
             {
               "contentType": "Text",
@@ -181,13 +193,13 @@
           "Text": "Add 200 µL of the stock solution to well A1.",
           "arActions": [
             {
-                "actionType": "Highlight",
-                "arObjectID": "wellplate_01",
-                "properties": {
-                  "subIDs": ["A1"],
-                  "colorHex": "#FFD700",
-                  "colorName": "Gold"
-                }
+              "actionType": "Highlight",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "subIDs": ["A1"],
+                "colorHex": "#FFD700",
+                "colorName": "Gold"
+              }
             }
           ],
           "contentItems": [
@@ -326,12 +338,12 @@
               }
             },
             {
-                  "contentType": "Image",
-                  "arObjectID": "wellplate_01",
-                  "properties": {
-                    "url": "plate_map_A2_to_A3.png",
-                    "Text": "Plate map showing transfer from A2 to A3"
-                }
+              "contentType": "Image",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "url": "plate_map_A2_to_A3.png",
+                "Text": "Plate map showing transfer from A2 to A3"
+              }
             }
           ]
         },
