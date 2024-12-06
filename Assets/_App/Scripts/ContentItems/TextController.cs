@@ -19,7 +19,7 @@ public class TextController : ContentController<ContentItem>
 
     private void UpdateView()
     {
-        if (ContentItem.properties.TryGetValue("Text", out object text))
+        if (ContentItem.properties.TryGetValue("text", out object text))
         {
             Text.text = text.ToString().Replace("\r", "");
         }

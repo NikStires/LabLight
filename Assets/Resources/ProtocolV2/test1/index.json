@@ -39,14 +39,14 @@
         {
           "contentType": "Text",
           "properties": {
-            "Text": "Test patient sample"
+            "text": "Test patient sample"
           }
         },
         {
           "contentType": "Text",
           "arObjectID": "wellplate_01",
           "properties": {
-            "Text": "This is your reaction plate for the protocol"
+            "text": "This is your reaction plate for the protocol"
           }
         }
       ],
@@ -69,7 +69,7 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
-                "Text": "Pipette 100µl of patient sample into well A1"
+                "text": "Pipette 100µl of patient sample into well A1"
               }
             }
           ]
@@ -92,14 +92,14 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
-                "Text": "Pipette 100µl of the reaction mix into well A2"
+                "text": "Pipette 100µl of the reaction mix into well A2"
               }
             },
             {
               "contentType": "Image",
               "arObjectID": "wellplate_01",
               "properties": {
-                "URL": "step1.png"
+                "url": "step1.png"
               }
             }
           ]
@@ -112,13 +112,13 @@
         {
           "contentType": "Text",
           "properties": {
-            "Text": "Important step information: Make sure to maintain proper temperature throughout this process."
+            "text": "Important step information: Make sure to maintain proper temperature throughout this process."
           }
         },
         {
           "contentType": "Text",
           "properties": {
-            "Text": "Note: Wear appropriate PPE during this step."
+            "text": "Note: Wear appropriate PPE during this step."
           }
         }
       ],
@@ -129,7 +129,7 @@
             {
               "contentType": "Text",
               "properties": {
-                "Text": "Temperature must be precise for optimal results"
+                "text": "Temperature must be precise for optimal results"
               }
             }
           ]
@@ -140,7 +140,7 @@
             {
               "contentType": "Text",
               "properties": {
-                "Text": "Set a timer to ensure accurate timing"
+                "text": "Set a timer to ensure accurate timing"
               }
             }
           ]
@@ -153,19 +153,19 @@
         {
           "contentType": "Text",
           "properties": {
-            "Text": "Watch this demonstration video carefully"
+            "text": "Watch this demonstration video carefully"
           }
         },
         {
           "contentType": "Video",
           "properties": {
-            "URL": "exampleVideo.mp4"
+            "url": "exampleVideo.mp4"
           }
         },
         {
           "contentType": "Text",
           "properties": {
-            "Text": "Follow the steps shown in the video above"
+            "text": "Follow the steps shown in the video above"
           }
         }
       ],
@@ -176,7 +176,7 @@
             {
               "contentType": "Text",
               "properties": {
-                "Text": "Make sure you understand each step before proceeding"
+                "text": "Make sure you understand each step before proceeding"
               }
             }
           ]
@@ -189,20 +189,20 @@
         {
           "contentType": "Text",
           "properties": {
-            "Text": "Incubate the sample"
+            "text": "Incubate the sample"
           }
         },
         {
           "contentType": "Timer",
           "properties": {
             "durationInSeconds": "900",
-            "Text": "Incubation Timer"
+            "text": "Incubation Timer"
           }
         },
         {
           "contentType": "Text",
           "properties": {
-            "Text": "Keep the temperature stable during incubation"
+            "text": "Keep the temperature stable during incubation"
           }
         }
       ],
@@ -213,7 +213,7 @@
             {
               "contentType": "Text",
               "properties": {
-                "Text": "Make sure to wait for the full duration"
+                "text": "Make sure to wait for the full duration"
               }
             }
           ]
@@ -224,7 +224,7 @@
             {
               "contentType": "Text",
               "properties": {
-                "Text": "Temperature should remain at 37°C"
+                "text": "Temperature should remain at 37°C"
               }
             }
           ]
@@ -237,20 +237,20 @@
         {
           "contentType": "Text",
           "properties": {
-            "Text": "Review the protocol documentation"
+            "text": "Review the protocol documentation"
           }
         },
         {
           "contentType": "Webpage",
           "properties": {
-            "URL": "https://www.protocols.io/view/dna-extraction-protocol-standard-method-n2bdgan",
-            "Text": "DNA Extraction Protocol Reference"
+            "url": "https://www.protocols.io/view/dna-extraction-protocol-standard-method-n2bdgan",
+            "text": "DNA Extraction Protocol Reference"
           }
         },
         {
           "contentType": "Text",
           "properties": {
-            "Text": "Make sure to follow all safety guidelines outlined in the documentation"
+            "text": "Make sure to follow all safety guidelines outlined in the documentation"
           }
         }
       ],
@@ -261,7 +261,7 @@
             {
               "contentType": "Text",
               "properties": {
-                "Text": "Ensure you understand all safety procedures"
+                "text": "Ensure you understand all safety procedures"
               }
             }
           ]
@@ -272,7 +272,7 @@
             {
               "contentType": "Text",
               "properties": {
-                "Text": "Verify all materials are available before starting"
+                "text": "Verify all materials are available before starting"
               }
             }
           ]
@@ -285,20 +285,20 @@
         {
           "contentType": "Text",
           "properties": {
-            "Text": "Review the safety documentation"
+            "text": "Review the safety documentation"
           }
         },
         {
           "contentType": "PDF",
           "properties": {
-            "URL": "sample.pdf",
-            "Text": "Safety Guidelines and Procedures"
+            "url": "sample.pdf",
+            "text": "Safety Guidelines and Procedures"
           }
         },
         {
           "contentType": "Text",
           "properties": {
-            "Text": "Make sure you understand all safety procedures before proceeding"
+            "text": "Make sure you understand all safety procedures before proceeding"
           }
         }
       ],
@@ -309,7 +309,7 @@
             {
               "contentType": "Text",
               "properties": {
-                "Text": "Ensure you understand all safety procedures"
+                "text": "Ensure you understand all safety procedures"
               }
             }
           ]
@@ -320,7 +320,7 @@
             {
               "contentType": "Text",
               "properties": {
-                "Text": "Verify you have all required safety equipment"
+                "text": "Verify you have all required safety equipment"
               }
             }
           ]
