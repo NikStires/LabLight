@@ -1,7 +1,8 @@
 {
-  "version": 1,
+  "version": "1.0",
   "title": "Dilution Series Preparation",
   "description": "Prepare a 1:7.5 serial dilution series of a stock solution across a row of a 96-well plate.",
+  "estimatedDurationInSeconds": "0",
   "protocolPDFNames": ["LabSafety.pdf", "SerialDilutionGuide.pdf"],
   "globalArObjects": [
     {
@@ -17,27 +18,40 @@
   ],
   "steps": [
     {
-      "isCritical": true,
-      "contentItems": [],
+      "isCritical": false,
+      "title": "Setup Laboratory AR Objects",
+      "estimatedDurationInSeconds": "0",
       "checklist": [
         {
-          "text": "Lock all AR objects in place",
+          "text": "Place the 96-Well Plate on the lab bench.",
           "arActions": [
             {
               "actionType": "Lock",
               "arObjectID": "",
               "properties": {
-                "arIDList": []
+                "arIDList": ["wellplate_01"]
               }
             }
-          ],
-          "contentItems": []
+          ]
+        },
+        {
+          "text": "Place the Reservoir on the lab bench.",
+          "arActions": [
+            {
+              "actionType": "Lock",
+              "arObjectID": "",
+              "properties": {
+                "arIDList": ["reservoir_01"]
+              }
+            }
+          ]
         }
       ]
     },
     {
       "isCritical": false,
-      "contentItems": [],
+      "title": "Start Procedure Timer",
+      "estimatedDurationInSeconds": "0",
       "checklist": [
         {
           "text": "Start the timer to track how long the procedure takes",
@@ -55,7 +69,8 @@
     },
     {
       "isCritical": false,
-      "contentItems": [],
+      "title": "Review Safety and Procedure Guidelines",
+      "estimatedDurationInSeconds": "0",
       "checklist": [
         {
           "text": "Review the Lab Safety Guidelines",
@@ -63,20 +78,18 @@
             {
               "contentType": "PDF",
               "properties": {
-                "url": "LabSafety.pdf",
-                "text": "Lab Safety Guidelines"
+                "url": "LabSafety.pdf"
               }
             }
           ]
         },
         {
-          "text": "Review the Serial Dilution Guide",
+          "text": "Review the Serial Dilution Guide.",
           "contentItems": [
             {
               "contentType": "PDF",
               "properties": {
-                "url": "SerialDilutionGuide.pdf",
-                "text": "Serial Dilution Guide"
+                "url": "SerialDilutionGuide.pdf"
               }
             }
           ]
@@ -85,6 +98,8 @@
     },
     {
       "isCritical": true,
+      "title": "Prepare the Plate",
+      "estimatedDurationInSeconds": "0",
       "contentItems": [
         {
           "contentType": "Text",
@@ -108,7 +123,7 @@
               "actionType": "Highlight",
               "arObjectID": "reservoir_01",
               "properties": {
-                "subIDs": ["1"],
+                "subIDs": [""],
                 "colorHex": "#FFD700",
                 "colorName": "Gold"
               }
@@ -131,7 +146,19 @@
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
               "properties": {
-                "subIDs": ["A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10", "A11", "A12"],
+                "subIDs": [
+                  "A2",
+                  "A3",
+                  "A4",
+                  "A5",
+                  "A6",
+                  "A7",
+                  "A8",
+                  "A9",
+                  "A10",
+                  "A11",
+                  "A12"
+                ],
                 "colorHex": "#AAFF00",
                 "colorName": "Green"
               }
@@ -159,7 +186,8 @@
     },
     {
       "isCritical": true,
-      "contentItems": [],
+      "title": "Add Stock Solution",
+      "estimatedDurationInSeconds": "0",
       "checklist": [
         {
           "text": "Add 200 µL of the stock solution to well A1.",
@@ -179,7 +207,7 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
-                "text": "Pipette into Well A1 (Volume: 200 µL)"
+                "Text": "Pipette into Well A1 (Volume: 200 µL)"
               }
             },
             {
@@ -196,6 +224,8 @@
     },
     {
       "isCritical": false,
+      "title": "Calculate the Dilution Volume",
+      "estimatedDurationInSeconds": "0",
       "contentItems": [
         {
           "contentType": "Text",
@@ -213,21 +243,20 @@
       ],
       "checklist": [
         {
-          "text": "Calculate the dilution volume using the calculator.",
-          "contentItems": []
+          "text": "Calculate the dilution volume using the calculator."
         },
         {
-          "text": "Confirm your calculations with LLM Chat (e.g., Claude).",
-          "contentItems": []
+          "text": "Confirm your calculations with LLM Chat (e.g., Claude)."
         },
         {
-          "text": "Record the calculated volume in your lab notebook.",
-          "contentItems": []
+          "text": "Record the calculated volume in your lab notebook."
         }
       ]
     },
     {
       "isCritical": true,
+      "title": "Perform Serial Dilutions",
+      "estimatedDurationInSeconds": "0",
       "contentItems": [
         {
           "contentType": "Video",
@@ -245,9 +274,18 @@
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
               "properties": {
-                "subIDs": ["A1", "A2"],
-                "colorHex": "#FFD700",
-                "colorName": "Gold"
+                "subIDs": ["A1"],
+                "colorHex": "#FF0000",
+                "colorName": "Red"
+              }
+            },
+            {
+              "actionType": "Highlight",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "subIDs": ["A2"],
+                "colorHex": "#00FF00",
+                "colorName": "Green"
               }
             }
           ],
@@ -276,9 +314,18 @@
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
               "properties": {
-                "subIDs": ["A2", "A3"],
-                "colorHex": "#FFD700",
-                "colorName": "Gold"
+                "subIDs": ["A2"],
+                "colorHex": "#FF0000",
+                "colorName": "Red"
+              }
+            },
+            {
+              "actionType": "Highlight",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "subIDs": ["A3"],
+                "colorHex": "#00FF00",
+                "colorName": "Green"
               }
             }
           ],
@@ -307,9 +354,18 @@
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
               "properties": {
-                "subIDs": ["A3", "A4"],
-                "colorHex": "#FFD700",
-                "colorName": "Gold"
+                "subIDs": ["A3"],
+                "colorHex": "#FF0000",
+                "colorName": "Red"
+              }
+            },
+            {
+              "actionType": "Highlight",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "subIDs": ["A4"],
+                "colorHex": "#00FF00",
+                "colorName": "Green"
               }
             }
           ],
@@ -338,9 +394,18 @@
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
               "properties": {
-                "subIDs": ["A4", "A5"],
-                "colorHex": "#FFD700",
-                "colorName": "Gold"
+                "subIDs": ["A4"],
+                "colorHex": "#FF0000",
+                "colorName": "Red"
+              }
+            },
+            {
+              "actionType": "Highlight",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "subIDs": ["A5"],
+                "colorHex": "#00FF00",
+                "colorName": "Green"
               }
             }
           ],
@@ -369,9 +434,18 @@
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
               "properties": {
-                "subIDs": ["A5", "A6"],
-                "colorHex": "#FFD700",
-                "colorName": "Gold"
+                "subIDs": ["A5"],
+                "colorHex": "#FF0000",
+                "colorName": "Red"
+              }
+            },
+            {
+              "actionType": "Highlight",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "subIDs": ["A6"],
+                "colorHex": "#00FF00",
+                "colorName": "Green"
               }
             }
           ],
@@ -400,9 +474,18 @@
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
               "properties": {
-                "subIDs": ["A6", "A7"],
-                "colorHex": "#FFD700",
-                "colorName": "Gold"
+                "subIDs": ["A6"],
+                "colorHex": "#FF0000",
+                "colorName": "Red"
+              }
+            },
+            {
+              "actionType": "Highlight",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "subIDs": ["A7"],
+                "colorHex": "#00FF00",
+                "colorName": "Green"
               }
             }
           ],
@@ -431,9 +514,18 @@
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
               "properties": {
-                "subIDs": ["A7", "A8"],
-                "colorHex": "#FFD700",
-                "colorName": "Gold"
+                "subIDs": ["A7"],
+                "colorHex": "#FF0000",
+                "colorName": "Red"
+              }
+            },
+            {
+              "actionType": "Highlight",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "subIDs": ["A8"],
+                "colorHex": "#00FF00",
+                "colorName": "Green"
               }
             }
           ],
@@ -462,9 +554,18 @@
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
               "properties": {
-                "subIDs": ["A8", "A9"],
-                "colorHex": "#FFD700",
-                "colorName": "Gold"
+                "subIDs": ["A8"],
+                "colorHex": "#FF0000",
+                "colorName": "Red"
+              }
+            },
+            {
+              "actionType": "Highlight",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "subIDs": ["A9"],
+                "colorHex": "#00FF00",
+                "colorName": "Green"
               }
             }
           ],
@@ -493,9 +594,18 @@
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
               "properties": {
-                "subIDs": ["A9", "A10"],
-                "colorHex": "#FFD700",
-                "colorName": "Gold"
+                "subIDs": ["A9"],
+                "colorHex": "#FF0000",
+                "colorName": "Red"
+              }
+            },
+            {
+              "actionType": "Highlight",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "subIDs": ["A10"],
+                "colorHex": "#00FF00",
+                "colorName": "Green"
               }
             }
           ],
@@ -524,9 +634,18 @@
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
               "properties": {
-                "subIDs": ["A10", "A11"],
-                "colorHex": "#FFD700",
-                "colorName": "Gold"
+                "subIDs": ["A10"],
+                "colorHex": "#FF0000",
+                "colorName": "Red"
+              }
+            },
+            {
+              "actionType": "Highlight",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "subIDs": ["A11"],
+                "colorHex": "#00FF00",
+                "colorName": "Green"
               }
             }
           ],
@@ -549,13 +668,22 @@
           ]
         },
         {
-          "text": "Do not transfer from A12 to maintain it as the most diluted well.",
-          "contentItems": []
+          "text": "Do not transfer from A12 to maintain it as the most diluted well."
         }
       ]
     },
     {
       "isCritical": false,
+      "title": "Observe and Document",
+      "estimatedDurationInSeconds": "0",
+      "checklist": [
+        {
+          "text": "Record changes in color intensity across the row."
+        },
+        {
+          "text": "Take a photo or note observations in your lab notebook."
+        }
+      ],
       "contentItems": [
         {
           "contentType": "Image",
@@ -564,33 +692,21 @@
             "text": "Expected gradient of color intensity."
           }
         }
-      ],
-      "checklist": [
-        {
-          "text": "Record changes in color intensity across the row.",
-          "contentItems": []
-        },
-        {
-          "text": "Take a photo or note observations in your lab notebook.",
-          "contentItems": []
-        }
       ]
     },
     {
       "isCritical": false,
-      "contentItems": [],
+      "title": "Clean Up",
+      "estimatedDurationInSeconds": "0",
       "checklist": [
         {
-          "text": "Dispose of used tips properly.",
-          "contentItems": []
+          "text": "Dispose of used tips properly."
         },
         {
-          "text": "Clean pipettes if needed.",
-          "contentItems": []
+          "text": "Clean pipettes if needed."
         },
         {
-          "text": "Safely store or discard the plate as per lab protocol.",
-          "contentItems": []
+          "text": "Safely store or discard the plate as per lab protocol."
         }
       ]
     }
