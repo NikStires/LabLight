@@ -12,20 +12,6 @@ public interface IProtocolDataProvider
     /// </summary>
     /// <returns></returns>
     public Task<List<ProtocolDefinition>> GetProtocolList();
-    
-    /// <summary>
-    /// Retrieve complete ProtocolDefinition
-    /// </summary>
-    /// <param name="protocolName"></param>
-    /// <returns></returns>
-    IObservable<ProtocolDefinition> GetOrCreateProtocolDefinition(ProtocolDescriptor protocolDescription);
-
-    /// <summary>
-    /// Save the protocol 
-    /// </summary>
-    /// <param name="protocolName"></param>
-    /// <param name="protocol"></param>
-    void SaveProtocolDefinition(string protocolName, ProtocolDefinition protocol);
 
     //void DeleteProtocolDefinition(string protocolName);
 }
