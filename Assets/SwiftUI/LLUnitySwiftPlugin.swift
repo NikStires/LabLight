@@ -32,9 +32,9 @@ public func CallCSharpCallback(_ str: String) {
 func sendMessageToSwiftUI(_ cmessage: UnsafePointer<CChar>) {
     let message = String(cString: cmessage)
     print("######LABLIGHT Message Received from Unity \(message)")
-    if message.hasPrefix("protocolDescriptions|") {
-        print("######LABLIGHT Posting ProtocolDescriptions notification")
-        NotificationCenter.default.post(name: Notification.Name("ProtocolDescriptions"), object: nil, userInfo: ["message": message])
+    if message.hasPrefix("protocolDefinitions|") {
+        print("######LABLIGHT Posting ProtocolDefinitions notification")
+        NotificationCenter.default.post(name: Notification.Name("ProtocolDefinitions"), object: nil, userInfo: ["message": message])
     }
     else if message.hasPrefix("protocolChange|") {
         print("######LABLIGHT Posting ProtocolChange notification")

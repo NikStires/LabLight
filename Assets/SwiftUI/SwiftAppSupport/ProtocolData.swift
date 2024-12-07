@@ -6,6 +6,7 @@ import Combine
 struct ProtocolDefinition: Codable, Identifiable, Equatable, Hashable {
     let version: String
     let title: String
+    let description: String
     let protocolPDFNames: [String]
     let globalArObjects: [ArObject]
     let steps: [StepDefinition]
@@ -16,7 +17,7 @@ struct ProtocolDefinition: Codable, Identifiable, Equatable, Hashable {
     
     // MARK: Coding Keys
     enum CodingKeys: String, CodingKey {
-        case version, title, protocolPDFNames, globalArObjects, steps, mediaBasePath
+        case version, title, description, protocolPDFNames, globalArObjects, steps, mediaBasePath
     }
     
     // MARK: Hashable
@@ -30,6 +31,7 @@ struct ProtocolDefinition: Codable, Identifiable, Equatable, Hashable {
         return lhs.id == rhs.id &&
                lhs.version == rhs.version &&
                lhs.title == rhs.title &&
+               lhs.description == rhs.description &&
                lhs.protocolPDFNames == rhs.protocolPDFNames &&
                lhs.globalArObjects == rhs.globalArObjects &&
                lhs.steps == rhs.steps &&

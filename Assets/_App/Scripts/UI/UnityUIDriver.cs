@@ -185,34 +185,11 @@ public class UnityUIDriver : MonoBehaviour, IUIDriver
         ProtocolState.Instance.SignOff();
     }
 
-    public void ProtocolSelectionCallback(string protocolDescriptorJson)
+    public void ProtocolSelectionCallback(string protocolDefinitionJson)
     {
-        try
-        {
-            var protocolDescriptor = JsonConvert.DeserializeObject<ProtocolDescriptor>(protocolDescriptorJson);
-            ServiceRegistry.GetService<IProtocolDataProvider>().GetOrCreateProtocolDefinition(protocolDescriptor).First().Subscribe(protocol =>
-            {
-                Debug.Log(protocol.title + " loaded");
-                ProtocolState.Instance.SetProtocolDefinition(protocol);
-                SceneLoader.Instance.LoadSceneClean("Protocol");
-            }, (e) =>
-            {
-                Debug.Log("Error fetching protocol from resources, checking local files");
-                var lfdp = new LocalFileDataProvider();
-                lfdp.LoadProtocolDefinitionAsync(protocolDescriptor).ToObservable<ProtocolDefinition>().Subscribe(protocol =>
-                {
-                    ProtocolState.Instance.SetProtocolDefinition(protocol);
-                    SceneLoader.Instance.LoadSceneClean("Protocol");
-                }, (e) =>
-                {
-                    Debug.Log("Error fetching protocol from local files");
-                });
-            });
-        }
-        catch (Exception e)
-        {
-            Debug.LogError($"Error deserializing protocol descriptor: {e.Message}");
-        }
+        var protocolDefinition = JsonConvert.DeserializeObject<ProtocolDefinition>(protocolDefinitionJson);
+        ProtocolState.Instance.SetProtocolDefinition(protocolDefinition);
+        SceneLoader.Instance.LoadSceneClean("Protocol");
     }
 
     public void ChecklistSignOffCallback(bool isSignedOff)

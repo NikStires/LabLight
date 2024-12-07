@@ -13,108 +13,78 @@ using UnityEngine;
 /// </summary>
 public class LocalFileDataProvider : IProtocolDataProvider, ITextDataProvider, IAnchorDataProvider
 {
-    private const string anchorDataFile = "AnchorData.jason";
-
-    public async Task<List<ProtocolDescriptor>> GetProtocolList()
+    private const string ANCHOR_DATA_FILENAME = "AnchorData.json";
+    private readonly string _persistentDataPath;
+    
+    public LocalFileDataProvider()
     {
-        var list = new List<ProtocolDescriptor>();
+        _persistentDataPath = Application.persistentDataPath;
+    }
 
-        if (Directory.Exists(Application.persistentDataPath))
+    public async Task<List<ProtocolDefinition>> GetProtocolList()
+    {
+        var protocolJsonFiles = new List<string>();
+        
+        if (!Directory.Exists(_persistentDataPath))
         {
-            DirectoryInfo directoryInfo = new DirectoryInfo(Application.persistentDataPath);
-
-            foreach (var file in directoryInfo.GetFiles("*.json"))
-            {
-                Debug.Log("Found file: " + file.Name);
-                list.Add(new ProtocolDescriptor()
-                {
-                    title = Path.GetFileNameWithoutExtension(file.Name),
-                    version = file.Name
-                });
-            }
+            Debug.LogWarning($"Persistent data path does not exist: {_persistentDataPath}");
+            return new List<ProtocolDefinition>();
         }
-        return list;
-    }
 
-    public IObservable<ProtocolDefinition> GetOrCreateProtocolDefinition(ProtocolDescriptor protocolDescriptor)
-    {
-        return LoadProtocolDefinitionAsync(protocolDescriptor).ToObservable<ProtocolDefinition>();
-    }
-
-
-    /// <summary>
-    /// load procedure from local folder
-    /// </summary>
-    /// <param name="procedureName"></param>
-    /// <param name="protocol"></param>
-    public async Task<ProtocolDefinition> LoadProtocolDefinitionAsync(ProtocolDescriptor protocolDescriptor)
-    {
-        var directoryInfo = new DirectoryInfo(Application.persistentDataPath);
-        var jsonFiles = directoryInfo.GetFiles("*.json");
-
-        foreach (var file in jsonFiles)
+        try
         {
-            try
+            var directoryInfo = new DirectoryInfo(_persistentDataPath);
+            var jsonFiles = directoryInfo.GetFiles("*.json");
+            
+            foreach (var file in jsonFiles)
             {
-                using (StreamReader streamReader = new StreamReader(file.FullName))
+                try
                 {
-                    var protocol = Parsers.ParseProtocol(streamReader.ReadToEnd());
-                    
-                    // Check if this protocol matches our descriptor
-                    if (protocol.title == protocolDescriptor.title &&
-                        protocol.description == protocolDescriptor.description &&
-                        protocol.version == protocolDescriptor.version)
-                    {
-                        protocol.mediaBasePath = "CSV";
-                        return protocol;
-                    }
+                    using var streamReader = new StreamReader(file.FullName);
+                    string jsonContent = await streamReader.ReadToEndAsync();
+                    protocolJsonFiles.Add(jsonContent);
+                    Debug.Log($"Successfully loaded protocol file: {file.Name}");
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"Failed to read protocol file {file.Name}: {ex.Message}");
+                    // Continue with other files even if one fails
                 }
             }
-            catch
-            {
-                // Skip files that can't be parsed
-                continue;
-            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Error accessing protocol files: {ex.Message}");
+            return new List<ProtocolDefinition>();
         }
 
-        Debug.Log("Matching protocol not found, creating empty protocol with descriptor values");
-        // Create empty definition with descriptor values
-        return new ProtocolDefinition()
-        {
-            title = protocolDescriptor.title,
-            description = protocolDescriptor.description,
-            version = protocolDescriptor.version,
-            mediaBasePath = "CSV"
-        };
-    }
-
-
-    /// <summary>
-    /// Save procedure to local folder
-    /// </summary>
-    /// <param name="procedureName"></param>
-    /// <param name="protocol"></param>
-    public async void SaveProtocolDefinition(string protocolName, ProtocolDefinition protocol)
-    {
-        using (StreamWriter streamWriter = new StreamWriter(Path.Combine(Application.persistentDataPath, protocolName), append: false))
-        {
-            var output = JsonConvert.SerializeObject(protocol, Formatting.Indented, Parsers.serializerSettings);
-            streamWriter.WriteLine(output);
-            Debug.LogFormat("Data saved to file '{0}'", protocolName);
-        }
+        return Parsers.ParseProtocolList(protocolJsonFiles);
     }
 
     public void DeleteProtocolDefinition(string protocolName)
     {
-        Debug.Log("DeleteProtocolDefinition " + protocolName);
-        string pathForDeletion = Path.Combine(Application.persistentDataPath, protocolName + ".json");
-        if (pathForDeletion != null)
+        if (string.IsNullOrEmpty(protocolName))
         {
-            File.Delete(pathForDeletion);
+            Debug.LogWarning("Attempted to delete protocol with null or empty name");
+            return;
         }
-        else
+
+        try
         {
-            Debug.LogWarning("specified file for deletion " + protocolName + " could not be found");
+            string filePath = Path.Combine(_persistentDataPath, $"{protocolName}.json");
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+                Debug.Log($"Successfully deleted protocol: {protocolName}");
+            }
+            else
+            {
+                Debug.LogWarning($"Protocol file not found for deletion: {protocolName}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Failed to delete protocol {protocolName}: {ex.Message}");
         }
     }
 
@@ -122,22 +92,21 @@ public class LocalFileDataProvider : IProtocolDataProvider, ITextDataProvider, I
     {
         if (string.IsNullOrEmpty(filePath))
         {
+            Debug.LogWarning("Attempted to load text file with null or empty path");
             return string.Empty;
         }
 
         try
         {
-            using (TextReader streamReader = new StreamReader(Path.Combine(Application.persistentDataPath, filePath)))
-            {
-
-                var data = streamReader.ReadToEnd();
-                Debug.LogFormat("Data '{0}' loaded from file '{1}'", data, filePath);
-                return data;
-            }
+            string fullPath = Path.Combine(_persistentDataPath, filePath);
+            using var reader = new StreamReader(fullPath);
+            var content = await reader.ReadToEndAsync();
+            Debug.Log($"Successfully loaded text file: {filePath}");
+            return content;
         }
         catch (Exception ex)
         {
-            Debug.LogErrorFormat("Could not load data from '{0}'", ex.Message);
+            Debug.LogError($"Failed to load text file {filePath}: {ex.Message}");
             return string.Empty;
         }
     }
@@ -146,83 +115,102 @@ public class LocalFileDataProvider : IProtocolDataProvider, ITextDataProvider, I
     {
         if (string.IsNullOrEmpty(filePath))
         {
+            Debug.LogWarning("Attempted to save text file with null or empty path");
             return;
         }
 
         try
         {
-            using (TextWriter streamWriter = new StreamWriter(Path.Combine(Application.persistentDataPath, filePath), append: false))
-            {
-                streamWriter.Write(contents);
-                Debug.LogFormat("Data saved to file '{0}'", Path.Combine(Application.persistentDataPath, filePath));
-            }
+            string fullPath = Path.Combine(_persistentDataPath, filePath);
+            await File.WriteAllTextAsync(fullPath, contents);
+            Debug.Log($"Successfully saved text file: {filePath}");
         }
         catch (Exception ex)
         {
-            Debug.LogErrorFormat("Could not save data to '{0}'", ex.Message);
+            Debug.LogError($"Failed to save text file {filePath}: {ex.Message}");
         }
     }
 
     public void DeleteTextFile(string fileName, string fileExt)
     {
-        if(string.IsNullOrEmpty(fileName))
+        if (string.IsNullOrEmpty(fileName))
         {
+            Debug.LogWarning("Attempted to delete file with null or empty name");
             return;
         }
 
         try
         {
-            string storageFolder = Application.persistentDataPath;
-            Debug.Log("DeleteTextFile " + fileName + " from " + storageFolder);
-            if (File.Exists(Path.Combine(storageFolder, fileName + fileExt)))
+            string fullPath = Path.Combine(_persistentDataPath, $"{fileName}{fileExt}");
+            if (File.Exists(fullPath))
             {
-                File.Delete(Path.Combine(storageFolder, fileName + fileExt));
+                File.Delete(fullPath);
+                Debug.Log($"Successfully deleted file: {fileName}{fileExt}");
+            }
+            else
+            {
+                Debug.LogWarning($"File not found for deletion: {fileName}{fileExt}");
             }
         }
         catch (Exception ex)
         {
-            Debug.LogErrorFormat("Could not delete file '{0}'", ex.Message);
+            Debug.LogError($"Failed to delete file {fileName}{fileExt}: {ex.Message}");
         }
     }
 
     public IObservable<AnchorData> GetOrCreateAnchorData()
     {
-        return LoadAnchorDataAsync().ToObservable<AnchorData>();
+        return LoadAnchorDataAsync().ToObservable();
     }
 
     public async Task<AnchorData> LoadAnchorDataAsync()
     {
-        var anchorDataFilePath = Path.Combine(Application.persistentDataPath, anchorDataFile);
-        Debug.Log("Local file data provider trying to load " + anchorDataFilePath);
+        string anchorDataPath = Path.Combine(_persistentDataPath, ANCHOR_DATA_FILENAME);
+        Debug.Log($"Loading anchor data from: {anchorDataPath}");
 
-        AnchorData anchorData = null;
-
-        if (File.Exists(anchorDataFilePath))
+        try
         {
-            using (StreamReader streamReader = new StreamReader(anchorDataFilePath))
+            if (File.Exists(anchorDataPath))
             {
-                anchorData = Parsers.ParseAnchorData(streamReader.ReadToEnd());
-                Debug.LogFormat("Data loaded from file '{0}'", anchorDataFile);
+                using var reader = new StreamReader(anchorDataPath);
+                string jsonContent = await reader.ReadToEndAsync();
+                var anchorData = Parsers.ParseAnchorData(jsonContent);
+                
+                if (anchorData != null)
+                {
+                    Debug.Log("Successfully loaded anchor data");
+                    return anchorData;
+                }
             }
-        }
 
-        if (anchorData == null)
+            Debug.Log("Creating new anchor data");
+            return new AnchorData { version = 1 };
+        }
+        catch (Exception ex)
         {
-            Debug.Log("AnchorData not found, creating empty anchorData");
-            anchorData = new AnchorData();
-            anchorData.version = 1;
+            Debug.LogError($"Failed to load anchor data: {ex.Message}");
+            return new AnchorData { version = 1 };
         }
-
-        return anchorData;
     }
 
     public async void SaveAnchorData(AnchorData anchorData)
     {
-        using (StreamWriter streamWriter = new StreamWriter(Path.Combine(Application.persistentDataPath, anchorDataFile), append: false))
+        if (anchorData == null)
         {
-            var output = JsonConvert.SerializeObject(anchorData, Formatting.Indented, Parsers.serializerSettings);
-            streamWriter.WriteLine(output);
-            Debug.LogFormat("Data saved to file '{0}'", anchorDataFile);
+            Debug.LogWarning("Attempted to save null anchor data");
+            return;
+        }
+
+        try
+        {
+            string fullPath = Path.Combine(_persistentDataPath, ANCHOR_DATA_FILENAME);
+            string jsonContent = JsonConvert.SerializeObject(anchorData, Formatting.Indented, Parsers.serializerSettings);
+            await File.WriteAllTextAsync(fullPath, jsonContent);
+            Debug.Log("Successfully saved anchor data");
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Failed to save anchor data: {ex.Message}");
         }
     }
 }

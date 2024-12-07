@@ -32,38 +32,18 @@ public class Parsers
         }
     };
 
-    public static List<ProtocolDescriptor> ParseProtocolDescriptions(List<string> jsonStrings)
+    public static List<ProtocolDefinition> ParseProtocolList(List<string> jsonStrings)
     {
         try
         {
-            var protocolDescriptions = new List<ProtocolDescriptor>();
+            var protocolDefinitions = new List<ProtocolDefinition>();
             
             foreach (var jsonString in jsonStrings)
             {
-                var protocolDescription = JsonConvert.DeserializeObject<ProtocolDescriptor>(jsonString, serializerSettings);
-                if (protocolDescription == null)
-                {
-                    throw new Exception("Failed to parse protocol - result was null");
-                }
-
-                // Validate required fields
-                if (string.IsNullOrEmpty(protocolDescription.title))
-                {
-                    throw new Exception("Protocol descriptor missing required Title field");
-                }
-                if (string.IsNullOrEmpty(protocolDescription.description))
-                {
-                    throw new Exception("Protocol descriptor missing required Description field"); 
-                }
-                if (string.IsNullOrEmpty(protocolDescription.version))
-                {
-                    throw new Exception("Protocol descriptor missing required Version field");
-                }
-
-                protocolDescriptions.Add(protocolDescription);
+                protocolDefinitions.Add(ParseProtocol(jsonString));
             }
 
-            return protocolDescriptions;
+            return protocolDefinitions;
         }
         catch (Exception e)
         {
@@ -76,27 +56,40 @@ public class Parsers
     {
         try
         {
-            var protocol = new ProtocolDefinition();
-            protocol = JsonConvert.DeserializeObject<ProtocolDefinition>(jsonString, serializerSettings);
-            if (protocol == null)
+            var protocolDefinition = new ProtocolDefinition();
+            protocolDefinition = JsonConvert.DeserializeObject<ProtocolDefinition>(jsonString, serializerSettings);
+            if (protocolDefinition == null)
             {
                 throw new Exception("Failed to parse protocol - result was null");
             }
+            // Validate required fields
+            if (string.IsNullOrEmpty(protocolDefinition.title))
+            {
+                throw new Exception("Protocol definition missing required Title field");
+            }
+            if (string.IsNullOrEmpty(protocolDefinition.description))
+            {
+                throw new Exception("Protocol definition missing required Description field"); 
+            }
+            if (string.IsNullOrEmpty(protocolDefinition.version))
+            {
+                throw new Exception("Protocol definition missing required Version field");
+            }
 
             // Build lookup dictionary for AR objects
-            protocol.BuildArObjectLookup();
+            protocolDefinition.BuildArObjectLookup();
 
             // Debug print the arObjectLookup dictionary
             Debug.Log("AR Object Lookup Dictionary contents:");
-            foreach (var kvp in protocol.arObjectLookup)
+            foreach (var kvp in protocolDefinition.arObjectLookup)
             {
                 Debug.Log($"Key: {kvp.Key}, Value: {kvp.Value?.GetType().Name ?? "null"} - ID: {kvp.Value?.arObjectID ?? "null"}");
             }
 
             // Link AR objects to their references in content items and actions
-            LinkArObjects(protocol);
+            LinkArObjects(protocolDefinition);
 
-            return protocol;
+            return protocolDefinition;
         }
         catch (Exception e)
         {
