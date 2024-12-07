@@ -229,34 +229,11 @@ public class SwiftUIDriver : IUIDriver, IDisposable
         SendMessageToSwiftUI($"stepChange|{json}");
     }
 
-    public void ProtocolSelectionCallback(string protocolDescriptorJson)
+    public void ProtocolSelectionCallback(string protocolDefinitionJson)
     {
-        try
-        {
-            var protocolDescriptor = JsonConvert.DeserializeObject<ProtocolDescriptor>(protocolDescriptorJson);
-            ServiceRegistry.GetService<IProtocolDataProvider>().GetOrCreateProtocolDefinition(protocolDescriptor).First().Subscribe(protocol =>
-            {
-                Debug.Log(protocol.title + " loaded");
-                ProtocolState.Instance.SetProtocolDefinition(protocol);
-                SceneLoader.Instance.LoadSceneClean("Protocol");
-            }, (e) =>
-            {
-                Debug.Log("Error fetching protocol from resources, checking local files");
-                var lfdp = new LocalFileDataProvider();
-                lfdp.LoadProtocolDefinitionAsync(protocolDescriptor).ToObservable<ProtocolDefinition>().Subscribe(protocol =>
-                {
-                    ProtocolState.Instance.SetProtocolDefinition(protocol);
-                    SceneLoader.Instance.LoadSceneClean("Protocol");
-                }, (e) =>
-                {
-                    Debug.Log("Error fetching protocol from local files");
-                });
-            });
-        }
-        catch (Exception e)
-        {
-            Debug.LogError($"Error deserializing protocol descriptor: {e.Message}");
-        }
+        var protocolDefinition = JsonConvert.DeserializeObject<ProtocolDefinition>(protocolDefinitionJson);
+        ProtocolState.Instance.SetProtocolDefinition(protocolDefinition);
+        SceneLoader.Instance.LoadSceneClean("Protocol");
     }
 
     public void CloseProtocolCallback()
@@ -347,8 +324,8 @@ public class SwiftUIDriver : IUIDriver, IDisposable
                         LoginCallback(loginData[0], loginData[1]);
                     }
                     break;
-                case "requestProtocolDescriptions":
-                    LoadProtocolDescriptions();
+                case "requestProtocolDefinitions":
+                    LoadProtocolDefinitions();
                     break;
                 case "requestVideo":
                     Debug.Log($"######LABLIGHT SWIFTUIDRIVER displaying video: {data}");
@@ -385,7 +362,7 @@ public class SwiftUIDriver : IUIDriver, IDisposable
         }
     }
 
-    private async void LoadProtocolDescriptions()
+    private async void LoadProtocolDefinitions()
     {
         var protocolDataProvider = ServiceRegistry.GetService<IProtocolDataProvider>();
         if (protocolDataProvider == null)
@@ -396,9 +373,9 @@ public class SwiftUIDriver : IUIDriver, IDisposable
 
         try
         {
-            var protocolDescriptions = await protocolDataProvider.GetProtocolList();
-            string protocolDescriptionsJson = JsonConvert.SerializeObject(protocolDescriptions);
-            SendMessageToSwiftUI($"protocolDescriptions|{protocolDescriptionsJson}");
+            var protocolDefinitions = await protocolDataProvider.GetProtocolList();
+            string protocolDefinitionsJson = JsonConvert.SerializeObject(protocolDefinitions);
+            SendMessageToSwiftUI($"protocolDefinitions|{protocolDefinitionsJson}");
         }
         catch (Exception ex)
         {

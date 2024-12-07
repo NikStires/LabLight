@@ -26,7 +26,7 @@ public interface IUIDriver
     void CheckItemCallback(int index);
     void UncheckItemCallback(int index);
     void SignOffChecklistCallback();
-    void ProtocolSelectionCallback(string protocolTitle);
+    void ProtocolSelectionCallback(string protocolJson);
     void CloseProtocolCallback();
     void ChatMessageCallback(string message);
     void LoginCallback(string username, string password);

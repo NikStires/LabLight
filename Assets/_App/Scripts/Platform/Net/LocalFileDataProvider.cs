@@ -15,9 +15,9 @@ public class LocalFileDataProvider : IProtocolDataProvider, ITextDataProvider, I
 {
     private const string anchorDataFile = "AnchorData.jason";
 
-    public async Task<List<ProtocolDescriptor>> GetProtocolList()
+    public async Task<List<ProtocolDefinition>> GetProtocolList()
     {
-        var list = new List<ProtocolDescriptor>();
+        var protocolJsonFiles = new List<string>();
 
         if (Directory.Exists(Application.persistentDataPath))
         {
@@ -26,14 +26,14 @@ public class LocalFileDataProvider : IProtocolDataProvider, ITextDataProvider, I
             foreach (var file in directoryInfo.GetFiles("*.json"))
             {
                 Debug.Log("Found file: " + file.Name);
-                list.Add(new ProtocolDescriptor()
+                using (StreamReader streamReader = new StreamReader(file.FullName))
                 {
-                    title = Path.GetFileNameWithoutExtension(file.Name),
-                    version = file.Name
-                });
+                    string jsonContent = await streamReader.ReadToEndAsync();
+                    protocolJsonFiles.Add(jsonContent);
+                }
             }
         }
-        return list;
+        return Parsers.ParseProtocolList(protocolJsonFiles);
     }
 
     public IObservable<ProtocolDefinition> GetOrCreateProtocolDefinition(ProtocolDescriptor protocolDescriptor)

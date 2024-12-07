@@ -21,7 +21,7 @@ using UnityEngine.Video;
 /// </summary>
 public class ResourceFileDataProvider : IProtocolDataProvider, IMediaProvider
 {
-    public Task<List<ProtocolDescriptor>> GetProtocolList()
+    public Task<List<ProtocolDefinition>> GetProtocolList()
     {
         try
         {
@@ -45,7 +45,7 @@ public class ResourceFileDataProvider : IProtocolDataProvider, IMediaProvider
                 Debug.LogWarning($"No files found in Resources/{protocolsPath}");
             }
 
-            return Task.FromResult(Parsers.ParseProtocolDescriptions(protocolJsonFiles));
+            return Task.FromResult(Parsers.ParseProtocolList(protocolJsonFiles));
         }
         catch (Exception e)
         {

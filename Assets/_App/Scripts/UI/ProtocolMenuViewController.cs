@@ -26,7 +26,7 @@ public class ProtocolMenuViewController : LLBasePanel
     
     private int currentPage = 0;
     private int maxPage = 0;
-    List<ProtocolDescriptor> protocols;
+    List<ProtocolDefinition> protocols;
     List<ProtocolMenuButton> buttons = new List<ProtocolMenuButton>();
 
     protected override void Awake()

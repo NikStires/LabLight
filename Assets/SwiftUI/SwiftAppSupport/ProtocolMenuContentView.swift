@@ -16,36 +16,37 @@ struct ProtocolMenuContentView: View {
                 if viewModel.protocols.isEmpty {
                     Text("Loading protocols...")
                 } else {
-                    List(viewModel.protocols) { protocolItem in
-                        Button(action: {
-                            viewModel.selectProtocol(protocolItem)
-                        }) {
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text(formatText(protocolItem.title))
-                                    .font(.headline)
-                                Text("Version: \(formatText(protocolItem.version))")
-                                    .font(.subheadline)
-                                    .foregroundColor(.gray)
-                                Text(protocolItem.description)
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                                    .lineLimit(2)
+                    List {
+                        ForEach(viewModel.protocols) { protocolDef in
+                            Button(action: {
+                                if let jsonData = try? JSONEncoder().encode(protocolDef),
+                                   let jsonString = String(data: jsonData, encoding: .utf8) {
+                                    CallCSharpCallback("selectProtocol|" + jsonString)
+                                    path.append(protocolDef)
+                                }
+                            }) {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(protocolDef.title)
+                                        .font(.headline)
+                                    Text("Version: \(protocolDef.version)")
+                                        .font(.subheadline)
+                                        .foregroundColor(.gray)
+                                    Text(protocolDef.description)
+                                        .font(.caption)
+                                        .foregroundColor(.secondary)
+                                        .lineLimit(2)
+                                }
+                                .padding(.vertical, 4)
                             }
-                            .padding(.vertical, 4)
                         }
                     }
                 }
             }
             .onAppear {
-                viewModel.requestProtocolDescriptions()
+                viewModel.requestProtocolDefinitions()
             }
             .navigationDestination(for: ProtocolDefinition.self) { protocolDef in
                 ProtocolView(selectedProtocol: protocolDef)
-            }
-            .onReceive(viewModel.$selectedProtocol) { selected in
-                if let selected = selected {
-                    path.append(selected)
-                }
             }
         }
     }
@@ -58,92 +59,39 @@ struct ProtocolMenuContentView: View {
 }
 
 class ProtocolMenuViewModel: ObservableObject {
-    @Published var protocols: [ProtocolDescriptor] = []
-    @Published var selectedProtocol: ProtocolDefinition? = nil
+    @Published var protocols: [ProtocolDefinition] = []
     
     init() {
-        NotificationCenter.default.addObserver(self, selector: #selector(handleProtocolDescriptions(_:)), name: Notification.Name("ProtocolDescriptions"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleProtocolChange(_:)), name: Notification.Name("ProtocolChange"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleProtocolDefinitions(_:)), name: Notification.Name("ProtocolDefinitions"), object: nil)
     }
     
-    @objc func handleProtocolDescriptions(_ notification: Notification) {
+    @objc func handleProtocolDefinitions(_ notification: Notification) {
         if let message = notification.userInfo?["message"] as? String,
-           message.hasPrefix("protocolDescriptions|") {
-            let protocolsJson = String(message.dropFirst("protocolDescriptions|".count))
-            if let data: Data = protocolsJson.data(using: .utf8),
-               let decodedProtocols = try? JSONDecoder().decode([ProtocolDescriptor].self, from: data) {
-                DispatchQueue.main.async {
-                    self.protocols = decodedProtocols
+           message.hasPrefix("protocolDefinitions|") {
+            let protocolsJson = String(message.dropFirst("protocolDefinitions|".count))
+            if let data: Data = protocolsJson.data(using: .utf8) {
+                do {
+                    let decoder = JSONDecoder()
+                    // Try to decode array elements individually
+                    let jsonArray = try JSONSerialization.jsonObject(with: data) as? [[String: Any]] ?? []
+                    let decodedProtocols = jsonArray.compactMap { protocolDict -> ProtocolDefinition? in
+                        guard let protocolData = try? JSONSerialization.data(withJSONObject: protocolDict) else { return nil }
+                        return try? decoder.decode(ProtocolDefinition.self, from: protocolData)
+                    }
+                    
+                    DispatchQueue.main.async {
+                        self.protocols = decodedProtocols
+                    }
+                } catch {
+                    print("######LABLIGHT Error decoding protocols: \(error)")
                 }
             } else {
-                print("######LABLIGHT Failed to decode protocols")
+                print("######LABLIGHT Failed to create data from protocols JSON string")
             }
         }
     }
     
-    @objc func handleProtocolChange(_ notification: Notification) {
-        if let message = notification.userInfo?["message"] as? String,
-           message.hasPrefix("protocolChange|") {
-            let protocolJson = String(message.dropFirst("protocolChange|".count))
-            print("######LABLIGHT Received protocol JSON: \(protocolJson)")
-            do {
-                guard let data = protocolJson.data(using: .utf8) else {
-                    print("######LABLIGHT Invalid JSON encoding")
-                    return
-                }
-                let protocolDefinition = try JSONDecoder().decode(ProtocolDefinition.self, from: data)
-                DispatchQueue.main.async {
-                    self.selectedProtocol = protocolDefinition
-                }
-            } catch {
-                print("Failed to decode JSON: \(error.localizedDescription)")
-                if let decodingError = error as? DecodingError {
-                    switch decodingError {
-                    case .typeMismatch(let type, let context):
-                        print("Type '\(type)' mismatch:", context.debugDescription)
-                        print("CodingPath:", context.codingPath)
-                    case .valueNotFound(let type, let context):
-                        print("Value '\(type)' not found:", context.debugDescription)
-                        print("CodingPath:", context.codingPath)
-                    case .keyNotFound(let key, let context):
-                        print("Key '\(key)' not found:", context.debugDescription)
-                        print("CodingPath:", context.codingPath)
-                    case .dataCorrupted(let context):
-                        print("Data corrupted:", context.debugDescription)
-                        print("CodingPath:", context.codingPath)
-                    @unknown default:
-                        print("Unknown decoding error")
-                    }
-                }
-            }
-        }
-    }
-    
-    func selectProtocol(_ protocolDescriptor: ProtocolDescriptor) {
-        if let jsonData = try? JSONEncoder().encode(protocolDescriptor),
-           let jsonString = String(data: jsonData, encoding: .utf8) {
-            CallCSharpCallback("selectProtocol|" + jsonString)
-        } else {
-            print("######LABLIGHT Failed to encode protocol descriptor")
-        }
-    }
-    
-    func requestProtocolDescriptions() {
-        CallCSharpCallback("requestProtocolDescriptions|")
-    }
-}
-
-struct ProtocolDescriptor: Codable, Identifiable {
-    let id: String
-    let title: String
-    let version: String
-    let description: String
-    
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        title = try container.decode(String.self, forKey: .title)
-        version = try container.decode(String.self, forKey: .version)
-        description = try container.decode(String.self, forKey: .description)
-        id = title
+    func requestProtocolDefinitions() {
+        CallCSharpCallback("requestProtocolDefinitions|")
     }
 }

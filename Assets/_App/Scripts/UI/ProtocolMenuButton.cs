@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 [RequireComponent(typeof(UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable))]
 public class ProtocolMenuButton : MonoBehaviour
 {
-    private ProtocolDescriptor protocolDescriptor;
+    private ProtocolDefinition protocolDefinition;
     public TextMeshProUGUI titleText;
     public TextMeshProUGUI descriptionText;
 
@@ -37,17 +37,13 @@ public class ProtocolMenuButton : MonoBehaviour
         animationPlayer.PlayFeedbacks();
     }
 
-    /// <summary>
-    /// Initializes the protocol menu button with the specified protocol descriptor.
-    /// </summary>
-    /// <param name="protocolDescriptor">The protocol descriptor to initialize the button with.</param>
-    public void Initialize(ProtocolDescriptor protocolDescriptor)
+    public void Initialize(ProtocolDefinition protocolDefinition)
     {
-        this.protocolDescriptor = protocolDescriptor;
-        titleText.text = protocolDescriptor.title;
-        descriptionText.text = protocolDescriptor.description.Length > 100 
-            ? protocolDescriptor.description.Substring(0, 97) + "..." 
-            : protocolDescriptor.description;
+        this.protocolDefinition = protocolDefinition;
+        titleText.text = protocolDefinition.title;
+        descriptionText.text = protocolDefinition.description.Length > 100 
+            ? protocolDefinition.description.Substring(0, 97) + "..." 
+            : protocolDefinition.description;
 
         interactable.selectEntered.AddListener(_ => {
             StartCoroutine(ChangeMaterialAfterDelay(1f));
@@ -58,8 +54,8 @@ public class ProtocolMenuButton : MonoBehaviour
             CancelInvoke();
             buttonRenderer.material = defaultMaterial;
             
-            string protocolDescriptorJson = JsonConvert.SerializeObject(protocolDescriptor);
-            ServiceRegistry.GetService<IUIDriver>().ProtocolSelectionCallback(protocolDescriptorJson);
+            string protocolDefinitionJson = JsonConvert.SerializeObject(protocolDefinition);
+            ServiceRegistry.GetService<IUIDriver>().ProtocolSelectionCallback(protocolDefinitionJson);
         });
     }
 

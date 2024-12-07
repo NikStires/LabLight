@@ -11,7 +11,7 @@ public interface IProtocolDataProvider
     /// Retrieve list of available protocols as short ProtocolItem
     /// </summary>
     /// <returns></returns>
-    public Task<List<ProtocolDescriptor>> GetProtocolList();
+    public Task<List<ProtocolDefinition>> GetProtocolList();
     
     /// <summary>
     /// Retrieve complete ProtocolDefinition
