@@ -59,8 +59,6 @@ public class ProtocolMenuViewController : LLBasePanel
     /// </summary>
     private void Start()
     {
-        LoadProtocols();
-
         popupPanelViewController = GameObject.FindFirstObjectByType<PopupPanelViewController>(FindObjectsInactive.Include);
         closeAppButton.selectEntered.AddListener(_ => popupPanelViewController.DisplayPopup(closeAppPopup));
         closeAppPopup.OnYesButtonPressed.AddListener(() => Application.Quit());
