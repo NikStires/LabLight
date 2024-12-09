@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UniRx;
 using UnityEngine;
+using Newtonsoft.Json.Linq;
 
 public class ArObjectManager : MonoBehaviour
 {
@@ -249,7 +250,20 @@ public class ArObjectManager : MonoBehaviour
             return false;
         }
 
-        arIDList = (arIDListObj as List<string>)?.Where(id => !string.IsNullOrEmpty(id)).ToList();
+        // If ArIDs for locking are created at time of Parsing they will be saved as a JArray when reserialized
+        // Convert the JSON array to a List<string>
+        if (arIDListObj is JArray jArray)
+        {
+            arIDList = jArray.ToObject<List<string>>();
+        }
+        else if (arIDListObj is List<object> objList)
+        {
+            arIDList = objList.Select(x => x?.ToString()).ToList();
+        }
+
+        // Filter out empty strings
+        arIDList = arIDList?.Where(id => !string.IsNullOrEmpty(id)).ToList();
+        
         return arIDList != null && arIDList.Count > 0;
     }
 
