@@ -233,7 +233,6 @@ public class SwiftUIDriver : IUIDriver, IDisposable
     {
         var protocolDefinition = JsonConvert.DeserializeObject<ProtocolDefinition>(protocolDefinitionJson);
         ProtocolState.Instance.SetProtocolDefinition(protocolDefinition);
-        SceneLoader.Instance.LoadSceneClean("Protocol");
     }
 
     public void CloseProtocolCallback()

@@ -189,7 +189,6 @@ public class UnityUIDriver : MonoBehaviour, IUIDriver
     {
         var protocolDefinition = JsonConvert.DeserializeObject<ProtocolDefinition>(protocolDefinitionJson);
         ProtocolState.Instance.SetProtocolDefinition(protocolDefinition);
-        SceneLoader.Instance.LoadSceneClean("Protocol");
     }
 
     public void ChecklistSignOffCallback(bool isSignedOff)
