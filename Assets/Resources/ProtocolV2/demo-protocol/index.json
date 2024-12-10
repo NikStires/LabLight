@@ -191,7 +191,7 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
-                "text": "Pipette into Well A1 (Volume: 200 µL)"
+                "text": "Pipette 200 µL of the stock solution into Well A1"
               }
             },
             {
@@ -257,9 +257,18 @@
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
               "properties": {
-                "subIDs": ["A1", "A2"],
-                "colorHex": "#FFD700",
-                "colorName": "Gold"
+                "subIDs": ["A1"],
+                "colorHex": "#FF0000",
+                "colorName": "Red"
+              }
+            },
+            {
+              "actionType": "Highlight",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "subIDs": ["A2"],
+                "colorHex": "#00FF00",
+                "colorName": "Green"
               }
             }
           ],
@@ -268,7 +277,7 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
-                "text": "Pipette 26.67 µL from A1 to A2"
+                "text": "Transfer 26.67 µL from A1 to A2"
               }
             },
             {
@@ -288,9 +297,18 @@
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
               "properties": {
-                "subIDs": ["A2", "A3"],
-                "colorHex": "#FFD700",
-                "colorName": "Gold"
+                "subIDs": ["A2"],
+                "colorHex": "#FF0000",
+                "colorName": "Red"
+              }
+            },
+            {
+              "actionType": "Highlight",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "subIDs": ["A3"],
+                "colorHex": "#00FF00",
+                "colorName": "Green"
               }
             }
           ],
@@ -299,7 +317,7 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
-                "text": "Pipette 26.67 µL from A2 to A3"
+                "text": "Transfer 26.67 µL from A2 to A3"
               }
             },
             {
@@ -319,9 +337,18 @@
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
               "properties": {
-                "subIDs": ["A3", "A4"],
-                "colorHex": "#FFD700",
-                "colorName": "Gold"
+                "subIDs": ["A3"],
+                "colorHex": "#FF0000",
+                "colorName": "Red"
+              }
+            },
+            {
+              "actionType": "Highlight",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "subIDs": ["A4"],
+                "colorHex": "#00FF00",
+                "colorName": "Green"
               }
             }
           ],
@@ -330,7 +357,7 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
-                "text": "Pipette 26.67 µL from A3 to A4"
+                "text": "Transfer 26.67 µL from A3 to A4"
               }
             },
             {
@@ -350,9 +377,18 @@
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
               "properties": {
-                "subIDs": ["A4", "A5"],
-                "colorHex": "#FFD700",
-                "colorName": "Gold"
+                "subIDs": ["A4"],
+                "colorHex": "#FF0000",
+                "colorName": "Red"
+              }
+            },
+            {
+              "actionType": "Highlight",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "subIDs": ["A5"],
+                "colorHex": "#00FF00",
+                "colorName": "Green"
               }
             }
           ],
@@ -361,7 +397,7 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
-                "text": "Pipette 26.67 µL from A4 to A5"
+                "text": "Transfer 26.67 µL from A4 to A5"
               }
             },
             {
@@ -381,9 +417,18 @@
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
               "properties": {
-                "subIDs": ["A5", "A6"],
-                "colorHex": "#FFD700",
-                "colorName": "Gold"
+                "subIDs": ["A5"],
+                "colorHex": "#FF0000",
+                "colorName": "Red"
+              }
+            },
+            {
+              "actionType": "Highlight",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "subIDs": ["A6"],
+                "colorHex": "#00FF00",
+                "colorName": "Green"
               }
             }
           ],
@@ -392,7 +437,7 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
-                "text": "Pipette 26.67 µL from A5 to A6"
+                "text": "Transfer 26.67 µL from A5 to A6"
               }
             },
             {
@@ -412,9 +457,18 @@
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
               "properties": {
-                "subIDs": ["A6", "A7"],
-                "colorHex": "#FFD700",
-                "colorName": "Gold"
+                "subIDs": ["A6"],
+                "colorHex": "#FF0000",
+                "colorName": "Red"
+              }
+            },
+            {
+              "actionType": "Highlight",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "subIDs": ["A7"],
+                "colorHex": "#00FF00",
+                "colorName": "Green"
               }
             }
           ],
@@ -423,7 +477,7 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
-                "text": "Pipette 26.67 µL from A6 to A7"
+                "text": "Transfer 26.67 µL from A6 to A7"
               }
             },
             {
@@ -443,9 +497,18 @@
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
               "properties": {
-                "subIDs": ["A7", "A8"],
-                "colorHex": "#FFD700",
-                "colorName": "Gold"
+                "subIDs": ["A7"],
+                "colorHex": "#FF0000",
+                "colorName": "Red"
+              }
+            },
+            {
+              "actionType": "Highlight",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "subIDs": ["A8"],
+                "colorHex": "#00FF00",
+                "colorName": "Green"
               }
             }
           ],
@@ -454,7 +517,7 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
-                "text": "Pipette 26.67 µL from A7 to A8"
+                "text": "Transfer 26.67 µL from A7 to A8"
               }
             },
             {
@@ -474,9 +537,18 @@
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
               "properties": {
-                "subIDs": ["A8", "A9"],
-                "colorHex": "#FFD700",
-                "colorName": "Gold"
+                "subIDs": ["A8"],
+                "colorHex": "#FF0000",
+                "colorName": "Red"
+              }
+            },
+            {
+              "actionType": "Highlight",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "subIDs": ["A9"],
+                "colorHex": "#00FF00",
+                "colorName": "Green"
               }
             }
           ],
@@ -485,7 +557,7 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
-                "text": "Pipette 26.67 µL from A8 to A9"
+                "text": "Transfer 26.67 µL from A8 to A9"
               }
             },
             {
@@ -505,9 +577,18 @@
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
               "properties": {
-                "subIDs": ["A9", "A10"],
-                "colorHex": "#FFD700",
-                "colorName": "Gold"
+                "subIDs": ["A9"],
+                "colorHex": "#FF0000",
+                "colorName": "Red"
+              }
+            },
+            {
+              "actionType": "Highlight",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "subIDs": ["A10"],
+                "colorHex": "#00FF00",
+                "colorName": "Green"
               }
             }
           ],
@@ -516,7 +597,7 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
-                "text": "Pipette 26.67 µL from A9 to A10"
+                "text": "Transfer 26.67 µL from A9 to A10"
               }
             },
             {
@@ -536,9 +617,18 @@
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
               "properties": {
-                "subIDs": ["A10", "A11"],
-                "colorHex": "#FFD700",
-                "colorName": "Gold"
+                "subIDs": ["A10"],
+                "colorHex": "#FF0000",
+                "colorName": "Red"
+              }
+            },
+            {
+              "actionType": "Highlight",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "subIDs": ["A11"],
+                "colorHex": "#00FF00",
+                "colorName": "Green"
               }
             }
           ],
@@ -547,7 +637,7 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
-                "text": "Pipette 26.67 µL from A10 to A11"
+                "text": "Transfer 26.67 µL from A10 to A11"
               }
             },
             {
