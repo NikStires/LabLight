@@ -29,7 +29,7 @@ struct ChecklistView: View {
                     ForEach(viewModel.checklistItems) { item in
                         CheckItemView(
                             definition: item,
-                            isChecked: viewModel.currentStates.first { 
+                            isChecked: viewModel.isStepSignedOff || viewModel.currentStates.first { 
                                 $0.checkIndex == viewModel.getIndex(for: item) 
                             }?.isChecked ?? false
                         )

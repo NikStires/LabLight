@@ -270,6 +270,15 @@ class ProtocolViewModel: ObservableObject {
         CallCSharpCallback("requestPDF|" + pdfName)
     }
     
+    func signOffStep() {
+        CallCSharpCallback("checklistSignOff|true")
+        isStepSignedOff = true
+        currentStates = checklistItems.enumerated().map { index, _ in
+            CheckItemStateData(isChecked: true, checkIndex: index)
+        }
+        updateCanSignOff()
+    }
+    
     // MARK: - Notification Handlers
     @objc func handleStepChange(_ notification: Notification) {
         guard let message = notification.userInfo?["message"] as? String,
@@ -284,7 +293,13 @@ class ProtocolViewModel: ObservableObject {
         DispatchQueue.main.async {
             self.selectedStepIndex = stepStateData.currentStepIndex
             self.checklistItems = self.currentStep.checklist
-            self.currentStates = stepStateData.checklistState ?? []
+            if let checklistState = stepStateData.checklistState {
+                self.currentStates = checklistState
+            } else if stepStateData.isSignedOff {
+                self.currentStates = self.checklistItems.enumerated().map { index, _ in
+                    CheckItemStateData(isChecked: true, checkIndex: index)
+                }
+            }
             self.lastCheckedItemIndex = self.currentStates.last { $0.isChecked }?.checkIndex
             self.isStepSignedOff = stepStateData.isSignedOff
             self.updateCanSignOff()
@@ -312,19 +327,6 @@ class ProtocolViewModel: ObservableObject {
         canSignOff = !isStepSignedOff && 
                     currentStates.count == checklistItems.count && 
                     currentStates.allSatisfy { $0.isChecked }
-    }
-    
-    func signOffStep() {
-        CallCSharpCallback("checklistSignOff|true")
-        // Optimistically update both the sign-off state and checklist states
-        DispatchQueue.main.async {
-            self.isStepSignedOff = true
-            
-            // Update all current checklist items to show as checked
-            self.currentStates = self.checklistItems.enumerated().map { index, _ in
-                CheckItemStateData(isChecked: true, checkIndex: index)
-            }
-        }
     }
 }
 

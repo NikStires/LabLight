@@ -24,6 +24,7 @@ public class SwiftUIDriver : IUIDriver, IDisposable
     }
 
     private CompositeDisposable _disposables = new CompositeDisposable();
+    private Action DisposeVoice;
 
     public SwiftUIDriver()
     {
@@ -62,6 +63,10 @@ public class SwiftUIDriver : IUIDriver, IDisposable
         {
             chatProvider.OnResponse.RemoveListener(OnChatMessageReceived);
         }
+
+        // Ensure voice commands are disposed
+        DisposeVoice?.Invoke();
+        DisposeVoice = null;
     }
 
     // Swift UI Update methods
@@ -70,6 +75,33 @@ public class SwiftUIDriver : IUIDriver, IDisposable
         Debug.Log("######LABLIGHT SWIFTUIDRIVER OnProtocolChange: " + protocol.title);
         string protocolJson = JsonConvert.SerializeObject(protocol);
         SendMessageToSwiftUI($"protocolChange|{protocolJson}");
+
+        // Set up voice commands when protocol is loaded
+        if (protocol != null)
+        {
+            SetupVoiceCommands();
+        }
+    }
+
+    private void SetupVoiceCommands()
+    {
+        if (SpeechRecognizer.Instance == null)
+        {
+            Debug.LogWarning("SpeechRecognizer not found");
+            return;
+        }
+
+        // Dispose any existing voice commands first
+        DisposeVoice?.Invoke();
+
+        DisposeVoice = SpeechRecognizer.Instance.Listen(new Dictionary<string, Action>()
+        {
+            {"check", () => CheckItemCallback(ProtocolState.Instance.CurrentCheckNum)},
+            {"uncheck", () => UncheckItemCallback(ProtocolState.Instance.CurrentCheckNum - 1)},
+            {"sign", () => SignOffChecklistCallback()},
+            {"next", () => StepNavigationCallback(ProtocolState.Instance.CurrentStep.Value + 1)},
+            {"previous", () => StepNavigationCallback(ProtocolState.Instance.CurrentStep.Value - 1)},
+        });
     }
 
     public void OnStepChange(ProtocolState.StepState stepState)
@@ -237,6 +269,10 @@ public class SwiftUIDriver : IUIDriver, IDisposable
 
     public void CloseProtocolCallback()
     {
+        // Dispose of voice commands when protocol is closed
+        DisposeVoice?.Invoke();
+        DisposeVoice = null;
+
         ProtocolState.Instance.ActiveProtocol.Value = null;
         SceneLoader.Instance.LoadSceneClean("ProtocolMenu");
     }

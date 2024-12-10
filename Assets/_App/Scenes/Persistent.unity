@@ -14442,7 +14442,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2102600993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14517,14 +14517,14 @@ MonoBehaviour:
   initOnAwake: 1
   language: en
   translateToEnglish: 0
-  strategy: 1
+  strategy: 0
   noContext: 1
-  singleSegment: 0
+  singleSegment: 1
   enableTokens: 1
-  initialPrompt: 
+  initialPrompt: 'Expected commands: check, uncheck, next, previous, sign-off'
   stepSec: 1
-  keepSec: 0.1
-  lengthSec: 1
+  keepSec: 0.5
+  lengthSec: 5
   updatePrompt: 0
   dropOldBuffer: 1
   useVad: 1
