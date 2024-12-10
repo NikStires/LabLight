@@ -77,6 +77,7 @@ struct StepDefinition: Codable, Identifiable, Equatable, Hashable {
 struct CheckItemDefinition: Codable, Identifiable, Equatable, Hashable {
     let text: String
     let contentItems: [ContentItem]
+    let arActions: [ArAction]
     
     // Computed property for Identifiable
     let id: UUID = UUID()
@@ -84,6 +85,7 @@ struct CheckItemDefinition: Codable, Identifiable, Equatable, Hashable {
     enum CodingKeys: String, CodingKey {
         case text = "Text"
         case contentItems
+        case arActions
     }
     
     // MARK: Hashable
@@ -95,7 +97,8 @@ struct CheckItemDefinition: Codable, Identifiable, Equatable, Hashable {
     static func == (lhs: CheckItemDefinition, rhs: CheckItemDefinition) -> Bool {
         return lhs.id == rhs.id &&
                lhs.text == rhs.text &&
-               lhs.contentItems == rhs.contentItems
+               lhs.contentItems == rhs.contentItems &&
+               lhs.arActions == rhs.arActions
     }
 }
 
@@ -149,5 +152,83 @@ struct ArObject: Codable, Identifiable, Equatable, Hashable {
         case specificObjectName
         case arObjectID
         case rootPrefabName
+    }
+}
+
+struct ArAction: Codable, Identifiable, Equatable, Hashable {
+    let actionType: String
+    let properties: [String: Any]
+    let arObjectID: String
+    
+    let id: UUID = UUID()
+    
+    private enum CodingKeys: String, CodingKey {
+        case actionType
+        case properties
+        case arObjectID
+    }
+    
+    // Add init to handle missing arObjectID and decode properties
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        actionType = try container.decode(String.self, forKey: .actionType)
+        
+        // Decode properties as a dictionary that can contain either String or [String]
+        let propertiesContainer = try container.decode([String: AnyCodable].self, forKey: .properties)
+        properties = propertiesContainer.mapValues { $0.value }
+        
+        arObjectID = try container.decodeIfPresent(String.self, forKey: .arObjectID) ?? ""
+    }
+    
+    // Add encoding support for properties
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(actionType, forKey: .actionType)
+        try container.encode(properties.mapValues { AnyCodable($0) }, forKey: .properties)
+        try container.encode(arObjectID, forKey: .arObjectID)
+    }
+    
+    // MARK: Hashable
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    // MARK: Equatable
+    static func == (lhs: ArAction, rhs: ArAction) -> Bool {
+        return lhs.id == rhs.id &&
+               lhs.actionType == rhs.actionType &&
+               NSDictionary(dictionary: lhs.properties).isEqual(to: rhs.properties) &&
+               lhs.arObjectID == rhs.arObjectID
+    }
+}
+
+// Helper type to handle encoding/decoding of Any values
+private struct AnyCodable: Codable {
+    let value: Any
+    
+    init(_ value: Any) {
+        self.value = value
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        if let stringValue = try? container.decode(String.self) {
+            value = stringValue
+        } else if let arrayValue = try? container.decode([String].self) {
+            value = arrayValue
+        } else {
+            throw DecodingError.dataCorruptedError(in: container, debugDescription: "Unsupported type")
+        }
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        if let stringValue = value as? String {
+            try container.encode(stringValue)
+        } else if let arrayValue = value as? [String] {
+            try container.encode(arrayValue)
+        } else {
+            throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: encoder.codingPath, debugDescription: "Unsupported type"))
+        }
     }
 }

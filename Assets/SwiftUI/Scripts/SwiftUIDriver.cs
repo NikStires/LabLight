@@ -231,7 +231,7 @@ public class SwiftUIDriver : IUIDriver, IDisposable
 
     public void ProtocolSelectionCallback(string protocolDefinitionJson)
     {
-        var protocolDefinition = JsonConvert.DeserializeObject<ProtocolDefinition>(protocolDefinitionJson);
+        var protocolDefinition = Parsers.ParseProtocol(protocolDefinitionJson);
         ProtocolState.Instance.SetProtocolDefinition(protocolDefinition);
     }
 

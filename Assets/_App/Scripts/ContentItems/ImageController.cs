@@ -62,7 +62,8 @@ public class ImageController : ContentController<ContentItem>
             }
         }, (e) =>
         {
-            ServiceRegistry.Logger.LogError("Could not load image " + imagePath + ". " + e.ToString());
+            Debug.Log("######LABLIGHT Could not load image " + imagePath + ". " + e.ToString());
+            //ServiceRegistry.Logger.LogError("Could not load image " + imagePath + ". " + e.ToString());
         });
     }
 }

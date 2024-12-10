@@ -3451,7 +3451,7 @@ MonoBehaviour:
   modelActive: 0
   nameTags: {fileID: 4841286306786178919}
   Sources: {fileID: 6390326650368408008}
-  Outline: {fileID: 0}
+  Outline: {fileID: 152846763321650923}
   currActions: []
 --- !u!136 &7539425435044081780
 CapsuleCollider:

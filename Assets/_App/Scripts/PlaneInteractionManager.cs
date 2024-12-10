@@ -68,7 +68,7 @@ public class PlaneInteractionManager : MonoBehaviour
     {
         headPlacementEventChannel.SetHeadtrackedObject.AddListener(obj => SetPrefab(obj));
         headPlacementEventChannel.PlanePlacementRequested.AddListener(obj => OnPlanePlacementRequested(obj));
-        headPlacementEventChannel.RequestDisablePlaneInteractionManager.AddListener(ResetObjects);
+        //headPlacementEventChannel.RequestDisablePlaneInteractionManager.AddListener(ResetObjects);
         ProtocolState.Instance.ProtocolStream.Subscribe(_ => OnProtocolExit()).AddTo(this);
         //ProtocolState.Instance.ChecklistStream.Subscribe(_ => OnNextCheckItem()).AddTo(this);
     }

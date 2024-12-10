@@ -108,7 +108,7 @@
               "actionType": "Highlight",
               "arObjectID": "reservoir_01",
               "properties": {
-                "subIDs": ["1"],
+                "subIDs": [],
                 "colorHex": "#FFD700",
                 "colorName": "Gold"
               }
@@ -131,7 +131,19 @@
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
               "properties": {
-                "subIDs": ["A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10", "A11", "A12"],
+                "subIDs": [
+                  "A2",
+                  "A3",
+                  "A4",
+                  "A5",
+                  "A6",
+                  "A7",
+                  "A8",
+                  "A9",
+                  "A10",
+                  "A11",
+                  "A12"
+                ],
                 "colorHex": "#AAFF00",
                 "colorName": "Green"
               }
