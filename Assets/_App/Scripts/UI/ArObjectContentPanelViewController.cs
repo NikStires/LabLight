@@ -109,6 +109,12 @@ public class ArObjectContentPanelViewController : MonoBehaviour
         {
             child.gameObject.SetActive(true);
         }
+
+        // Reset the content position to top
+        if (contentFrame != null)
+        {
+            contentFrame.localPosition = Vector3.zero;
+        }
     }
 
     private void CreateContentItem(ContentItem contentItem, LayoutGroup container)
