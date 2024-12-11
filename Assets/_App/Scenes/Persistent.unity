@@ -5784,6 +5784,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1126609148}
   - component: {fileID: 1126609149}
+  - component: {fileID: 1126609150}
   m_Layer: 0
   m_Name: HUD
   m_TagString: Untagged
@@ -5824,6 +5825,103 @@ MonoBehaviour:
   _hudTextBG: {fileID: 0}
   _hudFeedbacks: {fileID: 1755986695}
   _hudEventSO: {fileID: 11400000, guid: d9705cf1816584f66a09a019652ef80d, type: 2}
+--- !u!82 &1126609150
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1126609147}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 7e984f512e89b60468e829489e8883e3, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!43 &1145487910
 Mesh:
   m_ObjectHideFlags: 0
@@ -14455,6 +14553,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a5051aa8592f47da8fb5b1881c5fdd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 1126609150}
+  keywordRecognizedSound: {fileID: 8300000, guid: 449d6153bca2c44a283b4cbd7c192f3f, type: 3}
 --- !u!4 &2102600994
 Transform:
   m_ObjectHideFlags: 0
@@ -14482,9 +14582,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bc03a4c19604ea394e364f8fc632928, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxLengthSec: 3
+  maxLengthSec: 2
   loop: 1
-  frequency: 16000
+  frequency: 22050
   chunksLengthSec: 0.5
   echo: 0
   useVad: 1
@@ -14522,9 +14622,9 @@ MonoBehaviour:
   singleSegment: 1
   enableTokens: 1
   initialPrompt: 'Expected commands: check, uncheck, next, previous, sign-off'
-  stepSec: 1
-  keepSec: 0.5
-  lengthSec: 5
+  stepSec: 0.5
+  keepSec: 0.2
+  lengthSec: 2
   updatePrompt: 0
   dropOldBuffer: 1
   useVad: 1

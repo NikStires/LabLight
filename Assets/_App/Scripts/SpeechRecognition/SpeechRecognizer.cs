@@ -41,6 +41,10 @@ public class SpeechRecognizer : MonoBehaviour
         }
     }
 
+    [SerializeField]
+    private AudioSource audioSource;
+    [SerializeField]
+    private AudioClip keywordRecognizedSound;
 
     void Awake()
     {
@@ -87,6 +91,7 @@ public class SpeechRecognizer : MonoBehaviour
                     if (Keywords.TryGetValue(word, out action))
                     {
                         Debug.Log("Keyword recognized: " + word);
+                        PlayKeywordRecognizedSound();
                         action.Invoke();
                     }
                 }
@@ -156,6 +161,14 @@ public class SpeechRecognizer : MonoBehaviour
         {
             _microphoneRecord.StopRecord();
             _stream.StopStream();
+        }
+    }
+
+    private void PlayKeywordRecognizedSound()
+    {
+        if (audioSource != null && keywordRecognizedSound != null)
+        {
+            audioSource.PlayOneShot(keywordRecognizedSound);
         }
     }
 }
