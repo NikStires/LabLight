@@ -16635,6 +16635,50 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3536661230413607708, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3536661230413607708, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3536661230413607708, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 8537630422445180477}
+    - target: {fileID: 3536661230413607708, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 8537630422445180476}
+    - target: {fileID: 3536661230413607708, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Play
+      objectReference: {fileID: 0}
+    - target: {fileID: 3536661230413607708, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: SpawnHazardZonePanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 3536661230413607708, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UnityEngine.AudioSource, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3536661230413607708, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: ActionCenterPanelViewController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3536661230413607708, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3536661230413607708, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3536661230413607708, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
+      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 4584628207581659008, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
       propertyPath: m_SelectExited.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
@@ -16832,6 +16876,22 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
+--- !u!114 &8537630422445180476 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4260026214602192422, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
+  m_PrefabInstance: {fileID: 8537630422445180475}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2481998337745020063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08c3ad8ae9c484195b42d73ac784c269, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!82 &8537630422445180477 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 6377913729139958165, guid: 4c51d85d179e4452c928590fbdd89ce7, type: 3}
+  m_PrefabInstance: {fileID: 8537630422445180475}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8636858295088442026
 GameObject:
   m_ObjectHideFlags: 0
