@@ -48,7 +48,7 @@ struct ProtocolView: View {
             }
             Button("Cancel", role: .cancel) { }
         } message: {
-            Text("Any unsaved progress will be lost")
+            Text("Progress will be temporarily saved and metadata will be recorded on the server for review")
         }
         .onDisappear {
             CallCSharpCallback("closeProtocol|true")
