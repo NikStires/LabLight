@@ -149,7 +149,7 @@ public class ProtocolMenuViewController : LLBasePanel
         if(ServiceRegistry.GetService<IProtocolDataProvider>() != null)
         {
             protocols = await ServiceRegistry.GetService<IProtocolDataProvider>()?.GetProtocolList();
-            //protocols.AddRange(await ((LocalFileDataProvider)ServiceRegistry.GetService<ITextDataProvider>())?.GetProtocolList());
+            protocols.AddRange(await ((LocalFileDataProvider)ServiceRegistry.GetService<ITextDataProvider>())?.GetProtocolList());
             maxPage = (int)Math.Ceiling((float)protocols.Count / 8);
             currentPage = 0;
 
