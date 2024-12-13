@@ -205,6 +205,17 @@ public class ArObjectManager : MonoBehaviour
         {
             ProcessPlacementActions(placementActions);
         }
+
+        if (actions.Count == 0)
+        {
+            foreach(var arView in arViews)
+            {
+                if(arView.Value is ModelElementViewController modelView)
+                {
+                    modelView.disablePreviousHighlight();
+                }
+            }
+        }
     }
 
     private void ProcessLockActions(List<ArAction> lockActions)
@@ -363,6 +374,16 @@ public class ArObjectManager : MonoBehaviour
         if (relevantActions.Count > 0)
         {
             ProcessArActions(relevantActions);
+        }
+        foreach(var arView in arViews)
+        {
+            if(arView.Key.arObjectID != arObject.arObjectID)
+            {
+                if(arView.Value is ModelElementViewController modelView)
+                {
+                    modelView.disablePreviousHighlight();
+                }
+            }
         }
     }
 }
