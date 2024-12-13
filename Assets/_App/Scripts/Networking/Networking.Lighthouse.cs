@@ -205,7 +205,8 @@ public partial class Networking : MonoBehaviour, ILighthouseControl
                 protocolState.CurrentCheckNum + 1, 
                 currentStep?.Checklist?.Count ?? 0,
                 currentCheckItem?.Text ?? "", 
-                currentStep?.SignedOff.Value ?? false ? 1 : 0
+                currentStep?.SignedOff.Value ?? false ? 1 : 0,
+                false //resume value
             );
         }
     }
