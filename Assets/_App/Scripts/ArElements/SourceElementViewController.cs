@@ -75,7 +75,8 @@ public class SourceElementViewController : ModelElementViewController
                     if(nametag.Find("Contents").GetComponent<TextMeshProUGUI>().text != "")
                     {
                         toggleTransform(nametag, true);
-                        toggleTransform(Sources, true, nametag.name);
+                        //toggleTransform(Sources, true, nametag.name);
+                        toggleTransform(Outline, true, nametag.name);
                     }
                 }
             }
@@ -95,7 +96,8 @@ public class SourceElementViewController : ModelElementViewController
                     if(nametag.Find("Contents").GetComponent<TextMeshProUGUI>().text != "")
                     {
                         toggleTransform(nametag, false);
-                        toggleTransform(Sources, false, nametag.name);
+                        //toggleTransform(Sources, false, nametag.name);
+                        toggleTransform(Outline, false, nametag.name);
                     }
                 }
             }
@@ -139,12 +141,14 @@ public class SourceElementViewController : ModelElementViewController
         {
             if (debugeEnableAllSettings)
             {
-                toggleTransform(Sources, true, id);
+                //toggleTransform(Sources, true, id);
                 toggleTransform(nameTags, true, id);
+                toggleTransform(Outline, true, id);
             }
             else
             {
-                toggleTransform(Sources, settingsManagerSO.GetSettingValue(LablightSettings.Source_Container), id);
+                //toggleTransform(Sources, settingsManagerSO.GetSettingValue(LablightSettings.Source_Container), id);
+                toggleTransform(Outline, settingsManagerSO.GetSettingValue(LablightSettings.Source_Container), id);
                 toggleTransform(nameTags, settingsManagerSO.GetSettingValue(LablightSettings.Source_Contents), id);
             }
         }
@@ -173,8 +177,9 @@ public class SourceElementViewController : ModelElementViewController
 
         foreach (string id in subIDs)
         {
-            toggleTransform(Sources, false, id);
+            //toggleTransform(Sources, false, id);
             toggleTransform(nameTags, false, id);
+            toggleTransform(Outline, false, id);
         }
     }
 
@@ -217,13 +222,15 @@ public class SourceElementViewController : ModelElementViewController
                     {
                         if (debugeEnableAllSettings)
                         {
-                            toggleTransform(Sources, (true && value), id);
+                            //toggleTransform(Sources, (true && value), id);
                             toggleTransform(nameTags, (true && value), id);
+                            toggleTransform(Outline, (true && value), id);
                         }
                         else
                         {
-                            toggleTransform(Sources, settingsManagerSO.GetSettingValue(LablightSettings.Source_Container) && value, id);
+                            //toggleTransform(Sources, settingsManagerSO.GetSettingValue(LablightSettings.Source_Container) && value, id);
                             toggleTransform(nameTags, settingsManagerSO.GetSettingValue(LablightSettings.Source_Contents) && value, id);
+                            toggleTransform(Outline, settingsManagerSO.GetSettingValue(LablightSettings.Source_Container) && value, id);
                         }
                     }
                 }
@@ -272,7 +279,8 @@ public class SourceElementViewController : ModelElementViewController
                             switch(settingChanged.Item1)
                             {
                                 case LablightSettings.Source_Container:
-                                    toggleTransform(Sources, settingChanged.Item2, id);
+                                    //toggleTransform(Sources, settingChanged.Item2, id);
+                                    toggleTransform(Outline, settingChanged.Item2, id);
                                     break;
                                 case LablightSettings.Source_Contents:
                                     toggleTransform(nameTags, settingChanged.Item2, id);
