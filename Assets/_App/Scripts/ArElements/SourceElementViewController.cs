@@ -137,19 +137,29 @@ public class SourceElementViewController : ModelElementViewController
         var subIDs = GetSubIDs(action);
         if (subIDs == null) return;
 
+        var colorHexObj = action.properties.GetValueOrDefault("colorHex", "#FFFFFF");
+        string colorHex = colorHexObj.ToString();
+
+        Color parsedColor;
+        if (ColorUtility.TryParseHtmlString(colorHex, out parsedColor))
+        {
+            // Ensure alpha is set to 1
+            parsedColor.a = 1f;
+        }
+
         foreach (string id in subIDs)
         {
             if (debugeEnableAllSettings)
             {
-                //toggleTransform(Sources, true, id);
-                toggleTransform(nameTags, true, id);
-                toggleTransform(Outline, true, id);
+                toggleTransform(Sources, true, id, parsedColor);
+                //toggleTransform(nameTags, true, id);
+                //toggleTransform(Outline, true, id);
             }
             else
             {
-                //toggleTransform(Sources, settingsManagerSO.GetSettingValue(LablightSettings.Source_Container), id);
-                toggleTransform(Outline, settingsManagerSO.GetSettingValue(LablightSettings.Source_Container), id);
-                toggleTransform(nameTags, settingsManagerSO.GetSettingValue(LablightSettings.Source_Contents), id);
+                toggleTransform(Sources, settingsManagerSO.GetSettingValue(LablightSettings.Source_Container), id);
+                //toggleTransform(Outline, settingsManagerSO.GetSettingValue(LablightSettings.Source_Container), id);
+                //toggleTransform(nameTags, settingsManagerSO.GetSettingValue(LablightSettings.Source_Contents), id);
             }
         }
     }
@@ -178,8 +188,8 @@ public class SourceElementViewController : ModelElementViewController
         foreach (string id in subIDs)
         {
             toggleTransform(Sources, false, id);
-            toggleTransform(nameTags, false, id);
-            toggleTransform(Outline, false, id);
+            //toggleTransform(nameTags, false, id);
+            //toggleTransform(Outline, false, id);
         }
     }
 
@@ -189,14 +199,14 @@ public class SourceElementViewController : ModelElementViewController
         {
             if(!String.IsNullOrEmpty(id))
             {
-                Debug.Log("toggleTransform: " + id);  
+                Debug.Log("toggleTransform: " + id + " " + value);  
                 GameObject childObject = parentTransform.Find(id).gameObject;
                 childObject.SetActive(value);
                 if(color != default)
                 {
-                    if(childObject.TryGetComponent<Renderer>(out Renderer ren))
+                    if(childObject.TryGetComponent<MeshRenderer>(out MeshRenderer ren))
                     {
-                        ren.material.SetColor("_Color", color);
+                        ren.material.color = color;
                     }
                     else if(childObject.TryGetComponent<TextMeshProUGUI>(out TextMeshProUGUI tmp))
                     {

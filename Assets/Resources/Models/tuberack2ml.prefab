@@ -4011,7 +4011,7 @@ MonoBehaviour:
   sphere: {fileID: 3893869629590341445}
   ModelName: {fileID: 4764666697387905150}
   settingsManagerSO: {fileID: 11400000, guid: a020f9263ca8e48c7bf4ff404ec90866, type: 2}
-  debugeEnableAllSettings: 0
+  debugeEnableAllSettings: 1
   modelActive: 0
   nameTags: {fileID: 6168936106343387364}
   Sources: {fileID: 5250952026491475252}
@@ -10750,8 +10750,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2344e5865f15bf44d83e7e7425968e9b, type: 2}
-  - {fileID: 2100000, guid: afbe641c1f9921c4698de237276893af, type: 2}
+  - {fileID: 2100000, guid: 982106327544244338dba645c3ec3523, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
