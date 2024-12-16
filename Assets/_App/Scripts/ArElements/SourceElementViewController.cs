@@ -177,7 +177,7 @@ public class SourceElementViewController : ModelElementViewController
 
         foreach (string id in subIDs)
         {
-            //toggleTransform(Sources, false, id);
+            toggleTransform(Sources, false, id);
             toggleTransform(nameTags, false, id);
             toggleTransform(Outline, false, id);
         }
@@ -189,6 +189,7 @@ public class SourceElementViewController : ModelElementViewController
         {
             if(!String.IsNullOrEmpty(id))
             {
+                Debug.Log("toggleTransform: " + id);  
                 GameObject childObject = parentTransform.Find(id).gameObject;
                 childObject.SetActive(value);
                 if(color != default)

@@ -13,6 +13,11 @@
       "specificObjectName": "Reservoir",
       "arObjectID": "reservoir_01",
       "rootPrefabName": "reservoir"
+    },
+    {
+      "specificObjectName": "Tube Rack",
+      "arObjectID": "tuberack_01",
+      "rootPrefabName": "tuberack2ml"
     }
   ],
   "steps": [
@@ -21,7 +26,7 @@
       "contentItems": [],
       "checklist": [
         {
-          "text": "Lock all AR objects in place",
+          "text": "Lock all AR objects in place: 96-well plate, reservoir, tube rack",
           "arActions": [
             {
               "actionType": "Lock",
@@ -102,7 +107,7 @@
       ],
       "checklist": [
         {
-          "text": "Locate the reservoir containing distilled water.",
+          "text": "Fill the reservoir with distilled water.",
           "arActions": [
             {
               "actionType": "Highlight",
@@ -114,15 +119,7 @@
               }
             }
           ],
-          "contentItems": [
-            {
-              "contentType": "Text",
-              "arObjectID": "reservoir_01",
-              "properties": {
-                "text": "Pipette from the reservoir (Volume: 175 µL)"
-              }
-            }
-          ]
+          "contentItems": []
         },
         {
           "text": "Add 175 µL of distilled water from the reservoir to each well from A2 to A12.",
@@ -144,8 +141,8 @@
                   "A11",
                   "A12"
                 ],
-                "colorHex": "#AAFF00",
-                "colorName": "Green"
+                "colorHex": "#0000FF",
+                "colorName": "Blue"
               }
             }
           ],
@@ -154,7 +151,7 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
-                "text": "Pipette into wells A2 to A12 (Volume: 175 µL)"
+                "text": "Pipette distilled water into wells A2 to A12 (Volume: 175 µL)"
               }
             },
             {
@@ -181,6 +178,15 @@
               "arObjectID": "wellplate_01",
               "properties": {
                 "subIDs": ["A1"],
+                "colorHex": "#FFD700",
+                "colorName": "Gold"
+              }
+            },
+            {
+              "actionType": "Highlight",
+              "arObjectID": "tuberack_01",
+              "properties": {
+                "subIDs": ["0"],
                 "colorHex": "#FFD700",
                 "colorName": "Gold"
               }
