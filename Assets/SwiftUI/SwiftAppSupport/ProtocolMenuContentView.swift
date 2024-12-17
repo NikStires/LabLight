@@ -49,7 +49,24 @@ struct ProtocolMenuContentView: View {
             .navigationDestination(for: ProtocolDefinition.self) { protocolDef in
                 ProtocolView(selectedProtocol: protocolDef)
             }
+            .ornament(visibility: .visible, attachmentAnchor: .scene(.leading)) {
+                downloadButton
+            }
         }
+    }
+    
+    private var downloadButton: some View {
+        Button(action: {
+            viewModel.downloadProtocol()
+        }) {
+            Image(systemName: "arrow.down.circle")
+                .symbolEffect(.bounce, value: viewModel.isDownloadAvailable)
+        }
+        .disabled(!viewModel.isDownloadAvailable)
+        .padding()
+        .buttonStyle(.plain)
+        .glassBackgroundEffect(in: RoundedRectangle(cornerRadius: 22))
+        .tint(viewModel.isDownloadAvailable ? .blue : .gray)
     }
     
     func formatText(_ text: String) -> String {
@@ -61,9 +78,11 @@ struct ProtocolMenuContentView: View {
 
 class ProtocolMenuViewModel: ObservableObject {
     @Published var protocols: [ProtocolDefinition] = []
+    @Published var isDownloadAvailable: Bool = false
     
     init() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleProtocolDefinitions(_:)), name: Notification.Name("ProtocolDefinitions"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleJsonFileDownloadable(_:)), name: Notification.Name("JsonFileDownloadable"), object: nil)
     }
     
     @objc func handleProtocolDefinitions(_ notification: Notification) {
@@ -93,7 +112,22 @@ class ProtocolMenuViewModel: ObservableObject {
         }
     }
     
+    @objc func handleJsonFileDownloadable(_ notification: Notification) {
+        if let message = notification.userInfo?["message"] as? String,
+           message.hasPrefix("jsonFileDownloadableChange|") {
+            let jsonFileInfo = String(message.dropFirst("jsonFileDownloadableChange|".count))
+            DispatchQueue.main.async {
+                self.isDownloadAvailable = !jsonFileInfo.isEmpty
+            }
+        }
+    }
+    
     func requestProtocolDefinitions() {
         CallCSharpCallback("requestProtocolDefinitions|")
+    }
+    
+    func downloadProtocol() {
+        CallCSharpCallback("downloadJsonProtocol|")
+        isDownloadAvailable = false
     }
 }
