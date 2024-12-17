@@ -668,7 +668,7 @@
         {
           "contentType": "Image",
           "properties": {
-            "url": "expected_results.png",
+            "url": "expected_results.jpg",
             "text": "Expected gradient of color intensity."
           }
         }
