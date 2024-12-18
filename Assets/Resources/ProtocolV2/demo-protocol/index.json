@@ -1,7 +1,7 @@
 {
   "version": 1,
   "title": "Dilution Series Preparation",
-  "description": "Prepare a 1:7.5 serial dilution series of a stock solution across a row of a 96-well plate.",
+  "description": "Prepare a 1:4 serial dilution series of a stock solution across a 96-well plate.",
   "protocolPDFNames": ["LabSafety.pdf", "SerialDilutionGuide.pdf"],
   "globalArObjects": [
     {
@@ -31,7 +31,7 @@
       "contentItems": [],
       "checklist": [
         {
-          "text": "Lock all AR objects in place: 96-well plate, reservoir, tube rack",
+          "text": "Lock all AR objects in place: 96-well plate, reservoirs, tube rack",
           "arActions": [
             {
               "actionType": "Lock",
@@ -50,13 +50,13 @@
       "contentItems": [],
       "checklist": [
         {
-          "text": "Start the timer to track how long the procedure takes",
+          "text": "Start the timer to track how long the protocol takes",
           "contentItems": [
             {
               "contentType": "Timer",
               "properties": {
                 "durationInSeconds": "900",
-                "text": "Procedure Timer"
+                "text": "Protocol Timer"
               }
             }
           ]
@@ -148,16 +148,7 @@
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
               "properties": {
-                "subIDs": [
-                  "A2",
-                  "A3",
-                  "A4",
-                  "A5",
-                  "A6",
-                  "A7",
-                  "A8",
-                  "A9"
-                ],
+                "subIDs": ["A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9"],
                 "colorHex": "#00bfff",
                 "colorName": "Blue"
               }
@@ -177,14 +168,14 @@
               "contentType": "Text",
               "arObjectID": "reservoir_01",
               "properties": {
-                "text": "Pipette from the reservoir (Volume: 80 µL)"
+                "text": "Pipette 80 µL of distilled water from the reservoir"
               }
             },
             {
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
-                "text": "Pipette into wells A2 to A9 (Volume: 80 µL)"
+                "text": "Pipette 80 µL of distilled water into wells A2 to A9"
               }
             },
             {
@@ -253,26 +244,22 @@
           "properties": {
             "text": "The dilution factor is 1:4. Calculate the volume of solution to transfer for each dilution step."
           }
-        },
-        {
-          "contentType": "Webpage",
-          "properties": {
-            "url": "https://example.com/calculator",
-            "text": "Use the calculator to compute dilution volumes."
-          }
         }
       ],
       "checklist": [
         {
           "text": "Calculate the dilution volume using the calculator.",
-          "contentItems": []
+          "contentItems": [
+            {
+              "contentType": "Text",
+              "properties": {
+                "text": "Calculation recorded in protocol documentation."
+              }
+            }
+          ]
         },
         {
           "text": "Confirm your calculations with LLM Chat (e.g., Claude).",
-          "contentItems": []
-        },
-        {
-          "text": "Record the calculated volume in your lab notebook.",
           "contentItems": []
         }
       ]
@@ -316,7 +303,7 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
-                "text": "Pipette 20 µL from A1 to A2"
+                "text": "Transfer 20 µL from A1 to A2"
               }
             },
             {
@@ -356,7 +343,7 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
-                "text": "Pipette 20 µL from A2 to A3"
+                "text": "Transfer 20 µL from A2 to A3"
               }
             },
             {
@@ -396,7 +383,7 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
-                "text": "Pipette 20 µL from A3 to A4"
+                "text": "Transfer 20 µL from A3 to A4"
               }
             },
             {
@@ -436,7 +423,7 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
-                "text": "Pipette 20 µL from A4 to A5"
+                "text": "Transfer 20 µL from A4 to A5"
               }
             },
             {
@@ -476,7 +463,7 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
-                "text": "Pipette 20 µL from A5 to A6"
+                "text": "Transfer 20 µL from A5 to A6"
               }
             },
             {
@@ -516,7 +503,7 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
-                "text": "Pipette 20 µL from A6 to A7"
+                "text": "Transfer 20 µL from A6 to A7"
               }
             },
             {
@@ -556,7 +543,7 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
-                "text": "Pipette 20 µL from A7 to A8"
+                "text": "Transfer 20 µL from A7 to A8"
               }
             },
             {
@@ -596,7 +583,7 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
-                "text": "Pipette 20 µL from A8 to A9"
+                "text": "Transfer 20 µL from A8 to A9"
               }
             },
             {
@@ -610,7 +597,7 @@
           ]
         },
         {
-          "text": "Do not transfer from A9 to maintain it as the most diluted well.",
+          "text": "Do NOT transfer from A9 to maintain it as the most diluted well.",
           "arActions": [],
           "contentItems": []
         }
@@ -619,24 +606,15 @@
     {
       "isCritical": true,
       "contentItems": [],
-      "checklist" : [
+      "checklist": [
         {
-          "text": "Use multichannel pipette to transer 25 µL from row A wells A2-A9 to row B wells B2-B9",
+          "text": "Use multichannel pipette to transfer 25 µL from row A wells A2-A9 to row B wells B2-B9",
           "arActions": [
             {
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
               "properties": {
-                "subIDs": [
-                  "A2",
-                  "A3",
-                  "A4",
-                  "A5",
-                  "A6",
-                  "A7",
-                  "A8",
-                  "A9"
-                ],
+                "subIDs": ["A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9"],
                 "colorHex": "#FF0000",
                 "colorName": "Red"
               }
@@ -645,16 +623,7 @@
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
               "properties": {
-                "subIDs": [
-                  "B2",
-                  "B3",
-                  "B4",
-                  "B5",
-                  "B6",
-                  "B7",
-                  "B8",
-                  "B9"
-                ],
+                "subIDs": ["B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9"],
                 "colorHex": "#66FF00",
                 "colorName": "Green"
               }
@@ -665,7 +634,7 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
-                "text": "Pipette from wells A2-A9 into wells B2-B9 (Volume: 25 µL)"
+                "text": "Transfer 25 µL from A2-A9 into B2-B9"
               }
             },
             {
@@ -679,7 +648,7 @@
           ]
         },
         {
-          "text": "Use multichannel pipette to transer 200 µL of BCA working solution from reservoir to wells B1-B9",
+          "text": "Use multichannel pipette to transfer 200 µL of BCA working solution from reservoir to wells B1-B9",
           "arActions": [
             {
               "actionType": "Highlight",
@@ -715,14 +684,14 @@
               "contentType": "Text",
               "arObjectID": "reservoir_02",
               "properties": {
-                "text": "Pipette from the reservoir (Volume: 200 µL)"
+                "text": "Pipette 200 µL of BCA working solution from the reservoir"
               }
             },
             {
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
-                "text": "Pipette into wells B2-B9 (Volume: 200 µL)"
+                "text": "Pipette 200 µL of BCA working solution into wells B2-B9"
               }
             },
             {
@@ -750,11 +719,7 @@
       ],
       "checklist": [
         {
-          "text": "Record changes in color intensity across the row.",
-          "contentItems": []
-        },
-        {
-          "text": "Take a photo or note observations in your lab notebook.",
+          "text": "Take a photo or use plate reader to record observations.",
           "contentItems": []
         }
       ]
@@ -768,12 +733,15 @@
           "contentItems": []
         },
         {
-          "text": "Clean pipettes if needed.",
-          "contentItems": []
-        },
-        {
           "text": "Safely store or discard the plate as per lab protocol.",
-          "contentItems": []
+          "contentItems": [
+            {
+              "contentType": "Text",
+              "properties": {
+                "text": "Protocol documentation recorded and sent back to server."
+              }
+            }
+          ]
         }
       ]
     }
