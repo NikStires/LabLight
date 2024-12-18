@@ -79,13 +79,6 @@ public class Parsers
             // Build lookup dictionary for AR objects
             protocolDefinition.BuildArObjectLookup();
 
-            // Debug print the arObjectLookup dictionary
-            Debug.Log("AR Object Lookup Dictionary contents:");
-            foreach (var kvp in protocolDefinition.arObjectLookup)
-            {
-                Debug.Log($"Key: {kvp.Key}, Value: {kvp.Value?.GetType().Name ?? "null"} - ID: {kvp.Value?.arObjectID ?? "null"}");
-            }
-
             // Link AR objects to their references in content items and actions
             LinkArObjects(protocolDefinition);
 

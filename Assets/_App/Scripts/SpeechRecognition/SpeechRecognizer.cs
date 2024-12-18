@@ -171,4 +171,11 @@ public class SpeechRecognizer : MonoBehaviour
             audioSource.PlayOneShot(keywordRecognizedSound);
         }
     }
+
+    public void ClearAllKeywords()
+    {
+        Keywords.Clear();
+        RecognizedTextHandler = null;
+        CheckStreamRecording();
+    }
 }

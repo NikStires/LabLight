@@ -44,14 +44,12 @@ struct ProtocolView: View {
             titleVisibility: .visible
         ) {
             Button("Close Protocol", role: .destructive) {
+                CallCSharpCallback("closeProtocol|true")
                 dismiss()
             }
             Button("Cancel", role: .cancel) { }
         } message: {
             Text("Progress will be temporarily saved and metadata will be recorded on the server for review")
-        }
-        .onDisappear {
-            CallCSharpCallback("closeProtocol|true")
         }
     }
     

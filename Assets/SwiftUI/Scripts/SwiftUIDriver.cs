@@ -75,15 +75,16 @@ public class SwiftUIDriver : IUIDriver, IDisposable
     // Swift UI Update methods
     public void OnProtocolChange(ProtocolDefinition protocol)
     {
+        if (protocol == null)
+        {
+            return;
+        }
+
         Debug.Log("######LABLIGHT SWIFTUIDRIVER OnProtocolChange: " + protocol.title);
         string protocolJson = JsonConvert.SerializeObject(protocol);
         SendMessageToSwiftUI($"protocolChange|{protocolJson}");
 
-        // Set up voice commands when protocol is loaded
-        if (protocol != null)
-        {
-            SetupVoiceCommands();
-        }
+        SetupVoiceCommands();
     }
 
     private void SetupVoiceCommands()
@@ -280,9 +281,13 @@ public class SwiftUIDriver : IUIDriver, IDisposable
 
     public void CloseProtocolCallback()
     {
+        Debug.Log("######LABLIGHT SWIFTUIDRIVER CloseProtocolCallback");
         // Dispose of voice commands when protocol is closed
         DisposeVoice?.Invoke();
         DisposeVoice = null;
+        
+        // Add this line to clear all voice commands
+        SpeechRecognizer.Instance.ClearAllKeywords();
 
         ProtocolState.Instance.ActiveProtocol.Value = null;
         SceneLoader.Instance.LoadSceneClean("ProtocolMenu");

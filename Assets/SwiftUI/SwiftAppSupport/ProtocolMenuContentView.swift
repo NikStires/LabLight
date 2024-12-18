@@ -21,7 +21,6 @@ struct ProtocolMenuContentView: View {
                             Button(action: {
                                 if let jsonData = try? JSONEncoder().encode(protocolDef),
                                    let jsonString = String(data: jsonData, encoding: .utf8) {
-                                    print("######LABLIGHT Selecting protocol -> Raw protocol JSON: \(jsonString)")
                                     CallCSharpCallback("selectProtocol|" + jsonString)
                                     path.append(protocolDef)
                                 }
@@ -96,7 +95,6 @@ class ProtocolMenuViewModel: ObservableObject {
                     let jsonArray = try JSONSerialization.jsonObject(with: data) as? [[String: Any]] ?? []
                     let decodedProtocols = jsonArray.compactMap { protocolDict -> ProtocolDefinition? in
                         guard let protocolData = try? JSONSerialization.data(withJSONObject: protocolDict) else { return nil }
-                        print("######LABLIGHT Raw protocol JSON: \(String(data: protocolData, encoding: .utf8) ?? "")")
                         return try? decoder.decode(ProtocolDefinition.self, from: protocolData)
                     }
                     

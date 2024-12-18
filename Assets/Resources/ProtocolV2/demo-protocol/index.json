@@ -648,23 +648,13 @@
           ]
         },
         {
-          "text": "Use multichannel pipette to transfer 200 µL of BCA working solution from reservoir to wells B1-B9",
+          "text": "Use multichannel pipette to transfer 200 µL of BCA working solution from reservoir to wells B2-B9",
           "arActions": [
             {
               "actionType": "Highlight",
               "arObjectID": "wellplate_01",
               "properties": {
-                "subIDs": [
-                  "B1",
-                  "B2",
-                  "B3",
-                  "B4",
-                  "B5",
-                  "B6",
-                  "B7",
-                  "B8",
-                  "B9"
-                ],
+                "subIDs": ["B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9"],
                 "colorHex": "#ffb000",
                 "colorName": "Orange"
               }
