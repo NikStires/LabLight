@@ -10,14 +10,20 @@
       "rootPrefabName": "horizontalwellplate96"
     },
     {
-      "specificObjectName": "Reservoir",
+      "specificObjectName": "Distilled water",
       "arObjectID": "reservoir_01",
       "rootPrefabName": "reservoir"
     },
     {
+<<<<<<< Updated upstream
       "specificObjectName": "Tube Rack",
       "arObjectID": "tuberack_01",
       "rootPrefabName": "tuberack2ml"
+=======
+      "specificObjectName": "BCA working solution",
+      "arObjectID": "reservoir_02",
+      "rootPrefabName": "reservoir"
+>>>>>>> Stashed changes
     }
   ],
   "steps": [
@@ -107,7 +113,11 @@
       ],
       "checklist": [
         {
+<<<<<<< Updated upstream
           "text": "Fill the reservoir with distilled water.",
+=======
+          "text": "Add 2ml distilled water to water reservoir.",
+>>>>>>> Stashed changes
           "arActions": [
             {
               "actionType": "Highlight",
@@ -122,7 +132,26 @@
           "contentItems": []
         },
         {
+<<<<<<< Updated upstream
           "text": "Add 175 µL of distilled water from the reservoir to each well from A2 to A12.",
+=======
+          "text": "Add 2 ml BCA reagent to BCA solution reservoir",
+          "arActions": [
+            {
+              "actionType": "Highlight",
+              "arObjectID": "reservoir_02",
+              "properties": {
+                "subIDs": [],
+                "colorHex": "#FFD700",
+                "colorName": "Gold"
+              }
+            }
+          ],
+          "contentItems": []
+        },
+        {
+          "text": "Add 80 µL of distilled water from the reservoir to each well from A2 to A9.",
+>>>>>>> Stashed changes
           "arActions": [
             {
               "actionType": "Highlight",
@@ -136,6 +165,7 @@
                   "A6",
                   "A7",
                   "A8",
+<<<<<<< Updated upstream
                   "A9",
                   "A10",
                   "A11",
@@ -147,11 +177,41 @@
             }
           ],
           "contentItems": [
+=======
+                  "A9"
+                ],
+                "colorHex": "#00bfff",
+                "colorName": "Blue"
+              }
+            },
+            {
+              "actionType": "Highlight",
+              "arObjectID": "reservoir_01",
+              "properties": {
+                "subIDs": [],
+                "colorHex": "#FFD700",
+                "colorName": "Gold"
+              }
+            }
+          ],
+          "contentItems": [
+            {
+              "contentType": "Text",
+              "arObjectID": "reservoir_01",
+              "properties": {
+                "text": "Pipette from the reservoir (Volume: 80 µL)"
+              }
+            },
+>>>>>>> Stashed changes
             {
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
+<<<<<<< Updated upstream
                 "text": "Pipette distilled water into wells A2 to A12 (Volume: 175 µL)"
+=======
+                "text": "Pipette into wells A2 to A9 (Volume: 80 µL)"
+>>>>>>> Stashed changes
               }
             },
             {
@@ -171,7 +231,7 @@
       "contentItems": [],
       "checklist": [
         {
-          "text": "Add 200 µL of the stock solution to well A1.",
+          "text": "Add 75 µL of the protein standard to well A1.",
           "arActions": [
             {
               "actionType": "Highlight",
@@ -197,7 +257,11 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
+<<<<<<< Updated upstream
                 "text": "Pipette 200 µL of the stock solution into Well A1"
+=======
+                "text": "Pipette into Well A1 (Volume: 75 µL)"
+>>>>>>> Stashed changes
               }
             },
             {
@@ -218,7 +282,7 @@
         {
           "contentType": "Text",
           "properties": {
-            "text": "The dilution factor is 1:7.5. Calculate the volume of solution to transfer for each dilution step."
+            "text": "The dilution factor is 1:4. Calculate the volume of solution to transfer for each dilution step."
           }
         },
         {
@@ -257,7 +321,7 @@
       ],
       "checklist": [
         {
-          "text": "Transfer 26.67 µL from A1 to A2. Mix thoroughly by pipetting up and down 5-6 times.",
+          "text": "Transfer 20 µL from A1 to A2. Mix thoroughly by pipetting up and down 5-6 times.",
           "arActions": [
             {
               "actionType": "Highlight",
@@ -273,7 +337,11 @@
               "arObjectID": "wellplate_01",
               "properties": {
                 "subIDs": ["A2"],
+<<<<<<< Updated upstream
                 "colorHex": "#00FF00",
+=======
+                "colorHex": "#66FF00",
+>>>>>>> Stashed changes
                 "colorName": "Green"
               }
             }
@@ -283,7 +351,11 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
+<<<<<<< Updated upstream
                 "text": "Transfer 26.67 µL from A1 to A2"
+=======
+                "text": "Pipette 20 µL from A1 to A2"
+>>>>>>> Stashed changes
               }
             },
             {
@@ -297,7 +369,7 @@
           ]
         },
         {
-          "text": "Transfer 26.67 µL from A2 to A3. Mix thoroughly.",
+          "text": "Transfer 20 µL from A2 to A3. Mix thoroughly.",
           "arActions": [
             {
               "actionType": "Highlight",
@@ -313,7 +385,11 @@
               "arObjectID": "wellplate_01",
               "properties": {
                 "subIDs": ["A3"],
+<<<<<<< Updated upstream
                 "colorHex": "#00FF00",
+=======
+                "colorHex": "#66FF00",
+>>>>>>> Stashed changes
                 "colorName": "Green"
               }
             }
@@ -323,7 +399,11 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
+<<<<<<< Updated upstream
                 "text": "Transfer 26.67 µL from A2 to A3"
+=======
+                "text": "Pipette 20 µL from A2 to A3"
+>>>>>>> Stashed changes
               }
             },
             {
@@ -337,7 +417,7 @@
           ]
         },
         {
-          "text": "Transfer 26.67 µL from A3 to A4. Mix thoroughly.",
+          "text": "Transfer 20 µL from A3 to A4. Mix thoroughly.",
           "arActions": [
             {
               "actionType": "Highlight",
@@ -353,7 +433,11 @@
               "arObjectID": "wellplate_01",
               "properties": {
                 "subIDs": ["A4"],
+<<<<<<< Updated upstream
                 "colorHex": "#00FF00",
+=======
+                "colorHex": "#66FF00",
+>>>>>>> Stashed changes
                 "colorName": "Green"
               }
             }
@@ -363,7 +447,11 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
+<<<<<<< Updated upstream
                 "text": "Transfer 26.67 µL from A3 to A4"
+=======
+                "text": "Pipette 20 µL from A3 to A4"
+>>>>>>> Stashed changes
               }
             },
             {
@@ -377,7 +465,7 @@
           ]
         },
         {
-          "text": "Transfer 26.67 µL from A4 to A5. Mix thoroughly.",
+          "text": "Transfer 20 µL from A4 to A5. Mix thoroughly.",
           "arActions": [
             {
               "actionType": "Highlight",
@@ -393,7 +481,11 @@
               "arObjectID": "wellplate_01",
               "properties": {
                 "subIDs": ["A5"],
+<<<<<<< Updated upstream
                 "colorHex": "#00FF00",
+=======
+                "colorHex": "#66FF00",
+>>>>>>> Stashed changes
                 "colorName": "Green"
               }
             }
@@ -403,7 +495,11 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
+<<<<<<< Updated upstream
                 "text": "Transfer 26.67 µL from A4 to A5"
+=======
+                "text": "Pipette 20 µL from A4 to A5"
+>>>>>>> Stashed changes
               }
             },
             {
@@ -417,7 +513,7 @@
           ]
         },
         {
-          "text": "Transfer 26.67 µL from A5 to A6. Mix thoroughly.",
+          "text": "Transfer 20 µL from A5 to A6. Mix thoroughly.",
           "arActions": [
             {
               "actionType": "Highlight",
@@ -433,7 +529,11 @@
               "arObjectID": "wellplate_01",
               "properties": {
                 "subIDs": ["A6"],
+<<<<<<< Updated upstream
                 "colorHex": "#00FF00",
+=======
+                "colorHex": "#66FF00",
+>>>>>>> Stashed changes
                 "colorName": "Green"
               }
             }
@@ -443,7 +543,11 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
+<<<<<<< Updated upstream
                 "text": "Transfer 26.67 µL from A5 to A6"
+=======
+                "text": "Pipette 20 µL from A5 to A6"
+>>>>>>> Stashed changes
               }
             },
             {
@@ -457,7 +561,7 @@
           ]
         },
         {
-          "text": "Transfer 26.67 µL from A6 to A7. Mix thoroughly.",
+          "text": "Transfer 20 µL from A6 to A7. Mix thoroughly.",
           "arActions": [
             {
               "actionType": "Highlight",
@@ -473,7 +577,11 @@
               "arObjectID": "wellplate_01",
               "properties": {
                 "subIDs": ["A7"],
+<<<<<<< Updated upstream
                 "colorHex": "#00FF00",
+=======
+                "colorHex": "#66FF00",
+>>>>>>> Stashed changes
                 "colorName": "Green"
               }
             }
@@ -483,7 +591,11 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
+<<<<<<< Updated upstream
                 "text": "Transfer 26.67 µL from A6 to A7"
+=======
+                "text": "Pipette 20 µL from A6 to A7"
+>>>>>>> Stashed changes
               }
             },
             {
@@ -497,7 +609,7 @@
           ]
         },
         {
-          "text": "Transfer 26.67 µL from A7 to A8. Mix thoroughly.",
+          "text": "Transfer 20 µL from A7 to A8. Mix thoroughly.",
           "arActions": [
             {
               "actionType": "Highlight",
@@ -513,7 +625,11 @@
               "arObjectID": "wellplate_01",
               "properties": {
                 "subIDs": ["A8"],
+<<<<<<< Updated upstream
                 "colorHex": "#00FF00",
+=======
+                "colorHex": "#66FF00",
+>>>>>>> Stashed changes
                 "colorName": "Green"
               }
             }
@@ -523,7 +639,11 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
+<<<<<<< Updated upstream
                 "text": "Transfer 26.67 µL from A7 to A8"
+=======
+                "text": "Pipette 20 µL from A7 to A8"
+>>>>>>> Stashed changes
               }
             },
             {
@@ -537,7 +657,7 @@
           ]
         },
         {
-          "text": "Transfer 26.67 µL from A8 to A9. Mix thoroughly.",
+          "text": "Transfer 20 µL from A8 to A9. Mix thoroughly.",
           "arActions": [
             {
               "actionType": "Highlight",
@@ -553,7 +673,11 @@
               "arObjectID": "wellplate_01",
               "properties": {
                 "subIDs": ["A9"],
+<<<<<<< Updated upstream
                 "colorHex": "#00FF00",
+=======
+                "colorHex": "#66FF00",
+>>>>>>> Stashed changes
                 "colorName": "Green"
               }
             }
@@ -563,7 +687,11 @@
               "contentType": "Text",
               "arObjectID": "wellplate_01",
               "properties": {
+<<<<<<< Updated upstream
                 "text": "Transfer 26.67 µL from A8 to A9"
+=======
+                "text": "Pipette 20 µL from A8 to A9"
+>>>>>>> Stashed changes
               }
             },
             {
@@ -577,6 +705,7 @@
           ]
         },
         {
+<<<<<<< Updated upstream
           "text": "Transfer 26.67 µL from A9 to A10. Mix thoroughly.",
           "arActions": [
             {
@@ -658,10 +787,134 @@
         },
         {
           "text": "Do not transfer from A12 to maintain it as the most diluted well.",
+=======
+          "text": "Do not transfer from A9 to maintain it as the most diluted well.",
+>>>>>>> Stashed changes
           "contentItems": []
         }
       ]
     },
+    {
+      "isCritical": true,
+      "contentItems": [],
+      "checklist" : [
+        {
+          "text": "Use multichannel pipette to transer 25 µL from row A wells A2-A9 to row B wells B2-B9",
+          "arActions": [
+            {
+              "actionType": "Highlight",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "subIDs": [
+                  "A2",
+                  "A3",
+                  "A4",
+                  "A5",
+                  "A6",
+                  "A7",
+                  "A8",
+                  "A9"
+                ],
+                "colorHex": "#FF0000",
+                "colorName": "Red"
+              }
+            },
+            {
+              "actionType": "Highlight",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "subIDs": [
+                  "B2",
+                  "B3",
+                  "B4",
+                  "B5",
+                  "B6",
+                  "B7",
+                  "B8",
+                  "B9"
+                ],
+                "colorHex": "#66FF00",
+                "colorName": "Green"
+              }
+            }
+          ],
+          "contentItems": [
+            {
+              "contentType": "Text",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "text": "Pipette from wells A2-A9 into wells B2-B9 (Volume: 25 µL)"
+              }
+            },
+            {
+              "contentType": "Image",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "url": "wellplate_transfer_1.png",
+                "text": "Plate map showing transfer"
+              }
+            }
+          ]
+        },
+        {
+          "text": "Use multichannel pipette to transer 200 µL of BCA working solution from reservoir to wells B1-B9",
+          "arActions": [
+            {
+              "actionType": "Highlight",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "subIDs": [
+                  "B1",
+                  "B2",
+                  "B3",
+                  "B4",
+                  "B5",
+                  "B6",
+                  "B7",
+                  "B8",
+                  "B9"
+                ],
+                "colorHex": "#ffb000",
+                "colorName": "Orange"
+              }
+            },
+            {
+              "actionType": "Highlight",
+              "arObjectID": "reservoir_02",
+              "properties": {
+                "subIDs": [],
+                "colorHex": "#FFD700",
+                "colorName": "Gold"
+              }
+            }
+          ],
+          "contentItems": [
+            {
+              "contentType": "Text",
+              "arObjectID": "reservoir_02",
+              "properties": {
+                "text": "Pipette from the reservoir (Volume: 200 µL)"
+              }
+            },
+            {
+              "contentType": "Text",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "text": "Pipette into wells B2-B9 (Volume: 200 µL)"
+              }
+            },
+            {
+              "contentType": "Image",
+              "arObjectID": "wellplate_01",
+              "properties": {
+                "url": "wellplate_transfer_2.png",
+                "text": "Plate map showing transfer"
+              }
+            }
+          ]
+        }
+      ]
+    }
     {
       "isCritical": false,
       "contentItems": [
