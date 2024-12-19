@@ -199,7 +199,6 @@ public class SourceElementViewController : ModelElementViewController
         {
             if(!String.IsNullOrEmpty(id))
             {
-                Debug.Log("toggleTransform: " + id + " " + value);  
                 GameObject childObject = parentTransform.Find(id).gameObject;
                 childObject.SetActive(value);
                 if(color != default)

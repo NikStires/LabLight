@@ -102,7 +102,6 @@ public class WellPlateViewController : ModelElementViewController
         bool firstHighlight = true;
         if (Markers2D != null && arObject.specificObjectName.Contains("extraction"))
         {
-            Debug.Log("initializing 2d markers for " + arObject.specificObjectName);
             toggleTransform(Plate2D, true);
             
             // Deactivate all markers

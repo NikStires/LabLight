@@ -59,11 +59,9 @@ public class ArObjectContentPanelViewController : MonoBehaviour
 
         // Get current step content items
         var stepContentItems = ProtocolState.Instance.CurrentStepDefinition?.contentItems ?? new List<ContentItem>();
-        Debug.Log($"[ArObjectContentPanelViewController] Step content items count: {stepContentItems.Count}");
-        
+
         // Get current checklist item content items
         var checklistContentItems = ProtocolState.Instance.CurrentCheckItemDefinition?.contentItems ?? new List<ContentItem>();
-        Debug.Log($"[ArObjectContentPanelViewController] Checklist content items count: {checklistContentItems.Count}");
 
         // Combine and filter content items
         var relevantContentItems = stepContentItems
@@ -72,12 +70,6 @@ public class ArObjectContentPanelViewController : MonoBehaviour
                 !string.IsNullOrEmpty(item.arObjectID) && 
                 item.arObjectID.Equals(associatedArObject.arObjectID))
             .ToList();
-
-        Debug.Log($"[ArObjectContentPanelViewController] Relevant content items for AR object '{associatedArObject.arObjectID}': {relevantContentItems.Count}");
-        foreach (var item in relevantContentItems)
-        {
-            Debug.Log($"[ArObjectContentPanelViewController] Content item - Type: {item.contentType}, AR Object ID: {item.arObjectID}");
-        }
 
         // If no relevant content items, hide the panel
         if (!relevantContentItems.Any())
@@ -119,7 +111,6 @@ public class ArObjectContentPanelViewController : MonoBehaviour
 
     private void CreateContentItem(ContentItem contentItem, LayoutGroup container)
     {
-        Debug.Log($"[ArObjectContentPanelViewController] Creating content item of type: {contentItem.contentType}");
         MonoBehaviour controller = null;
 
         switch (contentItem.contentType.ToLower())
@@ -177,7 +168,6 @@ public class ArObjectContentPanelViewController : MonoBehaviour
 
         if (controller != null)
         {
-            Debug.Log($"[ArObjectContentPanelViewController] Successfully created controller for content type: {contentItem.contentType}");
             contentItemInstances.Add(controller);
         }
     }

@@ -203,11 +203,7 @@ public class UnityUIDriver : MonoBehaviour, IUIDriver
     {
         checklistPanel.gameObject.SetActive(false);
         Debug.Log("######LABLIGHT SWIFTUIDRIVER CloseProtocolCallback");
-        // Dispose of voice commands when protocol is closed
-        DisposeVoice?.Invoke();
-        DisposeVoice = null;
-        
-        // Add this line to clear all voice commands
+
         SpeechRecognizer.Instance.ClearAllKeywords();
 
         ProtocolState.Instance.ActiveProtocol.Value = null;

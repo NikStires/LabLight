@@ -55,11 +55,9 @@ public class ArObjectManager : MonoBehaviour
 
     private void HandleProtocolChange(ProtocolDefinition protocol)
     {
-        Debug.Log($"[ArObjectManager] Protocol change detected: {protocol?.title ?? "null"}");
         ClearScene(true);
         if (protocol?.globalArObjects != null)
         {
-            Debug.Log($"[ArObjectManager] Initializing {protocol.globalArObjects.Count} global AR objects");
             pendingArViewInitializations = protocol.globalArObjects.Count;
             InitializeArObjects(protocol.globalArObjects);
         }
@@ -103,7 +101,6 @@ public class ArObjectManager : MonoBehaviour
     private void CreateArView(ArObject arObject)
     {
         var prefabPath = $"Models/{arObject.rootPrefabName}.prefab";
-        Debug.Log($"[ArObjectManager] Creating AR view for {arObject.rootPrefabName} at path: {prefabPath}");
         
         ServiceRegistry.GetService<IMediaProvider>()?.GetPrefab(prefabPath)
             .Subscribe(
@@ -115,8 +112,6 @@ public class ArObjectManager : MonoBehaviour
 
     private void InstantiateArView(GameObject prefab, ArObject arObject)
     {
-        Debug.Log($"[ArObjectManager] Instantiating AR view for {arObject.rootPrefabName}");
-        
         if (!prefab.TryGetComponent<ArObjectViewController>(out var arViewPrefab))
         {
             Debug.LogError($"[ArObjectManager] Prefab {prefab.name} missing ArObjectViewController component");
@@ -165,16 +160,13 @@ public class ArObjectManager : MonoBehaviour
     }
 
     private void ProcessArActions(List<ArAction> actions)
-    {
-        Debug.Log($"[ArObjectManager] Processing {actions.Count} AR actions");
-        
+    {    
         var lockActions = new List<ArAction>(); //actions.Where(a => a.actionType.ToLower() == "lock").ToList();
         var highlightActions = new Dictionary<string, List<ArAction>>();
         var placementActions = new List<ArAction>();
 
         foreach (var action in actions)
         {
-            Debug.Log($"[ArObjectManager] Processing action: {action.actionType} for object {action.arObjectID}");
             switch (action.actionType.ToLower())
             {
                 case "lock":
@@ -220,7 +212,6 @@ public class ArObjectManager : MonoBehaviour
 
     private void ProcessLockActions(List<ArAction> lockActions)
     {
-        Debug.Log($"[ArObjectManager] Processing {lockActions.Count} lock actions");
         var objectsToLock = new List<GameObject>();
 
         foreach (var action in lockActions)
@@ -229,7 +220,6 @@ public class ArObjectManager : MonoBehaviour
 
             foreach (string id in arIDList)
             {
-                Debug.Log($"[ArObjectManager] Locking object with ID: {id}");
                 if (modelPrefabCache.TryGetValue(id, out var prefab))
                 {
                     objectsToLock.Add(prefab);
@@ -240,7 +230,6 @@ public class ArObjectManager : MonoBehaviour
 
         if (objectsToLock.Count > 0)
         {
-            Debug.Log($"[ArObjectManager] Enqueuing {objectsToLock.Count} objects to locking manager");
             lockingManager.EnqueueObjects(objectsToLock);
         }
     }
@@ -280,7 +269,6 @@ public class ArObjectManager : MonoBehaviour
 
     private void ProcessHighlightActions(Dictionary<string, List<ArAction>> highlightActions)
     {
-        Debug.Log($"[ArObjectManager] Processing highlights for {highlightActions.Count} objects");
         foreach (var arView in arViews)
         {
             if (arView.Value is ModelElementViewController modelView)
@@ -288,7 +276,6 @@ public class ArObjectManager : MonoBehaviour
                 var arObjectId = arView.Key.arObjectID;
                 if (highlightActions.TryGetValue(arObjectId, out var actions))
                 {
-                    Debug.Log($"[ArObjectManager] Highlighting {actions.Count} actions for object {arObjectId}");
                     modelView.HighlightGroup(actions);
                 }
                 else
@@ -301,7 +288,6 @@ public class ArObjectManager : MonoBehaviour
 
     private void ProcessPlacementActions(List<ArAction> placementActions)
     {
-        Debug.Log($"[ArObjectManager] Processing {placementActions.Count} placement actions");
         foreach (var action in placementActions)
         {
             if (modelPrefabCache.TryGetValue(action.arObjectID, out var prefab))
@@ -332,8 +318,6 @@ public class ArObjectManager : MonoBehaviour
 
     private void ClearScene(bool clearLockedObjects = false)
     {
-        Debug.Log($"[ArObjectManager] Clearing scene (clearLockedObjects: {clearLockedObjects})");
-        Debug.Log($"[ArObjectManager] Destroying {arViews.Count} AR views");
         foreach (var view in arViews.Values)
         {
             if (view != null)

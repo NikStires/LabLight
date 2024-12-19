@@ -110,8 +110,6 @@ public class AnchoredObjectController : MonoBehaviour
 
     public void RemoveAnchoredObject()
     {
-        Debug.Log("RemoveAnchoredObject");
-
         Destroy(this.gameObject);
 
         if (anchorDataProvider != null)
@@ -124,8 +122,6 @@ public class AnchoredObjectController : MonoBehaviour
     // Spatial note specific
     public void Record()
     {
-        Debug.Log("Record text");
-
         SpeechRecognizer.Instance.RecognizedTextHandler = HandleRecognizedText;
     }
 

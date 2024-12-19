@@ -289,7 +289,10 @@ class ProtocolViewModel: ObservableObject {
         }
         
         DispatchQueue.main.async {
-            self.selectedStepIndex = stepStateData.currentStepIndex
+            if self.selectedStepIndex != stepStateData.currentStepIndex {
+                self.selectedStepIndex = stepStateData.currentStepIndex
+            }
+            
             self.checklistItems = self.currentStep.checklist
             if let checklistState = stepStateData.checklistState {
                 self.currentStates = checklistState
