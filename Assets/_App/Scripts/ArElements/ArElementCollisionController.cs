@@ -23,23 +23,12 @@ public class ArElementCollisionController : MonoBehaviour
     void Start()
     {
         // Get tracked object and name if available
-        var elementViewController = GetComponent<ArObjectViewController>();
-        if (elementViewController != null)
+        var objectViewController = GetComponent<ArObjectViewController>();
+        if (objectViewController != null)
         {
-            ThisTrackedObject = elementViewController.TrackedObjects[0];
-            ThisObjectName = ThisTrackedObject.label;
-        }
-        else
-        {
-            // Handle model view case
-            var modelViewController = GetComponent<ModelElementViewController>();
-            if (modelViewController != null)
-            {
-                ThisObjectName = modelViewController.ObjectName;
-            }
+            ThisObjectName = objectViewController.ObjectName;
         }
 
-        // Set up collider sizes if needed
         ConfigureCollider();
     }
 
@@ -48,7 +37,6 @@ public class ArElementCollisionController : MonoBehaviour
         var boxCollider = GetComponent<BoxCollider>();
         if (boxCollider == null) return;
 
-        // Configure standard collider sizes based on object name
         switch (ThisObjectName)
         {
             case "96 Well Plate":
@@ -72,8 +60,7 @@ public class ArElementCollisionController : MonoBehaviour
         var otherViewController = other.gameObject.GetComponent<ArObjectViewController>();
         if (otherViewController != null)
         {
-            otherObjectName = otherViewController.TrackedObjects[0].label;
-            
+            otherObjectName = otherViewController.ObjectName;
             if (ThisObjectName == otherObjectName) return;
 
             // Handle specific interactions
@@ -81,7 +68,7 @@ public class ArElementCollisionController : MonoBehaviour
         }
 
         // Handle collision with model elements
-        var otherModelView = other.gameObject.GetComponent<ModelElementViewController>();
+        var otherModelView = other.gameObject.GetComponent<ArObjectViewController>();
         if (otherModelView != null)
         {
             otherObjectName = otherModelView.ObjectName;
@@ -94,8 +81,7 @@ public class ArElementCollisionController : MonoBehaviour
         var otherViewController = other.gameObject.GetComponent<ArObjectViewController>();
         if (otherViewController != null)
         {
-            otherObjectName = otherViewController.TrackedObjects[0].label;
-            
+            otherObjectName = otherViewController.ObjectName;
             if (ThisObjectName == otherObjectName) return;
 
             // Handle specific interactions
@@ -103,7 +89,7 @@ public class ArElementCollisionController : MonoBehaviour
         }
 
         // Handle exit collision with model elements
-        var otherModelView = other.gameObject.GetComponent<ModelElementViewController>();
+        var otherModelView = other.gameObject.GetComponent<ArObjectViewController>();
         if (otherModelView != null)
         {
             otherObjectName = otherModelView.ObjectName;

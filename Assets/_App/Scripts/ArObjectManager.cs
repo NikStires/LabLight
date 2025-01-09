@@ -202,9 +202,9 @@ public class ArObjectManager : MonoBehaviour
         {
             foreach(var arView in arViews)
             {
-                if(arView.Value is ModelElementViewController modelView)
+                if(arView.Value is ArObjectViewController vc)
                 {
-                    modelView.disablePreviousHighlight();
+                    vc.DisablePreviousHighlight();
                 }
             }
         }
@@ -271,7 +271,7 @@ public class ArObjectManager : MonoBehaviour
     {
         foreach (var arView in arViews)
         {
-            if (arView.Value is ModelElementViewController modelView)
+            if (arView.Value is ArObjectViewController modelView)
             {
                 var arObjectId = arView.Key.arObjectID;
                 if (highlightActions.TryGetValue(arObjectId, out var actions))
@@ -280,7 +280,7 @@ public class ArObjectManager : MonoBehaviour
                 }
                 else
                 {
-                    modelView.disablePreviousHighlight();
+                    modelView.DisablePreviousHighlight();
                 }
             }
         }
@@ -363,9 +363,9 @@ public class ArObjectManager : MonoBehaviour
         {
             if(arView.Key.arObjectID != arObject.arObjectID)
             {
-                if(arView.Value is ModelElementViewController modelView)
+                if(arView.Value is ArObjectViewController modelView)
                 {
-                    modelView.disablePreviousHighlight();
+                    modelView.DisablePreviousHighlight();
                 }
             }
         }
