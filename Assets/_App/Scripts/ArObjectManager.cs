@@ -126,7 +126,7 @@ public class ArObjectManager : MonoBehaviour
         }
 
         var instance = Instantiate(arViewPrefab, workspaceTransform);
-        instance.Initialize(arObject, new List<TrackedObject> { new TrackedObject() });
+        instance.Initialize(arObject);
         instance.gameObject.SetActive(false);
 
         arViews[arObject] = instance;

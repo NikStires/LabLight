@@ -3398,7 +3398,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1d926f5e35a248ae8199f7bc4b02e68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  model: {fileID: 5772745084466100175}
+  model: {fileID: 0}
 --- !u!114 &2836263648965314751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5956,7 +5956,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1d926f5e35a248ae8199f7bc4b02e68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  model: {fileID: 5772745084466100175}
+  model: {fileID: 0}
 --- !u!65 &9146492255831611168
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8269,9 +8269,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8428204375765503366}
-  - component: {fileID: 5772745084466100175}
   - component: {fileID: 7539425435044081780}
   - component: {fileID: 7856783330892086447}
+  - component: {fileID: 5828449665590352504}
   m_Layer: 0
   m_Name: reservoir
   m_TagString: Untagged
@@ -8304,42 +8304,6 @@ Transform:
   - {fileID: 2715089165388481176}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5772745084466100175
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8428204375765503367}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fc71cb755a6be24ca0350fbc935c7b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  selectedForLocking: 0
-  positionValid: 1
-  positionLocked: 1
-  hasBeenLocked: 0
-  ObjectName: Reservoir
-  HighlightGroups:
-  - Name: 0
-    SubParts:
-    - {fileID: 8428204376124714075}
-  - Name: Foil
-    SubParts:
-    - {fileID: 3397883040551768848}
-  - Name: alignment
-    SubParts:
-    - {fileID: 8428204376124714075}
-  sphere: {fileID: 7302190271474844005}
-  ModelName: {fileID: 6466629191655340772}
-  settingsManagerSO: {fileID: 11400000, guid: a020f9263ca8e48c7bf4ff404ec90866, type: 2}
-  debugeEnableAllSettings: 0
-  modelActive: 0
-  nameTags: {fileID: 4841286306786178919}
-  Sources: {fileID: 6390326650368408008}
-  Outline: {fileID: 152846763321650923}
-  currActions: []
 --- !u!136 &7539425435044081780
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -8460,6 +8424,29 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &5828449665590352504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8428204375765503367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d00998c0b7a54b5c84798800f76cbb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settingsManagerSO: {fileID: 11400000, guid: a020f9263ca8e48c7bf4ff404ec90866, type: 2}
+  ObjectName: reservoir
+  sphere: {fileID: 7302190271474844005}
+  HighlightGroups: []
+  positionLocked: 0
+  hasBeenLocked: 0
+  ModelName: {fileID: 2715089165388481176}
+  Model: {fileID: 152846763321650923}
+  highlightPoints: {fileID: 6390326650368408008}
+  Outline: {fileID: 152846763321650923}
+  nameTags: {fileID: 4841286306786178919}
 --- !u!1 &8428204376124714075
 GameObject:
   m_ObjectHideFlags: 0
