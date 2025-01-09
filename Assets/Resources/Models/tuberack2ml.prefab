@@ -2884,7 +2884,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1d926f5e35a248ae8199f7bc4b02e68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  model: {fileID: 3207415978029779544}
+  model: {fileID: 8814298172812066100}
 --- !u!65 &7303361474316520375
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5115,10 +5115,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2781669432506780046}
-  - component: {fileID: 3207415978029779544}
   - component: {fileID: 1598815452395358033}
   - component: {fileID: 8055573438953005038}
   - component: {fileID: 2430807138253921536}
+  - component: {fileID: 8814298172812066100}
   m_Layer: 0
   m_Name: tuberack2ml
   m_TagString: Untagged
@@ -5150,131 +5150,6 @@ Transform:
   - {fileID: 8209134142441012706}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3207415978029779544
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2966509604611538033}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fc71cb755a6be24ca0350fbc935c7b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  selectedForLocking: 0
-  positionValid: 1
-  positionLocked: 0
-  hasBeenLocked: 0
-  ObjectName: TestTubes
-  HighlightGroups:
-  - Name: 0
-    SubParts:
-    - {fileID: 7631316665712408238}
-  - Name: 1
-    SubParts:
-    - {fileID: 9070354630157571107}
-  - Name: 2
-    SubParts:
-    - {fileID: 5946876112675275491}
-  - Name: 3
-    SubParts:
-    - {fileID: 295341206765302260}
-  - Name: 4
-    SubParts:
-    - {fileID: 1402402064942703945}
-  - Name: 5
-    SubParts:
-    - {fileID: 3284307376828099218}
-  - Name: 6
-    SubParts:
-    - {fileID: 1222195619771629176}
-  - Name: 7
-    SubParts:
-    - {fileID: 4784644872129096417}
-  - Name: 8
-    SubParts:
-    - {fileID: 248987839279935652}
-  - Name: 9
-    SubParts:
-    - {fileID: 2741068484653932254}
-  - Name: 10
-    SubParts:
-    - {fileID: 4685996382572588401}
-  - Name: 11
-    SubParts:
-    - {fileID: 4650679546801970386}
-  - Name: 12
-    SubParts:
-    - {fileID: 1630809561321286380}
-  - Name: 13
-    SubParts:
-    - {fileID: 5833349515080701199}
-  - Name: 14
-    SubParts:
-    - {fileID: 6831261532658190554}
-  - Name: 15
-    SubParts:
-    - {fileID: 4453739184914335179}
-  - Name: 16
-    SubParts:
-    - {fileID: 3970171505492189430}
-  - Name: 17
-    SubParts:
-    - {fileID: 6351468127633653816}
-  - Name: 18
-    SubParts:
-    - {fileID: 2420132608640993649}
-  - Name: 19
-    SubParts:
-    - {fileID: 5413908050763212058}
-  - Name: 20
-    SubParts:
-    - {fileID: 8053215287426464390}
-  - Name: 21
-    SubParts:
-    - {fileID: 2251405023557648886}
-  - Name: 22
-    SubParts:
-    - {fileID: 2733189535776766790}
-  - Name: 23
-    SubParts:
-    - {fileID: 2032047400912281504}
-  - Name: alignment
-    SubParts:
-    - {fileID: 7631316665712408238}
-    - {fileID: 9070354630157571107}
-    - {fileID: 5946876112675275491}
-    - {fileID: 295341206765302260}
-    - {fileID: 1402402064942703945}
-    - {fileID: 3284307376828099218}
-    - {fileID: 1222195619771629176}
-    - {fileID: 248987839279935652}
-    - {fileID: 2741068484653932254}
-    - {fileID: 4685996382572588401}
-    - {fileID: 4650679546801970386}
-    - {fileID: 1630809561321286380}
-    - {fileID: 5833349515080701199}
-    - {fileID: 6831261532658190554}
-    - {fileID: 4453739184914335179}
-    - {fileID: 4784644872129096417}
-    - {fileID: 3970171505492189430}
-    - {fileID: 6351468127633653816}
-    - {fileID: 2420132608640993649}
-    - {fileID: 5413908050763212058}
-    - {fileID: 8053215287426464390}
-    - {fileID: 2251405023557648886}
-    - {fileID: 2733189535776766790}
-    - {fileID: 2032047400912281504}
-  sphere: {fileID: 3893869629590341445}
-  ModelName: {fileID: 4764666697387905150}
-  settingsManagerSO: {fileID: 11400000, guid: a020f9263ca8e48c7bf4ff404ec90866, type: 2}
-  debugeEnableAllSettings: 1
-  modelActive: 0
-  nameTags: {fileID: 6168936106343387364}
-  Sources: {fileID: 5250952026491475252}
-  Outline: {fileID: 6930296675939154564}
-  currActions: []
 --- !u!54 &1598815452395358033
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5422,6 +5297,29 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8814298172812066100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2966509604611538033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d00998c0b7a54b5c84798800f76cbb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settingsManagerSO: {fileID: 11400000, guid: a020f9263ca8e48c7bf4ff404ec90866, type: 2}
+  ObjectName: tuberack2ml
+  sphere: {fileID: 3893869629590341445}
+  HighlightGroups: []
+  positionLocked: 0
+  hasBeenLocked: 0
+  ModelName: {fileID: 8209134142441012706}
+  Model: {fileID: 2781669432506780046}
+  highlightPoints: {fileID: 5250952026491475252}
+  Outline: {fileID: 6930296675939154564}
+  nameTags: {fileID: 6168936106343387364}
 --- !u!1 &2994598188582056749
 GameObject:
   m_ObjectHideFlags: 0
