@@ -1298,10 +1298,10 @@ MonoBehaviour:
   OpenWindowOnLoad: 1
   m_TargetDisplay: 0
   m_ShowVolumeCameraEventsFoldout: 0
-  OnWindowEvent:
+  WindowStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  OnViewpointChanged:
+  ViewpointChanged:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &491723883

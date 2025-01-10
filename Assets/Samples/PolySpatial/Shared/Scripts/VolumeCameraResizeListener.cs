@@ -46,13 +46,13 @@ namespace PolySpatial.Samples
             // The first time a window is opened for a volume camera, a WindowOpened event will be triggered.
             // If the volume window changes size after that, a WindowResized event will be triggered.
             // We want to handle both in the same way, so we can just add the same listener to both events.
-            volumeCamera.OnWindowEvent.AddListener(VolumeWindowResized);
+            volumeCamera.WindowStateChanged.AddListener(VolumeWindowResized);
         }
 
         void OnDisable()
         {
             var volumeCamera = GetComponent<VolumeCamera>();
-            volumeCamera.OnWindowEvent.RemoveListener(VolumeWindowResized);
+            volumeCamera.WindowStateChanged.RemoveListener(VolumeWindowResized);
         }
 
         // We are being informed of the actual dimensions of the opened window (windowDimensions).

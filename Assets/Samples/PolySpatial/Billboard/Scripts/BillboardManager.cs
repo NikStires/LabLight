@@ -27,7 +27,7 @@ namespace PolySpatial.Samples
 
         void Start()
         {
-            m_BlendFactorText.text = m_Billboard.blendFactor.ToString("F2");
+            m_BlendFactorText.text = m_Billboard.BlendFactor.ToString("F2");
         }
 
         public void EnabledToggle()

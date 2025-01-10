@@ -12,12 +12,12 @@ public class UserDirectionIndicator : MonoBehaviour
 
     void OnEnable()
     {
-        //m_VolumeCamera.OnViewpointChanged.AddListener(VolumeViewpointChanged);
+        //m_VolumeCamera.ViewpointChanged.AddListener(VolumeViewpointChanged);
     }
 
     void OnDisable()
     {
-        //m_VolumeCamera.OnViewpointChanged.RemoveListener(VolumeViewpointChanged);
+        //m_VolumeCamera.ViewpointChanged.RemoveListener(VolumeViewpointChanged);
     }
 
     /*

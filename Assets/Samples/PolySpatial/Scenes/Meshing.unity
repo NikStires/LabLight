@@ -1641,7 +1641,7 @@ MonoBehaviour:
     m_Bits: 4294967295
   OpenWindowOnLoad: 1
   m_ShowVolumeCameraEventsFoldout: 0
-  OnWindowEvent:
+  WindowStateChanged:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1660057539 &9223372036854775807

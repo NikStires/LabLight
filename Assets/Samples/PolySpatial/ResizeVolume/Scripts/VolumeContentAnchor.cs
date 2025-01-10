@@ -40,10 +40,10 @@ namespace PolySpatial.Samples
 
         void OnEnable()
         {
-            m_VolumeCamera.OnWindowEvent.AddListener(OnWindowEvent);
+            m_VolumeCamera.WindowStateChanged.AddListener(OnWindowStateChanged);
         }
 
-        void OnWindowEvent(VolumeCamera camera, VolumeCamera.WindowState state)
+        void OnWindowStateChanged(VolumeCamera camera, VolumeCamera.WindowState state)
         {
             if (state.WindowEvent == VolumeCamera.WindowEvent.Resized && !m_VolumeCamera.ScaleWithWindow)
             {

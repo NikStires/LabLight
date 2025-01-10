@@ -1811,10 +1811,10 @@ MonoBehaviour:
   OpenWindowOnLoad: 1
   m_TargetDisplay: 0
   m_ShowVolumeCameraEventsFoldout: 0
-  OnWindowEvent:
+  WindowStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  OnViewpointChanged:
+  ViewpointChanged:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &2026256750
@@ -2100,12 +2100,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_DepthPass: 0
   m_Renderers:
-  - order: 0
-    renderer: {fileID: 5453723005451802310}
-    applyToDescendants: 0
-  - order: 1
-    renderer: {fileID: 548173382}
-    applyToDescendants: 1
+  - Order: 0
+    Renderer: {fileID: 5453723005451802310}
+    ApplyToDescendants: 0
+  - Order: 1
+    Renderer: {fileID: 548173382}
+    ApplyToDescendants: 1
 --- !u!33 &1002456849192709523
 MeshFilter:
   m_ObjectHideFlags: 0
