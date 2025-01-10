@@ -10,6 +10,7 @@ using UnityEngine.XR.Hands;
 public class ProtocolItemLockingManager : MonoBehaviour
 {
     public HeadPlacementEventChannel headPlacementEventChannel;
+    public ImageTrackingEventChannel imageTrackingEventChannel;
 
     private Queue<GameObject> objectsQueue = new Queue<GameObject>();
 
@@ -85,11 +86,10 @@ public class ProtocolItemLockingManager : MonoBehaviour
         {
             switch(arObjectViewController.LockingType)
             {
-                case LockingType.ImageTracking:
-                    //send to image tracking manager
+                case LockingType.Image:
+                    imageTrackingEventChannel.SetImageTrackedObject.Invoke(objToLock);
                     break;
-                case LockingType.HandTracking:
-                    //send to head tracking manager
+                case LockingType.Plane:
                     headPlacementEventChannel.SetHeadtrackedObject.Invoke(objToLock);
                     break;
             }

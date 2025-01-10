@@ -7,6 +7,18 @@ using UniRx;
 /// </summary>
 public class ImageTrackingObjectManager : MonoBehaviour
 {
+    public ImageTrackingEventChannel imageTrackingEventChannel;
+
+    private void OnEnable()
+    {
+        imageTrackingEventChannel.SetImageTrackedObject.AddListener(HandleImageTrackedObject);
+    }
+
+    private void OnDisable()
+    {
+        imageTrackingEventChannel.SetImageTrackedObject.RemoveListener(HandleImageTrackedObject);
+    }
+
     public void HandleImageTrackedObject(GameObject obj)
     {
         var arObjectVC = obj.GetComponent<ArObjectViewController>();
@@ -16,17 +28,12 @@ public class ImageTrackingObjectManager : MonoBehaviour
             return;
         }
 
-        // Simulate or hook up actual image-tracking logic here:
-        // For example, listen to some "OnImageTracked" event, then lock:
         TrackImage(obj)
             .Subscribe(_ =>
             {
-                // Once image is confirmed tracked:
                 arObjectVC.LockPosition();
-                // Update the global state or notify others as needed:
                 ProtocolState.Instance.LockingTriggered.Value = true;
-                ServiceRegistry.GetService<HeadPlacementEventChannel>()
-                    ?.CurrentPrefabLocked?.Invoke();
+                imageTrackingEventChannel.OnCurrentImageTracked();
                 Debug.Log($"{obj.name} successfully image-tracked and locked.");
             });
     }
