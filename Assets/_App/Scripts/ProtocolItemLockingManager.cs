@@ -47,8 +47,7 @@ public class ProtocolItemLockingManager : MonoBehaviour
         
         if (objectsToLock.Count > 0)
         {
-            // Start with first object
-            headPlacementEventChannel.SetHeadtrackedObject.Invoke(objectsToLock[0]);
+            handleLockingType(objectsToLock[0]);
             
             // Queue remaining objects
             for (int i = 1; i < objectsToLock.Count; i++)
@@ -69,13 +68,31 @@ public class ProtocolItemLockingManager : MonoBehaviour
         if (objectsQueue.Count > 0)
         {
             Debug.Log("Dequeuing object: " + objectsQueue.Peek().name);
-            headPlacementEventChannel.SetHeadtrackedObject.Invoke(objectsQueue.Dequeue());
+            handleLockingType(objectsQueue.Dequeue());
         }
         else
         {
             headPlacementEventChannel.RequestDisablePlaneInteractionManager.Invoke();
             Debug.Log("No more objects to lock, disabling plane interaction manager");
             ProtocolState.Instance.LockingTriggered.Value = false;
+        }
+    }
+
+    private void handleLockingType(GameObject objToLock)
+    {
+        ArObjectViewController arObjectViewController = objToLock.GetComponent<ArObjectViewController>();
+        if(arObjectViewController != null)
+        {
+            switch(arObjectViewController.LockingType)
+            {
+                case LockingType.ImageTracking:
+                    //send to image tracking manager
+                    break;
+                case LockingType.HandTracking:
+                    //send to head tracking manager
+                    headPlacementEventChannel.SetHeadtrackedObject.Invoke(objToLock);
+                    break;
+            }
         }
     }
 }

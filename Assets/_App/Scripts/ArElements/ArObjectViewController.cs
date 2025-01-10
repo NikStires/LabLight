@@ -6,6 +6,12 @@ using UnityEngine;
 using UniRx;
 using TMPro;
 
+public enum LockingType
+{
+    Image,
+    Plane
+}
+
 [Serializable]
 public class HighlightGroup
 {
@@ -17,6 +23,9 @@ public class HighlightGroup
 [RequireComponent(typeof(AudioSource))]
 public class ArObjectViewController : MonoBehaviour
 {
+    
+    [SerializeField]
+    public LockingType LockingType;
     public SettingsManagerScriptableObject settingsManagerSO;
 
     public string ObjectName;
