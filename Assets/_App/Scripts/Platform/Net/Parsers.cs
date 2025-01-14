@@ -123,7 +123,7 @@ public class Parsers
                 foreach (var arAction in checkItem.arActions)
                 {
                     // Handle Lock action type with empty arIDList
-                    if(arAction.actionType == "Lock" && arAction.properties.ContainsKey("arIDList"))
+                    if(arAction.actionType == "lock" && arAction.properties.ContainsKey("arIDList"))
                     {
                         var tempList = arAction.properties["arIDList"] as List<object>;
                         if(tempList != null)

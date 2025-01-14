@@ -8436,6 +8436,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d00998c0b7a54b5c84798800f76cbb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LockingType: 1
   settingsManagerSO: {fileID: 11400000, guid: a020f9263ca8e48c7bf4ff404ec90866, type: 2}
   ObjectName: reservoir
   sphere: {fileID: 7302190271474844005}

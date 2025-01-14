@@ -172,8 +172,14 @@ public class ArObjectViewController : MonoBehaviour
             foreach (string id in subIDs)
             {
                 ToggleTransform(highlightPoints, true, id, parsedColor);
-                ToggleTransform(Outline, true, id, parsedColor);
-                ToggleTransform(nameTags, true, id, parsedColor);
+                if(Outline != null)
+                {
+                    ToggleTransform(Outline, true, id, parsedColor);
+                }
+                if(nameTags != null)
+                {
+                    ToggleTransform(nameTags, true, id, parsedColor);
+                }
             }
         }
     }
@@ -187,8 +193,14 @@ public class ArObjectViewController : MonoBehaviour
             {
                 // turn off sub object
                 ToggleTransform(highlightPoints, false, id);
-                ToggleTransform(Outline, false, id);
-                ToggleTransform(nameTags, false, id);
+                if(Outline != null)
+                {
+                    ToggleTransform(Outline, false, id);
+                }
+                if(nameTags != null)
+                {
+                    ToggleTransform(nameTags, false, id);
+                }
             }
         }
     }
@@ -268,7 +280,7 @@ public class ArObjectViewController : MonoBehaviour
         // logic for stepping, e.g. re-enable components if needed
         // or hide alignment covers, etc.
         // example usage:
-        ToggleTransform(sphere?.transform, false);
+        //ToggleTransform(sphere?.transform, false);
     }
 
     // simpler approach to toggling off relevant components
@@ -284,8 +296,14 @@ public class ArObjectViewController : MonoBehaviour
                     foreach (string id in subIDs)
                     {
                         ToggleTransform(highlightPoints, value, id);
-                        ToggleTransform(Outline, value, id);
-                        ToggleTransform(nameTags, value, id);
+                        if(Outline != null)
+                        {
+                            ToggleTransform(Outline, value, id);
+                        }
+                        if(nameTags != null)
+                        {
+                            ToggleTransform(nameTags, value, id);
+                        }
                     }
                 }
             }
