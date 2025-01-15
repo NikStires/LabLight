@@ -8,10 +8,7 @@ public class ImageTrackingEventChannel : ScriptableObject
     public UnityEvent<GameObject> SetImageTrackedObject = new UnityEvent<GameObject>();
 
     [SerializeField]
-    public UnityEvent CurrentImageTracked = new UnityEvent();
-
-    [SerializeField]
-    public UnityEvent RequestDisableImageTrackingManager = new UnityEvent();
+    public UnityEvent CurrentPrefabLocked = new UnityEvent();
 
     private void Awake()
     {
@@ -19,13 +16,9 @@ public class ImageTrackingEventChannel : ScriptableObject
         {
             SetImageTrackedObject = new UnityEvent<GameObject>();
         }
-        if(CurrentImageTracked == null)
+        if(CurrentPrefabLocked == null)
         {
-            CurrentImageTracked = new UnityEvent();
-        }
-        if(RequestDisableImageTrackingManager == null)
-        {
-            RequestDisableImageTrackingManager = new UnityEvent();
+            CurrentPrefabLocked = new UnityEvent();
         }
     }
 
@@ -34,13 +27,8 @@ public class ImageTrackingEventChannel : ScriptableObject
         SetImageTrackedObject.Invoke(obj);
     }
 
-    public void OnCurrentImageTracked()
+    public void OnCurrentPrefabLocked()
     {
-        CurrentImageTracked.Invoke();
-    }
-
-    public void OnRequestDisableImageTrackingManager()
-    {
-        RequestDisableImageTrackingManager.Invoke();
+        CurrentPrefabLocked.Invoke();
     }
 } 

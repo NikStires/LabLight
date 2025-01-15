@@ -32,11 +32,13 @@ public class ProtocolItemLockingManager : MonoBehaviour
     private void AddSubscriptions()
     {
         headPlacementEventChannel.CurrentPrefabLocked.AddListener(ObjectLocked);
+        imageTrackingEventChannel.CurrentPrefabLocked.AddListener(ObjectLocked);
     }
 
     private void RemoveSubscriptions()
     {
         headPlacementEventChannel.CurrentPrefabLocked.RemoveListener(ObjectLocked);
+        imageTrackingEventChannel.CurrentPrefabLocked.RemoveListener(ObjectLocked);
     } 
 
     public void EnqueueObjects(List<GameObject> objectsToLock)
