@@ -34,7 +34,7 @@
           "text": "Lock all AR objects in place: 96-well plate, reservoirs, tube rack",
           "arActions": [
             {
-              "actionType": "Lock",
+              "actionType": "lock",
               "arObjectID": "",
               "properties": {
                 "arIDList": []
