@@ -1,0 +1,426 @@
+{
+    "version": "1.0",
+    "title": "Determining PON1 Activity Using Phenyl Acetate Substrate",
+    "description": "This protocol details a step-by-step procedure for determining PON1 activity in plasma or serum using phenyl acetate substrate. The method employs kinetic measurements using a UV-transparent 96-well microplate with readings at 270 nm, and activity rates are converted via the Beer–Lambert law after pathlength correction. This protocol includes detailed calibration measures, safety considerations, storage and stability instructions, and failure prevention strategies.",
+    "estimatedDuration": "0",
+    "protocolPDFNames": [
+      "Determining_PON1_Activity_Protocol.pdf"
+    ],
+    "globalArObjects": [
+      {
+        "specificObjectName": "96 Well Plate",
+        "arObjectID": "wellplate_01",
+        "rootPrefabName": "horizontalwellplate"
+      },
+      {
+        "specificObjectName": "reservoir",
+        "arObjectID": "reservoir_01",
+        "rootPrefabName": "reservoir"
+      }
+    ],
+    "steps": [
+      {
+        "isCritical": true,
+        "title": "Initial Setup: Lock AR Objects",
+        "estimatedDuration": "0",
+        "checklist": [
+          {
+            "text": "Place the 96 Well Plate on your bench.",
+            "contentItems": [
+              {
+                "contentType": "text",
+                "properties": {
+                  "text": "Ensure that the AR objects are locked using the locking action to maintain their positions throughout the experiment."
+                }
+              }
+            ],
+            "arActions": [
+              {
+                "actionType": "lock",
+                "arObjectID": "",
+                "properties": {
+                  "arIDList": [
+                    "wellplate_01"
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "isCritical": true,
+        "title": "Sample Collection and Preparation",
+        "estimatedDuration": "0",
+        "checklist": [
+          {
+            "text": "Collect blood in lithium heparin (green-top) or serum tubes. Ensure at least 4 mL of blood is collected to obtain sufficient plasma/serum (minimum 10 µL recommended) for PON1 activity analysis. Always follow biohazard handling procedures and wear appropriate PPE (gloves, lab coat, eye protection).",
+            "contentItems": [
+              {
+                "contentType": "text",
+                "properties": {
+                  "text": "Blood collection must be performed in a designated laboratory area following appropriate biohazard safety protocols. Dispose of any contaminated materials following institutional guidelines."
+                }
+              }
+            ],
+            "arActions": []
+          },
+          {
+            "text": "Centrifuge the collected blood at 2,000 x g for 10 minutes at 4°C to separate plasma/serum from blood cells.",
+            "contentItems": [
+              {
+                "contentType": "text",
+                "properties": {
+                  "text": "Use a refrigerated microcentrifuge set to 4°C. Confirm correct centrifugation settings to ensure proper separation."
+                }
+              }
+            ],
+            "arActions": []
+          },
+          {
+            "text": "Immediately and Carefully transfer the plasma/serum (top yellow layer) into 0.5 mL Eppendorf tubes using a Pasteur-type pipette. Aliquot into small volumes to minimize freeze-thaw cycles and handle biohazardous samples as per laboratory safety protocols.",
+            "contentItems": [
+              {
+                "contentType": "text",
+                "properties": {
+                  "text": "Avoid contamination by not disturbing the cell layer. Use standard or wide-orifice pipette tips to account for plasma viscosity."
+                }
+              }
+            ],
+            "arActions": []
+          },
+          {
+            "text": "Mix the aliquoted plasma/serum samples gently by inverting the tubes and perform a second centrifugation at 10,000 x g for 5 minutes at 4°C to remove any particulate matter.",
+            "contentItems": [
+              {
+                "contentType": "text",
+                "properties": {
+                  "text": "This step ensures clarity of the sample for accurate activity readings."
+                }
+              }
+            ],
+            "arActions": []
+          }
+        ]
+      },
+      {
+        "isCritical": true,
+        "title": "Dilution and Setup",
+        "estimatedDuration": "0",
+        "checklist": [
+          {
+            "text": "Dilute each plasma/serum sample by taking 7 µL and adding 63 µL of dilution buffer (1:10 dilution). Mix thoroughly to ensure homogeneity, considering the viscosity of plasma/serum.",
+            "contentItems": [
+              {
+                "contentType": "text",
+                "properties": {
+                  "text": "Use calibrated pipettes and follow proper pipetting techniques to avoid volume errors. Immediate processing of diluted samples is critical to prevent degradation."
+                }
+              }
+            ],
+            "arActions": []
+          },
+          {
+            "text": "Transfer 20 µL of each diluted plasma/serum sample into individual wells of a UV-transparent 96-well microplate. Repeat this step three times, in three separate wells, per sample",
+            "contentItems": [
+              {
+                "contentType": "text",
+                "properties": {
+                  "text": "Ensure that the UV-transparent 96-well microplates are validated for measurements at 270 nm (batch testing or certification as per manufacturer guidelines)."
+                }
+              }
+            ],
+            "arActions": [
+              {
+                "actionType": "highlight",
+                "arObjectID": "wellplate_01",
+                "properties": {
+                  "subIDs": [
+                    "A1",
+                    "A2",
+                    "A3"
+                  ],
+                  "colorHex": "#FFD700",
+                  "colorName": "Gold"
+                }
+              }
+            ]
+          },
+          {
+            "text": "Transfer 20 µL of each diluted plasma/serum sample into individual wells of a UV-transparent 96-well microplate into three separte wells.",
+            "contentItems": [
+              {
+                "contentType": "text",
+                "properties": {
+                  "text": "Ensure that the UV-transparent 96-well microplates are validated for measurements at 270 nm (batch testing or certification as per manufacturer guidelines)."
+                }
+              }
+            ],
+            "arActions": [
+              {
+                "actionType": "highlight",
+                "arObjectID": "wellplate_01",
+                "properties": {
+                  "subIDs": [
+                    "A1",
+                    "A2",
+                    "A3"
+                  ],
+                  "colorHex": "#FFD700",
+                  "colorName": "Gold"
+                }
+              }
+            ]
+          },
+          {
+            "text": "Transfer 20 µL of the second plasma/serum sample into individual wells of a UV-transparent 96-well microplate into three separte wells.",
+            "contentItems": [
+              {
+                "contentType": "text",
+                "properties": {
+                  "text": "Ensure that the UV-transparent 96-well microplates are validated for measurements at 270 nm (batch testing or certification as per manufacturer guidelines)."
+                }
+              }
+            ],
+            "arActions": [
+              {
+                "actionType": "highlight",
+                "arObjectID": "wellplate_01",
+                "properties": {
+                  "subIDs": [
+                    "B1",
+                    "B2",
+                    "B3"
+                  ],
+                  "colorHex": "#FFD700",
+                  "colorName": "Gold"
+                }
+              }
+            ]
+          },
+          {
+            "text": "Transfer 20 µL of each diluted plasma/serum sample into three individual wells of a UV-transparent 96-well microplate.",
+            "contentItems": [
+              {
+                "contentType": "text",
+                "properties": {
+                  "text": "Ensure that the UV-transparent 96-well microplates are validated for measurements at 270 nm (batch testing or certification as per manufacturer guidelines)."
+                }
+              }
+            ],
+            "arActions": [
+              {
+                "actionType": "highlight",
+                "arObjectID": "wellplate_01",
+                "properties": {
+                  "subIDs": [
+                    "C1",
+                    "C2",
+                    "C3"
+                  ],
+                  "colorHex": "#FFD700",
+                  "colorName": "Gold"
+                }
+              }
+            ]
+          },
+          {
+            "text": "Repeat steps 1-3 for each plasma/serum sample",
+            "contentItems": [
+              {
+                "contentType": "text",
+                "properties": {
+                  "text": "Ensure that the UV-transparent 96-well microplates are validated for measurements at 270 nm (batch testing or certification as per manufacturer guidelines)."
+                }
+              }
+            ],
+            "arActions": []
+          },
+          {
+            "text": "Designate blank controls by transferring 20 µL of dilution buffer into separate empty wells.",
+            "contentItems": [
+              {
+                "contentType": "text",
+                "properties": {
+                  "text": "Blanks are essential for correcting baseline absorbance and must be run in triplicate alongside samples."
+                }
+              }
+            ],
+            "arActions": []
+          }
+        ]
+      },
+      {
+        "isCritical": true,
+        "title": "Assay Preparation",
+        "estimatedDuration": "0",
+        "checklist": [
+          {
+            "text": "Prepare the working substrate solution by adding 25 µL of phenyl acetate to 25 mL of the arylesterase assay buffer in a 50 mL polypropylene tube to achieve a concentration of 6.52 mM.",
+            "contentItems": [
+              {
+                "contentType": "text",
+                "properties": {
+                  "text": "NOTE: Work with phenyl acetate in a fume hood due to its volatile and hazardous nature, and always wear appropriate PPE (gloves, lab coat, eye protection)."
+                }
+              }
+            ],
+            "arActions": []
+          },
+          {
+            "text": "Securely cap the tube and mix vigorously for 1 minute.",
+            "contentItems": [
+              {
+                "contentType": "text",
+                "properties": {
+                  "text": "Phenyl acetate is oily, thus vigorous shaking is mandatory to ensure complete emulsification. Discard the substrate solution after 1 hour to prevent degradation and evaporation."
+                }
+              }
+            ],
+            "arActions": []
+          },
+          {
+            "text": "Add 180 µL of the freshly prepared working assay solution to each well containing sample or blank.",
+            "contentItems": [
+              {
+                "contentType": "text",
+                "properties": {
+                  "text": "Proper pipetting and mixing are essential to reduce variability caused by the oily nature of phenyl acetate."
+                }
+              }
+            ],
+            "arActions": []
+          }
+        ]
+      },
+      {
+        "isCritical": true,
+        "title": "Kinetic Measurement",
+        "estimatedDuration": "0",
+        "checklist": [
+          {
+            "text": "Rapidly transfer the 96-well plate to the UV/visible microplate spectrophotometer, which is pre-set and maintained at 25°C. Verify that the spectrophotometer and pipettes are calibrated to minimize systematic errors.",
+            "contentItems": [
+              {
+                "contentType": "text",
+                "properties": {
+                  "text": "Calibration of the microplate spectrophotometer and pipettes is critical. Use known standards to validate the linear response and ensure the accuracy of Beer–Lambert conversion."
+                }
+              }
+            ],
+            "arActions": []
+          },
+          {
+            "text": "Use the mixing program (e.g., SoftMax Pro) to mix the plate for 5 seconds before initiating the readings.",
+            "contentItems": [
+              {
+                "contentType": "text",
+                "properties": {
+                  "text": "This ensures an even distribution of substrate to reduce variability."
+                }
+              }
+            ],
+            "arActions": []
+          },
+          {
+            "text": "Monitor the hydrolysis of phenyl acetate at 270 nm by taking readings every 15 seconds for a total of 4 minutes. Use only the initial linear portion of the reaction curve (mOD/min) for subsequent calculations.",
+            "contentItems": [
+              {
+                "contentType": "text",
+                "properties": {
+                  "text": "It is crucial to ensure that the enzyme reaction operates within the linear range of the instrument's capacity. Using non-linear rates may result in inaccurate measurements of hydrolysis rates."
+                }
+              }
+            ],
+            "arActions": []
+          }
+        ]
+      },
+      {
+        "isCritical": true,
+        "title": "Data Conversion and Pathlength Correction",
+        "estimatedDuration": "0",
+        "checklist": [
+          {
+            "text": "Use the spectrophotometer software to measure the light pathlength (cm) in each well. This is necessary to normalize the absorbance values to the standard 1 cm cuvette measurement.",
+            "contentItems": [
+              {
+                "contentType": "text",
+                "properties": {
+                  "text": "Pathlength correction compensates for volume irregularities and pipetting errors."
+                }
+              }
+            ],
+            "arActions": []
+          },
+          {
+            "text": "Divide the initial activity rates (mOD/min) by the corresponding light pathlength for each well. Then, apply the Beer–Lambert law conversion to report the PON1 activity in U/mL or µmol/min/mL. Clearly document the calibration constant used for the Beer–Lambert conversion based on prior calibration with known standards.",
+            "contentItems": [
+              {
+                "contentType": "text",
+                "properties": {
+                  "text": "Include a detailed calculation and reporting procedure for the final PON1 activity units. This ensures consistency and allows for cross-comparison with other reports."
+                }
+              }
+            ],
+            "arActions": []
+          }
+        ]
+      },
+      {
+        "isCritical": false,
+        "title": "Data Analysis and Troubleshooting",
+        "estimatedDuration": "0",
+        "checklist": [
+          {
+            "text": "Calculate the average and standard deviation of the triplicate readings for each sample. If the standard deviation is 10 mOD/min or greater, repeat the assay.",
+            "contentItems": [
+              {
+                "contentType": "text",
+                "properties": {
+                  "text": "Accurate statistical analysis is crucial for the reliability of the PON1 activity determination."
+                }
+              }
+            ],
+            "arActions": []
+          },
+          {
+            "text": "Verify that the blank sample absorbance readings are close to zero. An elevated blank may indicate contamination or reagent instability. If encountered, prepare fresh buffers and repeat the assay.",
+            "contentItems": [
+              {
+                "contentType": "text",
+                "properties": {
+                  "text": "Check for possible pipetting errors or contamination to prevent false activity readings."
+                }
+              }
+            ],
+            "arActions": []
+          },
+          {
+            "text": "Emphasize the importance of immediate processing of diluted samples to prevent degradation of PON1 activity. Also, document storage conditions; plasma/serum samples should be stored at –80°C and used immediately once diluted.",
+            "contentItems": [
+              {
+                "contentType": "text",
+                "properties": {
+                  "text": "Delayed processing and improper storage conditions can lead to time-related degradation of PON1 activity."
+                }
+              }
+            ],
+            "arActions": []
+          },
+          {
+            "text": "Follow safe disposal procedures for phenyl acetate waste and biohazardous blood samples after the experiment.",
+            "contentItems": [
+              {
+                "contentType": "text",
+                "properties": {
+                  "text": "Dispose of phenyl acetate waste in accordance with your institution's hazardous waste disposal guidelines, and treat all blood sample waste as biohazardous material."
+                }
+              }
+            ],
+            "arActions": []
+          }
+        ]
+      }
+    ]
+  }
