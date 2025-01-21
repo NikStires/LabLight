@@ -178,4 +178,14 @@ public class SpeechRecognizer : MonoBehaviour
         RecognizedTextHandler = null;
         CheckStreamRecording();
     }
+
+    public void DisableSpeechRecognition()
+    {
+       gameObject.SetActive(false);
+    }
+
+    public void EnableSpeechRecognition()
+    {
+        gameObject.SetActive(true);
+    }
 }

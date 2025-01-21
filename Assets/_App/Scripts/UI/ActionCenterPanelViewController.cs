@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
- 
+using UnityEngine.UI;
 
 /// <summary>
 /// Controls the behavior of the action center panel in the scene.
@@ -11,7 +11,6 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 public class ActionCenterPanelViewController : MonoBehaviour
 {
     [SerializeField] private HeadPlacementEventChannel headPlacementEventChannel;
-    [SerializeField] GameObject hazardZonePanelPrefab;
     [SerializeField] XRSimpleInteractable recordingButton;
     bool isRecording = false;
     [SerializeField] XRSimpleInteractable replayButton;
@@ -21,6 +20,12 @@ public class ActionCenterPanelViewController : MonoBehaviour
     [SerializeField] XRSimpleInteractable timerButton;
     [SerializeField] XRSimpleInteractable calculatorButton;
     [SerializeField] XRSimpleInteractable closeAppButton;
+   
+    bool isSpeechRecognitionEnabled = true;
+    [SerializeField] XRSimpleInteractable speechRecognitionButton;
+    [SerializeField] Image speechRecognitionButtonImage;
+    [SerializeField] Sprite speechRecognitionButtonImageEnabled;
+    [SerializeField] Sprite speechRecognitionButtonImageDisabled;
 
     void Start()
     {
@@ -31,13 +36,7 @@ public class ActionCenterPanelViewController : MonoBehaviour
         chatButton.selectExited.AddListener(_ => ServiceRegistry.GetService<IUIDriver>().DisplayLLMChat());
         timerButton.selectExited.AddListener(_ => ServiceRegistry.GetService<IUIDriver>().DisplayTimer(30));
         closeAppButton.selectExited.AddListener(_ => Application.Quit());
-    }
-
-    public void SpawnHazardZonePanel()
-    {
-        var hazardZonePanel = Instantiate(hazardZonePanelPrefab);
-        hazardZonePanel.transform.position = transform.position;
-        hazardZonePanel.transform.rotation = transform.rotation;
+        speechRecognitionButton.selectExited.AddListener(_ => ToggleSpeechRecognition());
     }
 
     /// <summary>
@@ -91,5 +90,19 @@ public class ActionCenterPanelViewController : MonoBehaviour
             ServiceRegistry.GetService<ILighthouseControl>().StartPlayingVideo();
         }
         isReplaying = !isReplaying;
+    }
+
+    void ToggleSpeechRecognition()
+    {
+        isSpeechRecognitionEnabled = !isSpeechRecognitionEnabled;
+        speechRecognitionButtonImage.sprite = isSpeechRecognitionEnabled ? speechRecognitionButtonImageDisabled : speechRecognitionButtonImageEnabled;
+        if (isSpeechRecognitionEnabled)
+        {
+            SpeechRecognizer.Instance.EnableSpeechRecognition();
+        }
+        else
+        {
+            SpeechRecognizer.Instance.DisableSpeechRecognition();
+        }
     }
 }
