@@ -17,6 +17,7 @@ public class ImageTrackingObjectManager : MonoBehaviour
 
     ArObjectViewController m_objectToLock;
     private CompositeDisposable disposables = new CompositeDisposable();
+    private bool isQuitting = false;
 
     public ImageTrackingEventChannel imageTrackingEventChannel;
 
@@ -33,45 +34,46 @@ public class ImageTrackingObjectManager : MonoBehaviour
 
     private void OnEnable()
     {
-        // First disable the manager before clearing the library
-        if (m_ImageManager != null)
+        if (m_ImageManager != null && m_ImageManager.enabled)
         {
-            m_ImageManager.enabled = false;
-            m_ImageManager.referenceLibrary = null;
-            m_ImageManager.enabled = true;
+            imageTrackingEventChannel.SetImageTrackedObject.AddListener(HandleImageTrackedObject);
+            m_ImageManager.trackablesChanged.AddListener(ImageManagerOnTrackedImagesChanged);
         }
-
-        imageTrackingEventChannel.SetImageTrackedObject.AddListener(HandleImageTrackedObject);
-        m_ImageManager.trackablesChanged.AddListener(ImageManagerOnTrackedImagesChanged);
     }
 
     private void OnDisable()
     {
-        imageTrackingEventChannel.SetImageTrackedObject.RemoveListener(HandleImageTrackedObject);
-        m_ImageManager.trackablesChanged.RemoveListener(ImageManagerOnTrackedImagesChanged);
-        
-        // Disable manager before clearing library
-        if (m_ImageManager != null)
+        if (!isQuitting)
         {
-            m_ImageManager.enabled = false;
-            m_ImageManager.referenceLibrary = null;
+            CleanupResources();
         }
+    }
 
-        m_objectToLock = null;
-        disposables.Clear();
+    private void OnApplicationQuit()
+    {
+        isQuitting = true;
+        CleanupResources();
     }
 
     private void OnDestroy()
     {
-        // Ensure all disposables are cleaned up
-        disposables.Dispose();
-        
-        // Final cleanup of image manager
+        CleanupResources();
+    }
+
+    private void CleanupResources()
+    {
         if (m_ImageManager != null)
         {
-            m_ImageManager.enabled = false;
-            m_ImageManager.referenceLibrary = null;
+            imageTrackingEventChannel.SetImageTrackedObject.RemoveListener(HandleImageTrackedObject);
+            m_ImageManager.trackablesChanged.RemoveListener(ImageManagerOnTrackedImagesChanged);
         }
+
+        disposables.Clear();
+        disposables.Dispose();
+        m_objectToLock = null;
+
+        // Let the ARTrackedImageManager handle its own cleanup
+        // instead of manually setting the reference library to null
     }
 
     public void HandleImageTrackedObject(GameObject obj)

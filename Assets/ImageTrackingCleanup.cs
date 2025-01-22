@@ -5,6 +5,7 @@ using UnityEngine.XR.ARFoundation;
 public class ImageTrackingCleanup : MonoBehaviour
 {
     private ARTrackedImageManager m_ImageManager;
+    private bool isQuitting = false;
     
     void Start()
     {
@@ -14,19 +15,26 @@ public class ImageTrackingCleanup : MonoBehaviour
     
     void OnApplicationPause(bool pauseStatus)
     {
-        if (pauseStatus && m_ImageManager != null)
+        if (pauseStatus && m_ImageManager != null && !isQuitting)
         {
-            // Cleanup when app is paused
-            m_ImageManager.referenceLibrary = null;
+            m_ImageManager.enabled = false;
         }
     }
     
     void OnApplicationQuit()
     {
+        isQuitting = true;
         if (m_ImageManager != null)
         {
-            // Cleanup when app is quitting
-            m_ImageManager.referenceLibrary = null;
+            m_ImageManager.enabled = false;
+        }
+    }
+
+    void OnDisable()
+    {
+        if (!isQuitting && m_ImageManager != null)
+        {
+            m_ImageManager.enabled = false;
         }
     }
 }
