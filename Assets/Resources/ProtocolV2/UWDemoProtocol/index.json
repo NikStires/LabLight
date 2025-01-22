@@ -10,7 +10,7 @@
 {
 "specificObjectName": "96 Well Plate",
 "arObjectID": "wellplate_01",
-"rootPrefabName": "horizontalwellplate"
+"rootPrefabName": "horizontalwellplate96"
 }
 ],
 "steps": [
