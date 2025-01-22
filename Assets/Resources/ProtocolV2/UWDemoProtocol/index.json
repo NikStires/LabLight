@@ -122,6 +122,12 @@
 "properties": {
 "text": "Ensure use of UV-transparent 96-well microplate validated for 270 nm measurements."
 }
+},
+{
+  "contentType": "image",
+  "properties": {
+    "url" : "platemap1.png"
+  }
 }
 ],
 "arActions": [
@@ -148,6 +154,12 @@
 "properties": {
 "text": "Use a clean pipette tip to avoid cross-contamination."
 }
+},
+{
+  "contentType": "image",
+  "properties": {
+    "url" : "platemap2.png"
+  }
 }
 ],
 "arActions": [
@@ -174,6 +186,12 @@
 "properties": {
 "text": "Assign the blank control to well C1 for baseline measurements."
 }
+},
+{
+  "contentType": "image",
+  "properties": {
+    "url" : "platemap3.png"
+  }
 }
 ],
 "arActions": [
