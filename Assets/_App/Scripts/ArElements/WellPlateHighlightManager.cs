@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
+using UniRx;
 
 public class WellPlateHighlightManager : MonoBehaviour
 {
@@ -17,11 +18,82 @@ public class WellPlateHighlightManager : MonoBehaviour
     // Indicates if the model (and thus row/col highlights) is currently active
     private bool modelActive;
 
+    private void Awake()
+    {
+        InitializeSubscriptions();
+    }
+
     // Initialize the highlight manager with its required settings
     public void Initialize(SettingsManagerScriptableObject settingsManager)
     {
         settingsManagerSO = settingsManager;
         AddSettingsSubscriptions();
+    }
+
+    private void InitializeSubscriptions()
+    {
+        if (ProtocolState.Instance == null) return;
+
+        // Subscribe to checklist changes
+        ProtocolState.Instance.ChecklistStream
+            .Subscribe(_ => UpdateHighlights())
+            .AddTo(this);
+    }
+
+    private void UpdateHighlights()
+    {
+        if (!modelActive || !ProtocolState.Instance.HasCurrentCheckItem()) 
+        {
+            ClearAllHighlights();
+            return;
+        }
+
+        var currentCheckItem = ProtocolState.Instance.CurrentCheckItemDefinition;
+        if (currentCheckItem == null || currentCheckItem.arActions == null) 
+        {
+            ClearAllHighlights();
+            return;
+        }
+
+        // Update current actions and process them
+        currentActions = currentCheckItem.arActions;
+        ProcessHighlights();
+    }
+
+    private void ProcessHighlights()
+    {
+        // Clear existing highlights first
+        ClearAllHighlights();
+
+        // Apply new highlights
+        foreach (var action in currentActions)
+        {
+            var subIDs = GetSubIDs(action);
+            if (subIDs == null) continue;
+
+            var colorHex = action.properties.GetValueOrDefault("colorHex", "#FFFFFF").ToString();
+            var color = ParseColor(colorHex);
+
+            foreach (var id in subIDs)
+            {
+                HighlightWellIndicators(id, color, showIndicators, showRelevantOnly);
+            }
+        }
+    }
+
+    private void ClearAllHighlights()
+    {
+        if (rowIndicators == null || colIndicators == null) return;
+
+        foreach (Transform indicator in rowIndicators)
+        {
+            ToggleIndicator(rowIndicators, indicator.name, defaultIndicatorColor, false);
+        }
+
+        foreach (Transform indicator in colIndicators)
+        {
+            ToggleIndicator(colIndicators, indicator.name, defaultIndicatorColor, false);
+        }
     }
 
     // Set the actions (and active state) that determine which row/col indicators to highlight
