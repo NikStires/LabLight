@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 using UniRx;
+using System;
 
 public class WellPlateHighlightManager : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class WellPlateHighlightManager : MonoBehaviour
     
     // Reference to the current set of highlight actions
     private List<ArAction> currentActions;
+
+    private IDisposable checkStream;
     
     // Indicates if the model (and thus row/col highlights) is currently active
     private bool modelActive;
@@ -35,14 +38,19 @@ public class WellPlateHighlightManager : MonoBehaviour
         if (ProtocolState.Instance == null) return;
 
         // Subscribe to checklist changes
-        ProtocolState.Instance.ChecklistStream
+        checkStream = ProtocolState.Instance.ChecklistStream
             .Subscribe(_ => UpdateHighlights())
             .AddTo(this);
     }
 
+    void OnDestroy()
+    {
+        checkStream?.Dispose();
+    }
+
     private void UpdateHighlights()
     {
-        if (!modelActive || !ProtocolState.Instance.HasCurrentCheckItem()) 
+        if (!ProtocolState.Instance.HasCurrentCheckItem()) 
         {
             ClearAllHighlights();
             return;
@@ -53,6 +61,18 @@ public class WellPlateHighlightManager : MonoBehaviour
         {
             ClearAllHighlights();
             return;
+        }
+
+        bool onLastItem = (ProtocolState.Instance.CurrentCheckNum == ProtocolState.Instance.CurrentChecklist.Count - 1)
+                    && ProtocolState.Instance.CurrentCheckItemState.Value.IsChecked.Value;
+
+        if(ProtocolState.Instance.CurrentCheckNum == ProtocolState.Instance.CurrentChecklist.Count - 1)
+        {
+            if(ProtocolState.Instance.CurrentCheckItemState.Value.IsChecked.Value)
+            {
+                ClearAllHighlights();
+                return;
+            }
         }
 
         // Update current actions and process them
@@ -76,7 +96,7 @@ public class WellPlateHighlightManager : MonoBehaviour
 
             foreach (var id in subIDs)
             {
-                HighlightWellIndicators(id, color, showIndicators, showRelevantOnly);
+                HighlightWellIndicators(id, color);
             }
         }
     }
@@ -87,12 +107,12 @@ public class WellPlateHighlightManager : MonoBehaviour
 
         foreach (Transform indicator in rowIndicators)
         {
-            ToggleIndicator(rowIndicators, indicator.name, defaultIndicatorColor, false);
+            ToggleIndicator(rowIndicators, indicator.name, defaultIndicatorColor, true);
         }
 
         foreach (Transform indicator in colIndicators)
         {
-            ToggleIndicator(colIndicators, indicator.name, defaultIndicatorColor, false);
+            ToggleIndicator(colIndicators, indicator.name, defaultIndicatorColor, true);
         }
     }
 
@@ -151,9 +171,7 @@ public class WellPlateHighlightManager : MonoBehaviour
             {
                 HighlightWellIndicators(
                     id,
-                    color,
-                    settingsManagerSO.GetSettingValue(LablightSettings.RC_Markers),
-                    showRelevantOnly
+                    color
                 );
             }
         }
@@ -176,14 +194,16 @@ public class WellPlateHighlightManager : MonoBehaviour
     }
 
     // Highlight and color the row and column indicators associated with a specific wellId
-    public void HighlightWellIndicators(string wellId, Color color, bool showIndicators, bool showRelevantOnly)
+    public void HighlightWellIndicators(string wellId, Color color)
     {
-        if (!showIndicators || string.IsNullOrEmpty(wellId)) return;
+        if (string.IsNullOrEmpty(wellId)) return;
 
         var row = wellId[0].ToString();
         var col = wellId.Substring(1);
 
-        Color highlightColor = showRelevantOnly ? color : defaultIndicatorColor;
+        Debug.Log("Highlighting row" + row + "highlight col" + col);
+
+        Color highlightColor = color;
         ToggleIndicator(rowIndicators, row, highlightColor, true);
         ToggleIndicator(colIndicators, col, highlightColor, true);
     }
@@ -196,8 +216,8 @@ public class WellPlateHighlightManager : MonoBehaviour
         var row = wellId[0].ToString();
         var col = wellId.Substring(1);
 
-        ToggleIndicator(rowIndicators, row, defaultIndicatorColor, false);
-        ToggleIndicator(colIndicators, col, defaultIndicatorColor, false);
+        ToggleIndicator(rowIndicators, row, defaultIndicatorColor, true);
+        ToggleIndicator(colIndicators, col, defaultIndicatorColor, true);
     }
 
     // Core toggle logic for individual row/column indicators

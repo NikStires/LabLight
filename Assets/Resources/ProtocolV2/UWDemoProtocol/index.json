@@ -125,6 +125,7 @@
 },
 {
   "contentType": "image",
+  "arObjectID": "wellplate_01",
   "properties": {
     "url" : "platemap1.png"
   }
@@ -157,6 +158,7 @@
 },
 {
   "contentType": "image",
+  "arObjectID": "wellplate_01",
   "properties": {
     "url" : "platemap2.png"
   }
@@ -189,6 +191,7 @@
 },
 {
   "contentType": "image",
+  "arObjectID": "wellplate_01",
   "properties": {
     "url" : "platemap3.png"
   }
