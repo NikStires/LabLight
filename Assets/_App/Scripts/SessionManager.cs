@@ -73,6 +73,7 @@ public class SessionManager : MonoBehaviour
         var localFileDataProvider = new LocalFileDataProvider();
         ServiceRegistry.RegisterService<ITextDataProvider>(localFileDataProvider);
         ServiceRegistry.RegisterService<IAnchorDataProvider>(localFileDataProvider);
+        ServiceRegistry.RegisterService<IUserProfileDataProvider>(localFileDataProvider);
 
         var resourceFileDataProvider = new ResourceFileDataProvider();
         ServiceRegistry.RegisterService<IProtocolDataProvider>(resourceFileDataProvider);
@@ -85,11 +86,12 @@ public class SessionManager : MonoBehaviour
         var UIDriver = new SwiftUIDriver();
         ServiceRegistry.RegisterService<IUIDriver>(UIDriver);
         Destroy(GetComponent<UnityUIDriver>());
+        UIDriver.DisplayProtocolMenu();
         #elif UNITY_EDITOR
         var UIDriver = GetComponent<UnityUIDriver>();
         ServiceRegistry.RegisterService<IUIDriver>(UIDriver);
         #endif
-        UIDriver.DisplayProtocolMenu();
+        UIDriver.DisplayUserSelection();
 
         //Set up default state
         SessionState.deviceId = SystemInfo.deviceName;

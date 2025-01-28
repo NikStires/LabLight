@@ -10,6 +10,7 @@ public class SessionState : MonoBehaviour
 {
     public static SessionState Instance;
     public static string deviceId;
+    public static UserProfileData currentUserProfile;
 
     private static bool _connected = false;
     private static bool _recording;

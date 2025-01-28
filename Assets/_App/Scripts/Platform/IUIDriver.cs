@@ -13,6 +13,7 @@ public interface IUIDriver
     void SendAuthStatus(bool isAuthenticated);
 
     //UI Display methods 
+    void DisplayUserSelection();
     void DisplayProtocolMenu();
     void DisplayTimer(int seconds);
     void DisplayCalculator();
@@ -22,6 +23,7 @@ public interface IUIDriver
     void DisplayPDFReader(string url);
 
     //Unity Callback Methods
+    void UserSelectionCallback(string username);
     void StepNavigationCallback(int index);
     void CheckItemCallback(int index);
     void UncheckItemCallback(int index);

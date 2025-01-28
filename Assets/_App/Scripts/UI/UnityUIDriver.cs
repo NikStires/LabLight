@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 public class UnityUIDriver : MonoBehaviour, IUIDriver
 {
     // References to UI panels/views
+    [SerializeField] private UserSelectionPanelViewController userSelectionPanel;
     [SerializeField] private ProtocolPanelViewController protocolPanel;
     [SerializeField] private ChecklistPanelViewController checklistPanel;
     [SerializeField] private ProtocolMenuViewController protocolMenuPanel;
@@ -66,12 +67,17 @@ public class UnityUIDriver : MonoBehaviour, IUIDriver
         return;
     }
 
+    public void DisplayUserSelection()
+    {
+        userSelectionPanel.gameObject.SetActive(true);
+    }
+
     // UI Display methods
     public void DisplayProtocolMenu()
     {
-        Debug.Log("Displaying protocol menu");
         if (protocolMenuPanel != null)
         {
+            Debug.Log("Displaying protocol menu");
             protocolMenuPanel.gameObject.SetActive(true);
         }
         else
@@ -125,6 +131,17 @@ public class UnityUIDriver : MonoBehaviour, IUIDriver
     }
 
     // Unity Callback Methods
+    public void UserSelectionCallback(string userID)
+    {
+        ServiceRegistry.GetService<IUserProfileDataProvider>()
+            .GetOrCreateUserProfile(userID)
+            .ObserveOnMainThread()
+            .Subscribe(profile => {
+                SessionState.currentUserProfile = profile;
+                DisplayProtocolMenu();
+            });
+    }
+
     public void StepNavigationCallback(int index)
     {
         if(index < 0 || index >= ProtocolState.Instance.Steps.Count)

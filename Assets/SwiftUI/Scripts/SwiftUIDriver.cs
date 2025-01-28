@@ -174,6 +174,11 @@ public class SwiftUIDriver : IUIDriver, IDisposable
     }
 
     //Swift UI Display methods
+    public void DisplayUserSelection()
+    {
+        OpenSwiftUIWindow("UserSelection");
+    }
+
     public void DisplayProtocolMenu()
     {
         OpenSwiftUIWindow("ProtocolMenu");
@@ -210,6 +215,14 @@ public class SwiftUIDriver : IUIDriver, IDisposable
     }
 
     // Unity Callback Methods
+    public void UserSelectionCallback(string userID)
+    {
+        ServiceRegistry.GetService<IUserProfileDataProvider>().GetOrCreateUserProfile(userID).Subscribe(profile => {
+            SessionState.currentUserProfile = profile;
+            DisplayProtocolMenu();
+        });
+    }
+
     public void StepNavigationCallback(int stepIndex)
     {
         ProtocolState.Instance.SetStep(stepIndex);

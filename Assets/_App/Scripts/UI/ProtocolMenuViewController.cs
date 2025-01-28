@@ -1,17 +1,19 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using System;
-using System.Linq;
 using System.IO;
 using System.Threading.Tasks;
 using UniRx;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using TMPro;
 
 public class ProtocolMenuViewController : LLBasePanel
 {
+    [SerializeField]
+    TextMeshProUGUI headerText;
+
     [Header("UI Buttons")]
     [SerializeField] GridLayoutGroup buttonGrid;
     [SerializeField] GameObject buttonPrefab;
@@ -66,6 +68,7 @@ public class ProtocolMenuViewController : LLBasePanel
 
     void OnEnable()
     {
+        headerText.text = "Hello " + SessionState.currentUserProfile.GetName() + ", Select a Protocol";
         LoadProtocols();
     }
 
