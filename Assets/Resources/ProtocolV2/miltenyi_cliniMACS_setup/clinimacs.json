@@ -1,0 +1,871 @@
+{
+  "version": "1.0",
+  "title": "CliniMACS Cell Enrichment Process Using Leukapheresis",
+  "description": "This protocol provides step‐by‐step instructions for performing cell enrichment on the CliniMACS system using leukapheresis as a source material. Key procedures include equipment setup, tubing installation, system integrity tests, priming, and additional safety and quality verification steps. Key terms: Leukapheresis, Cell Enrichment, Selection Column, Cell Labeling, Tubing Integrity Test.",
+  "estimatedDuration": "0",
+  "protocolPDFNames": [],
+  "globalArObjects": [
+    {
+      "specificObjectName": "miltenyiClinimax",
+      "arObjectID": "miltenyiClinimax_01",
+      "rootPrefabName": "miltenyi_cliniMACS_plus"
+    }
+  ],
+  "steps": [
+    {
+      "isCritical": true,
+      "title": "Lock AR Objects",
+      "estimatedDuration": "0",
+      "checklist": [
+        {
+          "text": "Lock all AR objects defined in the protocol: Miltenyi CliniMACS Plus.",
+          "contentItems": [],
+          "arActions": [
+            {
+              "actionType": "lock",
+              "arObjectID": "",
+              "properties": {
+                "arIDList": ["miltenyiClinimax_01"]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "isCritical": true,
+      "title": "Materials and Equipment Verification",
+      "estimatedDuration": "0",
+      "checklist": [
+        {
+          "text": "Verify that all required materials and equipment are available and approved by the facility/manufacturer. Required items include: tubing (Catalog# TUBE-001), pre-column (Catalog# PC-001), plastic hemostats (Catalog# HEMO-001), cleaning/disinfection agents (Catalog# CA-001), and any other approved consumables.",
+          "contentItems": [
+            {
+              "contentType": "image",
+              "properties": {
+                "url": "materials_list.png",
+                "text": "Reference image of required equipment with catalog numbers."
+              }
+            }
+          ],
+          "arActions": []
+        }
+      ]
+    },
+    {
+      "isCritical": true,
+      "title": "Device Pre-Operation Checks",
+      "estimatedDuration": "0",
+      "checklist": [
+        {
+          "text": "Perform pre-operation checks on the CliniMACS ",
+          "contentItems": [
+            {
+              "contentType": "text",
+              "properties": {
+                "text": "Ensure any potential air bubbles in the tubing are safely removed and document post-maintenance checks. Wear appropriate PPE throughout the process."
+              }
+            },
+            {
+              "contentType": "video",
+              "properties": {
+                "url": "device_preop_check.mp4",
+                "text": "Video demonstration of pre-operation checks."
+              }
+            }
+          ],
+          "arActions": []
+        }
+      ]
+    },
+    {
+      "isCritical": true,
+      "title": "Pre-Preparation",
+      "estimatedDuration": "0",
+      "checklist": [
+        {
+          "text": "Note that OJT is not inclusive of source buffer, source leukapheresis, and product collection bag set up or attachment as dictated by the associated batch record.",
+          "contentItems": [
+            {
+              "contentType": "text",
+              "properties": {
+                "text": "Do not attach source buffer, source leukapheresis, or product collection bags as these are pre-determined by the batch record."
+              }
+            }
+          ],
+          "arActions": []
+        },
+        {
+          "text": "Apply a plastic hemostat to the source buffer and source leukapheresis bag lines (already attached to the tubing kit) while wearing appropriate PPE and following sterile and biosafety guidelines.",
+          "contentItems": [],
+          "arActions": []
+        }
+      ]
+    },
+    {
+      "isCritical": true,
+      "title": "Equipment Setup - Hanging Bags",
+      "estimatedDuration": "0",
+      "checklist": [
+        {
+          "text": "Hang the source buffer bag on the left-most hook.",
+          "contentItems": [],
+          "arActions": [
+            {
+              "actionType": "highlight",
+              "arObjectID": "miltenyiClinimax_01",
+              "properties": {
+                "subIDs": ["bag_hanger_1"],
+                "colorHex": "#FFD700",
+                "colorName": "Gold"
+              }
+            }
+          ]
+        },
+        {
+          "text": "Hang the source leukapheresis bag on the center hook.",
+          "contentItems": [],
+          "arActions": [
+            {
+              "actionType": "highlight",
+              "arObjectID": "miltenyiClinimax_01",
+              "properties": {
+                "subIDs": ["bag_hanger_2"],
+                "colorHex": "#FFD700",
+                "colorName": "Gold"
+              }
+            }
+          ]
+        },
+        {
+          "text": "Hang the buffer priming waste bag on the right-most hook.",
+          "contentItems": [],
+          "arActions": [
+            {
+              "actionType": "highlight",
+              "arObjectID": "miltenyiClinimax_01",
+              "properties": {
+                "subIDs": ["bag_hanger_3"],
+                "colorHex": "#FFD700",
+                "colorName": "Gold"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "isCritical": true,
+      "title": "First Screen – Initiation",
+      "estimatedDuration": "0",
+      "checklist": [
+        {
+          "text": "Press Enter on the First Screen.",
+          "contentItems": [],
+          "arActions": []
+        }
+      ]
+    },
+    {
+      "isCritical": true,
+      "title": "Second Screen – Protocol Selection",
+      "estimatedDuration": "0",
+      "checklist": [
+        {
+          "text": "Use the 0 (down) and 8 (up) buttons to select the Enrichment 1.1 protocol and then press Enter.",
+          "contentItems": [],
+          "arActions": []
+        }
+      ]
+    },
+    {
+      "isCritical": true,
+      "title": "Third Screen – Confirmation",
+      "estimatedDuration": "0",
+      "checklist": [
+        {
+          "text": "Press Enter to confirm the selection or press the back arrow button if a change is needed.",
+          "contentItems": [],
+          "arActions": []
+        }
+      ]
+    },
+    {
+      "isCritical": true,
+      "title": "Fourth Screen – Tubing Reference Entry",
+      "estimatedDuration": "0",
+      "checklist": [
+        {
+          "text": "Enter the tubing reference number (e.g., 168-01) and press Enter.",
+          "contentItems": [],
+          "arActions": []
+        },
+        {
+          "text": "On the sub screen, press Enter to confirm that research use is acceptable.",
+          "contentItems": [],
+          "arActions": []
+        }
+      ]
+    },
+    {
+      "isCritical": true,
+      "title": "Fifth Screen – Sample Data Entry",
+      "estimatedDuration": "0",
+      "checklist": [
+        {
+          "text": "Enter sample data: WBC Concentration = 100, Percentage of labeled cells = 40, Sample loading volume = 100; then press Enter. Double-check all data entries to prevent errors.",
+          "contentItems": [
+            {
+              "contentType": "text",
+              "properties": {
+                "text": "Input sample data carefully and verify correctness before proceeding. Errors at this stage can affect the entire process."
+              }
+            }
+          ],
+          "arActions": []
+        }
+      ]
+    },
+    {
+      "isCritical": true,
+      "title": "Sixth Screen – Labeled Cells Confirmation",
+      "estimatedDuration": "0",
+      "checklist": [
+        {
+          "text": "Confirm the total labeled cells value of 4000 x 10^6. Clarify the calculation method used for determining this value and verify the cell count using a hemocytometer or an automated cell counter as per validated protocols. Press Enter (or go back if needed).",
+          "contentItems": [
+            {
+              "contentType": "text",
+              "properties": {
+                "text": "Verify that the labeled cell count was calculated correctly using validated cell counting methods before proceeding."
+              }
+            }
+          ],
+          "arActions": []
+        }
+      ]
+    },
+    {
+      "isCritical": true,
+      "title": "Seventh Screen – Predicted Volumes Confirmation",
+      "estimatedDuration": "0",
+      "checklist": [
+        {
+          "text": "Confirm predicted volumes: Selection Buffer = 160 mL, Cell Collection Bag = 240 mL, Negative Fraction Bag = 550 mL, Wash Waste Bag = 600 mL; then press Enter. Ensure that all volume predictions are within expected ranges.",
+          "contentItems": [],
+          "arActions": []
+        }
+      ]
+    },
+    {
+      "isCritical": true,
+      "title": "Eighth Screen – Tubing Set Confirmation & Pre-column Placement",
+      "estimatedDuration": "0",
+      "checklist": [
+        {
+          "text": "Ignore the tubing set unpacking instructions (already performed per procedure).",
+          "contentItems": [],
+          "arActions": []
+        },
+        {
+          "text": "Insert the pre-column into the precolumn holder.",
+          "contentItems": [],
+          "arActions": [
+            {
+              "actionType": "highlight",
+              "arObjectID": "miltenyiClinimax_01",
+              "properties": {
+                "subIDs": ["pre_column"],
+                "colorHex": "#FFD700",
+                "colorName": "Gold"
+              }
+            }
+          ]
+        },
+        {
+          "text": "Ignore the priming waste bag hanging instruction (already completed) and press Enter.",
+          "contentItems": [],
+          "arActions": []
+        }
+      ]
+    },
+    {
+      "isCritical": true,
+      "title": "Ninth Screen – Selection Column and Valve 5",
+      "estimatedDuration": "0",
+      "checklist": [
+        {
+          "text": "Place the selection column in its holder with wings facing out. Confirm that the selection column orientation and the sample labeling criteria are in accordance with validated protocols.",
+          "contentItems": [
+            {
+              "contentType": "text",
+              "properties": {
+                "text": "Proper column orientation is critical for cell enrichment success. Double-check orientation and labeling before proceeding."
+              }
+            }
+          ],
+          "arActions": [
+            {
+              "actionType": "highlight",
+              "arObjectID": "miltenyiClinimax_01",
+              "properties": {
+                "subIDs": ["pre_column", "magnet_unit"],
+                "colorHex": "#FFD700",
+                "colorName": "Gold"
+              }
+            }
+          ]
+        },
+        {
+          "text": "Insert tubing into valve 5 and press Enter.",
+          "contentItems": [],
+          "arActions": [
+            {
+              "actionType": "highlight",
+              "arObjectID": "miltenyiClinimax_01",
+              "properties": {
+                "subIDs": [
+                  "pinch_valve_5",
+                  "tube_pre_column_valve_5",
+                  "magnet_unit",
+                  "pre_column"
+                ],
+                "colorHex": "#FFD700",
+                "colorName": "Gold"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "isCritical": true,
+      "title": "Tenth Screen – Tubing Insertion into Multiple Valves and Liquid Sensor",
+      "estimatedDuration": "0",
+      "checklist": [
+        {
+          "text": "Insert tubing into valve 1.",
+          "contentItems": [],
+          "arActions": [
+            {
+              "actionType": "highlight",
+              "arObjectID": "miltenyiClinimax_01",
+              "properties": {
+                "subIDs": [
+                  "pre_column",
+                  "magnet_unit",
+                  "tube_pre_column_valve_5",
+                  "pinch_valve_5"
+                ],
+                "colorHex": "#808080",
+                "colorName": "Grey"
+              }
+            },
+            {
+              "actionType": "highlight",
+              "arObjectID": "miltenyiClinimax_01",
+              "properties": {
+                "subIDs": ["pinch_valve_1", "tube_bag_hanger_1_valve_1"],
+                "colorHex": "#FFD700",
+                "colorName": "Gold"
+              }
+            }
+          ]
+        },
+        {
+          "text": "Insert tubing into valve 2.",
+          "contentItems": [],
+          "arActions": [
+            {
+              "actionType": "highlight",
+              "arObjectID": "miltenyiClinimax_01",
+              "properties": {
+                "subIDs": [
+                  "pre_column",
+                  "magnet_unit",
+                  "tube_pre_column_valve_5",
+                  "pinch_valve_5",
+                  "pinch_valve_1",
+                  "tube_bag_hanger_1_valve_1"
+                ],
+                "colorHex": "#808080",
+                "colorName": "Grey"
+              }
+            },
+            {
+              "actionType": "highlight",
+              "arObjectID": "miltenyiClinimax_01",
+              "properties": {
+                "subIDs": ["pinch_valve_2", "tube_bag_hanger_2_valve_2"],
+                "colorHex": "#FFD700",
+                "colorName": "Gold"
+              }
+            }
+          ]
+        },
+        {
+          "text": "Insert tubing into valve 3.",
+          "contentItems": [],
+          "arActions": [
+            {
+              "actionType": "highlight",
+              "arObjectID": "miltenyiClinimax_01",
+              "properties": {
+                "subIDs": [
+                  "pre_column",
+                  "magnet_unit",
+                  "tube_pre_column_valve_5",
+                  "pinch_valve_5",
+                  "pinch_valve_1",
+                  "tube_bag_hanger_1_valve_1",
+                  "pinch_valve_2",
+                  "tube_bag_hanger_2_valve_2"
+                ],
+                "colorHex": "#808080",
+                "colorName": "Grey"
+              }
+            },
+            {
+              "actionType": "highlight",
+              "arObjectID": "miltenyiClinimax_01",
+              "properties": {
+                "subIDs": ["pinch_valve_3", "tube_bag_hanger_3_valve_3"],
+                "colorHex": "#FFD700",
+                "colorName": "Gold"
+              }
+            }
+          ]
+        },
+        {
+          "text": "Insert tubing into valve 4.",
+          "contentItems": [],
+          "arActions": [
+            {
+              "actionType": "highlight",
+              "arObjectID": "miltenyiClinimax_01",
+              "properties": {
+                "subIDs": [
+                  "pre_column",
+                  "magnet_unit",
+                  "tube_pre_column_valve_5",
+                  "pinch_valve_5",
+                  "pinch_valve_1",
+                  "tube_bag_hanger_1_valve_1",
+                  "pinch_valve_2",
+                  "tube_bag_hanger_2_valve_2",
+                  "pinch_valve_3",
+                  "tube_bag_hanger_3_valve_3"
+                ],
+                "colorHex": "#808080",
+                "colorName": "Grey"
+              }
+            },
+            {
+              "actionType": "highlight",
+              "arObjectID": "miltenyiClinimax_01",
+              "properties": {
+                "subIDs": ["pinch_valve_4", "tube_bag_hanger_1_valve_4"],
+                "colorHex": "#FFD700",
+                "colorName": "Gold"
+              }
+            }
+          ]
+        },
+        {
+          "text": "Insert tubing into the liquid sensor and secure it with a piece of tape.",
+          "contentItems": [],
+          "arActions": [
+            {
+              "actionType": "highlight",
+              "arObjectID": "miltenyiClinimax_01",
+              "properties": {
+                "subIDs": ["bubble_sensor"],
+                "colorHex": "#FFD700",
+                "colorName": "Gold"
+              }
+            }
+          ]
+        },
+        {
+          "text": "Press Enter.",
+          "contentItems": [],
+          "arActions": []
+        }
+      ]
+    },
+    {
+      "isCritical": true,
+      "title": "Screen Eleven – Pump Tubing Installation",
+      "estimatedDuration": "0",
+      "checklist": [
+        {
+          "text": "Open the pump door.",
+          "contentItems": [],
+          "arActions": [
+            {
+              "actionType": "highlight",
+              "arObjectID": "miltenyiClinimax_01",
+              "properties": {
+                "subIDs": ["peristaltic_pump"],
+                "colorHex": "#FFD700",
+                "colorName": "Gold"
+              }
+            }
+          ]
+        },
+        {
+          "text": "Install the pump tubing, ensuring that the white plastic segments are properly placed in their slots.",
+          "contentItems": [
+            {
+              "contentType": "text",
+              "properties": {
+                "text": "Proper alignment of white plastic segments is crucial for pump function. Misalignment can cause system failures."
+              }
+            }
+          ],
+          "arActions": [
+            {
+              "actionType": "highlight",
+              "arObjectID": "miltenyiClinimax_01",
+              "properties": {
+                "subIDs": [
+                  "tube_magnet_unit_peristaltic_pump",
+                  "tube_peristaltic_pump_valve_8"
+                ],
+                "colorHex": "#FFD700",
+                "colorName": "Gold"
+              }
+            }
+          ]
+        },
+        {
+          "text": "Close the pump door and press Enter.",
+          "contentItems": [],
+          "arActions": [
+            {
+              "actionType": "highlight",
+              "arObjectID": "miltenyiClinimax_01",
+              "properties": {
+                "subIDs": ["peristaltic_pump"],
+                "colorHex": "#FFD700",
+                "colorName": "Gold"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "isCritical": true,
+      "title": "Twelfth Screen – Tubing Installation in Valves 7 and 8",
+      "estimatedDuration": "0",
+      "checklist": [
+        {
+          "text": "Install the tubing into valves 7 and 8 and then press Enter.",
+          "contentItems": [],
+          "arActions": [
+            {
+              "actionType": "highlight",
+              "arObjectID": "miltenyiClinimax_01",
+              "properties": {
+                "subIDs": [
+                  "pinch_valve_7",
+                  "pinch_valve_8",
+                  "tube_valve_7",
+                  "tube_peristaltic_pump_valve_8"
+                ],
+                "colorHex": "#FFD700",
+                "colorName": "Gold"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "isCritical": true,
+      "title": "Thirteenth Screen – Additional Tubing and Bag Placement",
+      "estimatedDuration": "0",
+      "checklist": [
+        {
+          "text": "Insert tubing into valve 6.",
+          "contentItems": [],
+          "arActions": [
+            {
+              "actionType": "highlight",
+              "arObjectID": "miltenyiClinimax_01",
+              "properties": {
+                "subIDs": ["pinch_valve_6", "tube_bag_hanger_1_valve_6"],
+                "colorHex": "#FFD700",
+                "colorName": "Gold"
+              }
+            }
+          ]
+        },
+        {
+          "text": "Insert tubing into valve 9.",
+          "contentItems": [],
+          "arActions": [
+            {
+              "actionType": "highlight",
+              "arObjectID": "miltenyiClinimax_01",
+              "properties": {
+                "subIDs": ["pinch_valve_6", "tube_bag_hanger_1_valve_6"],
+                "colorHex": "#808080",
+                "colorName": "Grey"
+              }
+            },
+            {
+              "actionType": "highlight",
+              "arObjectID": "miltenyiClinimax_01",
+              "properties": {
+                "subIDs": ["pinch_valve_9", "tube_valve_9"],
+                "colorHex": "#FFD700",
+                "colorName": "Gold"
+              }
+            }
+          ]
+        },
+        {
+          "text": "Insert tubing into valve 10.",
+          "contentItems": [],
+          "arActions": [
+            {
+              "actionType": "highlight",
+              "arObjectID": "miltenyiClinimax_01",
+              "properties": {
+                "subIDs": [
+                  "pinch_valve_6",
+                  "tube_bag_hanger_1_valve_6",
+                  "pinch_valve_9",
+                  "tube_valve_9"
+                ],
+                "colorHex": "#808080",
+                "colorName": "Grey"
+              }
+            },
+            {
+              "actionType": "highlight",
+              "arObjectID": "miltenyiClinimax_01",
+              "properties": {
+                "subIDs": ["pinch_valve_10", "tube_valve_10"],
+                "colorHex": "#FFD700",
+                "colorName": "Gold"
+              }
+            }
+          ]
+        },
+        {
+          "text": "Insert tubing into valve 11.",
+          "contentItems": [],
+          "arActions": [
+            {
+              "actionType": "highlight",
+              "arObjectID": "miltenyiClinimax_01",
+              "properties": {
+                "subIDs": [
+                  "pinch_valve_6",
+                  "tube_bag_hanger_1_valve_6",
+                  "pinch_valve_9",
+                  "tube_valve_9",
+                  "pinch_valve_10",
+                  "tube_valve_10"
+                ],
+                "colorHex": "#808080",
+                "colorName": "Grey"
+              }
+            },
+            {
+              "actionType": "highlight",
+              "arObjectID": "miltenyiClinimax_01",
+              "properties": {
+                "subIDs": ["pinch_valve_11", "tube_valve_11"],
+                "colorHex": "#FFD700",
+                "colorName": "Gold"
+              }
+            }
+          ]
+        },
+        {
+          "text": "Place the buffer waste and negative fraction bags into the bag compartment on the device and press Enter.",
+          "contentItems": [],
+          "arActions": []
+        }
+      ]
+    },
+    {
+      "isCritical": true,
+      "title": "Fourteenth Screen – Tubing Inspection",
+      "estimatedDuration": "0",
+      "checklist": [
+        {
+          "text": "Inspect the tubing for any kinks, improper seating, or misalignment in each valve. If issues are detected (e.g., tubing kinks or misaligned tubing in a valve), adjust by pressing down on the valve and re-seating the tubing.",
+          "contentItems": [
+            {
+              "contentType": "text",
+              "properties": {
+                "text": "Thorough inspection at this stage prevents system failures. Pay special attention to valve seating and tubing alignment."
+              }
+            }
+          ],
+          "arActions": []
+        },
+        {
+          "text": "Press Enter to proceed.",
+          "contentItems": [],
+          "arActions": []
+        }
+      ]
+    },
+    {
+      "isCritical": true,
+      "title": "Fifteenth Step – Instrument Seating",
+      "estimatedDuration": "0",
+      "checklist": [
+        {
+          "text": "Note that the instrument automatically seats the valves. No user action is required.",
+          "contentItems": [],
+          "arActions": []
+        }
+      ]
+    },
+    {
+      "isCritical": true,
+      "title": "Sixteenth Screen – Buffer Bag Attachment Ignored",
+      "estimatedDuration": "0",
+      "checklist": [
+        {
+          "text": "Ignore the instructions to attach and hang the buffer bag (previously completed) and press Enter.",
+          "contentItems": [],
+          "arActions": []
+        }
+      ]
+    },
+    {
+      "isCritical": true,
+      "title": "Eighteenth Screen – Hemostat Removal and System Priming",
+      "estimatedDuration": "0",
+      "checklist": [
+        {
+          "text": "Remove the previously applied hemostat from the buffer line.",
+          "contentItems": [],
+          "arActions": []
+        },
+        {
+          "text": "Before pressing Run to prime the system, verify device calibration and ensure that any air bubbles in the tubing have been removed to minimize risk. Then press Run to prime the system (air only for training).",
+          "contentItems": [
+            {
+              "contentType": "text",
+              "properties": {
+                "text": "Air bubbles can cause system failures and affect cell separation. Ensure thorough removal before proceeding."
+              }
+            }
+          ],
+          "arActions": []
+        }
+      ]
+    },
+    {
+      "isCritical": true,
+      "title": "Nineteenth Screen – Tubing Integrity Tests",
+      "estimatedDuration": "0",
+      "checklist": [
+        {
+          "text": "Press 9 to perform the upper tubing integrity test and inspect all tubing junctions for leaks.",
+          "contentItems": [],
+          "arActions": []
+        },
+        {
+          "text": "Press 6 to perform the lower tubing integrity test and inspect tubing junctions for leaks.",
+          "contentItems": [
+            {
+              "contentType": "text",
+              "properties": {
+                "text": "Any leaks detected during integrity tests must be addressed immediately following emergency procedures."
+              }
+            }
+          ],
+          "arActions": []
+        },
+        {
+          "text": "Press Enter to confirm completion of the integrity tests.",
+          "contentItems": [],
+          "arActions": []
+        }
+      ]
+    },
+    {
+      "isCritical": true,
+      "title": "Twentieth Screen – Cell Bag and Prefilter Connection",
+      "estimatedDuration": "0",
+      "checklist": [
+        {
+          "text": "Ignore the instructions for connecting the cell bag and prefilter (these were performed prior to tubing set installation) and press Enter.",
+          "contentItems": [],
+          "arActions": []
+        }
+      ]
+    },
+    {
+      "isCritical": true,
+      "title": "Twenty-first Screen – Final Tubing Check and Hemostat Removal",
+      "estimatedDuration": "0",
+      "checklist": [
+        {
+          "text": "Perform a final check to ensure proper seating in all tubing valves and that the pathway to the cell collection bag is open and free of kinks.",
+          "contentItems": [
+            {
+              "contentType": "text",
+              "properties": {
+                "text": "This final check is crucial for process success. Pay special attention to the cell collection pathway."
+              }
+            }
+          ],
+          "arActions": []
+        },
+        {
+          "text": "Remove the hemostat from the leukapheresis bag at this time.",
+          "contentItems": [],
+          "arActions": []
+        },
+        {
+          "text": "Press Enter to complete this step.",
+          "contentItems": [],
+          "arActions": []
+        }
+      ]
+    },
+    {
+      "isCritical": true,
+      "title": "Final Review and Calibration Check",
+      "estimatedDuration": "0",
+      "checklist": [
+        {
+          "text": "Perform a final review of all connections, calibration settings, tubing integrity, and overall device readiness before initiating the run. Verify that no potential failure points (such as tubing kinks, improper seating of tubing in valves, or misalignment of the selection column) remain. If any discrepancies or device errors are noted, follow the established emergency procedures and troubleshooting guidelines.",
+          "contentItems": [
+            {
+              "contentType": "image",
+              "properties": {
+                "url": "final_review.png",
+                "text": "Snapshot of final review checklist."
+              }
+            }
+          ],
+          "arActions": []
+        }
+      ]
+    },
+    {
+      "isCritical": true,
+      "title": "Twenty-Second Screen – Final Run Command",
+      "estimatedDuration": "0",
+      "checklist": [
+        {
+          "text": "Press Run to complete the protocol.",
+          "contentItems": [],
+          "arActions": []
+        }
+      ]
+    }
+  ]
+}

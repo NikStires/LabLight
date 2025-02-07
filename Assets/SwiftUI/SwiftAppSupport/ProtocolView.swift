@@ -57,7 +57,7 @@ struct ProtocolView: View {
     private var stepPicker: some View {
         Picker("Select Step", selection: $viewModel.selectedStepIndex) {
             ForEach(0..<viewModel.selectedProtocol.steps.count, id: \.self) { index in
-                Text("Step \(index + 1)").tag(index)
+                Text("\(index + 1)").tag(index)
             }
         }
         .pickerStyle(SegmentedPickerStyle())
