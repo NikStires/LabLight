@@ -309,7 +309,7 @@
               "actionType": "highlight",
               "arObjectID": "miltenyiClinimax_01",
               "properties": {
-                "subIDs": ["pre_column", "magnet_unit"],
+                "subIDs": ["magnet_unit"],
                 "colorHex": "#FFD700",
                 "colorName": "Gold"
               }
@@ -327,7 +327,6 @@
                 "subIDs": [
                   "pinch_valve_5",
                   "tube_pre_column_valve_5",
-                  "magnet_unit",
                   "pre_column"
                 ],
                 "colorHex": "#FFD700",
@@ -479,7 +478,7 @@
               "actionType": "highlight",
               "arObjectID": "miltenyiClinimax_01",
               "properties": {
-                "subIDs": ["bubble_sensor"],
+                "subIDs": ["bubble_sensor", "tube_bag_hanger_2_valve_2"],
                 "colorHex": "#FFD700",
                 "colorName": "Gold"
               }
