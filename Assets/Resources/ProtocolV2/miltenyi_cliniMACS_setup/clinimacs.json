@@ -3,7 +3,7 @@
   "title": "CliniMACS Cell Enrichment Process Using Leukapheresis",
   "description": "This protocol provides step‐by‐step instructions for performing cell enrichment on the CliniMACS system using leukapheresis as a source material. Key procedures include equipment setup, tubing installation, system integrity tests, priming, and additional safety and quality verification steps. Key terms: Leukapheresis, Cell Enrichment, Selection Column, Cell Labeling, Tubing Integrity Test.",
   "estimatedDuration": "0",
-  "protocolPDFNames": [],
+  "protocolPDFNames": ["cliniMACS_instructions.pdf"],
   "globalArObjects": [
     {
       "specificObjectName": "miltenyiClinimax",
@@ -39,15 +39,7 @@
       "checklist": [
         {
           "text": "Verify that all required materials and equipment are available and approved by the facility/manufacturer. Required items include: tubing (Catalog# TUBE-001), pre-column (Catalog# PC-001), plastic hemostats (Catalog# HEMO-001), cleaning/disinfection agents (Catalog# CA-001), and any other approved consumables.",
-          "contentItems": [
-            {
-              "contentType": "image",
-              "properties": {
-                "url": "materials_list.png",
-                "text": "Reference image of required equipment with catalog numbers."
-              }
-            }
-          ],
+          "contentItems": [],
           "arActions": []
         }
       ]
@@ -69,8 +61,8 @@
             {
               "contentType": "video",
               "properties": {
-                "url": "device_preop_check.mp4",
-                "text": "Video demonstration of pre-operation checks."
+                "url": "full_kit_install_video.mp4",
+                "text": "Full kit installation video guide"
               }
             }
           ],
@@ -161,7 +153,15 @@
       "checklist": [
         {
           "text": "Press Enter on the First Screen.",
-          "contentItems": [],
+          "contentItems": [
+            {
+              "contentType": "image",
+              "properties": {
+                "url": "screen_1.png",
+                "text": "First screen showing initialization options"
+              }
+            }
+          ],
           "arActions": []
         }
       ]
@@ -173,7 +173,15 @@
       "checklist": [
         {
           "text": "Use the 0 (down) and 8 (up) buttons to select the Enrichment 1.1 protocol and then press Enter.",
-          "contentItems": [],
+          "contentItems": [
+            {
+              "contentType": "image",
+              "properties": {
+                "url": "screen_2.png",
+                "text": "Protocol selection screen"
+              }
+            }
+          ],
           "arActions": []
         }
       ]
@@ -185,7 +193,15 @@
       "checklist": [
         {
           "text": "Press Enter to confirm the selection or press the back arrow button if a change is needed.",
-          "contentItems": [],
+          "contentItems": [
+            {
+              "contentType": "image",
+              "properties": {
+                "url": "screen_3.png",
+                "text": "Protocol confirmation screen"
+              }
+            }
+          ],
           "arActions": []
         }
       ]
@@ -197,7 +213,22 @@
       "checklist": [
         {
           "text": "Enter the tubing reference number (e.g., 168-01) and press Enter.",
-          "contentItems": [],
+          "contentItems": [
+            {
+              "contentType": "image",
+              "properties": {
+                "url": "screen_4_1.png",
+                "text": "Tubing reference entry screen"
+              }
+            },
+            {
+              "contentType": "image",
+              "properties": {
+                "url": "screen_4_2.png",
+                "text": "Tubing reference entry screen"
+              }
+            }
+          ],
           "arActions": []
         },
         {
@@ -216,9 +247,10 @@
           "text": "Enter sample data: WBC Concentration = 100, Percentage of labeled cells = 40, Sample loading volume = 100; then press Enter. Double-check all data entries to prevent errors.",
           "contentItems": [
             {
-              "contentType": "text",
+              "contentType": "image",
               "properties": {
-                "text": "Input sample data carefully and verify correctness before proceeding. Errors at this stage can affect the entire process."
+                "url": "screen_5.png",
+                "text": "Sample data entry screen"
               }
             }
           ],
@@ -235,9 +267,10 @@
           "text": "Confirm the total labeled cells value of 4000 x 10^6. Clarify the calculation method used for determining this value and verify the cell count using a hemocytometer or an automated cell counter as per validated protocols. Press Enter (or go back if needed).",
           "contentItems": [
             {
-              "contentType": "text",
+              "contentType": "image",
               "properties": {
-                "text": "Verify that the labeled cell count was calculated correctly using validated cell counting methods before proceeding."
+                "url": "screen_6.png",
+                "text": "Labeled cells confirmation screen"
               }
             }
           ],
@@ -252,7 +285,15 @@
       "checklist": [
         {
           "text": "Confirm predicted volumes: Selection Buffer = 160 mL, Cell Collection Bag = 240 mL, Negative Fraction Bag = 550 mL, Wash Waste Bag = 600 mL; then press Enter. Ensure that all volume predictions are within expected ranges.",
-          "contentItems": [],
+          "contentItems": [
+            {
+              "contentType": "image",
+              "properties": {
+                "url": "screen_7.png",
+                "text": "Predicted volumes confirmation screen"
+              }
+            }
+          ],
           "arActions": []
         }
       ]
@@ -264,7 +305,15 @@
       "checklist": [
         {
           "text": "Ignore the tubing set unpacking instructions (already performed per procedure).",
-          "contentItems": [],
+          "contentItems": [
+            {
+              "contentType": "image",
+              "properties": {
+                "url": "screen_8.png",
+                "text": "Tubing set confirmation screen"
+              }
+            }
+          ],
           "arActions": []
         },
         {
@@ -298,9 +347,10 @@
           "text": "Place the selection column in its holder with wings facing out. Confirm that the selection column orientation and the sample labeling criteria are in accordance with validated protocols.",
           "contentItems": [
             {
-              "contentType": "text",
+              "contentType": "image",
               "properties": {
-                "text": "Proper column orientation is critical for cell enrichment success. Double-check orientation and labeling before proceeding."
+                "url": "screen_9.png",
+                "text": "Selection column and valve 5 screen"
               }
             }
           ],
@@ -344,7 +394,15 @@
       "checklist": [
         {
           "text": "Insert tubing into valve 1.",
-          "contentItems": [],
+          "contentItems": [
+            {
+              "contentType": "image",
+              "properties": {
+                "url": "screen_10.png",
+                "text": "Tubing insertion screen"
+              }
+            }
+          ],
           "arActions": [
             {
               "actionType": "highlight",
@@ -499,7 +557,15 @@
       "checklist": [
         {
           "text": "Open the pump door.",
-          "contentItems": [],
+          "contentItems": [
+            {
+              "contentType": "image",
+              "properties": {
+                "url": "screen_11.png",
+                "text": "Pump tubing installation screen"
+              }
+            }
+          ],
           "arActions": [
             {
               "actionType": "highlight",
@@ -561,7 +627,15 @@
       "checklist": [
         {
           "text": "Install the tubing into valves 7 and 8 and then press Enter.",
-          "contentItems": [],
+          "contentItems": [
+            {
+              "contentType": "image",
+              "properties": {
+                "url": "screen_12.png",
+                "text": "Valves 7 and 8 installation screen"
+              }
+            }
+          ],
           "arActions": [
             {
               "actionType": "highlight",
@@ -569,8 +643,8 @@
               "properties": {
                 "subIDs": [
                   "pinch_valve_7",
-                  "pinch_valve_8",
                   "tube_valve_7",
+                  "pinch_valve_8",
                   "tube_peristaltic_pump_valve_8"
                 ],
                 "colorHex": "#FFD700",
@@ -588,7 +662,15 @@
       "checklist": [
         {
           "text": "Insert tubing into valve 6.",
-          "contentItems": [],
+          "contentItems": [
+            {
+              "contentType": "image",
+              "properties": {
+                "url": "screen_13.png",
+                "text": "Additional tubing placement screen"
+              }
+            }
+          ],
           "arActions": [
             {
               "actionType": "highlight",
@@ -698,12 +780,13 @@
       "estimatedDuration": "0",
       "checklist": [
         {
-          "text": "Inspect the tubing for any kinks, improper seating, or misalignment in each valve. If issues are detected (e.g., tubing kinks or misaligned tubing in a valve), adjust by pressing down on the valve and re-seating the tubing.",
+          "text": "Inspect the tubing for any kinks, improper seating, or misalignment in each valve.",
           "contentItems": [
             {
-              "contentType": "text",
+              "contentType": "image",
               "properties": {
-                "text": "Thorough inspection at this stage prevents system failures. Pay special attention to valve seating and tubing alignment."
+                "url": "screen_14.png",
+                "text": "Tubing inspection screen"
               }
             }
           ],
@@ -718,12 +801,20 @@
     },
     {
       "isCritical": true,
-      "title": "Fifteenth Step – Instrument Seating",
+      "title": "Fifteenth Screen – Instrument Seating",
       "estimatedDuration": "0",
       "checklist": [
         {
           "text": "Note that the instrument automatically seats the valves. No user action is required.",
-          "contentItems": [],
+          "contentItems": [
+            {
+              "contentType": "image",
+              "properties": {
+                "url": "screen_15.png",
+                "text": "Instrument seating screen"
+              }
+            }
+          ],
           "arActions": []
         }
       ]
@@ -735,7 +826,15 @@
       "checklist": [
         {
           "text": "Ignore the instructions to attach and hang the buffer bag (previously completed) and press Enter.",
-          "contentItems": [],
+          "contentItems": [
+            {
+              "contentType": "image",
+              "properties": {
+                "url": "screen_16.png",
+                "text": "Buffer bag attachment screen"
+              }
+            }
+          ],
           "arActions": []
         }
       ]
@@ -747,7 +846,15 @@
       "checklist": [
         {
           "text": "Remove the previously applied hemostat from the buffer line.",
-          "contentItems": [],
+          "contentItems": [
+            {
+              "contentType": "image",
+              "properties": {
+                "url": "screen_18.png",
+                "text": "Hemostat removal and system priming screen"
+              }
+            }
+          ],
           "arActions": []
         },
         {
@@ -771,7 +878,15 @@
       "checklist": [
         {
           "text": "Press 9 to perform the upper tubing integrity test and inspect all tubing junctions for leaks.",
-          "contentItems": [],
+          "contentItems": [
+            {
+              "contentType": "image",
+              "properties": {
+                "url": "screen_19.png",
+                "text": "Tubing integrity tests screen"
+              }
+            }
+          ],
           "arActions": []
         },
         {
@@ -800,7 +915,15 @@
       "checklist": [
         {
           "text": "Ignore the instructions for connecting the cell bag and prefilter (these were performed prior to tubing set installation) and press Enter.",
-          "contentItems": [],
+          "contentItems": [
+            {
+              "contentType": "image",
+              "properties": {
+                "url": "screen_20.png",
+                "text": "Cell bag and prefilter connection screen"
+              }
+            }
+          ],
           "arActions": []
         }
       ]
@@ -814,9 +937,10 @@
           "text": "Perform a final check to ensure proper seating in all tubing valves and that the pathway to the cell collection bag is open and free of kinks.",
           "contentItems": [
             {
-              "contentType": "text",
+              "contentType": "image",
               "properties": {
-                "text": "This final check is crucial for process success. Pay special attention to the cell collection pathway."
+                "url": "screen_21.png",
+                "text": "Final tubing check screen"
               }
             }
           ],
@@ -841,15 +965,7 @@
       "checklist": [
         {
           "text": "Perform a final review of all connections, calibration settings, tubing integrity, and overall device readiness before initiating the run. Verify that no potential failure points (such as tubing kinks, improper seating of tubing in valves, or misalignment of the selection column) remain. If any discrepancies or device errors are noted, follow the established emergency procedures and troubleshooting guidelines.",
-          "contentItems": [
-            {
-              "contentType": "image",
-              "properties": {
-                "url": "final_review.png",
-                "text": "Snapshot of final review checklist."
-              }
-            }
-          ],
+          "contentItems": [],
           "arActions": []
         }
       ]
@@ -861,7 +977,15 @@
       "checklist": [
         {
           "text": "Press Run to complete the protocol.",
-          "contentItems": [],
+          "contentItems": [
+            {
+              "contentType": "image",
+              "properties": {
+                "url": "screen_22.png",
+                "text": "Final run command screen"
+              }
+            }
+          ],
           "arActions": []
         }
       ]
