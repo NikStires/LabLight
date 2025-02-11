@@ -57,13 +57,6 @@
               "properties": {
                 "text": "Ensure any potential air bubbles in the tubing are safely removed and document post-maintenance checks. Wear appropriate PPE throughout the process."
               }
-            },
-            {
-              "contentType": "video",
-              "properties": {
-                "url": "full_kit_install_video.mp4",
-                "text": "Full kit installation video guide"
-              }
             }
           ],
           "arActions": []
@@ -89,7 +82,22 @@
         },
         {
           "text": "Apply a plastic hemostat to the source buffer and source leukapheresis bag lines (already attached to the tubing kit) while wearing appropriate PPE and following sterile and biosafety guidelines.",
-          "contentItems": [],
+          "contentItems": [
+            {
+              "contentType": "image",
+              "properties": {
+                "url": "hemostat.jpg",
+                "text": "Plastic hemostat"
+              }
+            },
+            {
+              "contentType": "image",
+              "properties": {
+                "url": "hemostat_01.jpg",
+                "text": "Proper hemostat application"
+              }
+            }
+          ],
           "arActions": []
         }
       ]
@@ -284,7 +292,7 @@
       "estimatedDuration": "0",
       "checklist": [
         {
-          "text": "Confirm predicted volumes: Selection Buffer = 160 mL, Cell Collection Bag = 240 mL, Negative Fraction Bag = 550 mL, Wash Waste Bag = 600 mL; then press Enter. Ensure that all volume predictions are within expected ranges.",
+          "text": "Confirm predicted volumes: Selection Buffer = 1360 mL, Cell Collection Bag = 240 mL, Negative Fraction Bag = 550 mL, Wash Waste Bag = 600 mL; then press Enter. Ensure that all volume predictions are within expected ranges.",
           "contentItems": [
             {
               "contentType": "image",
@@ -295,6 +303,9 @@
             }
           ],
           "arActions": []
+        },
+        {
+          "text": "Press Enter to confirm volumes"
         }
       ]
     },
@@ -368,7 +379,15 @@
         },
         {
           "text": "Insert tubing into valve 5 and press Enter.",
-          "contentItems": [],
+          "contentItems": [
+            {
+              "contentType": "video",
+              "properties": {
+                "url": "tubing_insertion_example.mov",
+                "text": "Tubing insertion example"
+              }
+            }
+          ],
           "arActions": [
             {
               "actionType": "highlight",
@@ -585,6 +604,13 @@
               "contentType": "text",
               "properties": {
                 "text": "Proper alignment of white plastic segments is crucial for pump function. Misalignment can cause system failures."
+              }
+            },
+            {
+              "contentType": "video",
+              "properties": {
+                "url": "pump_tubing_example.mov",
+                "text": "Pump tubing example"
               }
             }
           ],
@@ -953,18 +979,6 @@
         },
         {
           "text": "Press Enter to complete this step.",
-          "contentItems": [],
-          "arActions": []
-        }
-      ]
-    },
-    {
-      "isCritical": true,
-      "title": "Final Review and Calibration Check",
-      "estimatedDuration": "0",
-      "checklist": [
-        {
-          "text": "Perform a final review of all connections, calibration settings, tubing integrity, and overall device readiness before initiating the run. Verify that no potential failure points (such as tubing kinks, improper seating of tubing in valves, or misalignment of the selection column) remain. If any discrepancies or device errors are noted, follow the established emergency procedures and troubleshooting guidelines.",
           "contentItems": [],
           "arActions": []
         }
