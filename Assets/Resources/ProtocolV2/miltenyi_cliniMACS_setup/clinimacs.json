@@ -216,6 +216,23 @@
     },
     {
       "isCritical": true,
+      "title": "Tubing – Confirmation",
+      "estimatedDuration": "0",
+      "checklist": [
+        {
+          "text": "Select the cliniMACS LSTS.",
+          "contentItems": [],
+          "arActions": []
+        },
+        {
+          "text": "Press Enter.",
+          "contentItems": [],
+          "arActions": []
+        }
+      ]
+    },
+    {
+      "isCritical": true,
       "title": "Fourth Screen – Tubing Reference Entry",
       "estimatedDuration": "0",
       "checklist": [
