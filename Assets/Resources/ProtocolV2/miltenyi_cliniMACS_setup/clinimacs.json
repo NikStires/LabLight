@@ -196,6 +196,23 @@
     },
     {
       "isCritical": true,
+      "title": "Tubing – Confirmation",
+      "estimatedDuration": "0",
+      "checklist": [
+        {
+          "text": "Select the cliniMACS LSTS.",
+          "contentItems": [],
+          "arActions": []
+        },
+        {
+          "text": "Press Enter.",
+          "contentItems": [],
+          "arActions": []
+        }
+      ]
+    },
+    {
+      "isCritical": true,
       "title": "Third Screen – Confirmation",
       "estimatedDuration": "0",
       "checklist": [
@@ -210,23 +227,6 @@
               }
             }
           ],
-          "arActions": []
-        }
-      ]
-    },
-    {
-      "isCritical": true,
-      "title": "Tubing – Confirmation",
-      "estimatedDuration": "0",
-      "checklist": [
-        {
-          "text": "Select the cliniMACS LSTS.",
-          "contentItems": [],
-          "arActions": []
-        },
-        {
-          "text": "Press Enter.",
-          "contentItems": [],
           "arActions": []
         }
       ]
@@ -895,18 +895,6 @@
               "properties": {
                 "url": "screen_18.png",
                 "text": "Hemostat removal and system priming screen"
-              }
-            }
-          ],
-          "arActions": []
-        },
-        {
-          "text": "Before pressing Run to prime the system, verify device calibration and ensure that any air bubbles in the tubing have been removed to minimize risk. Then press Run to prime the system (air only for training).",
-          "contentItems": [
-            {
-              "contentType": "text",
-              "properties": {
-                "text": "Air bubbles can cause system failures and affect cell separation. Ensure thorough removal before proceeding."
               }
             }
           ],
