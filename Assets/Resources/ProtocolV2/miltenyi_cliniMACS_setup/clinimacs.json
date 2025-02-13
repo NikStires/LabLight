@@ -1027,7 +1027,7 @@
       ],
       "checklist": [
         {
-          "text": "Press 9 and then press RUN to perform the upper tubing integrity test. Inspect all tubing junctions for leaks.",
+          "text": "Press 9 and then press RUN to perform the upper tubing integrity test. Inspect all tubing junctions for leaks (see 2nd image).",
           "contentItems": [
             {
               "contentType": "image",
@@ -1046,7 +1046,7 @@
           "arActions": []
         },
         {
-          "text": "Once upper integrity test is complete, press 6 and then press RUN to perform the lower tubing integrity test. Inspect tubing junctions for leaks.",
+          "text": "Once upper integrity test is complete, press 6 and then press RUN to perform the lower tubing integrity test. Inspect tubing junctions for leaks (see 2nd image).",
           "contentItems": [
             {
               "contentType": "image",
