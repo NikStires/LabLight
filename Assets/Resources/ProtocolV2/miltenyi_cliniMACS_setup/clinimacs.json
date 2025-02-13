@@ -29,7 +29,7 @@
             {
               "contentType": "image",
               "properties": {
-                "url": "locking.jpg",
+                "url": "locking.png",
                 "text": "Locking AR object example"
               }
             }
@@ -69,7 +69,7 @@
             {
               "contentType": "text",
               "properties": {
-                "text": "Ensure instument is powered on and tubing kit has no obvious damage. Wear appropriate PPE throughout the process."
+                "text": "Ensure instrument is powered on and tubing kit has no obvious damage. Wear appropriate PPE throughout the process."
               }
             }
           ],
@@ -249,19 +249,6 @@
               "properties": {
                 "url": "screen_3.png",
                 "text": "Protocol confirmation screen"
-              }
-            }
-          ],
-          "arActions": []
-        },
-        {
-          "text": "Press Enter on the subscreen",
-          "contentItems": [
-            {
-              "contentType": "image",
-              "properties": {
-                "url": "step_9_subscreen.jpg",
-                "text": "Subscreen confirmation"
               }
             }
           ],
@@ -691,7 +678,7 @@
       ],
       "checklist": [
         {
-          "text": "Open the pump door.",
+          "text": "Open the pump door (see image).",
           "contentItems": [
             {
               "contentType": "image",
@@ -704,7 +691,7 @@
           "arActions": []
         },
         {
-          "text": "Install the pump tubing, ensuring that the white plastic segments are properly placed in their slots.",
+          "text": "Install the pump tubing, ensuring that the white plastic segments are properly placed in their slots (see video).",
           "contentItems": [
             {
               "contentType": "text",
@@ -736,7 +723,7 @@
           ]
         },
         {
-          "text": "Close the pump door and press Enter.",
+          "text": "Close the pump door and press Enter (see image).",
           "contentItems": [
             {
               "contentType": "image",
@@ -1011,7 +998,7 @@
       "estimatedDuration": "0",
       "checklist": [
         {
-          "text": "Remove the previously applied hemostat from the buffer line.",
+          "text": "Remove the previously applied hemostat from the buffer line. Press RUN to prime the system.",
           "contentItems": [
             {
               "contentType": "image",
@@ -1029,6 +1016,15 @@
       "isCritical": true,
       "title": "Nineteenth Screen – Tubing Integrity Tests",
       "estimatedDuration": "0",
+      "contentItems": [
+        {
+          "contentType": "image",
+          "properties": {
+            "url": "screen_19.png",
+            "text": "Tubing integrity tests screen"
+          }
+        }
+      ],
       "checklist": [
         {
           "text": "Press 9 and then press RUN to perform the upper tubing integrity test. Inspect all tubing junctions for leaks.",
@@ -1036,8 +1032,14 @@
             {
               "contentType": "image",
               "properties": {
-                "url": "screen_19.png",
+                "url": "upper_integrity_test.jpg",
                 "text": "Tubing integrity tests screen"
+              }
+            },
+            {
+              "contentType": "text",
+              "properties": {
+                "text": "Any leaks detected during integrity tests must be addressed immediately following emergency procedures."
               }
             }
           ],
@@ -1046,6 +1048,13 @@
         {
           "text": "Once upper integrity test is complete, press 6 and then press RUN to perform the lower tubing integrity test. Inspect tubing junctions for leaks.",
           "contentItems": [
+            {
+              "contentType": "image",
+              "properties": {
+                "url": "lower_integrity_test.jpg",
+                "text": "Tubing integrity tests screen"
+              }
+            },
             {
               "contentType": "text",
               "properties": {
